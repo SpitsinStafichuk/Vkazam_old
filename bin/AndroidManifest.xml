@@ -22,6 +22,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="com.git.programmerr47.testhflbjcrhjggkth.view.activities.SettingsActivity"></activity>
     </application>
 
 </manifest>

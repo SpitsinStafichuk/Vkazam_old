@@ -25,7 +25,7 @@ public class Scrobbler implements IScrobbler {
                         }
                 }
                
-                Log.v("Last Fm", "Last fm session: " + lastfmSession);
+                Log.v("Settings", "Last fm session: " + lastfmSession);
         }
        
         @Override
