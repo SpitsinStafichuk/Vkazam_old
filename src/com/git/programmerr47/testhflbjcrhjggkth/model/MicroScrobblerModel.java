@@ -68,6 +68,7 @@ public class MicroScrobblerModel implements IMicroScrobblerModel{
 	@Override
 	public List getHistory() {
 		// TODO Auto-generated method stub
+		// test
 		return null;
 	}
 
