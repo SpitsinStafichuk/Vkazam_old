@@ -23,9 +23,10 @@ public final class R {
     public static final class drawable {
         public static final int ic_launcher=0x7f020000;
         public static final int lastfm_icon=0x7f020001;
+        public static final int micro_image_button_press=0x7f020002;
+        public static final int microphone_icon=0x7f020003;
     }
     public static final class id {
-        public static final int imageButton1=0x7f08000a;
         public static final int lastFmLoginLogoutButton=0x7f08000c;
         public static final int lastLoginRequestProgress=0x7f080002;
         public static final int lastfmCancelButton=0x7f080008;
@@ -34,6 +35,7 @@ public final class R {
         public static final int lastfmLoginStatus=0x7f080001;
         public static final int lastfmLoginStatusLayout=0x7f080000;
         public static final int lastfmPassword=0x7f080006;
+        public static final int microListenButton=0x7f08000a;
         public static final int microphonePager=0x7f080009;
         public static final int settings=0x7f08000d;
         public static final int settingsLastfmIconView=0x7f08000b;
