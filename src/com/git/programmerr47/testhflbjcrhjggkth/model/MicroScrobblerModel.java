@@ -42,6 +42,7 @@ public class MicroScrobblerModel implements IMicroScrobblerModel, ISignInObserva
 	
 	private MicroScrobblerModel() {
 		listeners = new HashSet<IOnSignInResultListener>();
+		scrobbler = new Scrobbler();
 		
 		sharedPreferences = context.getSharedPreferences(SAVE_LASTFM_INFO_PREF, MODE);
         final String login = sharedPreferences.getString(LASTFM_USERNAME, null);
@@ -52,14 +53,8 @@ public class MicroScrobblerModel implements IMicroScrobblerModel, ISignInObserva
 	
 	@Override
 	public void setLastfmAccount(String username, String password) {
-        scrobbler = new Scrobbler();
         scrobbler.signIn(username, password);
         scrobbler.setOnSignInResultListener(this);
-       
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(LASTFM_USERNAME, username);
-        editor.putString(LASTFM_PASSWORD, password);
-        editor.commit();
 	}
 
 	@Override
@@ -93,6 +88,12 @@ public class MicroScrobblerModel implements IMicroScrobblerModel, ISignInObserva
 
 	@Override
 	public void onResult(String status) {
+		if(status.equals(STATUS_SUCCESS)) {
+			SharedPreferences.Editor editor = sharedPreferences.edit();
+	        editor.putString(LASTFM_USERNAME, scrobbler.getCorrectUsername());
+	        editor.putString(LASTFM_PASSWORD, scrobbler.getCorrectPassword());
+	        editor.commit();
+		}
 		notifyOnSignInResultListener(status);
 	}
 }

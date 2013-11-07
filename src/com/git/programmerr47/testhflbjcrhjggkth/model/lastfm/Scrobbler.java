@@ -8,6 +8,7 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.exceptions.LastfmLoginExce
 import android.util.Log;
 
 import de.umass.lastfm.Authenticator;
+import de.umass.lastfm.CallException;
 import de.umass.lastfm.Caller;
 import de.umass.lastfm.Session;
 import de.umass.lastfm.Track;
@@ -22,6 +23,8 @@ public class Scrobbler implements IScrobbler, ISignInObservable {
     private boolean enableScrobbler;
     private Thread signInThread;
     private Set<IOnSignInResultListener> listeners;
+    private String correctUsername;
+    private String correctPassword;
    
     public Scrobbler() {
             Caller.getInstance().setUserAgent(LASTFM_USERAGENT);
@@ -41,16 +44,37 @@ public class Scrobbler implements IScrobbler, ISignInObservable {
     	signInThread.start();
     }
     
-    private void _signIn(String username, String password) {
+    private synchronized void _signIn(String username, String password) {
     	String status = "username or password is null";
     	if (username != null && password != null) {
-            lastfmSession = Authenticator.getMobileSession(username, password, LASTFM_API_KEY, LASTFM_SECRET);
-
-            if (!Caller.getInstance().getLastResult().isSuccessful()) {
-            	status = Caller.getInstance().getLastResult().getErrorMessage();
-            } else {
-            	status = STATUS_SUCCESS;
-            }
+    		try {
+    			lastfmSession = Authenticator.getMobileSession(username, password, LASTFM_API_KEY, LASTFM_SECRET);
+    		} catch(Exception e) {
+    			if(e.getMessage() == null) {
+    				status = "You probably have no internet connection";
+    			} else {
+    				status = e.getMessage();
+    			}
+    			notifyOnSignInResultListener(status);
+    		}
+    		//Log.v("Scrobbler", "Caller.getInstance() = " + Caller.getInstance().toString());
+    		//Log.v("Scrobbler", "Caller.getInstance().getLastResult() = " + Caller.getInstance().getLastResult().toString());
+    		try {
+    			if (!Caller.getInstance().getLastResult().isSuccessful()) {
+    				status = Caller.getInstance().getLastResult().getErrorMessage();
+    			} else {
+    				status = STATUS_SUCCESS;
+    				correctUsername = username;
+    				correctPassword = password;
+    			}
+    		} catch(Exception e) {
+    			if(e.getMessage() == null) {
+    				status = "You probably have no internet connection";
+    			} else {
+    				status = e.getMessage();
+    			}
+    			notifyOnSignInResultListener(status);
+    		}
     	}
     	notifyOnSignInResultListener(status);
     	Log.v("Settings", "Last fm session: " + lastfmSession);
@@ -102,5 +126,13 @@ public class Scrobbler implements IScrobbler, ISignInObservable {
                     Track.scrobble(artist, title, now, lastfmSession);
             }
     }
+
+	public String getCorrectPassword() {
+		return correctPassword;
+	}
+
+	public String getCorrectUsername() {
+		return correctUsername;
+	}
 }
 
