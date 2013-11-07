@@ -9,13 +9,15 @@
         android:layout_height="match_parent" >
 
         <ImageButton
-            android:id="@+id/imageButton1"
+            android:id="@+id/microListenButton"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:layout_weight="1"
-            android:src="@drawable/ic_launcher" />
+            android:src="@drawable/microphone_icon"
+            android:scaleType="fitXY"
+            android:background="@drawable/micro_image_button_background" />
 
     </RelativeLayout>
 
