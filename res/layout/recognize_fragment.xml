@@ -17,7 +17,7 @@
             android:layout_weight="1"
             android:src="@drawable/microphone_icon"
             android:scaleType="fitXY"
-            android:background="@drawable/micro_image_button_press" />
+            android:background="@drawable/micro_image_button_background" />
 
     </RelativeLayout>
 
