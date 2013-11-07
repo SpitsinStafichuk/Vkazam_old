@@ -3,6 +3,8 @@ package com.git.programmerr47.testhflbjcrhjggkth.view.fragments;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
 import com.git.programmerr47.testhflbjcrhjggkth.model.exceptions.LastfmLoginException;
+import com.git.programmerr47.testhflbjcrhjggkth.model.lastfm.ISignInObservable;
+import com.git.programmerr47.testhflbjcrhjggkth.model.lastfm.Scrobbler.IOnSignInResultListener;
 import com.git.programmerr47.testhflbjcrhjggkth.view.activities.interfaces.IConnectionWithDialogFragment;
 
 import android.app.Activity;
@@ -62,64 +64,40 @@ public class LastfmLoginDialogFragment extends DialogFragment {
                             System.out.println("LastFM Password: " + password.getText().toString());
                            
                             final FragmentActivity uiActivity = getActivity();
-                            new Thread() {
-                                   
-                                    @Override
-                                    public void run() {
-                                           
-                                            try {
-                                                    MicroScrobblerModel.getInstance().setLastfmAccount(login.getText().toString(), password.getText().toString());
-
-                                                    uiActivity.runOnUiThread(new Runnable() {
-                                                           
-                                                            @Override
-                                                            public void run() {
-                                                                    lastfmLoginRequestProgress.setVisibility(View.GONE);
-                                                                    status.setText("Success");
-                                                            }
-                                                    });
-                                                   
-                                                    try {
-                                                            sleep(1000);
-                                                    } catch (InterruptedException e) {}
-                                                   
-                                                    uiActivity.runOnUiThread(new Runnable() {
-                                                           
-                                                            @Override
-                                                            public void run() {
-                                                                    cancelButton.setEnabled(true);
-                                                                    loginButton.setEnabled(true);
-                                                                    dismiss();
-                                                            }
-                                                    });
-                                                    throw new LastfmLoginException();
-                                            } catch (final LastfmLoginException e) {
-                                                    uiActivity.runOnUiThread(new Runnable() {
-
-                                                            @Override
-                                                            public void run() {
-                                                                    lastfmLoginRequestProgress.setVisibility(View.GONE);
-                                                                    status.setText("Failed :" + e.getMessage());
-                                                                    password.setText("");
-                                                                    cancelButton.setEnabled(true);
-                                                                    loginButton.setEnabled(true);
-                                                            }
-                                                           
-                                                    });
-                                            }
-                                    }
-                                   
-                            }.start();
+                            MicroScrobblerModel.getInstance().setLastfmAccount(login.getText().toString(), password.getText().toString());
+                            MicroScrobblerModel.getInstance().setOnSignInResultListener(new IOnSignInResultListener() {
+								
+								@Override
+								public void onResult(final String resultStatus) {
+									uiActivity.runOnUiThread(new Runnable() {
+                                        
+                                        @Override
+                                        public void run() {
+                                        	if(resultStatus.equals(ISignInObservable.STATUS_SUCCESS)) {
+                                                lastfmLoginRequestProgress.setVisibility(View.GONE);
+                                                status.setText("Success");
+                                                cancelButton.setEnabled(true);
+                                                loginButton.setEnabled(true);
+                                                dismiss();
+                                        	} else {
+                                        		lastfmLoginRequestProgress.setVisibility(View.GONE);
+                                                status.setText("Failed :" + resultStatus);
+                                                password.setText("");
+                                                cancelButton.setEnabled(true);
+                                                loginButton.setEnabled(true);
+                                        	}
+                                        }
+									});
+								}
+							});       
                     }
             });
-       
         cancelButton.setOnClickListener(new OnClickListener() {
-                   
-                    @Override
-                    public void onClick(View v) {
-                            dismiss();
-                    }
-            });
+        	@Override
+        	public void onClick(View v) {
+        		dismiss();
+            }
+        });
        
         return v;
     }

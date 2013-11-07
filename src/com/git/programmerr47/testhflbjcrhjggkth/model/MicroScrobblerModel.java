@@ -1,6 +1,8 @@
 package com.git.programmerr47.testhflbjcrhjggkth.model;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,25 +10,29 @@ import android.content.SharedPreferences;
 
 import com.git.programmerr47.testhflbjcrhjggkth.model.exceptions.LastfmLoginException;
 import com.git.programmerr47.testhflbjcrhjggkth.model.lastfm.IScrobbler;
+import com.git.programmerr47.testhflbjcrhjggkth.model.lastfm.ISignInObservable;
 import com.git.programmerr47.testhflbjcrhjggkth.model.lastfm.Scrobbler;
+import com.git.programmerr47.testhflbjcrhjggkth.model.lastfm.Scrobbler.IOnSignInResultListener;
 
-public class MicroScrobblerModel implements IMicroScrobblerModel{
+public class MicroScrobblerModel implements IMicroScrobblerModel, ISignInObservable, IOnSignInResultListener {
 	private static final String SAVE_LASTFM_INFO_PREF = "save lastfm info pref";
-	private static final String LASTFM_LOGIN = "lastfm login";
+	private static final String LASTFM_USERNAME = "lastfm username";
 	private static final String LASTFM_PASSWORD = "lastfm password";
 	private static final int MODE = Activity.MODE_PRIVATE;
 	
-	private static IMicroScrobblerModel instance;
+	private static MicroScrobblerModel instance;
 	private static Context context;
 	
-	private IScrobbler scrobbler;
+	private Scrobbler scrobbler;
 	private SharedPreferences sharedPreferences;
+	
+	private Set<IOnSignInResultListener> listeners;
 	
 	public static void setContext(Context con) {
 		context = con;
 	}
 	
-	public static synchronized IMicroScrobblerModel getInstance() {
+	public static synchronized MicroScrobblerModel getInstance() {
 		if (instance == null) {
 			instance = new MicroScrobblerModel();
 		}
@@ -34,28 +40,24 @@ public class MicroScrobblerModel implements IMicroScrobblerModel{
 		return instance;
 	}
 	
-	public MicroScrobblerModel() {
+	private MicroScrobblerModel() {
+		listeners = new HashSet<IOnSignInResultListener>();
+		
 		sharedPreferences = context.getSharedPreferences(SAVE_LASTFM_INFO_PREF, MODE);
-        final String login = sharedPreferences.getString(LASTFM_LOGIN, null);
+        final String login = sharedPreferences.getString(LASTFM_USERNAME, null);
         final String password = sharedPreferences.getString(LASTFM_PASSWORD, null);
-
-        new Thread() {
-            
-            @Override
-            public void run() {
-                    try {
-                            setLastfmAccount(login, password);
-                    } catch (LastfmLoginException e) {}
-            }
-        }.start();
+        
+        setLastfmAccount(login, password);
 	}
 	
 	@Override
-	public void setLastfmAccount(String login, String password) throws LastfmLoginException {
-        scrobbler = new Scrobbler(login, password);
+	public void setLastfmAccount(String username, String password) {
+        scrobbler = new Scrobbler();
+        scrobbler.signIn(username, password);
+        scrobbler.setOnSignInResultListener(this);
        
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(LASTFM_LOGIN, login);
+        editor.putString(LASTFM_USERNAME, username);
         editor.putString(LASTFM_PASSWORD, password);
         editor.commit();
 	}
@@ -72,4 +74,25 @@ public class MicroScrobblerModel implements IMicroScrobblerModel{
 		return null;
 	}
 
+	@Override
+    public void setOnSignInResultListener(IOnSignInResultListener listener) {
+    	listeners.add(listener);
+    }
+    
+    @Override
+    public void removeOnSignInResultListener(IOnSignInResultListener listener) {
+    	listeners.remove(listener);
+    }
+    
+    @Override
+    public void notifyOnSignInResultListener(String status) {
+    	for(IOnSignInResultListener listener : listeners) {
+    		listener.onResult(status);
+    	}
+    }
+
+	@Override
+	public void onResult(String status) {
+		notifyOnSignInResultListener(status);
+	}
 }

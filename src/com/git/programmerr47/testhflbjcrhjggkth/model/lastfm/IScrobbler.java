@@ -9,4 +9,6 @@ public interface IScrobbler {
     void setEnableScrobbler(boolean enabled);
     boolean isScrobblerEnabled();
     void scrobble(String artist, String title);
+	void signIn(String username, String password);
+	void signInCancel();
 }
