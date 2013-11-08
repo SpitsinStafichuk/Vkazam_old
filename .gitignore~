@@ -3,3 +3,4 @@ proguard-project.txt
 ic_launcher-web.png
 bin/
 gen/
+.settings/
