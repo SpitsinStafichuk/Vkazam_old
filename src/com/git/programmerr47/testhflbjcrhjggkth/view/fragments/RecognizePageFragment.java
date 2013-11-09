@@ -1,6 +1,7 @@
 package com.git.programmerr47.testhflbjcrhjggkth.view.fragments;
 
 import com.git.programmerr47.testhflbjcrhjggkth.R;
+import com.git.programmerr47.testhflbjcrhjggkth.controllers.IRecognizeController;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.RecognizeController;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeStatusObserver;
@@ -18,7 +19,7 @@ public class RecognizePageFragment extends Fragment implements IRecognizeStatusO
 	static final String ARGUMENT_RADIO_ID = "arg_rad_id";
     
     int backColor;
-    RecognizeController controller;
+    IRecognizeController controller;
 
     public static RecognizePageFragment newInstance() {
     		RecognizePageFragment pageFragment = new RecognizePageFragment();
@@ -37,17 +38,27 @@ public class RecognizePageFragment extends Fragment implements IRecognizeStatusO
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.recognize_fragment, null);
-            view.setBackgroundColor(backColor);
-            ImageButton microListenButton = (ImageButton) view.findViewById(R.id.microListenButton);
-            microListenButton.setOnLongClickListener(new View.OnLongClickListener(){
+        View view = inflater.inflate(R.layout.recognize_fragment, null);
+        view.setBackgroundColor(backColor);
+        ImageButton microTimerListenButton = (ImageButton) view.findViewById(R.id.microTimerListenButton);
+        microTimerListenButton.setOnLongClickListener(new View.OnLongClickListener(){
 
-				@Override
-				public boolean onLongClick(View v) {
-					Log.v("RecognizePageFragment", "onLongClick");
-					return controller.recognizeRecognizeCancel();
-				}});
-            return view;
+			@Override
+			public boolean onLongClick(View v) {
+				Log.v("Recognizing", "Recognize by timer: onLongClick");
+				return controller.recognizeByTimerRecognizeCancel();
+			}});
+        
+        ImageButton microNowListenButton = (ImageButton) view.findViewById(R.id.microNowListenButton);
+        microNowListenButton.setOnLongClickListener(new View.OnLongClickListener() {
+			
+			@Override
+			public boolean onLongClick(View v) {
+				Log.v("Recognizing", "Recognize now: onLongClick");
+				return controller.recognizeNowRecognizeCancel();
+			}
+		});
+        return view;
     }
    
     @Override

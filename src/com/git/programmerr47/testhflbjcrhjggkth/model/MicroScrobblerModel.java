@@ -105,6 +105,7 @@ public class MicroScrobblerModel implements IMicroScrobblerModel, ISignInObserva
 			synchronized (this) {
 				if (!isRecognizing) {
 					isRecognizing = true;
+					Log.v("Recognizing", "New recognize by Timer");
 					GNOperations.recognizeMIDStreamFromMic(this, config);
 				}
 			}
@@ -129,7 +130,6 @@ public class MicroScrobblerModel implements IMicroScrobblerModel, ISignInObserva
 	@Override
 	public List getHistory() {
 		// TODO Auto-generated method stub
-		// test
 		return null;
 	}
 
@@ -152,6 +152,7 @@ public class MicroScrobblerModel implements IMicroScrobblerModel, ISignInObserva
 
 	@Override
 	public void onResult(String status) {
+		//???????
 		isRecognizing = false;
 		if(status.equals(STATUS_SUCCESS)) {
 			SharedPreferences.Editor editor = sharedPreferences.edit();
