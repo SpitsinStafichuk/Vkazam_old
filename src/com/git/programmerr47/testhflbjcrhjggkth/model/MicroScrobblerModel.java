@@ -1,7 +1,6 @@
 package com.git.programmerr47.testhflbjcrhjggkth.model;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -17,8 +16,13 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.lastfm.IScrobbler;
 import com.git.programmerr47.testhflbjcrhjggkth.model.lastfm.ISignInObservable;
 import com.git.programmerr47.testhflbjcrhjggkth.model.lastfm.Scrobbler;
 import com.git.programmerr47.testhflbjcrhjggkth.model.lastfm.Scrobbler.IOnSignInResultListener;
+import com.git.programmerr47.testhflbjcrhjggkth.model.managers.ISongManager;
+import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SongManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeStatusObservable;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeStatusObserver;
+import com.google.sydym6.logic.database.SongDAO;
+import com.google.sydym6.logic.database.data.ISongData;
+import com.google.sydym6.logic.database.data.SongData;
 import com.gracenote.mmid.MobileSDK.GNConfig;
 import com.gracenote.mmid.MobileSDK.GNOperations;
 import com.gracenote.mmid.MobileSDK.GNSearchResponse;
@@ -51,6 +55,14 @@ public class MicroScrobblerModel implements IMicroScrobblerModel, ISignInObserva
 	private String artist;
 	private String title;
 	
+	private String previousArtist;
+	private String previousTitle;
+	
+	private ISongManager songManager;
+	
+	private SongDAO songDAO;
+	private List<ISongData> songList;
+	
 	public static void setContext(Context con) {
 		context = con;
 	}
@@ -64,6 +76,7 @@ public class MicroScrobblerModel implements IMicroScrobblerModel, ISignInObserva
 	}
 	
 	private MicroScrobblerModel() {
+		songManager = new SongManager();
 		listeners = new HashSet<IOnSignInResultListener>();
 		scrobbler = new Scrobbler();
 		config = GNConfig.init("5435392-85C21DCCC8BBE15A8B5EE2BDC8A9ACDC", context);
@@ -74,7 +87,21 @@ public class MicroScrobblerModel implements IMicroScrobblerModel, ISignInObserva
         final String login = sharedPreferences.getString(LASTFM_USERNAME, null);
         final String password = sharedPreferences.getString(LASTFM_PASSWORD, null);
         
+        songDAO = new SongDAO(context);
+        songList = songDAO.getHistory();
+        if (songList != null && songList.size() > 0) {
+			previousArtist = songList.get(songList.size() - 1).getArtist();
+			previousTitle = songList.get(songList.size() - 1).getTitle();
+		} else {
+			previousArtist = null;
+			previousTitle = null;
+		}
         setLastfmAccount(login, password);
+	}
+	
+	@Override
+	public List<ISongData> getHistory() {
+		return songList;
 	}
 	
 	@Override
@@ -128,12 +155,6 @@ public class MicroScrobblerModel implements IMicroScrobblerModel, ISignInObserva
 	}
 
 	@Override
-	public List getHistory() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
     public void setOnSignInResultListener(IOnSignInResultListener listener) {
     	listeners.add(listener);
     }
@@ -152,19 +173,20 @@ public class MicroScrobblerModel implements IMicroScrobblerModel, ISignInObserva
 
 	@Override
 	public void onResult(String status) {
-		//???????
-		isRecognizing = false;
 		if(status.equals(STATUS_SUCCESS)) {
 			SharedPreferences.Editor editor = sharedPreferences.edit();
 	        editor.putString(LASTFM_USERNAME, scrobbler.getCorrectUsername());
 	        editor.putString(LASTFM_PASSWORD, scrobbler.getCorrectPassword());
 	        editor.commit();
+	        songManager.setScrobbler(scrobbler);
 		}
 		notifyOnSignInResultListener(status);
 	}
 
 	@Override
 	public void GNResultReady(GNSearchResult result) {
+		Log.i("Recognizing", "GNResultReady");
+		isRecognizing = false;
 		if (result.isFailure()) {
 			recognizeStatus = String.format("[%d] %s", result.getErrCode(),
 					result.getErrMessage());
@@ -176,6 +198,17 @@ public class MicroScrobblerModel implements IMicroScrobblerModel, ISignInObserva
 
 				artist = bestResponse.getArtist();
 				title = bestResponse.getTrackTitle();
+				
+				if(!artist.equals(previousArtist) || !title.equals(previousTitle)) {
+					scrobbler.scrobble(artist, title);
+					
+					ISongData songInfo = new SongData(-1, artist, title, bestResponse.getTrackId(), Calendar.getInstance().getTime().toString(), null);
+					songList.add(songInfo);
+					songDAO.insert(songInfo);
+					
+					previousArtist = artist;
+					previousTitle = title;
+				}
 		
 				recognizeStatus = RECOGNIZING_SUCCESS;
 				Log.i("Recognizing", recognizeStatus);
@@ -213,5 +246,9 @@ public class MicroScrobblerModel implements IMicroScrobblerModel, ISignInObserva
 	public void notifyRecognizeStatusObservers() {
 		for(IRecognizeStatusObserver o : recognizeStatusObservers)
 			o.updateRecognizeStatus();
+	}
+	
+	public ISongManager getSongManager() {
+		return songManager;
 	}
 }

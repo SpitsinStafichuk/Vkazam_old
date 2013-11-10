@@ -29,11 +29,11 @@ public class RecognizeController implements IRecognizeController {
     public boolean recognizeNowRecognizeCancel() {
     	if(model.isRecognizing()) {
     		Log.v("Recognizing", "Cancel recognizeNow");
-    		model.recognize();
+    		model.recognizeCancel();
     		return false;
     	} else {
     		Log.v("Recognizing", "recognizeNow");
-    		model.recognizeCancel();
+    		model.recognize();
     		return true;
     	}
     }
