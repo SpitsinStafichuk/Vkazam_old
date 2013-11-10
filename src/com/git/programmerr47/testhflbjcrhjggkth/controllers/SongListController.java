@@ -11,10 +11,10 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.ISongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.exceptions.SongNotFoundException;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.ISongManager;
-import com.google.sydym6.logic.database.data.ISongData;
-import com.pleer.api.KException;
+import com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.KException;
 
 public class SongListController implements ISongListController {
 

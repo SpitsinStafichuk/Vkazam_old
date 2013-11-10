@@ -1,4 +1,4 @@
-package com.google.sydym6.logic.database.data;
+package com.git.programmerr47.testhflbjcrhjggkth.model.database.data;
 
 public interface ISongData {
 	

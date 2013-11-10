@@ -8,14 +8,14 @@ import java.util.Set;
 
 import org.json.JSONException;
 
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.ISongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.exceptions.SongNotFoundException;
 import com.git.programmerr47.testhflbjcrhjggkth.model.lastfm.IScrobbler;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObservable;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObserver;
-import com.google.sydym6.logic.database.data.ISongData;
-import com.pleer.api.Api;
-import com.pleer.api.Audio;
-import com.pleer.api.KException;
+import com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.Api;
+import com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.Audio;
+import com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.KException;
 
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;

@@ -10,5 +10,6 @@ public interface IScrobbler {
     boolean isScrobblerEnabled();
     void scrobble(String artist, String title);
 	void signIn(String username, String password);
+	void signOut();
 	void signInCancel();
 }

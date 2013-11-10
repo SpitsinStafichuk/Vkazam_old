@@ -1,4 +1,4 @@
-package com.google.sydym6.logic.database;
+package com.git.programmerr47.testhflbjcrhjggkth.model.database;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -11,8 +11,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.google.sydym6.logic.database.data.ISongData;
-import com.google.sydym6.logic.database.data.SongData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.ISongData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.SongData;
 
 public class SongDAO implements ISongDAO {
 

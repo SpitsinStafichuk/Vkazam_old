@@ -1,5 +1,6 @@
-package com.git.programmerr47.testhflbjcrhjggkth.model.lastfm;
+package com.git.programmerr47.testhflbjcrhjggkth.model.observers;
 
+import com.git.programmerr47.testhflbjcrhjggkth.model.lastfm.Scrobbler;
 import com.git.programmerr47.testhflbjcrhjggkth.model.lastfm.Scrobbler.IOnSignInResultListener;
 
 public interface ISignInObservable {

@@ -1,4 +1,4 @@
-package com.google.sydym6.logic.database;
+package com.git.programmerr47.testhflbjcrhjggkth.model.database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.git.programmerr47.testhflbjcrhjggkth.model.exceptions.LastfmLoginException;
+import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISignInObservable;
 
 import android.util.Log;
 
@@ -42,6 +43,11 @@ public class Scrobbler implements IScrobbler, ISignInObservable {
     		}
     	};
     	signInThread.start();
+    }
+    
+    @Override
+    public void signOut() {
+    	lastfmSession = null;
     }
     
     private synchronized void _signIn(String username, String password) {

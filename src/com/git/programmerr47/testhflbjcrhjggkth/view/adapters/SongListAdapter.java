@@ -5,10 +5,10 @@ import java.util.List;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.ISongListController;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.ISongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.ISongManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObservable;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObserver;
-import com.google.sydym6.logic.database.data.ISongData;
 
 import android.app.Activity;
 import android.content.Context;

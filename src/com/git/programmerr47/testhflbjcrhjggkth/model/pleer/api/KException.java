@@ -1,4 +1,4 @@
-package com.pleer.api;
+package com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api;
 
 @SuppressWarnings("serial")
 public class KException extends Exception{

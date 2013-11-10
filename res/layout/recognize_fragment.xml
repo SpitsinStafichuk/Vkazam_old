@@ -6,7 +6,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:layout_weight="1" >
 
         <ImageButton
             android:id="@+id/microTimerListenButton"
@@ -34,8 +35,13 @@
     </RelativeLayout>
 
     <LinearLayout
+        android:id="@+id/apearInformationDialog"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:visibility="gone" >
+
+    	<include layout="@layout/song_appear_information"/>
+
     </LinearLayout>
 
 </LinearLayout>

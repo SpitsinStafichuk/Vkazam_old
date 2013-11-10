@@ -10,19 +10,21 @@ import java.util.concurrent.TimeUnit;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongDAO;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.ISongData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.SongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.lastfm.IScrobbler;
-import com.git.programmerr47.testhflbjcrhjggkth.model.lastfm.ISignInObservable;
 import com.git.programmerr47.testhflbjcrhjggkth.model.lastfm.Scrobbler;
 import com.git.programmerr47.testhflbjcrhjggkth.model.lastfm.Scrobbler.IOnSignInResultListener;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.ISongManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SongManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeStatusObservable;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeStatusObserver;
-import com.google.sydym6.logic.database.SongDAO;
-import com.google.sydym6.logic.database.data.ISongData;
-import com.google.sydym6.logic.database.data.SongData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISignInObservable;
 import com.gracenote.mmid.MobileSDK.GNConfig;
 import com.gracenote.mmid.MobileSDK.GNOperations;
 import com.gracenote.mmid.MobileSDK.GNSearchResponse;
@@ -54,6 +56,7 @@ public class MicroScrobblerModel implements IMicroScrobblerModel, ISignInObserva
 	
 	private String artist;
 	private String title;
+	private Bitmap coverArt;
 	
 	private String previousArtist;
 	private String previousTitle;
@@ -108,6 +111,11 @@ public class MicroScrobblerModel implements IMicroScrobblerModel, ISignInObserva
 	public void setLastfmAccount(String username, String password) {
         scrobbler.signIn(username, password);
         scrobbler.setOnSignInResultListener(this);
+	}
+	
+	@Override
+	public void deleteLastfmAccount() {
+		scrobbler.signOut();
 	}
 
 	@Override
@@ -198,6 +206,12 @@ public class MicroScrobblerModel implements IMicroScrobblerModel, ISignInObserva
 
 				artist = bestResponse.getArtist();
 				title = bestResponse.getTrackTitle();
+				if (bestResponse.getContributorImage() != null) {
+					byte[] coverArtArray = bestResponse.getContributorImage().getData();
+					coverArt = BitmapFactory.decodeByteArray(coverArtArray , 0, coverArtArray.length);
+				} else {
+					coverArt = null;
+				}
 				
 				if(!artist.equals(previousArtist) || !title.equals(previousTitle)) {
 					scrobbler.scrobble(artist, title);
@@ -230,6 +244,10 @@ public class MicroScrobblerModel implements IMicroScrobblerModel, ISignInObserva
 	
 	public String getTitle() {
 		return title;
+	}
+	
+	public Bitmap getCoverArt() {
+		return coverArt;
 	}
 	
 	@Override

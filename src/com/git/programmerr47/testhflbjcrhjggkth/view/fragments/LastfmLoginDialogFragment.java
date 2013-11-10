@@ -3,8 +3,8 @@ package com.git.programmerr47.testhflbjcrhjggkth.view.fragments;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
 import com.git.programmerr47.testhflbjcrhjggkth.model.exceptions.LastfmLoginException;
-import com.git.programmerr47.testhflbjcrhjggkth.model.lastfm.ISignInObservable;
 import com.git.programmerr47.testhflbjcrhjggkth.model.lastfm.Scrobbler.IOnSignInResultListener;
+import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISignInObservable;
 import com.git.programmerr47.testhflbjcrhjggkth.view.activities.interfaces.IConnectionWithDialogFragment;
 
 import android.app.Activity;

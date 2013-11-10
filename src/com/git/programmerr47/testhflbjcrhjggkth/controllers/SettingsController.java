@@ -27,12 +27,8 @@ public class SettingsController implements ISettingsController {
     @Override
     public void changeLastfmAccount(FragmentManager fm, String tag) {
             if (hasLastfmAccount()) {
-                try {
-                    model.setLastfmAccount(null, null);
-                } catch (LastfmLoginException e) {
-                } finally {
-                    view.changeLastfmButton();
-                }
+            	model.deleteLastfmAccount();
+                view.changeLastfmButton();
             } else {
                 view.lastfmSignInOutButton.setEnabled(false);
                 DialogFragment lastfmDialog = new LastfmLoginDialogFragment();

@@ -4,7 +4,7 @@ import java.util.List;
 
 import android.view.View;
 
-import com.google.sydym6.logic.database.data.ISongData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.ISongData;
 
 public interface ISongListController {
 

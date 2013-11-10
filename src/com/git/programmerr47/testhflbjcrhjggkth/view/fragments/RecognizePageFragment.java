@@ -3,9 +3,12 @@ package com.git.programmerr47.testhflbjcrhjggkth.view.fragments;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.IRecognizeController;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.RecognizeController;
+import com.git.programmerr47.testhflbjcrhjggkth.model.IMicroScrobblerModel;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeStatusObserver;
 
+import android.app.Activity;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,12 +17,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 public class RecognizePageFragment extends Fragment implements IRecognizeStatusObserver {
 	static final String ARGUMENT_RADIO_ID = "arg_rad_id";
     
     int backColor;
     IRecognizeController controller;
+    MicroScrobblerModel model;
+    Activity parentActivity;
+    
+    LinearLayout infoDialog;
+    TextView songArtist;
+    TextView songTitle;
+    TextView songDate;
+    ImageView songCoverArt;
 
     public static RecognizePageFragment newInstance() {
     		RecognizePageFragment pageFragment = new RecognizePageFragment();
@@ -32,7 +46,8 @@ public class RecognizePageFragment extends Fragment implements IRecognizeStatusO
     public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             controller = new RecognizeController(this);
-            MicroScrobblerModel.getInstance().addObserver(this);
+            model = MicroScrobblerModel.getInstance();
+            model.addObserver(this);
             backColor = Color.argb(255, 0, 255, 0);
     }
 
@@ -40,6 +55,14 @@ public class RecognizePageFragment extends Fragment implements IRecognizeStatusO
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.recognize_fragment, null);
         view.setBackgroundColor(backColor);
+        
+		infoDialog = (LinearLayout) view.findViewById(R.id.apearInformationDialog);
+		songArtist = (TextView) view.findViewById(R.id.songInfoArtist);
+		songTitle = (TextView) view.findViewById(R.id.songInfoTitle);
+		songDate = (TextView) view.findViewById(R.id.songInfoDate);
+		
+		songCoverArt = (ImageView) view.findViewById(R.id.songInfoCoverArt);
+        
         ImageButton microTimerListenButton = (ImageButton) view.findViewById(R.id.microTimerListenButton);
         microTimerListenButton.setOnLongClickListener(new View.OnLongClickListener(){
 
@@ -58,6 +81,7 @@ public class RecognizePageFragment extends Fragment implements IRecognizeStatusO
 				return controller.recognizeNowRecognizeCancel();
 			}
 		});
+        
         return view;
     }
    
@@ -69,8 +93,27 @@ public class RecognizePageFragment extends Fragment implements IRecognizeStatusO
 
 	@Override
 	public void updateRecognizeStatus() {
-		// TODO Auto-generated method stub
-		
+		parentActivity.runOnUiThread(new Runnable() {
+			
+			@Override
+			public void run() {
+				Bitmap coverArt = model.getCoverArt();
+				infoDialog.setVisibility(View.VISIBLE);
+				songArtist.setText(model.getArtist());
+				songTitle.setText(model.getTitle());
+				songDate.setText("just now");
+				if (coverArt == null) {
+					songCoverArt.setImageResource(R.drawable.no_cover_art);
+				} else {
+					songCoverArt.setImageBitmap(model.getCoverArt());
+				}
+			}
+		});
 	}
-
+	
+	@Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        parentActivity = activity;
+    }
 }

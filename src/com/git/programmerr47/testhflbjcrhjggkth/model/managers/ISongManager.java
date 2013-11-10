@@ -5,10 +5,10 @@ import java.net.MalformedURLException;
 
 import org.json.JSONException;
 
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.ISongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.exceptions.SongNotFoundException;
 import com.git.programmerr47.testhflbjcrhjggkth.model.lastfm.IScrobbler;
-import com.google.sydym6.logic.database.data.ISongData;
-import com.pleer.api.KException;
+import com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.KException;
 
 import android.graphics.drawable.Drawable;
 
