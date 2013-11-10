@@ -9,15 +9,27 @@
         android:layout_height="match_parent" >
 
         <ImageButton
-            android:id="@+id/microListenButton"
+            android:id="@+id/microTimerListenButton"
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
+            android:layout_alignBottom="@+id/microListenButton"
+            android:layout_alignParentRight="true"
             android:layout_weight="1"
-            android:src="@drawable/microphone_icon"
+            android:background="@drawable/micro_image_button_background"
             android:scaleType="fitXY"
-            android:background="@drawable/micro_image_button_background" />
+            android:src="@drawable/microphone_icon" />
+
+        <ImageButton
+            android:id="@+id/microNowListenButton"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="174dp"
+            android:layout_weight="1"
+            android:background="@drawable/micro_image_button_background"
+            android:scaleType="fitXY"
+            android:src="@drawable/microphone_icon" />
 
     </RelativeLayout>
 
