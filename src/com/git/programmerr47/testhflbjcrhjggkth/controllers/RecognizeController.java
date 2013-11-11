@@ -3,37 +3,40 @@ package com.git.programmerr47.testhflbjcrhjggkth.controllers;
 import android.util.Log;
 
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
+import com.git.programmerr47.testhflbjcrhjggkth.model.managers.RecognizeManager;
 import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.RecognizePageFragment;
 
 public class RecognizeController implements IRecognizeController {
 	private MicroScrobblerModel model;
     private RecognizePageFragment view;
+    private RecognizeManager recognizeManager;
 
     public RecognizeController(RecognizePageFragment view) {
             this.view = view;
             this.model = MicroScrobblerModel.getInstance();
+            recognizeManager = model.getRecognizeManager();
     }
     
     public boolean recognizeByTimerRecognizeCancel() {
-    	if(model.isRecognizing()) {
+    	if(recognizeManager.isRecognizingByTimer()) {
     		Log.v("Recognizing", "Cancel recognizeByTimer");
-    		model.recognizeByTimerCancel();
+    		recognizeManager.recognizeByTimerCancel();
     		return false;
     	} else {
     		Log.v("Recognizing", "recognizeByTimer");
-    		model.recognizeByTimer();
+    		recognizeManager.recognizeByTimer();
     		return true;
     	}
     }
     
     public boolean recognizeNowRecognizeCancel() {
-    	if(model.isRecognizing()) {
+    	if(recognizeManager.isRecognizingOneTime()) {
     		Log.v("Recognizing", "Cancel recognizeNow");
-    		model.recognizeCancel();
+    		recognizeManager.recognizeOneTimeCancel();
     		return false;
     	} else {
     		Log.v("Recognizing", "recognizeNow");
-    		model.recognize();
+    		recognizeManager.recognizeOneTime();
     		return true;
     	}
     }
