@@ -3,13 +3,13 @@ package com.git.programmerr47.testhflbjcrhjggkth.controllers;
 import android.util.Log;
 
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
-import com.git.programmerr47.testhflbjcrhjggkth.model.managers.RecognizeManager;
+import com.git.programmerr47.testhflbjcrhjggkth.model.managers.FingerprintManager;
 import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.RecognizePageFragment;
 
 public class RecognizeController implements IRecognizeController {
 	private MicroScrobblerModel model;
     private RecognizePageFragment view;
-    private RecognizeManager recognizeManager;
+    private FingerprintManager recognizeManager;
 
     public RecognizeController(RecognizePageFragment view) {
             this.view = view;

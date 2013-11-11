@@ -12,9 +12,11 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.lastfm.IScrobbler;
 import com.git.programmerr47.testhflbjcrhjggkth.model.lastfm.Scrobbler;
 import com.git.programmerr47.testhflbjcrhjggkth.model.lastfm.Scrobbler.IOnSignInResultListener;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.ISongManager;
+import com.git.programmerr47.testhflbjcrhjggkth.model.managers.FingerprintManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.RecognizeManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SongManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISignInObservable;
+import com.gracenote.mmid.MobileSDK.GNConfig;
 
 public class MicroScrobblerModel implements IMicroScrobblerModel, ISignInObservable, IOnSignInResultListener {
 	private static final String SAVE_LASTFM_INFO_PREF = "save lastfm info pref";
@@ -22,9 +24,11 @@ public class MicroScrobblerModel implements IMicroScrobblerModel, ISignInObserva
 	private static final String LASTFM_PASSWORD = "lastfm password";
 	private static final int MODE = Activity.MODE_PRIVATE;
 	public static final String RECOGNIZING_SUCCESS = "Success";
+	private static final String GRACENOTE_APPLICATION_ID = "5435392-85C21DCCC8BBE15A8B5EE2BDC8A9ACDC";
 	
 	private static MicroScrobblerModel instance;
 	private static Context context;
+	private GNConfig config;
 	
 	private Scrobbler scrobbler;
 	private SharedPreferences sharedPreferences;
@@ -33,6 +37,7 @@ public class MicroScrobblerModel implements IMicroScrobblerModel, ISignInObserva
 	
 	private ISongManager songManager;
 	
+	FingerprintManager fingerprintManager;
 	RecognizeManager recognizeManager;
 	
 	public static void setContext(Context con) {
@@ -48,15 +53,21 @@ public class MicroScrobblerModel implements IMicroScrobblerModel, ISignInObserva
 	}
 	
 	private MicroScrobblerModel() {
+		config = GNConfig.init(GRACENOTE_APPLICATION_ID, context);
 		songManager = new SongManager();
 		listeners = new HashSet<IOnSignInResultListener>();
 		scrobbler = new Scrobbler();
 		sharedPreferences = context.getSharedPreferences(SAVE_LASTFM_INFO_PREF, MODE);
         final String login = sharedPreferences.getString(LASTFM_USERNAME, null);
         final String password = sharedPreferences.getString(LASTFM_PASSWORD, null);
-        recognizeManager = new RecognizeManager(context, scrobbler);
+        fingerprintManager = new FingerprintManager(config, context, scrobbler);
+        recognizeManager = new RecognizeManager(config);
 
         setLastfmAccount(login, password);
+	}
+	
+	public FingerprintManager getFingerprintManager() {
+		return fingerprintManager;
 	}
 	
 	public RecognizeManager getRecognizeManager() {
@@ -65,7 +76,7 @@ public class MicroScrobblerModel implements IMicroScrobblerModel, ISignInObserva
 	
 	@Override
 	public List<ISongData> getHistory() {
-		return recognizeManager.getHistory();
+		return fingerprintManager.getHistory();
 	}
 	
 	@Override

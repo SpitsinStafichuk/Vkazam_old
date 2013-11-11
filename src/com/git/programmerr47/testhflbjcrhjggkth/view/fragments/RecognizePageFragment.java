@@ -4,7 +4,7 @@ import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.IRecognizeController;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.RecognizeController;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
-import com.git.programmerr47.testhflbjcrhjggkth.model.managers.RecognizeManager;
+import com.git.programmerr47.testhflbjcrhjggkth.model.managers.FingerprintManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeStatusObserver;
 
 import android.app.Activity;
@@ -27,7 +27,7 @@ public class RecognizePageFragment extends Fragment implements IRecognizeStatusO
     int backColor;
     IRecognizeController controller;
     MicroScrobblerModel model;
-    RecognizeManager recognizeManager;
+    FingerprintManager recognizeManager;
     Activity parentActivity;
     
     LinearLayout infoDialog;
