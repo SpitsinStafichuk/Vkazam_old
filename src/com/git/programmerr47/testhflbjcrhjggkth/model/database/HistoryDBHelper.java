@@ -15,6 +15,7 @@ public class HistoryDBHelper extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL(DBConstants.SQL_CREATE_MUSIC_HISTORY_TABLE);
+		db.execSQL(DBConstants.SQL_CREATE_FINGERPRINTS_TABLE);
 	}
 
 	@Override

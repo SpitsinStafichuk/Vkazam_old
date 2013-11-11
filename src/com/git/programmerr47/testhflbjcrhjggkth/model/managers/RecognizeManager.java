@@ -1,20 +1,24 @@
 package com.git.programmerr47.testhflbjcrhjggkth.model.managers;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.FingerprintDAO;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongDAO;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.FingerprintData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.ISongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.SongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.lastfm.Scrobbler;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeStatusObservable;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeStatusObserver;
 import com.gracenote.mmid.MobileSDK.GNConfig;
+import com.gracenote.mmid.MobileSDK.GNFingerprintResult;
+import com.gracenote.mmid.MobileSDK.GNFingerprintResultReady;
 import com.gracenote.mmid.MobileSDK.GNOperationStatusChanged;
 import com.gracenote.mmid.MobileSDK.GNOperations;
 import com.gracenote.mmid.MobileSDK.GNSearchResponse;
@@ -27,10 +31,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
-public class RecognizeManager implements IRecognizeStatusObservable, GNSearchResultReady, GNOperationStatusChanged {
+public class RecognizeManager implements IRecognizeStatusObservable, GNSearchResultReady, GNOperationStatusChanged, GNFingerprintResultReady {
 	private static final int DEFAULT_RECOGNIZE_TIMER_PERIOD = 10 * 1000;
 	private static final String GRACENOTE_APPLICATION_ID = "5435392-85C21DCCC8BBE15A8B5EE2BDC8A9ACDC";
 	public static final String RECOGNIZING_SUCCESS = "Success";
+	private static final int GRACENOTE_ERROR_CODE_NO_INTERNET_CONNECTION = 5001;
 	
 	private GNConfig config;
 	private Set<IRecognizeStatusObserver> recognizeStatusObservers;
@@ -50,7 +55,10 @@ public class RecognizeManager implements IRecognizeStatusObservable, GNSearchRes
 	private String previousArtist;
 	private String previousTitle;
 	
+	private String fingerprint;
+	
 	private SongDAO songDAO;
+	private FingerprintDAO fingerprintDAO;
 	private List<ISongData> songList;
 	
 	public RecognizeManager(Context context, Scrobbler scrobbler) {
@@ -61,7 +69,9 @@ public class RecognizeManager implements IRecognizeStatusObservable, GNSearchRes
 		isRecognizingByTimer = false;
 		isRecognizingOneTime = false;
 		this.scrobbler = scrobbler;
+		//возможны проблемы с одновременным обращением к базе данных
 		songDAO = new SongDAO(context);
+		fingerprintDAO = new FingerprintDAO(context);
         songList = songDAO.getHistory();
         if (songList != null && songList.size() > 0) {
 			previousArtist = songList.get(songList.size() - 1).getArtist();
@@ -115,6 +125,7 @@ public class RecognizeManager implements IRecognizeStatusObservable, GNSearchRes
 				if (!isRecognizing) {
 					isRecognizing = true;
 					Log.v("Recognizing", "New recognize by Timer");
+					GNOperations.fingerprintMIDStreamFromMic(this, config);
 					GNOperations.recognizeMIDStreamFromMic(this, config);
 				}
 			}
@@ -123,7 +134,8 @@ public class RecognizeManager implements IRecognizeStatusObservable, GNSearchRes
 	
 	
 	private void recognizeCancel() {
-		GNOperations.cancel(this);
+		GNOperations.cancel((GNSearchResultReady)this);
+		GNOperations.cancel((GNFingerprintResultReady)this);
 		isRecognizing = false;
 	}
 	
@@ -154,12 +166,24 @@ public class RecognizeManager implements IRecognizeStatusObservable, GNSearchRes
 	}
 	
 	@Override
+	public void GNResultReady(GNFingerprintResult result) {
+		fingerprint = result.getFingerprintData();
+		Log.v("Recognizing", "fingerprint = " + fingerprint);
+		GNOperations.searchByFingerprint(this, config, fingerprint);
+	}
+	
+	@Override
 	public void GNResultReady(GNSearchResult result) {
 		Log.i("Recognizing", "GNResultReady");
 		isRecognizing = false;
 		if (result.isFailure()) {
-			recognizeStatus = String.format("[%d] %s", result.getErrCode(),
+			int errCode = result.getErrCode();
+			recognizeStatus = String.format("[%d] %s", errCode,
 					result.getErrMessage());
+			if(errCode == GRACENOTE_ERROR_CODE_NO_INTERNET_CONNECTION) {
+				FingerprintData fingerprintData = new FingerprintData(-1, fingerprint, (new Date()).toString());
+				fingerprintDAO.insert(fingerprintData);
+			}
 		} else {
 			if (result.isFingerprintSearchNoMatchStatus()) {
 				recognizeStatus = "Music Not Identified";
