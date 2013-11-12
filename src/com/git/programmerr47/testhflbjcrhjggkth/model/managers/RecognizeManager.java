@@ -4,8 +4,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
@@ -13,6 +13,7 @@ import android.util.Log;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.FingerprintDAO;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongDAO;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.FingerprintData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.IFingerprintData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.ISongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.SongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.lastfm.Scrobbler;
@@ -48,8 +49,20 @@ public class RecognizeManager implements GNSearchResultReady, IRecognizeStatusOb
 	private FingerprintDAO fingerprintDAO;
 	private List<ISongData> songList;
 	
-	public RecognizeManager(GNConfig config) {
+	public RecognizeManager(GNConfig config, Context context, Scrobbler scrobbler) {
 		this.config = config;
+		songDAO = new SongDAO(context);
+		fingerprintDAO = new FingerprintDAO(context);
+        songList = songDAO.getHistory();
+        this.scrobbler = scrobbler;
+	}
+	
+	public List<ISongData> getHistory() {
+		return songList;
+	}
+	
+	public List<IFingerprintData> getFingerprints() {
+		return fingerprintDAO.getFingerprints();
 	}
 	
 	public synchronized void recognizeFingerprint(String fingerprint) {
@@ -104,6 +117,18 @@ public class RecognizeManager implements GNSearchResultReady, IRecognizeStatusOb
 		}
 		
 		notifyRecognizeStatusObservers();
+	}
+	
+	public String getArtist() {
+		return artist;
+	}
+	
+	public String getTitle() {
+		return title;
+	}
+	
+	public Bitmap getCoverArt() {
+		return coverArt;
 	}
 
 	@Override

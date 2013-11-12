@@ -27,7 +27,7 @@ public class RecognizePageFragment extends Fragment implements IRecognizeStatusO
     int backColor;
     IRecognizeController controller;
     MicroScrobblerModel model;
-    FingerprintManager recognizeManager;
+    FingerprintManager fingerprintManager;
     Activity parentActivity;
     
     LinearLayout infoDialog;
@@ -49,8 +49,8 @@ public class RecognizePageFragment extends Fragment implements IRecognizeStatusO
             super.onCreate(savedInstanceState);
             controller = new RecognizeController(this);
             model = MicroScrobblerModel.getInstance();
-            recognizeManager = model.getRecognizeManager();
-            recognizeManager.addObserver(this);
+            fingerprintManager = model.getFingerprintManager();
+            fingerprintManager.addObserver(this);
             backColor = Color.argb(255, 0, 255, 0);
     }
 
@@ -101,17 +101,17 @@ public class RecognizePageFragment extends Fragment implements IRecognizeStatusO
 			
 			@Override
 			public void run() {
-				status.setText(recognizeManager.getRecognizeStatus());
-				if(recognizeManager.getRecognizeStatus().equals(MicroScrobblerModel.RECOGNIZING_SUCCESS)) {
-					Bitmap coverArt = recognizeManager.getCoverArt();
+				status.setText(fingerprintManager.getRecognizeStatus());
+				if(fingerprintManager.getRecognizeStatus().equals(MicroScrobblerModel.RECOGNIZING_SUCCESS)) {
+					Bitmap coverArt = fingerprintManager.getCoverArt();
 					infoDialog.setVisibility(View.VISIBLE);
-					songArtist.setText(recognizeManager.getArtist());
-					songTitle.setText(recognizeManager.getTitle());
+					songArtist.setText(fingerprintManager.getArtist());
+					songTitle.setText(fingerprintManager.getTitle());
 					songDate.setText("just now");
 					if (coverArt == null) {
 						songCoverArt.setImageResource(R.drawable.no_cover_art);
 					} else {
-						songCoverArt.setImageBitmap(recognizeManager.getCoverArt());
+						songCoverArt.setImageBitmap(fingerprintManager.getCoverArt());
 					}
 				}
 			}

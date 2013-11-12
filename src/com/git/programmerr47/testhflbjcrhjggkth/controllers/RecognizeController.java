@@ -9,34 +9,34 @@ import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.RecognizePageFrag
 public class RecognizeController implements IRecognizeController {
 	private MicroScrobblerModel model;
     private RecognizePageFragment view;
-    private FingerprintManager recognizeManager;
+    private FingerprintManager fingerprintManager;
 
     public RecognizeController(RecognizePageFragment view) {
             this.view = view;
             this.model = MicroScrobblerModel.getInstance();
-            recognizeManager = model.getRecognizeManager();
+            fingerprintManager = model.getFingerprintManager();
     }
     
     public boolean recognizeByTimerRecognizeCancel() {
-    	if(recognizeManager.isRecognizingByTimer()) {
+    	if(fingerprintManager.isRecognizingByTimer()) {
     		Log.v("Recognizing", "Cancel recognizeByTimer");
-    		recognizeManager.recognizeByTimerCancel();
+    		fingerprintManager.recognizeByTimerCancel();
     		return false;
     	} else {
     		Log.v("Recognizing", "recognizeByTimer");
-    		recognizeManager.recognizeByTimer();
+    		fingerprintManager.recognizeByTimer();
     		return true;
     	}
     }
     
     public boolean recognizeNowRecognizeCancel() {
-    	if(recognizeManager.isRecognizingOneTime()) {
+    	if(fingerprintManager.isRecognizingOneTime()) {
     		Log.v("Recognizing", "Cancel recognizeNow");
-    		recognizeManager.recognizeOneTimeCancel();
+    		fingerprintManager.recognizeOneTimeCancel();
     		return false;
     	} else {
     		Log.v("Recognizing", "recognizeNow");
-    		recognizeManager.recognizeOneTime();
+    		fingerprintManager.recognizeOneTime();
     		return true;
     	}
     }
