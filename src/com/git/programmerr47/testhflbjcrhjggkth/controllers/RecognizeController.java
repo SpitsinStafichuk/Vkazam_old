@@ -17,26 +17,26 @@ public class RecognizeController implements IRecognizeController {
             fingerprintManager = model.getFingerprintManager();
     }
     
-    public boolean recognizeByTimerRecognizeCancel() {
-    	if(fingerprintManager.isRecognizingByTimer()) {
-    		Log.v("Recognizing", "Cancel recognizeByTimer");
-    		fingerprintManager.recognizeByTimerCancel();
+    public boolean fingerprintByTimerRecognizeCancel() {
+    	if(fingerprintManager.isFingerprintingByTimer()) {
+    		Log.v("Fingerprinting", "Cancel fingerprintByTimer");
+    		fingerprintManager.fingerprintByTimerCancel();
     		return false;
     	} else {
-    		Log.v("Recognizing", "recognizeByTimer");
-    		fingerprintManager.recognizeByTimer();
+    		Log.v("Fingerprinting", "fingerprintByTimer");
+    		fingerprintManager.fingerprintByTimer();
     		return true;
     	}
     }
     
-    public boolean recognizeNowRecognizeCancel() {
-    	if(fingerprintManager.isRecognizingOneTime()) {
-    		Log.v("Recognizing", "Cancel recognizeNow");
-    		fingerprintManager.recognizeOneTimeCancel();
+    public boolean fingerprintNowRecognizeCancel() {
+    	if(fingerprintManager.isFingerprintingOneTime()) {
+    		Log.v("Fingerprinting", "Cancel fingerprintNow");
+    		fingerprintManager.fingerprintOneTimeCancel();
     		return false;
     	} else {
-    		Log.v("Recognizing", "recognizeNow");
-    		fingerprintManager.recognizeOneTime();
+    		Log.v("Fingerprinting", "fingerprintNow");
+    		fingerprintManager.fingerprintOneTime();
     		return true;
     	}
     }

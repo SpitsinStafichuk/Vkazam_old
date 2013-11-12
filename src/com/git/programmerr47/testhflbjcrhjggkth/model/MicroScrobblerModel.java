@@ -64,8 +64,8 @@ public class MicroScrobblerModel implements IMicroScrobblerModel, ISignInObserva
 		sharedPreferences = context.getSharedPreferences(SAVE_LASTFM_INFO_PREF, MODE);
         final String login = sharedPreferences.getString(LASTFM_USERNAME, null);
         final String password = sharedPreferences.getString(LASTFM_PASSWORD, null);
-        fingerprintManager = new FingerprintManager(config, context);
         recognizeManager = new RecognizeManager(config, context, scrobbler);
+        fingerprintManager = new FingerprintManager(config, context, recognizeManager);
 
         setLastfmAccount(login, password);
 	}

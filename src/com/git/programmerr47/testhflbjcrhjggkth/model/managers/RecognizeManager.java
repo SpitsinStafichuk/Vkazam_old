@@ -2,6 +2,7 @@ package com.git.programmerr47.testhflbjcrhjggkth.model.managers;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -26,8 +27,7 @@ import com.gracenote.mmid.MobileSDK.GNSearchResult;
 import com.gracenote.mmid.MobileSDK.GNSearchResultReady;
 
 public class RecognizeManager implements GNSearchResultReady, IRecognizeStatusObservable {
-	public static final String RECOGNIZING_SUCCESS = "Success";
-	private static final int GRACENOTE_ERROR_CODE_NO_INTERNET_CONNECTION = 5001;
+	public static final String RECOGNIZING_SUCCESS = "Recognizing success";
 	
 	private Set<IRecognizeStatusObserver> recognizeStatusObservers;
 	
@@ -43,18 +43,27 @@ public class RecognizeManager implements GNSearchResultReady, IRecognizeStatusOb
 	private String previousArtist;
 	private String previousTitle;
 	
-	private String fingerprint;
-	
 	private SongDAO songDAO;
-	private FingerprintDAO fingerprintDAO;
 	private List<ISongData> songList;
+	private FingerprintDAO fingerprintDAO;
+	private List<IFingerprintData> fingerprintList;
+	
+	private IFingerprintData currentFingerprintData;
+	private boolean currentFingerprintIsSaved;
+	
 	
 	public RecognizeManager(GNConfig config, Context context, Scrobbler scrobbler) {
 		this.config = config;
 		songDAO = new SongDAO(context);
 		fingerprintDAO = new FingerprintDAO(context);
         songList = songDAO.getHistory();
+        fingerprintList = fingerprintDAO.getFingerprints();
         this.scrobbler = scrobbler;
+        recognizeStatusObservers = new HashSet<IRecognizeStatusObserver>();
+	}
+	
+	public String getRecognizeStatus() {
+		return recognizeStatus;
 	}
 	
 	public List<ISongData> getHistory() {
@@ -62,12 +71,20 @@ public class RecognizeManager implements GNSearchResultReady, IRecognizeStatusOb
 	}
 	
 	public List<IFingerprintData> getFingerprints() {
-		return fingerprintDAO.getFingerprints();
+		return fingerprintList;
 	}
 	
-	public synchronized void recognizeFingerprint(String fingerprint) {
-		GNOperations.searchByFingerprint(this, config, fingerprint);
+	public boolean removeFingerprint(IFingerprintData fingerprint) {
+		fingerprintDAO.delete(fingerprint);
+		return fingerprintList.remove(fingerprint);
 	}
+	//TODO synchronized в данном случае не работает, нужно разобраться с блокировками
+	public synchronized void recognizeFingerprint(IFingerprintData fingerprint, boolean isSaved) {
+			currentFingerprintData = fingerprint;
+			currentFingerprintIsSaved = isSaved;
+			GNOperations.searchByFingerprint(this, config, fingerprint.getFingerprint());
+	}
+	//TODO нет cancelRecognizeFingerprint
 
 	@Override
 	public void GNResultReady(GNSearchResult result) {
@@ -76,9 +93,10 @@ public class RecognizeManager implements GNSearchResultReady, IRecognizeStatusOb
 			int errCode = result.getErrCode();
 			recognizeStatus = String.format("[%d] %s", errCode,
 					result.getErrMessage());
-			if(errCode == GRACENOTE_ERROR_CODE_NO_INTERNET_CONNECTION) {
-				FingerprintData fingerprintData = new FingerprintData(-1, fingerprint, (new Date()).toString());
-				fingerprintDAO.insert(fingerprintData);
+			if(result.isNetworkFailure() && !currentFingerprintIsSaved) {
+				//TODO проверять что insert прошёл корректно перед добавлением в список
+				fingerprintDAO.insert(currentFingerprintData);
+				fingerprintList.add(currentFingerprintData);
 			}
 		} else {
 			if (result.isFingerprintSearchNoMatchStatus()) {
@@ -102,9 +120,13 @@ public class RecognizeManager implements GNSearchResultReady, IRecognizeStatusOb
 						Log.w("Scrobbling", "scrobbler == null");
 					}
 					
-					ISongData songInfo = new SongData(-1, artist, title, bestResponse.getTrackId(), Calendar.getInstance().getTime().toString(), null);
+					ISongData songInfo = new SongData(-1, artist, title, bestResponse.getTrackId(), currentFingerprintData.getDate(), null);
 					songList.add(songInfo);
+					//TODO проверять что insert прошёл корректно перед добавлением в список
 					songDAO.insert(songInfo);
+					if(currentFingerprintIsSaved) {
+						removeFingerprint(currentFingerprintData);
+					}
 					
 					previousArtist = artist;
 					previousTitle = title;

@@ -1,14 +1,16 @@
 package com.git.programmerr47.testhflbjcrhjggkth.model.managers;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
-import com.git.programmerr47.testhflbjcrhjggkth.model.lastfm.Scrobbler;
-import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeStatusObservable;
-import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeStatusObserver;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.FingerprintData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.IFingerprintData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IFingerprintStatusObservable;
+import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IFingerprintStatusObserver;
 import com.gracenote.mmid.MobileSDK.GNConfig;
 import com.gracenote.mmid.MobileSDK.GNFingerprintResult;
 import com.gracenote.mmid.MobileSDK.GNFingerprintResultReady;
@@ -18,73 +20,74 @@ import com.gracenote.mmid.MobileSDK.GNSearchResultReady;
 import com.gracenote.mmid.MobileSDK.GNStatus;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.util.Log;
 
-public class FingerprintManager implements IRecognizeStatusObservable, GNOperationStatusChanged, GNFingerprintResultReady {
-	private static final int DEFAULT_RECOGNIZE_TIMER_PERIOD = 10 * 1000;
-	public static final String RECOGNIZING_SUCCESS = "Success";
+public class FingerprintManager implements IFingerprintStatusObservable, GNOperationStatusChanged, GNFingerprintResultReady {
+	private static final int DEFAULT_FINGERPRINT_TIMER_PERIOD = 10 * 1000;
+	public static final String FINGERPRINTING_SUCCESS = "Fingerprinting success";
 	
 	private GNConfig config;
-	private Set<IRecognizeStatusObserver> recognizeStatusObservers;
-	private int recognizeTimerPeriod;
-	private ScheduledThreadPoolExecutor recognizeTimer;
-	private volatile boolean isRecognizing;
-	private boolean isRecognizingByTimer;
-	private boolean isRecognizingOneTime;
-	private String recognizeStatus;
+	private Set<IFingerprintStatusObserver> fingerprintStatusObservers;
+	private int fingerprintTimerPeriod;
+	private ScheduledThreadPoolExecutor fingerprintTimer;
+	private volatile boolean isFingerprinting;
+	private boolean isFingerprintingByTimer;
+	private boolean isFingerprintingOneTime;
+	private String fingerprintStatus;
 	
-	private String fingerprint;
+	RecognizeManager recognizeManager;
 	
-	public FingerprintManager(GNConfig config, Context context) {
-		recognizeStatusObservers = new HashSet<IRecognizeStatusObserver>();
-		recognizeTimerPeriod = DEFAULT_RECOGNIZE_TIMER_PERIOD;
-		isRecognizing = false;
-		isRecognizingByTimer = false;
-		isRecognizingOneTime = false;
+	private IFingerprintData fingerprint;
+	
+	public FingerprintManager(GNConfig config, Context context, RecognizeManager recognizeManager) {
+		fingerprintStatusObservers = new HashSet<IFingerprintStatusObserver>();
+		fingerprintTimerPeriod = DEFAULT_FINGERPRINT_TIMER_PERIOD;
+		isFingerprinting = false;
+		isFingerprintingByTimer = false;
+		isFingerprintingOneTime = false;
 		this.config = config;
+		this.recognizeManager = recognizeManager;
 		//возможны проблемы с одновременным обращением к базе данных
 	}
 	
-	public String getRecognizeStatus() {
-		return recognizeStatus;
+	public String getFingerprintStatus() {
+		return fingerprintStatus;
 	}
 	
-	public void recognizeByTimer() {
-		isRecognizingByTimer = true;
-		recognizeTimer = new ScheduledThreadPoolExecutor(1);
-		recognizeTimer.scheduleWithFixedDelay(new Thread() {
+	public void fingerprintByTimer() {
+		isFingerprintingByTimer = true;
+		fingerprintTimer = new ScheduledThreadPoolExecutor(1);
+		fingerprintTimer.scheduleWithFixedDelay(new Thread() {
 
 			@Override
 			public void run() {
-				recognize();
+				fingerprint();
 			}
 			
-		}, 0, recognizeTimerPeriod, TimeUnit.MILLISECONDS);
+		}, 0, fingerprintTimerPeriod, TimeUnit.MILLISECONDS);
 	}
 	
-	public void recognizeByTimerCancel() {
-		recognizeTimer.shutdownNow();
-		recognizeCancel();
-		isRecognizingByTimer = false;
+	public void fingerprintByTimerCancel() {
+		fingerprintTimer.shutdownNow();
+		fingerprintCancel();
+		isFingerprintingByTimer = false;
 	}
 	
-	public void recognizeOneTime() {
-		isRecognizingOneTime = true;
-		recognize();
+	public void fingerprintOneTime() {
+		isFingerprintingOneTime = true;
+		fingerprint();
 	}
 	
-	public void recognizeOneTimeCancel() {
-		recognizeCancel();
-		isRecognizingOneTime = false;
+	public void fingerprintOneTimeCancel() {
+		fingerprintCancel();
+		isFingerprintingOneTime = false;
 	}
 	
-	private void recognize() {
-		if (!isRecognizing) {
+	private void fingerprint() {
+		if (!isFingerprinting) {
 			synchronized (this) {
-				if (!isRecognizing) {
-					isRecognizing = true;
-					Log.v("Recognizing", "New recognize by Timer");
+				if (!isFingerprinting) {
+					isFingerprinting = true;
 					GNOperations.fingerprintMIDStreamFromMic(this, config);
 				}
 			}
@@ -92,52 +95,55 @@ public class FingerprintManager implements IRecognizeStatusObservable, GNOperati
 	}
 	
 	
-	private void recognizeCancel() {
-		GNOperations.cancel((GNSearchResultReady)this);
+	private void fingerprintCancel() {
 		GNOperations.cancel((GNFingerprintResultReady)this);
-		isRecognizing = false;
+		isFingerprinting = false;
 	}
 	
-	public boolean isRecognizingOneTime() {
-		return isRecognizingOneTime;
+	public boolean isFingerprintingOneTime() {
+		return isFingerprintingOneTime;
 	}
 	
-	public boolean isRecognizingByTimer() {
-		return isRecognizingByTimer;
+	public boolean isFingerprintingByTimer() {
+		return isFingerprintingByTimer;
 	}
 	
-	public void setRecognizeStatus(String status) {
-		recognizeStatus = status;
-		notifyRecognizeStatusObservers();
+	public void setFingerprintStatus(String status) {
+		fingerprintStatus = status;
+		notifyFingerprintStatusObservers();
 	}
 	
 	@Override
 	public void GNStatusChanged(GNStatus status) {
-		recognizeStatus = status.getMessage() + " " + status.getPercentDone() + " %";
-		notifyRecognizeStatusObservers();
+		fingerprintStatus = status.getMessage() + " " + status.getPercentDone() + " %";
+		notifyFingerprintStatusObservers();
 	}
 	
 	@Override
 	public void GNResultReady(GNFingerprintResult result) {
-		fingerprint = result.getFingerprintData();
-		Log.v("Recognizing", "fingerprint = " + fingerprint);
-		//GNOperations.searchByFingerprint(this, config, fingerprint);
-		MicroScrobblerModel.getInstance().getRecognizeManager().recognizeFingerprint(fingerprint);
+		if(result.isFailure()) {
+			fingerprintStatus = String.format("[%d] %s", result.getErrCode(),
+					result.getErrMessage());
+		} else {
+			fingerprint = new FingerprintData(-1, result.getFingerprintData(), (new Date()).toString());
+			Log.v("Fingerprinting", "fingerprint = " + fingerprint.getFingerprint());
+			recognizeManager.recognizeFingerprint(fingerprint, false);
+		}
 	}
 	
 	@Override
-	public void addObserver(IRecognizeStatusObserver o) {
-		recognizeStatusObservers.add(o);
+	public void addObserver(IFingerprintStatusObserver o) {
+		fingerprintStatusObservers.add(o);
 	}
 
 	@Override
-	public void removeObserver(IRecognizeStatusObserver o) {
-		recognizeStatusObservers.remove(o);
+	public void removeObserver(IFingerprintStatusObserver o) {
+		fingerprintStatusObservers.remove(o);
 	}
 
 	@Override
-	public void notifyRecognizeStatusObservers() {
-		for(IRecognizeStatusObserver o : recognizeStatusObservers)
-			o.updateRecognizeStatus();
+	public void notifyFingerprintStatusObservers() {
+		for(IFingerprintStatusObserver o : fingerprintStatusObservers)
+			o.updateFingerprintStatus();
 	}
 }

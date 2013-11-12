@@ -5,6 +5,8 @@ import com.git.programmerr47.testhflbjcrhjggkth.controllers.IRecognizeController
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.RecognizeController;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.FingerprintManager;
+import com.git.programmerr47.testhflbjcrhjggkth.model.managers.RecognizeManager;
+import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IFingerprintStatusObserver;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeStatusObserver;
 
 import android.app.Activity;
@@ -21,12 +23,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class RecognizePageFragment extends Fragment implements IRecognizeStatusObserver {
+public class RecognizePageFragment extends Fragment implements IRecognizeStatusObserver, IFingerprintStatusObserver {
 	static final String ARGUMENT_RADIO_ID = "arg_rad_id";
     
     int backColor;
     IRecognizeController controller;
     MicroScrobblerModel model;
+    RecognizeManager recognizeManager;
     FingerprintManager fingerprintManager;
     Activity parentActivity;
     
@@ -51,6 +54,8 @@ public class RecognizePageFragment extends Fragment implements IRecognizeStatusO
             model = MicroScrobblerModel.getInstance();
             fingerprintManager = model.getFingerprintManager();
             fingerprintManager.addObserver(this);
+            recognizeManager = model.getRecognizeManager();
+            recognizeManager.addObserver(this);
             backColor = Color.argb(255, 0, 255, 0);
     }
 
@@ -73,7 +78,7 @@ public class RecognizePageFragment extends Fragment implements IRecognizeStatusO
 			@Override
 			public boolean onLongClick(View v) {
 				Log.v("Recognizing", "Recognize by timer: onLongClick");
-				return controller.recognizeByTimerRecognizeCancel();
+				return controller.fingerprintByTimerRecognizeCancel();
 			}});
         
         ImageButton microNowListenButton = (ImageButton) view.findViewById(R.id.microNowListenButton);
@@ -82,7 +87,7 @@ public class RecognizePageFragment extends Fragment implements IRecognizeStatusO
 			@Override
 			public boolean onLongClick(View v) {
 				Log.v("Recognizing", "Recognize now: onLongClick");
-				return controller.recognizeNowRecognizeCancel();
+				return controller.fingerprintNowRecognizeCancel();
 			}
 		});
         
@@ -101,18 +106,32 @@ public class RecognizePageFragment extends Fragment implements IRecognizeStatusO
 			
 			@Override
 			public void run() {
-				status.setText(fingerprintManager.getRecognizeStatus());
-				if(fingerprintManager.getRecognizeStatus().equals(MicroScrobblerModel.RECOGNIZING_SUCCESS)) {
-					Bitmap coverArt = fingerprintManager.getCoverArt();
+				status.setText(recognizeManager.getRecognizeStatus());
+				if(recognizeManager.getRecognizeStatus().equals(RecognizeManager.RECOGNIZING_SUCCESS)) {
+					Bitmap coverArt = recognizeManager.getCoverArt();
 					infoDialog.setVisibility(View.VISIBLE);
-					songArtist.setText(fingerprintManager.getArtist());
-					songTitle.setText(fingerprintManager.getTitle());
+					songArtist.setText(recognizeManager.getArtist());
+					songTitle.setText(recognizeManager.getTitle());
 					songDate.setText("just now");
 					if (coverArt == null) {
 						songCoverArt.setImageResource(R.drawable.no_cover_art);
 					} else {
-						songCoverArt.setImageBitmap(fingerprintManager.getCoverArt());
+						songCoverArt.setImageBitmap(recognizeManager.getCoverArt());
 					}
+				}
+			}
+		});
+	}
+	
+	@Override
+	public void updateFingerprintStatus() {
+		parentActivity.runOnUiThread(new Runnable() {
+			
+			@Override
+			public void run() {
+				status.setText(fingerprintManager.getFingerprintStatus());
+				if(fingerprintManager.getFingerprintStatus().equals(FingerprintManager.FINGERPRINTING_SUCCESS)) {
+					
 				}
 			}
 		});

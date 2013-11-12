@@ -44,7 +44,7 @@ public class FingerprintDAO implements IFingerprintDAO {
 		database = historyDBHelper.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(DBConstants.FINGERPRINT, fingerprintData.getFingerprint());
-		values.put(DBConstants.MUSIC_HISTORY_DATE, fingerprintData.getDate());
+		values.put(DBConstants.FINGERPRINT_DATE, fingerprintData.getDate());
 		database.insert(DBConstants.FINGERPRINTS_TABLE, null, values);
 		fingerprintDataSet.add(fingerprintData);
 		database.close();
@@ -69,7 +69,7 @@ public class FingerprintDAO implements IFingerprintDAO {
 		for(int i = 0; i < cursor.getCount(); i++) {
 			instance = new FingerprintData(Long.parseLong(cursor.getString(cursor.getColumnIndex(DBConstants.FINGERPRINT_ID))),
 	                				cursor.getString(cursor.getColumnIndex(DBConstants.FINGERPRINT)), 
-					                cursor.getString(cursor.getColumnIndex(DBConstants.MUSIC_HISTORY_DATE)));
+					                cursor.getString(cursor.getColumnIndex(DBConstants.FINGERPRINT_DATE)));
 			
 			fingerprintDataList.add(instance);
 			fingerprintDataSet.add(instance);
