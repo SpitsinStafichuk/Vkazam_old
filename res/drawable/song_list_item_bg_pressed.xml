@@ -3,6 +3,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android" 
     android:shape="rectangle">
     
+    <gradient 
+        android:angle="0"
+        android:startColor="#00ffff"
+        android:centerColor="#7fffd4"
+        android:endColor="#00FA9A"
+        android:type="linear"/>
+    
     <padding
         android:left="2dp"
         android:top="2dp"
@@ -10,9 +17,6 @@
         android:bottom="2dp" />
     
     <stroke
-        android:width="1.5dp"
-        android:color="@android:color/black" />
-    
-    <solid 
+        android:width="5dp"
         android:color="@android:color/transparent" />
 </shape>
