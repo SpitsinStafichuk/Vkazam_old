@@ -51,7 +51,7 @@ public class SongListController implements ISongListController {
 	
 	private void _playPauseSong(ISongData songData) {
 		ISongManager songManager = MicroScrobblerModel.getInstance().getSongManager();
-		if(songManager.getSongData() == songData) {
+		if(songData.equals(songManager.getSongData())) {
 			Log.v("SongListController", "songManager.getSongData() == songData == " + songData);
 			if(songManager.isPrepared())
 				if(songManager.isPlaying()) {

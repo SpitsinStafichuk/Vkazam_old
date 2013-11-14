@@ -8,7 +8,9 @@ import java.util.Set;
 
 import org.json.JSONException;
 
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongDAO;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.ISongData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.SongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.exceptions.SongNotFoundException;
 import com.git.programmerr47.testhflbjcrhjggkth.model.lastfm.IScrobbler;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObservable;
@@ -36,16 +38,18 @@ public class SongManager implements ISongManager, IPlayerStateObservable {
 	private boolean isPlaying;
 	private boolean isPrepared;
 	
-	public SongManager(IScrobbler scrobbler) {
+	private SongDAO songDAO;
+	
+	public SongManager(IScrobbler scrobbler, SongDAO songDAO) {
 		songPlayer = new MediaPlayer();
 		this.scrobbler = scrobbler;
-		
+		this.songDAO = songDAO;
 		isPrepared = false;
 		playerStateObservers = new HashSet<IPlayerStateObserver>();
 	}
 	
-	public SongManager() {
-		this(null);
+	public SongManager(SongDAO songDAO) {
+		this(null, songDAO);
 	}
 	
 	@Override
@@ -53,27 +57,48 @@ public class SongManager implements ISongManager, IPlayerStateObservable {
 		this.songData = songData;
 		isPrepared = false;
 	}
+	
+	private Audio findSongOnPleercom(String artist, String title) throws SongNotFoundException, MalformedURLException, IOException, JSONException, KException {
+		String q = artist + " " + title;
+		List<Audio> audioList = Api.searchAudio(q, 1, 1);
+	
+		if (audioList.isEmpty()) {
+			isLoading = false;
+			notifyPlayerStateObservers();
+			throw new SongNotFoundException();
+		}
+		return audioList.get(0);
+	}
 
 
 	@Override
 	public void prepare() throws MalformedURLException, IOException, JSONException, SongNotFoundException, KException {
 		isLoading = true;
 		notifyPlayerStateObservers();
-		String q = getArtist() + " " + getTitle();
-		List<Audio> audioList = Api.searchAudio(q, 1, 1);
-		
-		if (audioList.isEmpty()) {
-			isLoading = false;
-			notifyPlayerStateObservers();
-			throw new SongNotFoundException();
-		}
-
-		Audio audio = audioList.get(0);
-			
 		songPlayer.release();
 		songPlayer = new MediaPlayer();
-		songPlayer.setDataSource(audio.url);
+		boolean songDataNeedUpdate = false;
+		Audio audio = null;
+		if(songData.getPleercomURL() == null) {
+			songDataNeedUpdate = true;
+			audio = findSongOnPleercom(getArtist(), getTitle());
+			songPlayer.setDataSource(audio.url);
+		} else {
+			try {
+				songPlayer.setDataSource(songData.getPleercomURL());
+			} catch(IOException e) {
+				songDataNeedUpdate = true;
+				audio = findSongOnPleercom(getArtist(), getTitle());
+			} catch(IllegalArgumentException e) {
+				songDataNeedUpdate = true;
+				audio = findSongOnPleercom(getArtist(), getTitle());
+			}
+		}
 		songPlayer.prepare();
+		if(songDataNeedUpdate) {
+			songData = new SongData(songData.getId(), songData.getArtist(), songData.getTitle(), songData.getTrackId(), songData.getDate(), audio.url);
+			songDAO.update(songData);
+		}
 		wasPlayed = false;
 		isPrepared = true;
 	}

@@ -3,40 +3,40 @@ package com.git.programmerr47.testhflbjcrhjggkth.controllers;
 import android.util.Log;
 
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
-import com.git.programmerr47.testhflbjcrhjggkth.model.managers.RecognizeManager;
+import com.git.programmerr47.testhflbjcrhjggkth.model.managers.FingerprintManager;
 import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.RecognizePageFragment;
 
 public class RecognizeController implements IRecognizeController {
 	private MicroScrobblerModel model;
     private RecognizePageFragment view;
-    private RecognizeManager recognizeManager;
+    private FingerprintManager fingerprintManager;
 
     public RecognizeController(RecognizePageFragment view) {
             this.view = view;
             this.model = MicroScrobblerModel.getInstance();
-            recognizeManager = model.getRecognizeManager();
+            fingerprintManager = model.getFingerprintManager();
     }
     
-    public boolean recognizeByTimerRecognizeCancel() {
-    	if(recognizeManager.isRecognizingByTimer()) {
-    		Log.v("Recognizing", "Cancel recognizeByTimer");
-    		recognizeManager.recognizeByTimerCancel();
+    public boolean fingerprintByTimerRecognizeCancel() {
+    	if(fingerprintManager.isFingerprintingByTimer()) {
+    		Log.v("Fingerprinting", "Cancel fingerprintByTimer");
+    		fingerprintManager.fingerprintByTimerCancel();
     		return false;
     	} else {
-    		Log.v("Recognizing", "recognizeByTimer");
-    		recognizeManager.recognizeByTimer();
+    		Log.v("Fingerprinting", "fingerprintByTimer");
+    		fingerprintManager.fingerprintByTimer();
     		return true;
     	}
     }
     
-    public boolean recognizeNowRecognizeCancel() {
-    	if(recognizeManager.isRecognizingOneTime()) {
-    		Log.v("Recognizing", "Cancel recognizeNow");
-    		recognizeManager.recognizeOneTimeCancel();
+    public boolean fingerprintNowRecognizeCancel() {
+    	if(fingerprintManager.isFingerprintingOneTime()) {
+    		Log.v("Fingerprinting", "Cancel fingerprintNow");
+    		fingerprintManager.fingerprintOneTimeCancel();
     		return false;
     	} else {
-    		Log.v("Recognizing", "recognizeNow");
-    		recognizeManager.recognizeOneTime();
+    		Log.v("Fingerprinting", "fingerprintNow");
+    		fingerprintManager.fingerprintOneTime();
     		return true;
     	}
     }
