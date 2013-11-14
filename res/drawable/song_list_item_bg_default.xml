@@ -14,5 +14,5 @@
         android:color="@android:color/black" />
     
     <solid 
-        android:color="@android:color/transparent" />
+        android:color="#ddffffff" />
 </shape>

@@ -2,12 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical" 
+    android:background="@drawable/common_background">
 
 	<ListView
 	    android:id="@+id/historyList"
-    	android:layout_width="match_parent"
-    	android:layout_height="match_parent">
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent" >
+
     </ListView>
 
 </LinearLayout>

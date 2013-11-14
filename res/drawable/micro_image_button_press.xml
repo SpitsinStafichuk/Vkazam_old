@@ -6,5 +6,9 @@
         android:bottomLeftRadius="75dip"  
         android:topRightRadius="75dip"
         android:topLeftRadius="75dip"/>
-  	<gradient android:startColor="#0088ff" android:centerColor="#1098ff" android:endColor="#00aaff" android:angle="90" />
+  	<gradient 
+  	    android:startColor="#0088ff" 
+  	    android:centerColor="#1098ff" 
+  	    android:endColor="#00aaff" 
+  	    android:angle="90" />
 </shape>

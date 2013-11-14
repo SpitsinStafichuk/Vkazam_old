@@ -9,7 +9,6 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeStatus
 
 import android.app.Activity;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -24,7 +23,6 @@ import android.widget.TextView;
 public class RecognizePageFragment extends Fragment implements IRecognizeStatusObserver {
 	static final String ARGUMENT_RADIO_ID = "arg_rad_id";
     
-    int backColor;
     IRecognizeController controller;
     MicroScrobblerModel model;
     RecognizeManager recognizeManager;
@@ -51,13 +49,11 @@ public class RecognizePageFragment extends Fragment implements IRecognizeStatusO
             model = MicroScrobblerModel.getInstance();
             recognizeManager = model.getRecognizeManager();
             recognizeManager.addObserver(this);
-            backColor = Color.argb(255, 0, 255, 0);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.recognize_fragment, null);
-        view.setBackgroundColor(backColor);
         
 		infoDialog = (LinearLayout) view.findViewById(R.id.apearInformationDialog);
 		songArtist = (TextView) view.findViewById(R.id.songInfoArtist);
