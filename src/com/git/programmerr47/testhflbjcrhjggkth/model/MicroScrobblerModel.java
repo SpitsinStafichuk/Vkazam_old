@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongDAO;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.ISongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.lastfm.IScrobbler;
 import com.git.programmerr47.testhflbjcrhjggkth.model.lastfm.Scrobbler;
@@ -17,6 +18,8 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.managers.RecognizeManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SongManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISignInObservable;
 import com.gracenote.mmid.MobileSDK.GNConfig;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 public class MicroScrobblerModel implements IMicroScrobblerModel, ISignInObservable, IOnSignInResultListener {
 	private static final String SAVE_LASTFM_INFO_PREF = "save lastfm info pref";
@@ -37,8 +40,12 @@ public class MicroScrobblerModel implements IMicroScrobblerModel, ISignInObserva
 	
 	private ISongManager songManager;
 	
-	FingerprintManager fingerprintManager;
-	RecognizeManager recognizeManager;
+	private FingerprintManager fingerprintManager;
+	private RecognizeManager recognizeManager;
+	
+	private SongDAO songDAO;
+	
+	private ImageLoader imageLoader;
 	
 	public static void setContext(Context con) {
 		context = con;
@@ -58,16 +65,24 @@ public class MicroScrobblerModel implements IMicroScrobblerModel, ISignInObserva
 	
 	private MicroScrobblerModel() {
 		config = GNConfig.init(GRACENOTE_APPLICATION_ID, context);
-		songManager = new SongManager();
+		config.setProperty("content.coverArt","1");
+		imageLoader = ImageLoader.getInstance();
+		imageLoader.init(ImageLoaderConfiguration.createDefault(context));
+		songDAO = new SongDAO(context);
+		songManager = new SongManager(songDAO);
 		listeners = new HashSet<IOnSignInResultListener>();
 		scrobbler = new Scrobbler();
 		sharedPreferences = context.getSharedPreferences(SAVE_LASTFM_INFO_PREF, MODE);
         final String login = sharedPreferences.getString(LASTFM_USERNAME, null);
         final String password = sharedPreferences.getString(LASTFM_PASSWORD, null);
-        recognizeManager = new RecognizeManager(config, context, scrobbler);
+        recognizeManager = new RecognizeManager(config, context, scrobbler, songDAO);
         fingerprintManager = new FingerprintManager(config, context, recognizeManager);
 
         setLastfmAccount(login, password);
+	}
+	
+	public ImageLoader getImageLoader() {
+		return imageLoader;
 	}
 	
 	public FingerprintManager getFingerprintManager() {
@@ -80,7 +95,7 @@ public class MicroScrobblerModel implements IMicroScrobblerModel, ISignInObserva
 	
 	@Override
 	public List<ISongData> getHistory() {
-		return recognizeManager.getHistory();
+		return songDAO.getHistory();
 	}
 	
 	@Override

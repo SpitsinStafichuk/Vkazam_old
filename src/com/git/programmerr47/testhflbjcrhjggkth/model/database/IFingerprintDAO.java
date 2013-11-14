@@ -6,6 +6,6 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.IFingerprint
 
 public interface IFingerprintDAO {
 	List<IFingerprintData> getFingerprints();
-	void insert(IFingerprintData songData);
+	long insert(IFingerprintData songData);
 	int delete(IFingerprintData songData);
 }

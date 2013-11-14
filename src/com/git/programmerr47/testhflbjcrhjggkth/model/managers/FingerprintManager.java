@@ -121,6 +121,8 @@ public class FingerprintManager implements IFingerprintStatusObservable, GNOpera
 	
 	@Override
 	public void GNResultReady(GNFingerprintResult result) {
+		isFingerprinting = false;
+		isFingerprintingOneTime = false;
 		if(result.isFailure()) {
 			fingerprintStatus = String.format("[%d] %s", result.getErrCode(),
 					result.getErrMessage());

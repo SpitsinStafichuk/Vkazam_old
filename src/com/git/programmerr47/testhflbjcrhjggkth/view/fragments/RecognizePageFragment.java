@@ -8,9 +8,9 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.managers.FingerprintManage
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.RecognizeManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IFingerprintStatusObserver;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeStatusObserver;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -108,16 +108,16 @@ public class RecognizePageFragment extends Fragment implements IRecognizeStatusO
 			public void run() {
 				status.setText(recognizeManager.getRecognizeStatus());
 				if(recognizeManager.getRecognizeStatus().equals(RecognizeManager.RECOGNIZING_SUCCESS)) {
-					Bitmap coverArt = recognizeManager.getCoverArt();
+					String coverArtUrl = recognizeManager.getCoverArtUrl();
 					infoDialog.setVisibility(View.VISIBLE);
 					songArtist.setText(recognizeManager.getArtist());
 					songTitle.setText(recognizeManager.getTitle());
 					songDate.setText("just now");
-					if (coverArt == null) {
-						songCoverArt.setImageResource(R.drawable.no_cover_art);
-					} else {
-						songCoverArt.setImageBitmap(recognizeManager.getCoverArt());
-					}
+					DisplayImageOptions options = new DisplayImageOptions.Builder()
+						.showImageForEmptyUri(R.drawable.no_cover_art)
+						.showImageOnFail(R.drawable.no_cover_art)
+						.build();
+					model.getImageLoader().displayImage(coverArtUrl, songCoverArt, options);
 				}
 			}
 		});

@@ -27,8 +27,8 @@
         <activity android:name="com.git.programmerr47.testhflbjcrhjggkth.view.activities.SettingsActivity"></activity>
         
         <service 
-        	android:enabled="true" 
-        	android:name=".RecognizeService"> 
+            android:name="com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeService"
+        	android:enabled="true"> 
     	</service> 
         
     	<receiver 

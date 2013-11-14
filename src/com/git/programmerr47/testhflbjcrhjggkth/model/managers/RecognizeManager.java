@@ -1,19 +1,14 @@
 package com.git.programmerr47.testhflbjcrhjggkth.model.managers;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.FingerprintDAO;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongDAO;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.FingerprintData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.IFingerprintData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.ISongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.SongData;
@@ -28,6 +23,7 @@ import com.gracenote.mmid.MobileSDK.GNSearchResultReady;
 
 public class RecognizeManager implements GNSearchResultReady, IRecognizeStatusObservable {
 	public static final String RECOGNIZING_SUCCESS = "Recognizing success";
+	private static final String TAG = "Recognizing";
 	
 	private Set<IRecognizeStatusObserver> recognizeStatusObservers;
 	
@@ -36,7 +32,7 @@ public class RecognizeManager implements GNSearchResultReady, IRecognizeStatusOb
 	
 	private String artist;
 	private String title;
-	private Bitmap coverArt;
+	private String coverArtUrl;
 	
 	private Scrobbler scrobbler;
 	
@@ -44,20 +40,16 @@ public class RecognizeManager implements GNSearchResultReady, IRecognizeStatusOb
 	private String previousTitle;
 	
 	private SongDAO songDAO;
-	private List<ISongData> songList;
 	private FingerprintDAO fingerprintDAO;
-	private List<IFingerprintData> fingerprintList;
 	
 	private IFingerprintData currentFingerprintData;
 	private boolean currentFingerprintIsSaved;
 	
 	
-	public RecognizeManager(GNConfig config, Context context, Scrobbler scrobbler) {
+	public RecognizeManager(GNConfig config, Context context, Scrobbler scrobbler, SongDAO songDAO) {
 		this.config = config;
-		songDAO = new SongDAO(context);
+		this.songDAO = songDAO;
 		fingerprintDAO = new FingerprintDAO(context);
-        songList = songDAO.getHistory();
-        fingerprintList = fingerprintDAO.getFingerprints();
         this.scrobbler = scrobbler;
         recognizeStatusObservers = new HashSet<IRecognizeStatusObserver>();
 	}
@@ -66,17 +58,12 @@ public class RecognizeManager implements GNSearchResultReady, IRecognizeStatusOb
 		return recognizeStatus;
 	}
 	
-	public List<ISongData> getHistory() {
-		return songList;
-	}
-	
 	public List<IFingerprintData> getFingerprints() {
-		return fingerprintList;
+		return fingerprintDAO.getFingerprints();
 	}
 	
-	public boolean removeFingerprint(IFingerprintData fingerprint) {
-		fingerprintDAO.delete(fingerprint);
-		return fingerprintList.remove(fingerprint);
+	public int removeFingerprint(IFingerprintData fingerprint) {
+		return fingerprintDAO.delete(fingerprint);
 	}
 	//TODO synchronized в данном случае не работает, нужно разобраться с блокировками
 	public synchronized void recognizeFingerprint(IFingerprintData fingerprint, boolean isSaved) {
@@ -84,19 +71,21 @@ public class RecognizeManager implements GNSearchResultReady, IRecognizeStatusOb
 			currentFingerprintIsSaved = isSaved;
 			GNOperations.searchByFingerprint(this, config, fingerprint.getFingerprint());
 	}
-	//TODO нет cancelRecognizeFingerprint
+
+	public void recognizeFingerprintCancel() {
+		//TODO возможно нужно сделать что-то ещё
+		GNOperations.cancel(this);
+	}
 
 	@Override
 	public void GNResultReady(GNSearchResult result) {
-		Log.i("Recognizing", "GNResultReady");
+		Log.i(TAG, "GNResultReady");
 		if (result.isFailure()) {
 			int errCode = result.getErrCode();
 			recognizeStatus = String.format("[%d] %s", errCode,
 					result.getErrMessage());
 			if(result.isNetworkFailure() && !currentFingerprintIsSaved) {
-				//TODO проверять что insert прошёл корректно перед добавлением в список
 				fingerprintDAO.insert(currentFingerprintData);
-				fingerprintList.add(currentFingerprintData);
 			}
 		} else {
 			if (result.isFingerprintSearchNoMatchStatus()) {
@@ -106,11 +95,11 @@ public class RecognizeManager implements GNSearchResultReady, IRecognizeStatusOb
 
 				artist = bestResponse.getArtist();
 				title = bestResponse.getTrackTitle();
-				if (bestResponse.getContributorImage() != null) {
-					byte[] coverArtArray = bestResponse.getContributorImage().getData();
-					coverArt = BitmapFactory.decodeByteArray(coverArtArray , 0, coverArtArray.length);
+				if (bestResponse.getCoverArt() != null) {
+					Log.i(TAG, "URL = " + bestResponse.getCoverArt().getUrl());
+					coverArtUrl = bestResponse.getCoverArt().getUrl();
 				} else {
-					coverArt = null;
+					coverArtUrl = null;
 				}
 				
 				if(!artist.equals(previousArtist) || !title.equals(previousTitle)) {
@@ -121,8 +110,6 @@ public class RecognizeManager implements GNSearchResultReady, IRecognizeStatusOb
 					}
 					
 					ISongData songInfo = new SongData(-1, artist, title, bestResponse.getTrackId(), currentFingerprintData.getDate(), null);
-					songList.add(songInfo);
-					//TODO проверять что insert прошёл корректно перед добавлением в список
 					songDAO.insert(songInfo);
 					if(currentFingerprintIsSaved) {
 						removeFingerprint(currentFingerprintData);
@@ -133,8 +120,8 @@ public class RecognizeManager implements GNSearchResultReady, IRecognizeStatusOb
 				}
 		
 				recognizeStatus = RECOGNIZING_SUCCESS;
-				Log.i("Recognizing", recognizeStatus);
-				Log.i("Recognizing", artist + " " + title);
+				Log.i(TAG, recognizeStatus);
+				Log.i(TAG, artist + " " + title);
 			}
 		}
 		
@@ -149,8 +136,8 @@ public class RecognizeManager implements GNSearchResultReady, IRecognizeStatusOb
 		return title;
 	}
 	
-	public Bitmap getCoverArt() {
-		return coverArt;
+	public String getCoverArtUrl() {
+		return coverArtUrl;
 	}
 
 	@Override
