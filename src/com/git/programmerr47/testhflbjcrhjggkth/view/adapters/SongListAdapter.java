@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -77,18 +78,21 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 			public void onClick(View v) {
 				Log.v("playPauseButton", "songPlayPauseButton was clicked");
 				
-				if (currentListItemView != null) {
+				if ((currentListItemView != null) && (currentListItemView != fView)) {
 					ImageButton playPauseButton = (ImageButton) currentListItemView.findViewById(R.id.songPlayPauseButton);
 					playPauseButton.setVisibility(View.VISIBLE);
 					playPauseButton.setImageResource(android.R.drawable.ic_media_play);
 					ProgressBar progressBar = (ProgressBar) currentListItemView.findViewById(R.id.songItemLoading);
 					progressBar.setVisibility(View.GONE);
+				    LinearLayout element = (LinearLayout) currentListItemView.findViewById(R.id.songHistoryItem);
+				    element.setBackgroundResource(R.drawable.song_list_item_bg_default);
 					Log.v("SongPlayer", "Song" + /*songManager.getArtist() + " - " + songManager.getTitle() +*/ "is closing");
 				}
 				
 				currentListItemView = fView;
+			    LinearLayout element = (LinearLayout) fView.findViewById(R.id.songHistoryItem);
+			    element.setBackgroundResource(R.drawable.song_list_item_bg_pressed);
 				controller.playPauseSong((ISongData) getItem(position));
-				//fView.setSelected(true);
 			}
 		});
 		
@@ -98,7 +102,6 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 			@Override
 			public void onClick(View v) {
 				controller.deleteSong((ISongData) getItem(position));
-				//fView.setSelected(true);
 			}
 		});
 		
@@ -120,7 +123,7 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 			public void run() {
 				if (currentListItemView != null) {
 					ImageButton playPauseButton = (ImageButton) currentListItemView.findViewById(R.id.songPlayPauseButton);
-					ProgressBar progressBar = (ProgressBar) currentListItemView.findViewById(R.id.songItemLoading);;
+					ProgressBar progressBar = (ProgressBar) currentListItemView.findViewById(R.id.songItemLoading);
 					
 					if (songManager.isLoading()) {
 						progressBar.setVisibility(View.VISIBLE);
