@@ -10,12 +10,6 @@
         android:endColor="#00FA9A"
         android:type="linear"/>
     
-    <padding
-        android:left="2dp"
-        android:top="2dp"
-        android:right="2dp"
-        android:bottom="2dp" />
-    
     <stroke
         android:width="2dp"
         android:color="#ff8800" />

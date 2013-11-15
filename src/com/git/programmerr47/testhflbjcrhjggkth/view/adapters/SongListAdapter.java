@@ -95,17 +95,8 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 			}
 		});
 		
-		ImageButton deleteButton = (ImageButton) view.findViewById(R.id.songDeleteButton);
-		deleteButton.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				controller.deleteSong((ISongData) getItem(position));
-			}
-		});
-		
 		ISongData data = getSongData(position);
-		((TextView) view.findViewById(R.id.songListItemArtistTitle)).setText(data.getArtist() + " - " + data.getTitle());
+		((TextView) view.findViewById(R.id.songListItemArtist)).setText(data.getArtist() + " - " + data.getTitle());
 		((TextView) view.findViewById(R.id.songListItemDate)).setText(data.getDate());
 		return view;
 	}

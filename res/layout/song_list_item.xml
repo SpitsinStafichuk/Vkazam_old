@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
     <LinearLayout 
         xmlns:android="http://schemas.android.com/apk/res/android"
-    	android:id="@+id/songHistoryItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="5dp"
         android:descendantFocusability="blocksDescendants"
-        android:orientation="vertical"
-    	android:background="@drawable/song_list_item_selector">
+        android:orientation="vertical">
 
     	<LinearLayout
+    		android:id="@+id/songHistoryItem"
     	    android:layout_width="match_parent"
     	    android:layout_height="match_parent"
-    	    android:layout_weight="1" >
+    	    android:layout_weight="1" 
+    		android:background="@drawable/song_list_item_selector">
 
     		<ImageView
     		    android:id="@+id/songListItemCoverArt"
@@ -27,20 +28,30 @@
     	        android:orientation="vertical" >
 
     	        <TextView
-    	            android:id="@+id/songListItemArtistTitle"
+    	            android:id="@+id/songListItemArtist"
     	            android:layout_width="match_parent"
     	            android:layout_height="wrap_content"
     	            android:layout_weight="1"
-    	            android:paddingLeft="10"
-    	            android:text="Artist - Title"
-    	            android:textSize="20sp"
-    	            android:gravity="center_vertical" />
+    	            android:gravity="center_vertical"
+    	            android:paddingLeft="10dp"
+    	            android:text="Artist"
+    	            android:textSize="20sp" />
+
+    	        <TextView
+    	            android:id="@+id/songListItemTitle"
+    	            android:layout_width="match_parent"
+    	            android:layout_height="wrap_content"
+    	            android:layout_weight="1"
+    	            android:gravity="center_vertical"
+    	            android:paddingLeft="10dp"
+    	            android:text="Title"
+    	            android:textSize="20sp" />
 
     	        <LinearLayout
     	            android:layout_width="match_parent"
     	            android:layout_height="wrap_content" 
     	            android:layout_weight="1"
-    	            android:paddingLeft="10">
+    	            android:paddingLeft="10dp">
 
     	            <LinearLayout
     	                android:layout_width="wrap_content"
@@ -68,22 +79,6 @@
 
     	            </LinearLayout>
 
-    	            <LinearLayout
-    	                android:layout_width="wrap_content"
-    	                android:layout_height="match_parent"
-    	                android:layout_weight="1" 
-    	                android:gravity="right|center_vertical">
-
-    	                <ImageButton
-    	                    android:id="@+id/songDeleteButton"
-    	                    android:layout_width="wrap_content"
-    	                    android:layout_height="wrap_content"
-    	                    android:background="@android:color/transparent"
-    	                    android:focusable="false"
-    	                    android:src="@android:drawable/ic_menu_close_clear_cancel" />
-
-    	            </LinearLayout>
-
     	        </LinearLayout>
 
     	        <TextView
@@ -91,7 +86,7 @@
     	            android:layout_width="match_parent"
     	            android:layout_height="wrap_content"
     	            android:layout_weight="1"
-    	            android:paddingLeft="10"
+    	            android:paddingLeft="10dp"
     	            android:gravity="center_vertical"
     	            android:text="date"
     	            android:textSize="15sp"
