@@ -4,11 +4,13 @@ import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.IRecognizeController;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.RecognizeController;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
+import com.git.programmerr47.testhflbjcrhjggkth.model.managers.FingerprintManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.RecognizeManager;
+import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IFingerprintStatusObserver;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeStatusObserver;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -20,12 +22,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class RecognizePageFragment extends Fragment implements IRecognizeStatusObserver {
+public class RecognizePageFragment extends Fragment implements IRecognizeStatusObserver, IFingerprintStatusObserver {
 	static final String ARGUMENT_RADIO_ID = "arg_rad_id";
     
     IRecognizeController controller;
     MicroScrobblerModel model;
     RecognizeManager recognizeManager;
+    FingerprintManager fingerprintManager;
     Activity parentActivity;
     
     LinearLayout infoDialog;
@@ -47,6 +50,8 @@ public class RecognizePageFragment extends Fragment implements IRecognizeStatusO
             super.onCreate(savedInstanceState);
             controller = new RecognizeController(this);
             model = MicroScrobblerModel.getInstance();
+            fingerprintManager = model.getFingerprintManager();
+            fingerprintManager.addObserver(this);
             recognizeManager = model.getRecognizeManager();
             recognizeManager.addObserver(this);
     }
@@ -69,7 +74,7 @@ public class RecognizePageFragment extends Fragment implements IRecognizeStatusO
 			@Override
 			public boolean onLongClick(View v) {
 				Log.v("Recognizing", "Recognize by timer: onLongClick");
-				return controller.recognizeByTimerRecognizeCancel();
+				return controller.fingerprintByTimerRecognizeCancel();
 			}});
         
         ImageButton microNowListenButton = (ImageButton) view.findViewById(R.id.microNowListenButton);
@@ -78,7 +83,7 @@ public class RecognizePageFragment extends Fragment implements IRecognizeStatusO
 			@Override
 			public boolean onLongClick(View v) {
 				Log.v("Recognizing", "Recognize now: onLongClick");
-				return controller.recognizeNowRecognizeCancel();
+				return controller.fingerprintNowRecognizeCancel();
 			}
 		});
         
@@ -98,17 +103,31 @@ public class RecognizePageFragment extends Fragment implements IRecognizeStatusO
 			@Override
 			public void run() {
 				status.setText(recognizeManager.getRecognizeStatus());
-				if(recognizeManager.getRecognizeStatus().equals(MicroScrobblerModel.RECOGNIZING_SUCCESS)) {
-					Bitmap coverArt = recognizeManager.getCoverArt();
+				if(recognizeManager.getRecognizeStatus().equals(RecognizeManager.RECOGNIZING_SUCCESS)) {
+					String coverArtUrl = recognizeManager.getCoverArtUrl();
 					infoDialog.setVisibility(View.VISIBLE);
 					songArtist.setText(recognizeManager.getArtist());
 					songTitle.setText(recognizeManager.getTitle());
 					songDate.setText("just now");
-					if (coverArt == null) {
-						songCoverArt.setImageResource(R.drawable.no_cover_art);
-					} else {
-						songCoverArt.setImageBitmap(recognizeManager.getCoverArt());
-					}
+					DisplayImageOptions options = new DisplayImageOptions.Builder()
+						.showImageForEmptyUri(R.drawable.no_cover_art)
+						.showImageOnFail(R.drawable.no_cover_art)
+						.build();
+					model.getImageLoader().displayImage(coverArtUrl, songCoverArt, options);
+				}
+			}
+		});
+	}
+	
+	@Override
+	public void updateFingerprintStatus() {
+		parentActivity.runOnUiThread(new Runnable() {
+			
+			@Override
+			public void run() {
+				status.setText(fingerprintManager.getFingerprintStatus());
+				if(fingerprintManager.getFingerprintStatus().equals(FingerprintManager.FINGERPRINTING_SUCCESS)) {
+					
 				}
 			}
 		});

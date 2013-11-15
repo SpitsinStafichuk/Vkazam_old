@@ -26,19 +26,18 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 
 	private Activity activity;
 	private LayoutInflater inflater;
-	private List<ISongData> songs;
 	private int idItem;
 	private ISongListController controller;
 	private ISongManager songManager;
 	private View currentListItemView;
+	private MicroScrobblerModel model;
 	
 	public SongListAdapter(Activity activity, int idItem, List<ISongData> songs, ISongListController controller) {
 		this.activity = activity;
 		this.idItem = idItem;
-		this.songs = songs;
 		this.controller = controller;
 		songManager = MicroScrobblerModel.getInstance().getSongManager();
-		
+		model = MicroScrobblerModel.getInstance();
 		Log.v("Lists", "History adapter created");
 		
 		IPlayerStateObservable songManagerStateObservable = (IPlayerStateObservable) songManager;
@@ -49,12 +48,12 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 	
 	@Override
 	public int getCount() {
-		return songs.size();
+		return model.getHistory().size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return songs.get(position);
+		return model.getHistory().get(position);
 	}
 
 	@Override

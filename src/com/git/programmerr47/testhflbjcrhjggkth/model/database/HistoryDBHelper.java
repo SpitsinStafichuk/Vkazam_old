@@ -43,7 +43,10 @@ public class HistoryDBHelper extends SQLiteOpenHelper {
 	}
 
 	@Override
-	public void onUpgrade(SQLiteDatabase db, int arg1, int arg2) {
+	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+		db.execSQL(DBConstants.SQL_DROP_FINGERPRINTS_TABLE);
+		db.execSQL(DBConstants.SQL_DROP_MUSIC_HISTORY_TABLE);
+		onCreate(db);
 	}
 
 }
