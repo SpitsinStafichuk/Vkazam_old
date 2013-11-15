@@ -75,7 +75,8 @@ public class RecognizePageFragment extends Fragment implements IRecognizeStatusO
 			public boolean onLongClick(View v) {
 				Log.v("Recognizing", "Recognize by timer: onLongClick");
 				return controller.fingerprintByTimerRecognizeCancel();
-			}});
+			}
+		});
         
         ImageButton microNowListenButton = (ImageButton) view.findViewById(R.id.microNowListenButton);
         microNowListenButton.setOnLongClickListener(new View.OnLongClickListener() {

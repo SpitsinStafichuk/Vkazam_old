@@ -13,29 +13,15 @@
     	    android:layout_height="match_parent"
     	    android:layout_weight="1" >
 
-    	    <ImageButton
-    	        android:id="@+id/songPlayPauseButton"
-    	        android:layout_width="wrap_content"
-    	        android:layout_height="wrap_content"
-    	        android:layout_gravity="center_vertical"
-    	        android:background="@android:color/transparent"
-    	        android:focusable="false"
-    	        android:focusableInTouchMode="false"
-    	        android:src="@android:drawable/ic_media_play" />
-
-    	    <ProgressBar
-    	        android:id="@+id/songItemLoading"
-    	        style="?android:attr/progressBarStyleSmall"
-    	        android:layout_width="wrap_content"
-    	        android:layout_height="wrap_content"
-    	        android:layout_gravity="center_vertical"
-    	        android:minHeight="15dp"
-    	        android:minWidth="30dip"
-    	        android:visibility="gone" />
+    		<ImageView
+    		    android:id="@+id/songListItemCoverArt"
+    		    android:layout_width="100dp"
+    		    android:layout_height="100dp"
+    		    android:src="@drawable/no_cover_art" />
 
     	    <LinearLayout
     	        android:layout_width="match_parent"
-    	        android:layout_height="wrap_content"
+    	        android:layout_height="match_parent"
     	        android:layout_gravity="center_vertical"
     	        android:layout_weight="1"
     	        android:orientation="vertical" >
@@ -43,27 +29,75 @@
     	        <TextView
     	            android:id="@+id/songListItemArtistTitle"
     	            android:layout_width="match_parent"
-    	            android:layout_height="match_parent"
+    	            android:layout_height="wrap_content"
+    	            android:layout_weight="1"
+    	            android:paddingLeft="10"
     	            android:text="Artist - Title"
-    	            android:textSize="12sp" />
+    	            android:textSize="20sp"
+    	            android:gravity="center_vertical" />
+
+    	        <LinearLayout
+    	            android:layout_width="match_parent"
+    	            android:layout_height="wrap_content" 
+    	            android:layout_weight="1"
+    	            android:paddingLeft="10">
+
+    	            <LinearLayout
+    	                android:layout_width="wrap_content"
+    	                android:layout_height="match_parent" 
+    	                android:layout_weight="1" 
+    	                android:gravity="left|center_vertical">
+
+    	                <ImageButton
+    	                    android:id="@+id/songPlayPauseButton"
+    	                    android:layout_width="wrap_content"
+    	                    android:layout_height="wrap_content"
+    	                    android:background="@android:color/transparent"
+    	                    android:focusable="false"
+    	                    android:focusableInTouchMode="false"
+    	                    android:src="@android:drawable/ic_media_play" />
+
+    	                <ProgressBar
+    	                    android:id="@+id/songItemLoading"
+    	                    style="?android:attr/progressBarStyleSmall"
+    	                    android:layout_width="wrap_content"
+    	                    android:layout_height="wrap_content"
+    	                    android:minHeight="15dp"
+    	                    android:minWidth="30dip"
+    	                    android:visibility="gone" />
+
+    	            </LinearLayout>
+
+    	            <LinearLayout
+    	                android:layout_width="wrap_content"
+    	                android:layout_height="match_parent"
+    	                android:layout_weight="1" 
+    	                android:gravity="right|center_vertical">
+
+    	                <ImageButton
+    	                    android:id="@+id/songDeleteButton"
+    	                    android:layout_width="wrap_content"
+    	                    android:layout_height="wrap_content"
+    	                    android:background="@android:color/transparent"
+    	                    android:focusable="false"
+    	                    android:src="@android:drawable/ic_menu_close_clear_cancel" />
+
+    	            </LinearLayout>
+
+    	        </LinearLayout>
 
     	        <TextView
     	            android:id="@+id/songListItemDate"
     	            android:layout_width="match_parent"
     	            android:layout_height="wrap_content"
+    	            android:layout_weight="1"
+    	            android:paddingLeft="10"
+    	            android:gravity="center_vertical"
     	            android:text="date"
-    	            android:textSize="12sp" />
+    	            android:textSize="15sp"
+    	            android:textStyle="italic" />
 
     	    </LinearLayout>
-
-    	    <ImageButton
-    	        android:id="@+id/songDeleteButton"
-    	        android:layout_width="wrap_content"
-    	        android:layout_height="wrap_content"
-    	        android:layout_gravity="center_vertical"
-    	        android:background="@android:color/transparent"
-    	        android:focusable="false"
-    	        android:src="@android:drawable/ic_menu_close_clear_cancel" />
 
     	</LinearLayout>
 
