@@ -1,22 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     
-    <item android:top="0dp" android:left="0dp">
-        <shape >
+    <item>
+        <shape android:shape="rectangle">
             <gradient 
   	    		android:startColor="#0000ff" 
-  	    		android:centerColor="#000000" 
-  	    		android:endColor="#0000ff" 
+  	    		android:centerColor="#00aacc" 
+  	    		android:endColor="#00aaff" 
   	    		android:angle="90" />
         </shape>
-    </item>
-    <item android:top="0dp" android:left="0dp">
-        <bitmap
-            android:antialias="true"
-            android:dither="true"
-            android:filter="true"
-            android:tileMode="repeat"
-            android:gravity="center"
-            android:src="@drawable/background_net" />
     </item>
 </layer-list>
