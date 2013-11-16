@@ -38,7 +38,7 @@ public class HistoryPageFragment extends Fragment implements IRecognizeStatusObs
             super.onCreate(savedInstanceState);
             
             controller = new SongListController(this);
-            adapter = new SongListAdapter(this.getActivity(), R.layout.song_list_item, controller.getList(), controller);
+            adapter = new SongListAdapter(this.getActivity(), R.layout.song_list_item, controller);
             recognizeManager = MicroScrobblerModel.getInstance().getRecognizeManager();
             recognizeManager.addObserver(this);
     }
@@ -51,6 +51,11 @@ public class HistoryPageFragment extends Fragment implements IRecognizeStatusObs
   		  	songHLV.setAdapter(adapter);
             
             return view;
+    }
+    
+    @Override
+    public void onResume() {
+    	super.onResume();
     }
    
     @Override

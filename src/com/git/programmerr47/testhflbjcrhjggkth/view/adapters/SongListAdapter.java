@@ -32,7 +32,7 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 	private View currentListItemView;
 	private MicroScrobblerModel model;
 	
-	public SongListAdapter(Activity activity, int idItem, List<ISongData> songs, ISongListController controller) {
+	public SongListAdapter(Activity activity, int idItem, ISongListController controller) {
 		this.activity = activity;
 		this.idItem = idItem;
 		this.controller = controller;
@@ -63,7 +63,6 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
-		Log.v("HistoryList", "Number of items = " + model.getHistory().size());
 		View view = convertView;
 		if (view == null) {
 			view = inflater.inflate(idItem, parent, false);

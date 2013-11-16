@@ -39,7 +39,6 @@ public class SongDAO implements ISongDAO {
 			isFirstGetHistory = false;
 		}
 		
-		Log.v("HistoryList", "DAO NumOfItems = " + songDataSet.size());
 		return songDataSet;
 	}
 	
