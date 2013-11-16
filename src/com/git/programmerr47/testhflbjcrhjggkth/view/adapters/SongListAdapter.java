@@ -63,6 +63,7 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
+		Log.v("HistoryList", "Number of items = " + model.getHistory().size());
 		View view = convertView;
 		if (view == null) {
 			view = inflater.inflate(idItem, parent, false);

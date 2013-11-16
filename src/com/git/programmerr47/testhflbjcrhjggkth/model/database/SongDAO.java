@@ -33,14 +33,14 @@ public class SongDAO implements ISongDAO {
 			database = historyDBHelper.getWritableDatabase();
 			Cursor cursor = database.rawQuery("SELECT * FROM " + DBConstants.MUSIC_HISTORY_TABLE, null);
 			cursor.moveToFirst();
-			List<ISongData> result = getListByCursor(cursor);
+			getListByCursor(cursor);
 			database.close();
 			historyDBHelper.close();
 			isFirstGetHistory = false;
-			return result;
-		} else {
-			return songDataSet;
 		}
+		
+		Log.v("HistoryList", "DAO NumOfItems = " + songDataSet.size());
+		return songDataSet;
 	}
 	
 	@Override
@@ -53,9 +53,10 @@ public class SongDAO implements ISongDAO {
 		values.put(DBConstants.MUSIC_HISTORY_GRACENOTE_TRACK_ID, songData.getTrackId());
 		values.put(DBConstants.MUSIC_HISTORY_DATE, songData.getDate());
 		long result = database.insert(DBConstants.MUSIC_HISTORY_TABLE, null, values);
+		Log.v("HistoryList", "" + result);
 		database.close();
 		historyDBHelper.close();
-		if(result == 1) {
+		if(result > 0) {
 			songDataSet.add(songData);
 		}
 		return result;

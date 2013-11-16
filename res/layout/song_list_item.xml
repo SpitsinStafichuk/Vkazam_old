@@ -91,6 +91,7 @@
     	            android:paddingLeft="10dp"
     	            android:gravity="center_vertical"
     	            android:text="date"
+    	            android:singleLine="true"
     	            android:textSize="15sp"
     	            android:textStyle="italic" />
 

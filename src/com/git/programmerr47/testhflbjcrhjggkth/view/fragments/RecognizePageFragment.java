@@ -94,9 +94,7 @@ public class RecognizePageFragment extends Fragment implements IRecognizeStatusO
     @Override
     public void onDestroy() {
         super.onDestroy();
-        fingerprintManager = model.getFingerprintManager();
         fingerprintManager.removeObserver(this);
-        recognizeManager = model.getRecognizeManager();
         recognizeManager.removeObserver(this);
         Log.v("SongPlayer", "HistoryPageFragment onDestroy()");
     }
