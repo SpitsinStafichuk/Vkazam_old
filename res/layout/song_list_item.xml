@@ -1,66 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout 
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="5dp"
         android:descendantFocusability="blocksDescendants"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
     	<LinearLayout
+    		android:id="@+id/songHistoryItem"
     	    android:layout_width="match_parent"
     	    android:layout_height="match_parent"
-    	    android:layout_weight="1" >
+    	    android:layout_weight="1" 
+    		android:background="@drawable/song_list_item_selector">
 
-    	    <ImageButton
-    	        android:id="@+id/songPlayPauseButton"
-    	        android:layout_width="wrap_content"
-    	        android:layout_height="wrap_content"
-    	        android:layout_gravity="center_vertical"
-    	        android:background="@android:color/transparent"
-    	        android:focusable="false"
-    	        android:focusableInTouchMode="false"
-    	        android:src="@android:drawable/ic_media_play" />
-
-    	    <ProgressBar
-    	        android:id="@+id/songItemLoading"
-    	        style="?android:attr/progressBarStyleSmall"
-    	        android:layout_width="wrap_content"
-    	        android:layout_height="wrap_content"
-    	        android:layout_gravity="center_vertical"
-    	        android:minHeight="15dp"
-    	        android:minWidth="30dip"
-    	        android:visibility="gone" />
+    		<ImageView
+    		    android:id="@+id/songListItemCoverArt"
+    		    android:layout_width="100dp"
+    		    android:layout_height="100dp"
+    		    android:src="@drawable/no_cover_art" />
 
     	    <LinearLayout
     	        android:layout_width="match_parent"
-    	        android:layout_height="wrap_content"
+    	        android:layout_height="match_parent"
     	        android:layout_gravity="center_vertical"
     	        android:layout_weight="1"
     	        android:orientation="vertical" >
 
     	        <TextView
-    	            android:id="@+id/songListItemArtistTitle"
+    	            android:id="@+id/songListItemArtist"
     	            android:layout_width="match_parent"
-    	            android:layout_height="match_parent"
-    	            android:text="Artist - Title"
-    	            android:textSize="12sp" />
+    	            android:layout_height="wrap_content"
+    	            android:layout_weight="1"
+    	            android:gravity="center_vertical"
+    	            android:paddingLeft="10dp"
+    	            android:text="Artist"
+    	            android:textSize="20sp" />
+
+    	        <TextView
+    	            android:id="@+id/songListItemTitle"
+    	            android:layout_width="match_parent"
+    	            android:layout_height="wrap_content"
+    	            android:layout_weight="1"
+    	            android:gravity="center_vertical"
+    	            android:paddingLeft="10dp"
+    	            android:text="Title"
+    	            android:textSize="20sp" />
+
+    	        <LinearLayout
+    	            android:layout_width="match_parent"
+    	            android:layout_height="wrap_content" 
+    	            android:layout_weight="1"
+    	            android:paddingLeft="10dp">
+
+    	            <LinearLayout
+    	                android:layout_width="wrap_content"
+    	                android:layout_height="match_parent" 
+    	                android:layout_weight="1" 
+    	                android:gravity="left|center_vertical">
+
+    	                <ImageButton
+    	                    android:id="@+id/songPlayPauseButton"
+    	                    android:layout_width="wrap_content"
+    	                    android:layout_height="wrap_content"
+    	                    android:background="@android:color/transparent"
+    	                    android:focusable="false"
+    	                    android:focusableInTouchMode="false"
+    	                    android:src="@android:drawable/ic_media_play" />
+
+    	                <ProgressBar
+    	                    android:id="@+id/songItemLoading"
+    	                    style="?android:attr/progressBarStyleSmall"
+    	                    android:layout_width="wrap_content"
+    	                    android:layout_height="wrap_content"
+    	                    android:minHeight="15dp"
+    	                    android:minWidth="30dip"
+    	                    android:visibility="gone" />
+
+    	            </LinearLayout>
+
+    	        </LinearLayout>
 
     	        <TextView
     	            android:id="@+id/songListItemDate"
     	            android:layout_width="match_parent"
     	            android:layout_height="wrap_content"
+    	            android:layout_weight="1"
+    	            android:paddingLeft="10dp"
+    	            android:gravity="center_vertical"
     	            android:text="date"
-    	            android:textSize="12sp" />
+    	            android:textSize="15sp"
+    	            android:textStyle="italic" />
 
     	    </LinearLayout>
-
-    	    <ImageButton
-    	        android:id="@+id/songDeleteButton"
-    	        android:layout_width="wrap_content"
-    	        android:layout_height="wrap_content"
-    	        android:layout_gravity="center_vertical"
-    	        android:background="@android:color/transparent"
-    	        android:focusable="false"
-    	        android:src="@android:drawable/ic_menu_close_clear_cancel" />
 
     	</LinearLayout>
 
