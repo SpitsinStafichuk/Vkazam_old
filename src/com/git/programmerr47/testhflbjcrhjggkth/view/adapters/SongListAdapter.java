@@ -96,7 +96,8 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 		});
 		
 		ISongData data = getSongData(position);
-		((TextView) view.findViewById(R.id.songListItemArtist)).setText(data.getArtist() + " - " + data.getTitle());
+		((TextView) view.findViewById(R.id.songListItemArtist)).setText(data.getArtist());
+		((TextView) view.findViewById(R.id.songListItemTitle)).setText(data.getTitle());
 		((TextView) view.findViewById(R.id.songListItemDate)).setText(data.getDate());
 		return view;
 	}
