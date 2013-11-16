@@ -18,6 +18,7 @@
     		    android:id="@+id/songListItemCoverArt"
     		    android:layout_width="100dp"
     		    android:layout_height="100dp"
+    		    android:scaleType="fitXY"
     		    android:src="@drawable/no_cover_art" />
 
     	    <LinearLayout
@@ -34,6 +35,7 @@
     	            android:layout_weight="1"
     	            android:gravity="center_vertical"
     	            android:paddingLeft="10dp"
+    	            android:singleLine="true"
     	            android:text="Artist"
     	            android:textSize="20sp" />
 
@@ -44,6 +46,7 @@
     	            android:layout_weight="1"
     	            android:gravity="center_vertical"
     	            android:paddingLeft="10dp"
+    	            android:singleLine="true"
     	            android:text="Title"
     	            android:textSize="20sp" />
 
@@ -89,6 +92,7 @@
     	            android:paddingLeft="10dp"
     	            android:gravity="center_vertical"
     	            android:text="date"
+    	            android:singleLine="true"
     	            android:textSize="15sp"
     	            android:textStyle="italic" />
 

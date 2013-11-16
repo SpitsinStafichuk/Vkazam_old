@@ -27,31 +27,7 @@ public class MicrophonePagerActivity extends FragmentActivity {
 		MicroScrobblerModel.getInstance();
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.microphone_pager_layout);
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.microphone_pager, menu);
-		return true;
-	}
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
-        case R.id.settings :
-        	Log.v("Settings", "Creating settings activity");
-            Intent intent = new Intent(this, SettingsActivity.class);
-            startActivity(intent);
-            return true;
-        default :
-            return super.onOptionsItemSelected(item);
-}
-	}
-	
-	@Override
-    protected void onResume() {
-        super.onResume();
-         
+		
         pager = (ViewPager) findViewById(R.id.microphonePager);
         pagerAdapter = new MicrophonePagerAdapter(getSupportFragmentManager());
         pager.setAdapter(pagerAdapter);
@@ -72,5 +48,24 @@ public class MicrophonePagerActivity extends FragmentActivity {
             public void onPageScrollStateChanged(int state) {
             }
         });
-    }
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.microphone_pager, menu);
+		return true;
+	}
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+        	case R.id.settings :
+        		Log.v("Settings", "Creating settings activity");
+            	Intent intent = new Intent(this, SettingsActivity.class);
+            	startActivity(intent);
+            	return true;
+        	default :
+        		return super.onOptionsItemSelected(item);
+        }
+	}
 }

@@ -33,7 +33,7 @@ public class SongListController implements ISongListController {
 	}
 
 	@Override
-	public void playPauseSong(final ISongData songData) {
+	public synchronized void playPauseSong(final ISongData songData) {
 		if(preparingThread != null) {
 			ISongManager songManager = MicroScrobblerModel.getInstance().getSongManager();
 			songManager.set(null);

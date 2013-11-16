@@ -1,6 +1,5 @@
 package com.git.programmerr47.testhflbjcrhjggkth.model.database;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -16,30 +15,7 @@ public class HistoryDBHelper extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL(DBConstants.SQL_CREATE_MUSIC_HISTORY_TABLE);
-		ContentValues values = new ContentValues();
-		values.put(DBConstants.MUSIC_HISTORY_ARTIST, "Test1");
-		values.put(DBConstants.MUSIC_HISTORY_TITLE, "Test1");
-		values.put(DBConstants.MUSIC_HISTORY_GRACENOTE_TRACK_ID, "Test1");
-		values.put(DBConstants.MUSIC_HISTORY_DATE, "Date1");
-		db.insert(DBConstants.MUSIC_HISTORY_TABLE, null, values);
-		values = new ContentValues();
-		values.put(DBConstants.MUSIC_HISTORY_ARTIST, "Test2");
-		values.put(DBConstants.MUSIC_HISTORY_TITLE, "Test2");
-		values.put(DBConstants.MUSIC_HISTORY_GRACENOTE_TRACK_ID, "Test2");
-		values.put(DBConstants.MUSIC_HISTORY_DATE, "Date2");
-		db.insert(DBConstants.MUSIC_HISTORY_TABLE, null, values);
-		values = new ContentValues();
-		values.put(DBConstants.MUSIC_HISTORY_ARTIST, "Test3");
-		values.put(DBConstants.MUSIC_HISTORY_TITLE, "Test3");
-		values.put(DBConstants.MUSIC_HISTORY_GRACENOTE_TRACK_ID, "Test3");
-		values.put(DBConstants.MUSIC_HISTORY_DATE, "Date3");
-		db.insert(DBConstants.MUSIC_HISTORY_TABLE, null, values);
-		values = new ContentValues();
-		values.put(DBConstants.MUSIC_HISTORY_ARTIST, "Test4");
-		values.put(DBConstants.MUSIC_HISTORY_TITLE, "Test4");
-		values.put(DBConstants.MUSIC_HISTORY_GRACENOTE_TRACK_ID, "Test4");
-		values.put(DBConstants.MUSIC_HISTORY_DATE, "Date4");
-		db.insert(DBConstants.MUSIC_HISTORY_TABLE, null, values);
+		db.execSQL(DBConstants.SQL_CREATE_FINGERPRINTS_TABLE);
 	}
 
 	@Override

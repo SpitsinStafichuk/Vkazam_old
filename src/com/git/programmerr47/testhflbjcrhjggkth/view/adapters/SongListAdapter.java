@@ -1,28 +1,35 @@
 package com.git.programmerr47.testhflbjcrhjggkth.view.adapters;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.ISongListController;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.ISongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.ISongManager;
+import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SongInformationManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObservable;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObserver;
+import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISearchStatusObserver;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver {
+public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver, ISearchStatusObserver {
 
 	private Activity activity;
 	private LayoutInflater inflater;
@@ -31,17 +38,20 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 	private ISongManager songManager;
 	private View currentListItemView;
 	private MicroScrobblerModel model;
+	private Map<String, ImageView> coverArts;
 	
-	public SongListAdapter(Activity activity, int idItem, List<ISongData> songs, ISongListController controller) {
+	public SongListAdapter(Activity activity, int idItem, ISongListController controller) {
 		this.activity = activity;
 		this.idItem = idItem;
 		this.controller = controller;
 		songManager = MicroScrobblerModel.getInstance().getSongManager();
 		model = MicroScrobblerModel.getInstance();
+		coverArts = new HashMap<String, ImageView>();
 		Log.v("Lists", "History adapter created");
 		
 		IPlayerStateObservable songManagerStateObservable = (IPlayerStateObservable) songManager;
 		songManagerStateObservable.addObserver((IPlayerStateObserver)this);
+		model.getSongInformationManager().addObserver((ISearchStatusObserver) this);
 		Log.v("SongPlayer", "IPlayerStateObserver was added");
 		inflater = (LayoutInflater) this.activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
@@ -71,7 +81,8 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 		final View fView = view;
 		
 		ImageButton playPauseButton = (ImageButton) view.findViewById(R.id.songPlayPauseButton);
-		playPauseButton.setOnClickListener(new View.OnClickListener() {
+		Log.v("playPauseButton", "" + playPauseButton);
+		playPauseButton.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
@@ -89,15 +100,28 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 				}
 				
 				currentListItemView = fView;
-			    LinearLayout element = (LinearLayout) fView.findViewById(R.id.songHistoryItem);
+			    LinearLayout element = (LinearLayout) currentListItemView.findViewById(R.id.songHistoryItem);
 			    element.setBackgroundResource(R.drawable.song_list_item_bg_pressed);
 				controller.playPauseSong((ISongData) getItem(position));
 			}
 		});
 		
 		ISongData data = getSongData(position);
-		((TextView) view.findViewById(R.id.songListItemArtist)).setText(data.getArtist() + " - " + data.getTitle());
+		coverArts.put(data.getTrackId(), (ImageView) view.findViewById(R.id.songListItemCoverArt));
+		model.getSongInformationManager().searchByTrackId(data.getTrackId());
+		((TextView) view.findViewById(R.id.songListItemArtist)).setText(data.getArtist());
+		((TextView) view.findViewById(R.id.songListItemTitle)).setText(data.getTitle());
 		((TextView) view.findViewById(R.id.songListItemDate)).setText(data.getDate());
+		if ((songManager.getSongData() != null) && 
+		    (songManager.getSongData().equals(data))) {
+		    ((LinearLayout) view.findViewById(R.id.songHistoryItem)).setBackgroundResource(R.drawable.song_list_item_bg_pressed);
+			updateListItem(view);
+		} else {
+		    ((LinearLayout) view.findViewById(R.id.songHistoryItem)).setBackgroundResource(R.drawable.song_list_item_bg_default);
+		    ((ImageButton) view.findViewById(R.id.songPlayPauseButton)).setImageResource(android.R.drawable.ic_media_play);
+		    ((ImageButton) view.findViewById(R.id.songPlayPauseButton)).setVisibility(View.VISIBLE);
+		    ((ProgressBar) view.findViewById(R.id.songItemLoading)).setVisibility(View.GONE);
+		}
 		return view;
 	}
 
@@ -107,39 +131,20 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 
 	@Override
 	public void updatePlayerState() {
+		//TODO
+		//TODO
+		//TODO ВОТ ЭТО ДЕЛАТЬ В UI ПОТОКЕ СРАЗУ
+		//TODO
+		//TODO
 		activity.runOnUiThread(new Runnable() {
 
 			@Override
 			public void run() {
+				Log.v("SongPlayer", "updatePlayerState");
 				if (currentListItemView != null) {
-					ImageButton playPauseButton = (ImageButton) currentListItemView.findViewById(R.id.songPlayPauseButton);
-					ProgressBar progressBar = (ProgressBar) currentListItemView.findViewById(R.id.songItemLoading);
-					
-					if (songManager.isLoading()) {
-						progressBar.setVisibility(View.VISIBLE);
-						playPauseButton.setVisibility(View.GONE);
-						Log.v("SongPlayer", "Song" + songManager.getArtist() + " - " + songManager.getTitle() + "is loading");
-					} else {
-						progressBar.setVisibility(View.GONE);
-						if (songManager.isPrepared()) {
-							playPauseButton.setVisibility(View.VISIBLE);
-						} else {
-							if (playPauseButton.getVisibility() == View.GONE)
-								progressBar.setVisibility(View.INVISIBLE);
-						}
-						Log.v("SongPlayer", "Song" + /*songManager.getArtist() + " - " + songManager.getTitle() +*/ "is not loading");
-					}
-					
-					if (songManager.isPlaying()) {
-						playPauseButton.setImageResource(android.R.drawable.ic_media_pause);
-						Log.v("SongPlayer", "Song" + songManager.getArtist() + " - " + songManager.getTitle() + "is playing");
-					} else {
-						playPauseButton.setImageResource(android.R.drawable.ic_media_play);
-						Log.v("SongPlayer", "Song" + /*songManager.getArtist() + " - " + songManager.getTitle() +*/ "is on pause");
-					}
+					updateListItem(currentListItemView);
 				}
 			}
-			
 		});
 	}
 	
@@ -161,4 +166,46 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 		Log.v("SongPlayer", "IPlayerStateObserver was removed");
 	}
 
+	private void updateListItem(View v) {
+		ImageButton playPauseButton = (ImageButton) v.findViewById(R.id.songPlayPauseButton);
+		ProgressBar progressBar = (ProgressBar) v.findViewById(R.id.songItemLoading);
+		
+		if (songManager.isLoading()) {
+			progressBar.setVisibility(View.VISIBLE);
+			playPauseButton.setVisibility(View.GONE);
+			Log.v("SongPlayer", "Song" + songManager.getArtist() + " - " + songManager.getTitle() + "is loading");
+		} else {
+			progressBar.setVisibility(View.GONE);
+			if (songManager.isPrepared()) {
+				playPauseButton.setVisibility(View.VISIBLE);
+			} else {
+				if (playPauseButton.getVisibility() == View.GONE)
+					progressBar.setVisibility(View.INVISIBLE);
+			}
+			Log.v("SongPlayer", "Song" + /*songManager.getArtist() + " - " + songManager.getTitle() +*/ "is not loading");
+		}
+		
+		if (songManager.isPlaying()) {
+			playPauseButton.setImageResource(android.R.drawable.ic_media_pause);
+			Log.v("SongPlayer", "Song" + songManager.getArtist() + " - " + songManager.getTitle() + "is playing");
+		} else {
+			playPauseButton.setImageResource(android.R.drawable.ic_media_play);
+			Log.v("SongPlayer", "Song" + /*songManager.getArtist() + " - " + songManager.getTitle() +*/ "is on pause");
+		}
+	}
+
+	@Override
+	public void updateSearchStatus(String trackId) {
+		Log.v("SongInformation", "trackId: " + trackId);
+		if (trackId != null) {
+			SongInformationManager songInfo = model.getSongInformationManager();
+			String coverArtUrl = songInfo.getCoverArtUrl(trackId);
+			Log.v("SongInformation", "CoverArtUrl: " + coverArtUrl);
+			DisplayImageOptions options = new DisplayImageOptions.Builder()
+				.showImageForEmptyUri(R.drawable.no_cover_art)
+				.showImageOnFail(R.drawable.no_cover_art)
+				.build();
+			model.getImageLoader().displayImage(coverArtUrl, coverArts.get(trackId), options);
+		}
+	}
 }

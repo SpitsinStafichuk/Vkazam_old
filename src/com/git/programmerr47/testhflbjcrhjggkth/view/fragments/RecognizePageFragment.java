@@ -93,8 +93,17 @@ public class RecognizePageFragment extends Fragment implements IRecognizeStatusO
    
     @Override
     public void onDestroy() {
-            super.onDestroy();
-            Log.v("SongPlayer", "HistoryPageFragment onDestroy()");
+        super.onDestroy();
+        fingerprintManager.removeObserver(this);
+        recognizeManager.removeObserver(this);
+        Log.v("SongPlayer", "HistoryPageFragment onDestroy()");
+    }
+    
+    @Override
+    public void onResume() {
+    	super.onResume();
+    	updateFingerprintStatus();
+    	updateRecognizeStatus();
     }
 
 	@Override
@@ -103,18 +112,20 @@ public class RecognizePageFragment extends Fragment implements IRecognizeStatusO
 			
 			@Override
 			public void run() {
-				status.setText(recognizeManager.getRecognizeStatus());
-				if(recognizeManager.getRecognizeStatus().equals(RecognizeManager.RECOGNIZING_SUCCESS)) {
-					String coverArtUrl = recognizeManager.getCoverArtUrl();
-					infoDialog.setVisibility(View.VISIBLE);
-					songArtist.setText(recognizeManager.getArtist());
-					songTitle.setText(recognizeManager.getTitle());
-					songDate.setText("just now");
-					DisplayImageOptions options = new DisplayImageOptions.Builder()
-						.showImageForEmptyUri(R.drawable.no_cover_art)
-						.showImageOnFail(R.drawable.no_cover_art)
-						.build();
-					model.getImageLoader().displayImage(coverArtUrl, songCoverArt, options);
+				if (recognizeManager.getRecognizeStatus() != null) {
+					status.setText(recognizeManager.getRecognizeStatus());
+					if(recognizeManager.getRecognizeStatus().equals(RecognizeManager.RECOGNIZING_SUCCESS)) {
+						String coverArtUrl = recognizeManager.getCoverArtUrl();
+						infoDialog.setVisibility(View.VISIBLE);
+						songArtist.setText(recognizeManager.getArtist());
+						songTitle.setText(recognizeManager.getTitle());
+						songDate.setText("just now");
+						DisplayImageOptions options = new DisplayImageOptions.Builder()
+							.showImageForEmptyUri(R.drawable.no_cover_art)
+							.showImageOnFail(R.drawable.no_cover_art)
+							.build();
+						model.getImageLoader().displayImage(coverArtUrl, songCoverArt, options);
+					}
 				}
 			}
 		});
@@ -126,9 +137,11 @@ public class RecognizePageFragment extends Fragment implements IRecognizeStatusO
 			
 			@Override
 			public void run() {
-				status.setText(fingerprintManager.getFingerprintStatus());
-				if(fingerprintManager.getFingerprintStatus().equals(FingerprintManager.FINGERPRINTING_SUCCESS)) {
-					
+				if (fingerprintManager.getFingerprintStatus() != null) {
+					status.setText(fingerprintManager.getFingerprintStatus());
+					if(fingerprintManager.getFingerprintStatus().equals(FingerprintManager.FINGERPRINTING_SUCCESS)) {
+						
+					}
 				}
 			}
 		});
