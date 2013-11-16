@@ -15,9 +15,11 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.lastfm.Scrobbler.IOnSignIn
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.ISongManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.FingerprintManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.RecognizeManager;
+import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SongInformationManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SongManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISignInObservable;
 import com.gracenote.mmid.MobileSDK.GNConfig;
+import com.gracenote.mmid.MobileSDK.GNOperations;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -38,10 +40,10 @@ public class MicroScrobblerModel implements IMicroScrobblerModel, ISignInObserva
 	
 	private Set<IOnSignInResultListener> listeners;
 	
-	private ISongManager songManager;
-	
 	private FingerprintManager fingerprintManager;
 	private RecognizeManager recognizeManager;
+	private ISongManager songManager;
+	private SongInformationManager songInformationManager;
 	
 	private SongDAO songDAO;
 	
@@ -70,6 +72,7 @@ public class MicroScrobblerModel implements IMicroScrobblerModel, ISignInObserva
 		imageLoader.init(ImageLoaderConfiguration.createDefault(context));
 		songDAO = new SongDAO(context);
 		songManager = new SongManager(songDAO);
+		songInformationManager = new SongInformationManager(config);
 		listeners = new HashSet<IOnSignInResultListener>();
 		scrobbler = new Scrobbler();
 		sharedPreferences = context.getSharedPreferences(SAVE_LASTFM_INFO_PREF, MODE);
@@ -91,6 +94,10 @@ public class MicroScrobblerModel implements IMicroScrobblerModel, ISignInObserva
 	
 	public RecognizeManager getRecognizeManager() {
 		return recognizeManager;
+	}
+	
+	public SongInformationManager getSongInformationManager() {
+		return songInformationManager;
 	}
 	
 	@Override

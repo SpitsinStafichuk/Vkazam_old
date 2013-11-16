@@ -1,14 +1,19 @@
 package com.git.programmerr47.testhflbjcrhjggkth.view.adapters;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.ISongListController;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.ISongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.ISongManager;
+import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SongInformationManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObservable;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObserver;
+import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISearchStatusObserver;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
 import android.app.Activity;
 import android.content.Context;
@@ -19,11 +24,12 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver {
+public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver, ISearchStatusObserver {
 
 	private Activity activity;
 	private LayoutInflater inflater;
@@ -32,6 +38,7 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 	private ISongManager songManager;
 	private View currentListItemView;
 	private MicroScrobblerModel model;
+	private Map<String, ImageView> coverArts;
 	
 	public SongListAdapter(Activity activity, int idItem, ISongListController controller) {
 		this.activity = activity;
@@ -39,10 +46,12 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 		this.controller = controller;
 		songManager = MicroScrobblerModel.getInstance().getSongManager();
 		model = MicroScrobblerModel.getInstance();
+		coverArts = new HashMap<String, ImageView>();
 		Log.v("Lists", "History adapter created");
 		
 		IPlayerStateObservable songManagerStateObservable = (IPlayerStateObservable) songManager;
 		songManagerStateObservable.addObserver((IPlayerStateObserver)this);
+		model.getSongInformationManager().addObserver((ISearchStatusObserver) this);
 		Log.v("SongPlayer", "IPlayerStateObserver was added");
 		inflater = (LayoutInflater) this.activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
@@ -98,6 +107,8 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 		});
 		
 		ISongData data = getSongData(position);
+		coverArts.put(data.getTrackId(), (ImageView) view.findViewById(R.id.songListItemCoverArt));
+		model.getSongInformationManager().searchByTrackId(data.getTrackId());
 		((TextView) view.findViewById(R.id.songListItemArtist)).setText(data.getArtist());
 		((TextView) view.findViewById(R.id.songListItemTitle)).setText(data.getTitle());
 		((TextView) view.findViewById(R.id.songListItemDate)).setText(data.getDate());
@@ -180,6 +191,21 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 		} else {
 			playPauseButton.setImageResource(android.R.drawable.ic_media_play);
 			Log.v("SongPlayer", "Song" + /*songManager.getArtist() + " - " + songManager.getTitle() +*/ "is on pause");
+		}
+	}
+
+	@Override
+	public void updateSearchStatus(String trackId) {
+		Log.v("SongInformation", "trackId: " + trackId);
+		if (trackId != null) {
+			SongInformationManager songInfo = model.getSongInformationManager();
+			String coverArtUrl = songInfo.getCoverArtUrl(trackId);
+			Log.v("SongInformation", "CoverArtUrl: " + coverArtUrl);
+			DisplayImageOptions options = new DisplayImageOptions.Builder()
+				.showImageForEmptyUri(R.drawable.no_cover_art)
+				.showImageOnFail(R.drawable.no_cover_art)
+				.build();
+			model.getImageLoader().displayImage(coverArtUrl, coverArts.get(trackId), options);
 		}
 	}
 }
