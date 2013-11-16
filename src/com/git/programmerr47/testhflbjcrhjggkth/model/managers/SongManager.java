@@ -74,8 +74,8 @@ public class SongManager implements ISongManager, IPlayerStateObservable {
 	@Override
 	public void prepare() throws MalformedURLException, IOException, JSONException, SongNotFoundException, KException {
 		isLoading = true;
+		Log.v("SongPlayer", "Player is loading");
 		notifyPlayerStateObservers();
-		songPlayer.release();
 		songPlayer = new MediaPlayer();
 		boolean songDataNeedUpdate = false;
 		Audio audio = null;
@@ -200,6 +200,7 @@ public class SongManager implements ISongManager, IPlayerStateObservable {
 
 	@Override
 	public void addObserver(IPlayerStateObserver o) {
+		Log.v("SongManager", "Add new observer"); 
 		playerStateObservers.add(o);
 	}
 
@@ -230,6 +231,7 @@ public class SongManager implements ISongManager, IPlayerStateObservable {
 		isPlaying = false;
 		isLoading = false;
 		isPrepared = true;
+		Log.v("SongPlayer", "Player is released");
 		notifyPlayerStateObservers();
 	}
 
