@@ -36,7 +36,12 @@ public class SongInformationManager implements GNSearchResultReady, ISearchStatu
 	}
 	
 	public void searchByTrackId(String trackId) {
-		GNOperations.fetchByTrackId(this, config, trackId);
+		if (!coverArtUrls.containsKey(trackId)) {
+			GNOperations.fetchByTrackId(this, config, trackId);
+		} else {
+			searchStatus = SEARCH_SUCCESS;
+			notifySearchStatusObservers(trackId);
+		}
 	}
 
 	@Override

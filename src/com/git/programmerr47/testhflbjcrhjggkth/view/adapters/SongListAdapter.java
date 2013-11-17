@@ -107,6 +107,7 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 		});
 		
 		ISongData data = getSongData(position);
+		((ImageView) view.findViewById(R.id.songListItemCoverArt)).setImageResource(R.drawable.no_cover_art);
 		coverArts.put(data.getTrackId(), (ImageView) view.findViewById(R.id.songListItemCoverArt));
 		model.getSongInformationManager().searchByTrackId(data.getTrackId());
 		((TextView) view.findViewById(R.id.songListItemArtist)).setText(data.getArtist());
@@ -204,6 +205,8 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 			DisplayImageOptions options = new DisplayImageOptions.Builder()
 				.showImageForEmptyUri(R.drawable.no_cover_art)
 				.showImageOnFail(R.drawable.no_cover_art)
+				.cacheOnDisc(true)
+				.cacheInMemory(true)
 				.build();
 			model.getImageLoader().displayImage(coverArtUrl, coverArts.get(trackId), options);
 		}
