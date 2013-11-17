@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout 
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:descendantFocusability="blocksDescendants"
+        android:orientation="vertical">
+
+    	<LinearLayout
+    		android:id="@+id/songHistoryItem"
+    	    android:layout_width="match_parent"
+    	    android:layout_height="match_parent"
+    		android:background="@drawable/song_list_item_selector">
+
+    	    <RelativeLayout
+    	        android:layout_width="wrap_content"
+    	        android:layout_height="wrap_content">
+    	        
+    			<ImageView
+    		    	android:id="@+id/songListItemCoverArt"
+    		    	android:layout_width="100dp"
+    		    	android:layout_height="100dp"
+    		    	android:scaleType="fitXY"
+    		    	android:src="@drawable/no_cover_art" />
+
+
+    	        <LinearLayout
+    	            android:id="@+id/songListItemPlayPauseLayout"
+    	            android:layout_width="wrap_content"
+    	            android:layout_height="wrap_content" 
+    	            android:layout_centerInParent="true"
+    	            android:gravity="left|center_vertical">
+
+    	            <ImageButton
+    	                android:id="@+id/songPlayPauseButton"
+    	                android:layout_width="wrap_content"
+    	                android:layout_height="wrap_content"
+    	                android:background="@android:color/transparent"
+    	                android:focusable="false"
+    	                android:focusableInTouchMode="false"
+    	                android:src="@android:drawable/ic_media_play" />
+
+    	            <ProgressBar
+    	                android:id="@+id/songItemLoading"
+    	                android:layout_width="wrap_content"
+    	                android:layout_height="wrap_content"
+    	                android:minHeight="15dp"
+    	                android:minWidth="30dip"
+    	                android:visibility="gone"
+    	                style="?android:attr/progressBarStyleSmall"/>
+
+    	        </LinearLayout>
+
+    	    </RelativeLayout>
+
+    	    <LinearLayout
+    	        android:layout_width="match_parent"
+    	        android:layout_height="match_parent"
+    	        android:layout_gravity="center_vertical"
+    	        android:orientation="vertical" >
+
+    	        <LinearLayout
+    	            android:layout_width="match_parent"
+    	            android:layout_height="wrap_content"
+    	            android:layout_marginTop="5dp"
+    	            android:layout_weight="1"
+    	            android:gravity="top"
+    	            android:orientation="vertical" >
+    	       		
+    	        	<TextView
+    	            	android:id="@+id/songListItemArtist"
+    	            	android:layout_width="match_parent"
+    	            	android:layout_height="wrap_content"
+    	            	android:gravity="center_vertical"
+    	            	android:paddingLeft="10dp"
+    	            	android:singleLine="true"
+    	            	android:text="Artist"
+    	            	android:textColor="#333333"
+    	            	android:textSize="20sp" />
+
+    	       		<TextView
+    	            	android:id="@+id/songListItemTitle"
+    	            	android:layout_width="match_parent"
+    	            	android:layout_height="wrap_content"
+    	            	android:gravity="center_vertical"
+    	            	android:paddingLeft="10dp"
+    	            	android:singleLine="true"
+    	            	android:text="Title"
+    	            	android:textColor="#333333"
+    	            	android:textSize="20sp" />
+    	       		
+    	        </LinearLayout>
+
+    	        <TextView
+    	            android:id="@+id/songListItemDate"
+    	            android:layout_width="match_parent"
+    	            android:layout_height="wrap_content"
+    	            android:layout_marginBottom="5dp"
+    	            android:layout_weight="1"
+    	            android:gravity="bottom"
+    	            android:paddingLeft="10dp"
+    	            android:singleLine="true"
+    	            android:text="date"
+    	            android:textColor="#99333333"
+    	            android:textSize="15sp"
+    	            android:textStyle="italic" />
+
+    	    </LinearLayout>
+
+    	</LinearLayout>
+
+	</LinearLayout>
