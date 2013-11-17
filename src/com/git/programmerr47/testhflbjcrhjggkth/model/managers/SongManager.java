@@ -65,7 +65,7 @@ public class SongManager implements IPlayerStateObservable {
 	
 		if (audioList.isEmpty()) {
 			isLoading = false;
-			notifyPlayerStateObservers();
+			asyncNotifyPlayerStateObservers();
 			throw new SongNotFoundException();
 		}
 		return audioList.get(0);
@@ -95,7 +95,7 @@ public class SongManager implements IPlayerStateObservable {
 		}
 		songPlayer.prepare();
 		if(songDataNeedUpdate) {
-			songData = new SongData(songData.getId(), songData.getArtist(), songData.getTitle(), songData.getTrackId(), songData.getDate(), audio.url);
+			songData = new SongData(songData.getId(), songData.getArtist(), songData.getTitle(), songData.getTrackId(), songData.getDate(), audio.url, songData.getCoverArtURL());
 			songDAO.update(songData);
 		}
 		wasPlayed = false;
@@ -218,7 +218,7 @@ public class SongManager implements IPlayerStateObservable {
 		isLoading = false;
 		isPrepared = true;
 		Log.v("SongPlayer", "Player is released");
-		notifyPlayerStateObservers();
+		asyncNotifyPlayerStateObservers();
 	}
 
 	public boolean isLoading() {

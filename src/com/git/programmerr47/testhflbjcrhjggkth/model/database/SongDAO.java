@@ -50,6 +50,7 @@ public class SongDAO implements ISongDAO {
 		values.put(DBConstants.MUSIC_HISTORY_TITLE, songData.getTitle());
 		values.put(DBConstants.MUSIC_HISTORY_GRACENOTE_TRACK_ID, songData.getTrackId());
 		values.put(DBConstants.MUSIC_HISTORY_DATE, songData.getDate());
+		values.put(DBConstants.MUSIC_HISTORY_COVER_ART_URL, songData.getCoverArtURL());
 		long result = database.insert(DBConstants.MUSIC_HISTORY_TABLE, null, values);
 		Log.v("HistoryList", "" + result);
 		database.close();
@@ -65,15 +66,12 @@ public class SongDAO implements ISongDAO {
 		historyDBHelper = new HistoryDBHelper(context);
 		database = historyDBHelper.getWritableDatabase();
 		ContentValues values = new ContentValues();
-		values.put(DBConstants.MUSIC_PLEERCOM_LINK, songData.getPleercomURL());
+		values.put(DBConstants.MUSIC_HISTORY_PLEERCOM_LINK, songData.getPleercomURL());
+		values.put(DBConstants.MUSIC_HISTORY_COVER_ART_URL, songData.getCoverArtURL());
 		//TODO подумать над разумностью сравнения по датам
 		int result = database.update(DBConstants.MUSIC_HISTORY_TABLE, values, DBConstants.MUSIC_HISTORY_DATE + "=?", new String[] {songData.getDate()});
 		database.close();
 		historyDBHelper.close();
-		if(result == 1) {
-			songDataSet.remove(songData);
-			songDataSet.add(songData);
-		}
 		return result;
 	}
 	
@@ -100,7 +98,8 @@ public class SongDAO implements ISongDAO {
 					                cursor.getString(cursor.getColumnIndex(DBConstants.MUSIC_HISTORY_TITLE)), 
 					                cursor.getString(cursor.getColumnIndex(DBConstants.MUSIC_HISTORY_GRACENOTE_TRACK_ID)), 
 					                cursor.getString(cursor.getColumnIndex(DBConstants.MUSIC_HISTORY_DATE)),
-					                cursor.getString(cursor.getColumnIndex(DBConstants.MUSIC_PLEERCOM_LINK)));
+					                cursor.getString(cursor.getColumnIndex(DBConstants.MUSIC_HISTORY_PLEERCOM_LINK)),
+					                cursor.getString(cursor.getColumnIndex(DBConstants.MUSIC_HISTORY_COVER_ART_URL)));
 			
 			songDataList.add(instance);
 			songDataSet.add(instance);

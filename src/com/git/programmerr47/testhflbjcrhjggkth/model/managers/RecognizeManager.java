@@ -111,7 +111,7 @@ public class RecognizeManager implements GNSearchResultReady, IRecognizeStatusOb
 						Log.w("Scrobbling", "scrobbler == null");
 					}
 					
-					SongData songInfo = new SongData(-1, artist, title, bestResponse.getTrackId(), currentFingerprintData.getDate(), null);
+					SongData songInfo = new SongData(-1, artist, title, bestResponse.getTrackId(), currentFingerprintData.getDate(), null, coverArtUrl);
 					songDAO.insert(songInfo);
 					if(currentFingerprintIsSaved) {
 						removeFingerprint(currentFingerprintData);

@@ -7,15 +7,17 @@ public class SongData {
 	private String trackId;
 	private String date;
 	private String pleercomURL;
+	private String coverArtURL;
 	private long id;
 	
-	public SongData(long id, String artist, String title, String trackId, String date, String pleercomURL) {
+	public SongData(long id, String artist, String title, String trackId, String date, String pleercomURL, String coverArtURL) {
 		this.id = id;
 		this.artist = artist;
 		this.title = title;
 		this.trackId = trackId;
 		this.date = date;
 		this.pleercomURL = pleercomURL;
+		this.coverArtURL = coverArtURL;
 	}
 	
 	public String getArtist() {
@@ -40,6 +42,18 @@ public class SongData {
 
 	public String getPleercomURL() {
 		return pleercomURL;
+	}
+	
+	public String getCoverArtURL() {
+		return coverArtURL;
+	}
+	
+	public void setCoverArtURL(String coverArtURL) {
+		this.coverArtURL = coverArtURL;
+	}
+	
+	public void setPleercomURL(String pleercomURL) {
+		this.pleercomURL = pleercomURL;
 	}
 
 	public boolean equals(Object o) {
