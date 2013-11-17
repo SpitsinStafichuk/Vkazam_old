@@ -11,12 +11,12 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.ISongData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.SongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.exceptions.SongNotFoundException;
-import com.git.programmerr47.testhflbjcrhjggkth.model.managers.ISongManager;
+import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SongManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.KException;
 
-public class SongListController implements ISongListController {
+public class SongListController {
 
 	MicroScrobblerModel model;
 	Fragment view;
@@ -27,15 +27,13 @@ public class SongListController implements ISongListController {
 		this.model = MicroScrobblerModel.getInstance();
 	}
 	
-	@Override
-	public List<ISongData> getList() {
+	public List<SongData> getList() {
 		return model.getHistory();
 	}
 
-	@Override
-	public synchronized void playPauseSong(final ISongData songData) {
+	public synchronized void playPauseSong(final SongData songData) {
 		if(preparingThread != null) {
-			ISongManager songManager = MicroScrobblerModel.getInstance().getSongManager();
+			SongManager songManager = MicroScrobblerModel.getInstance().getSongManager();
 			songManager.set(null);
 			preparingThread.interrupt();
 		}
@@ -49,8 +47,8 @@ public class SongListController implements ISongListController {
 		preparingThread.start();	
 	}
 	
-	private void _playPauseSong(ISongData songData) {
-		ISongManager songManager = MicroScrobblerModel.getInstance().getSongManager();
+	private void _playPauseSong(SongData songData) {
+		SongManager songManager = MicroScrobblerModel.getInstance().getSongManager();
 		if(songData.equals(songManager.getSongData())) {
 			Log.v("SongListController", "songManager.getSongData() == songData == " + songData);
 			if(songManager.isPrepared())
@@ -105,20 +103,8 @@ public class SongListController implements ISongListController {
 			}
 		});
 	}
-	
-	private void showToast(final String message, final int length) {
-		view.getActivity().runOnUiThread(new Runnable() {
-			
-			@Override
-			public void run() {
-				Toast toast = Toast.makeText(view.getActivity().getApplicationContext(), message, length);
-				toast.show();
-			}
-		});
-	}
 
-	@Override
-	public boolean deleteSong(ISongData songData) {
+	public boolean deleteSong(SongData songData) {
 		//return model.getRadioManager().deleteSongFromHistory(songData);
 		return false;
 	}

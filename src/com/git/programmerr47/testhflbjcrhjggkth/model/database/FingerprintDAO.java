@@ -10,30 +10,29 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.IFingerprintData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.FingerprintData;
 
 public class FingerprintDAO implements IFingerprintDAO {
 	
-	List<IFingerprintData> fingerprintDataSet;
+	List<FingerprintData> fingerprintDataSet;
 	HistoryDBHelper historyDBHelper;
 	SQLiteDatabase database;
 	Context context;
 	private volatile boolean isFirstGetFingerprints = true;
 	
 	public FingerprintDAO(Context context) {
-		fingerprintDataSet = new LinkedList<IFingerprintData>();
+		fingerprintDataSet = new LinkedList<FingerprintData>();
 		this.context = context;
 	}
 
 	@Override
-	public List<IFingerprintData> getFingerprints() {
+	public List<FingerprintData> getFingerprints() {
 		if(isFirstGetFingerprints) {
 			historyDBHelper = new HistoryDBHelper(context);
 			database = historyDBHelper.getWritableDatabase();
 			Cursor cursor = database.rawQuery("SELECT * FROM " + DBConstants.FINGERPRINTS_TABLE, null);
 			cursor.moveToFirst();
-			List<IFingerprintData> result = getListByCursor(cursor);
+			List<FingerprintData> result = getListByCursor(cursor);
 			database.close();
 			historyDBHelper.close();
 			isFirstGetFingerprints = false;
@@ -44,7 +43,7 @@ public class FingerprintDAO implements IFingerprintDAO {
 	}
 	
 	@Override
-	public synchronized long insert(IFingerprintData fingerprintData) {
+	public synchronized long insert(FingerprintData fingerprintData) {
 		historyDBHelper = new HistoryDBHelper(context);
 		database = historyDBHelper.getWritableDatabase();
 		ContentValues values = new ContentValues();
@@ -60,7 +59,7 @@ public class FingerprintDAO implements IFingerprintDAO {
 	}
 	
 	@Override
-	public synchronized int delete(IFingerprintData fingerprintData) {
+	public synchronized int delete(FingerprintData fingerprintData) {
 		historyDBHelper = new HistoryDBHelper(context);
 		database = historyDBHelper.getWritableDatabase();
 		int result = database.delete(DBConstants.FINGERPRINTS_TABLE, DBConstants.FINGERPRINT_DATE + "=?", new String[] {fingerprintData.getDate()});
@@ -73,9 +72,9 @@ public class FingerprintDAO implements IFingerprintDAO {
 		return result;
 	}
 	
-	private List<IFingerprintData> getListByCursor(Cursor cursor) {
-		List<IFingerprintData> fingerprintDataList = new ArrayList<IFingerprintData>();
-		IFingerprintData instance;
+	private List<FingerprintData> getListByCursor(Cursor cursor) {
+		List<FingerprintData> fingerprintDataList = new ArrayList<FingerprintData>();
+		FingerprintData instance;
 		for(int i = 0; i < cursor.getCount(); i++) {
 			instance = new FingerprintData(Long.parseLong(cursor.getString(cursor.getColumnIndex(DBConstants.FINGERPRINT_ID))),
 	                				cursor.getString(cursor.getColumnIndex(DBConstants.FINGERPRINT)), 

@@ -10,7 +10,8 @@ public interface DBConstants {
 	String MUSIC_HISTORY_TITLE = "title"; 
 	String MUSIC_HISTORY_DATE = "date";
 	String MUSIC_HISTORY_GRACENOTE_TRACK_ID = "song_data_link";
-	String MUSIC_PLEERCOM_LINK = "pleercom_link";
+	String MUSIC_HISTORY_PLEERCOM_LINK = "pleercom_link";
+	String MUSIC_HISTORY_COVER_ART_URL = "cover_art_url";
 	
 	String FINGERPRINTS_TABLE = "fingerprints";
 	
@@ -24,7 +25,8 @@ public interface DBConstants {
 			+ MUSIC_HISTORY_TITLE + " VARCHAR(100)," 
 			+ MUSIC_HISTORY_DATE + " VARCHAR(100)," 	
 			+ MUSIC_HISTORY_GRACENOTE_TRACK_ID + " VARCHAR(100)," 
-			+ MUSIC_PLEERCOM_LINK + " VARCHAR(100)" 
+			+ MUSIC_HISTORY_PLEERCOM_LINK + " VARCHAR(100)," 
+			+ MUSIC_HISTORY_COVER_ART_URL + " TEXT"
 			+")";
 	
 	String SQL_CREATE_FINGERPRINTS_TABLE = "CREATE TABLE IF NOT EXISTS "

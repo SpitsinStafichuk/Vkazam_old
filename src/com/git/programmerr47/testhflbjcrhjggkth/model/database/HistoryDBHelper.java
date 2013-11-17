@@ -9,7 +9,7 @@ public class HistoryDBHelper extends SQLiteOpenHelper {
 	//TODO study to know db version from out file
 	
 	public HistoryDBHelper(Context context) {
-		super(context, DBConstants.DATABASE, null, 1);
+		super(context, DBConstants.DATABASE, null, 2);
 	}
 
 	@Override

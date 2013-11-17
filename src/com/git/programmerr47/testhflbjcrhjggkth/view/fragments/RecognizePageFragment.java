@@ -1,7 +1,6 @@
 package com.git.programmerr47.testhflbjcrhjggkth.view.fragments;
 
 import com.git.programmerr47.testhflbjcrhjggkth.R;
-import com.git.programmerr47.testhflbjcrhjggkth.controllers.IRecognizeController;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.RecognizeController;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.FingerprintManager;
@@ -25,7 +24,7 @@ import android.widget.TextView;
 public class RecognizePageFragment extends Fragment implements IRecognizeStatusObserver, IFingerprintStatusObserver {
 	static final String ARGUMENT_RADIO_ID = "arg_rad_id";
     
-    IRecognizeController controller;
+    RecognizeController controller;
     MicroScrobblerModel model;
     RecognizeManager recognizeManager;
     FingerprintManager fingerprintManager;
@@ -48,7 +47,7 @@ public class RecognizePageFragment extends Fragment implements IRecognizeStatusO
     @Override
     public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            controller = new RecognizeController(this);
+            controller = new RecognizeController();
             model = MicroScrobblerModel.getInstance();
             fingerprintManager = model.getFingerprintManager();
             fingerprintManager.addObserver(this);
@@ -108,43 +107,31 @@ public class RecognizePageFragment extends Fragment implements IRecognizeStatusO
 
 	@Override
 	public void updateRecognizeStatus() {
-		parentActivity.runOnUiThread(new Runnable() {
-			
-			@Override
-			public void run() {
-				if (recognizeManager.getRecognizeStatus() != null) {
-					status.setText(recognizeManager.getRecognizeStatus());
-					if(recognizeManager.getRecognizeStatus().equals(RecognizeManager.RECOGNIZING_SUCCESS)) {
-						String coverArtUrl = recognizeManager.getCoverArtUrl();
-						infoDialog.setVisibility(View.VISIBLE);
-						songArtist.setText(recognizeManager.getArtist());
-						songTitle.setText(recognizeManager.getTitle());
-						songDate.setText("just now");
-						DisplayImageOptions options = new DisplayImageOptions.Builder()
-							.showImageForEmptyUri(R.drawable.no_cover_art)
-							.showImageOnFail(R.drawable.no_cover_art)
-							.build();
-						model.getImageLoader().displayImage(coverArtUrl, songCoverArt, options);
-					}
-				}
+		if (recognizeManager.getRecognizeStatus() != null) {
+			status.setText(recognizeManager.getRecognizeStatus());
+			if(recognizeManager.getRecognizeStatus().equals(RecognizeManager.RECOGNIZING_SUCCESS)) {
+				String coverArtUrl = recognizeManager.getCoverArtUrl();
+				infoDialog.setVisibility(View.VISIBLE);
+				songArtist.setText(recognizeManager.getArtist());
+				songTitle.setText(recognizeManager.getTitle());
+				songDate.setText("just now");
+				DisplayImageOptions options = new DisplayImageOptions.Builder()
+					.showImageForEmptyUri(R.drawable.no_cover_art)
+					.showImageOnFail(R.drawable.no_cover_art)
+					.build();
+				model.getImageLoader().displayImage(coverArtUrl, songCoverArt, options);
 			}
-		});
+		}
 	}
 	
 	@Override
 	public void updateFingerprintStatus() {
-		parentActivity.runOnUiThread(new Runnable() {
-			
-			@Override
-			public void run() {
-				if (fingerprintManager.getFingerprintStatus() != null) {
-					status.setText(fingerprintManager.getFingerprintStatus());
-					if(fingerprintManager.getFingerprintStatus().equals(FingerprintManager.FINGERPRINTING_SUCCESS)) {
-						
-					}
-				}
+		if (fingerprintManager.getFingerprintStatus() != null) {
+			status.setText(fingerprintManager.getFingerprintStatus());
+			if(fingerprintManager.getFingerprintStatus().equals(FingerprintManager.FINGERPRINTING_SUCCESS)) {
+				
 			}
-		});
+		}
 	}
 	
 	@Override

@@ -5,12 +5,12 @@ import java.util.List;
 import java.util.Set;
 
 import android.content.Context;
+import android.os.Handler;
 import android.util.Log;
 
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.FingerprintDAO;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongDAO;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.IFingerprintData;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.ISongData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.FingerprintData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.SongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.lastfm.Scrobbler;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeStatusObservable;
@@ -41,14 +41,16 @@ public class RecognizeManager implements GNSearchResultReady, IRecognizeStatusOb
 	
 	private SongDAO songDAO;
 	private FingerprintDAO fingerprintDAO;
+	private Handler handler;
 	
-	private IFingerprintData currentFingerprintData;
+	private FingerprintData currentFingerprintData;
 	private boolean currentFingerprintIsSaved;
 	
 	
-	public RecognizeManager(GNConfig config, Context context, Scrobbler scrobbler, SongDAO songDAO) {
+	public RecognizeManager(GNConfig config, Context context, Scrobbler scrobbler, SongDAO songDAO, Handler handler) {
 		this.config = config;
 		this.songDAO = songDAO;
+		this.handler = handler;
 		fingerprintDAO = new FingerprintDAO(context);
         this.scrobbler = scrobbler;
         recognizeStatusObservers = new HashSet<IRecognizeStatusObserver>();
@@ -58,15 +60,15 @@ public class RecognizeManager implements GNSearchResultReady, IRecognizeStatusOb
 		return recognizeStatus;
 	}
 	
-	public List<IFingerprintData> getFingerprints() {
+	public List<FingerprintData> getFingerprints() {
 		return fingerprintDAO.getFingerprints();
 	}
 	
-	public int removeFingerprint(IFingerprintData fingerprint) {
+	public int removeFingerprint(FingerprintData fingerprint) {
 		return fingerprintDAO.delete(fingerprint);
 	}
 	//TODO synchronized в данном случае не работает, нужно разобраться с блокировками
-	public synchronized void recognizeFingerprint(IFingerprintData fingerprint, boolean isSaved) {
+	public synchronized void recognizeFingerprint(FingerprintData fingerprint, boolean isSaved) {
 			currentFingerprintData = fingerprint;
 			currentFingerprintIsSaved = isSaved;
 			GNOperations.searchByFingerprint(this, config, fingerprint.getFingerprint());
@@ -109,7 +111,7 @@ public class RecognizeManager implements GNSearchResultReady, IRecognizeStatusOb
 						Log.w("Scrobbling", "scrobbler == null");
 					}
 					
-					ISongData songInfo = new SongData(-1, artist, title, bestResponse.getTrackId(), currentFingerprintData.getDate(), null);
+					SongData songInfo = new SongData(-1, artist, title, bestResponse.getTrackId(), currentFingerprintData.getDate(), null, coverArtUrl);
 					songDAO.insert(songInfo);
 					if(currentFingerprintIsSaved) {
 						removeFingerprint(currentFingerprintData);
@@ -125,7 +127,7 @@ public class RecognizeManager implements GNSearchResultReady, IRecognizeStatusOb
 			}
 		}
 		
-		notifyRecognizeStatusObservers();
+		asyncNotifyRecognizeStatusObservers();
 	}
 	
 	public String getArtist() {
@@ -154,5 +156,13 @@ public class RecognizeManager implements GNSearchResultReady, IRecognizeStatusOb
 	public void notifyRecognizeStatusObservers() {
 		for(IRecognizeStatusObserver o : recognizeStatusObservers)
 			o.updateRecognizeStatus();
+	}
+	
+	private void asyncNotifyRecognizeStatusObservers() {
+		handler.post(new Runnable() {
+			public void run() {
+				notifyRecognizeStatusObservers();
+			}
+		});
 	}
 }

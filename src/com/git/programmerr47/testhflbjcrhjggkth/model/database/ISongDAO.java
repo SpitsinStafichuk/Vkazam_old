@@ -2,12 +2,12 @@ package com.git.programmerr47.testhflbjcrhjggkth.model.database;
 
 import java.util.List;
 
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.ISongData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.SongData;
 
 
 public interface ISongDAO {
-	List<ISongData> getHistory();
-	long insert(ISongData songData);
-	int delete(ISongData songData);
-	int update(ISongData songData);
+	List<SongData> getHistory();
+	long insert(SongData songData);
+	int delete(SongData songData);
+	int update(SongData songData);
 }

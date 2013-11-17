@@ -1,15 +1,14 @@
 package com.git.programmerr47.testhflbjcrhjggkth.view.adapters;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.git.programmerr47.testhflbjcrhjggkth.R;
-import com.git.programmerr47.testhflbjcrhjggkth.controllers.ISongListController;
+import com.git.programmerr47.testhflbjcrhjggkth.controllers.SongListController;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.ISongData;
-import com.git.programmerr47.testhflbjcrhjggkth.model.managers.ISongManager;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.SongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SongInformationManager;
+import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SongManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObservable;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObserver;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISearchStatusObserver;
@@ -34,13 +33,13 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 	private Activity activity;
 	private LayoutInflater inflater;
 	private int idItem;
-	private ISongListController controller;
-	private ISongManager songManager;
+	private SongListController controller;
+	private SongManager songManager;
 	private View currentListItemView;
 	private MicroScrobblerModel model;
 	private Map<String, ImageView> coverArts;
 	
-	public SongListAdapter(Activity activity, int idItem, ISongListController controller) {
+	public SongListAdapter(Activity activity, int idItem, SongListController controller) {
 		this.activity = activity;
 		this.idItem = idItem;
 		this.controller = controller;
@@ -102,14 +101,14 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 				currentListItemView = fView;
 			    LinearLayout element = (LinearLayout) currentListItemView.findViewById(R.id.songHistoryItem);
 			    element.setBackgroundResource(R.drawable.song_list_item_bg_pressed);
-				controller.playPauseSong((ISongData) getItem(position));
+				controller.playPauseSong((SongData) getItem(position));
 			}
 		});
 		
-		ISongData data = getSongData(position);
+		SongData data = getSongData(position);
 		((ImageView) view.findViewById(R.id.songListItemCoverArt)).setImageResource(R.drawable.no_cover_art);
 		coverArts.put(data.getTrackId(), (ImageView) view.findViewById(R.id.songListItemCoverArt));
-		model.getSongInformationManager().searchByTrackId(data.getTrackId());
+		model.getSongInformationManager().searchCoverArtByTrackIdIfNotNull(data);
 		((TextView) view.findViewById(R.id.songListItemArtist)).setText(data.getArtist());
 		((TextView) view.findViewById(R.id.songListItemTitle)).setText(data.getTitle());
 		((TextView) view.findViewById(R.id.songListItemDate)).setText(data.getDate());
@@ -126,27 +125,16 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 		return view;
 	}
 
-	private ISongData getSongData(int position) {
-		return ((ISongData) getItem(position));
+	private SongData getSongData(int position) {
+		return ((SongData) getItem(position));
 	}
 
 	@Override
 	public void updatePlayerState() {
-		//TODO
-		//TODO
-		//TODO ВОТ ЭТО ДЕЛАТЬ В UI ПОТОКЕ СРАЗУ
-		//TODO
-		//TODO
-		activity.runOnUiThread(new Runnable() {
-
-			@Override
-			public void run() {
-				Log.v("SongPlayer", "updatePlayerState");
-				if (currentListItemView != null) {
-					updateListItem(currentListItemView);
-				}
-			}
-		});
+		Log.v("SongPlayer", "updatePlayerState");
+		if (currentListItemView != null) {
+			updateListItem(currentListItemView);
+		}
 	}
 	
 	@Override
@@ -196,11 +184,10 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 	}
 
 	@Override
-	public void updateSearchStatus(String trackId) {
-		Log.v("SongInformation", "trackId: " + trackId);
-		if (trackId != null) {
-			SongInformationManager songInfo = model.getSongInformationManager();
-			String coverArtUrl = songInfo.getCoverArtUrl(trackId);
+	public void updateSearchStatus(SongData songData) {
+		Log.v("SongInformation", "trackId: " + songData.getTrackId());
+		if (songData != null) {
+			String coverArtUrl = songData.getCoverArtURL();
 			Log.v("SongInformation", "CoverArtUrl: " + coverArtUrl);
 			DisplayImageOptions options = new DisplayImageOptions.Builder()
 				.showImageForEmptyUri(R.drawable.no_cover_art)
@@ -208,7 +195,7 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 				.cacheOnDisc(true)
 				.cacheInMemory(true)
 				.build();
-			model.getImageLoader().displayImage(coverArtUrl, coverArts.get(trackId), options);
+			model.getImageLoader().displayImage(coverArtUrl, coverArts.get(songData.getTrackId()), options);
 		}
 	}
 }

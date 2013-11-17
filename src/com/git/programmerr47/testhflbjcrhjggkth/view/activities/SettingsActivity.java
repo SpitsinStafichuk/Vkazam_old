@@ -1,7 +1,6 @@
 package com.git.programmerr47.testhflbjcrhjggkth.view.activities;
 
 import com.git.programmerr47.testhflbjcrhjggkth.R;
-import com.git.programmerr47.testhflbjcrhjggkth.controllers.ISettingsController;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.SettingsController;
 import com.git.programmerr47.testhflbjcrhjggkth.view.activities.interfaces.IConnectionWithDialogFragment;
 import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.LastfmLoginDialogFragment;
@@ -15,7 +14,7 @@ import android.widget.Button;
 
 public class SettingsActivity extends FragmentActivity implements IConnectionWithDialogFragment {
     
-    ISettingsController controller;
+    SettingsController controller;
     public Button lastfmSignInOutButton;
     DialogFragment lastfmDialog;
    

@@ -3,15 +3,13 @@ package com.git.programmerr47.testhflbjcrhjggkth.controllers;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 
-import com.git.programmerr47.testhflbjcrhjggkth.model.IMicroScrobblerModel;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
-import com.git.programmerr47.testhflbjcrhjggkth.model.exceptions.LastfmLoginException;
 import com.git.programmerr47.testhflbjcrhjggkth.view.activities.SettingsActivity;
 import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.LastfmLoginDialogFragment;
 
-public class SettingsController implements ISettingsController {
+public class SettingsController {
 
-    private IMicroScrobblerModel model;
+    private MicroScrobblerModel model;
     private SettingsActivity view;
 
     public SettingsController(SettingsActivity view) {
@@ -19,12 +17,10 @@ public class SettingsController implements ISettingsController {
             this.model = MicroScrobblerModel.getInstance();
     }
 
-    @Override
     public boolean hasLastfmAccount() {
             return model.getScrobbler().hasLastFmAccount();
     }
 
-    @Override
     public void changeLastfmAccount(FragmentManager fm, String tag) {
             if (hasLastfmAccount()) {
             	model.deleteLastfmAccount();
