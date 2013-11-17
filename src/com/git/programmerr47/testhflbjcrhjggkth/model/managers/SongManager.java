@@ -9,7 +9,6 @@ import java.util.Set;
 import org.json.JSONException;
 
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongDAO;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.ISongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.SongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.exceptions.SongNotFoundException;
 import com.git.programmerr47.testhflbjcrhjggkth.model.lastfm.IScrobbler;
@@ -21,15 +20,16 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.KException;
 
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
+import android.os.Handler;
 import android.util.Log;
 
-public class SongManager implements ISongManager, IPlayerStateObservable {
+public class SongManager implements IPlayerStateObservable {
 
 	private Set<IPlayerStateObserver> playerStateObservers;
 	
 	private MediaPlayer songPlayer;
 	
-	private ISongData songData;
+	private SongData songData;
 	private boolean wasPlayed = false;
 	
 	private IScrobbler scrobbler;
@@ -39,21 +39,22 @@ public class SongManager implements ISongManager, IPlayerStateObservable {
 	private boolean isPrepared;
 	
 	private SongDAO songDAO;
+	private Handler handler;
 	
-	public SongManager(IScrobbler scrobbler, SongDAO songDAO) {
+	public SongManager(IScrobbler scrobbler, SongDAO songDAO, Handler handler) {
 		songPlayer = new MediaPlayer();
 		this.scrobbler = scrobbler;
 		this.songDAO = songDAO;
+		this.handler = handler;
 		isPrepared = false;
 		playerStateObservers = new HashSet<IPlayerStateObserver>();
 	}
 	
-	public SongManager(SongDAO songDAO) {
-		this(null, songDAO);
+	public SongManager(SongDAO songDAO, Handler handler) {
+		this(null, songDAO, handler);
 	}
 	
-	@Override
-	public void set(ISongData songData) {
+	public void set(SongData songData) {
 		this.songData = songData;
 		isPrepared = false;
 	}
@@ -69,13 +70,11 @@ public class SongManager implements ISongManager, IPlayerStateObservable {
 		}
 		return audioList.get(0);
 	}
-
-
-	@Override
+	
 	public void prepare() throws MalformedURLException, IOException, JSONException, SongNotFoundException, KException {
 		isLoading = true;
 		Log.v("SongPlayer", "Player is loading");
-		notifyPlayerStateObservers();
+		asyncNotifyPlayerStateObservers();
 		songPlayer = new MediaPlayer();
 		boolean songDataNeedUpdate = false;
 		Audio audio = null;
@@ -102,8 +101,7 @@ public class SongManager implements ISongManager, IPlayerStateObservable {
 		wasPlayed = false;
 		isPrepared = true;
 	}
-
-	@Override
+	
 	public void play() {
 		isLoading = false;
 		
@@ -113,119 +111,107 @@ public class SongManager implements ISongManager, IPlayerStateObservable {
 		if (!wasPlayed && scrobbler != null)
 			scrobbler.scrobble(songData.getArtist(), songData.getTitle());
 		wasPlayed = true;
-		notifyPlayerStateObservers();
+		asyncNotifyPlayerStateObservers();
 	}
-
-	@Override
+	
 	public void pause() {
 		songPlayer.pause();
 		isPlaying = false;
-		notifyPlayerStateObservers();
+		asyncNotifyPlayerStateObservers();
 	}
-
-	@Override
+	
 	public void stop() {
 		songPlayer.stop();
 		isLoading = false;
 		isPlaying = false;
 		wasPlayed = false;
-		notifyPlayerStateObservers();
+		asyncNotifyPlayerStateObservers();
 	}
-
-	@Override
+	
 	public void setPosition(int position) {
 		songPlayer.seekTo(position);
 	}
-
-	@Override
+	
 	public int getPosition() {
 		return songPlayer.getCurrentPosition();
 	}
-
-	@Override
+	
 	public boolean isLove() {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
-	@Override
+	
 	public void setLove(boolean love) {
 		// TODO Auto-generated method stub
 
 	}
-
-	@Override
+	
 	public boolean isVkAdded() {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
-	@Override
+	
 	public void addToVk() {
 		// TODO Auto-generated method stub
 
 	}
-
-	@Override
+	
 	public void download() {
 		// TODO Auto-generated method stub
 
 	}
-
-	@Override
+	
 	public String getArtist() {
 		return songData.getArtist();
 	}
-
-	@Override
+	
 	public String getTitle() {
 		return songData.getTitle();
 	}
-
-	@Override
+	
 	public int getDuration() {
 		return songPlayer.getDuration();
 	}
-
-	@Override
+	
 	public Drawable getSongLogo() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	@Override
+	
 	public boolean isPlaying() {
 		return isPlaying;
 	}
 
-	@Override
 	public void addObserver(IPlayerStateObserver o) {
 		Log.v("SongManager", "Add new observer"); 
 		playerStateObservers.add(o);
 	}
 
-	@Override
 	public void removeObserver(IPlayerStateObserver o) {
 		playerStateObservers.remove(o);
 	}
+	
+	private void asyncNotifyPlayerStateObservers() {
+		handler.post(new Runnable() {
+			public void run() {
+				notifyPlayerStateObservers();
+			}
+		});
+	}
 
-	@Override
 	public void notifyPlayerStateObservers() {
 		for (IPlayerStateObserver o : playerStateObservers)
 			o.updatePlayerState();
 	}
 
-	@Override
 	public void setScrobbler(IScrobbler scrobbler) {
 		this.scrobbler = scrobbler;
 	}
 
-	@Override
-	public ISongData getSongData() {
+	public SongData getSongData() {
 		return songData;
 	}
 
-	@Override
 	public void release() {
 		songPlayer.release();
 		isPlaying = false;
@@ -235,12 +221,10 @@ public class SongManager implements ISongManager, IPlayerStateObservable {
 		notifyPlayerStateObservers();
 	}
 
-	@Override
 	public boolean isLoading() {
 		return isLoading;
 	}
 
-	@Override
 	public boolean isPrepared() {
 		return isPrepared;
 	}

@@ -1,6 +1,6 @@
 package com.git.programmerr47.testhflbjcrhjggkth.model.database.data;
 
-public class SongData implements ISongData {
+public class SongData {
 
 	private String artist;
 	private String title;
@@ -18,44 +18,37 @@ public class SongData implements ISongData {
 		this.pleercomURL = pleercomURL;
 	}
 	
-	@Override
 	public String getArtist() {
 		return artist;
 	}
 
-	@Override
 	public String getTitle() {
 		return title;
 	}
 
-	@Override
 	public String getTrackId() {
 		return trackId;
 	}
 
-	@Override
 	public String getDate() {
 		return date;
 	}
 
-	@Override
 	public long getId() {
 		return id;
 	}
 
-	@Override
+	public String getPleercomURL() {
+		return pleercomURL;
+	}
+
 	public boolean equals(Object o) {
 		if (o != null) {
-			if (o instanceof ISongData) {
-				ISongData oData = (ISongData) o;
+			if (o instanceof SongData) {
+				SongData oData = (SongData) o;
 				return this.date == oData.getDate();
 			}
 		}
 		return false;
-	}
-
-	@Override
-	public String getPleercomURL() {
-		return pleercomURL;
 	}
 }

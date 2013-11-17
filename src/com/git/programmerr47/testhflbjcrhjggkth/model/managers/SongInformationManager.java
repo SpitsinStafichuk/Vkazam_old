@@ -6,13 +6,9 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import android.util.Log;
-import android.widget.ImageView;
 
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.ISongData;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.SongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISearchStatusObserver;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISearchStatusObservable;
-import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISearchStatusObserver;
 import com.gracenote.mmid.MobileSDK.GNConfig;
 import com.gracenote.mmid.MobileSDK.GNOperations;
 import com.gracenote.mmid.MobileSDK.GNSearchResponse;
@@ -36,6 +32,7 @@ public class SongInformationManager implements GNSearchResultReady, ISearchStatu
 	}
 	
 	public void searchByTrackId(String trackId) {
+		Log.i(TAG, "search by track id: " + trackId);
 		if (!coverArtUrls.containsKey(trackId)) {
 			GNOperations.fetchByTrackId(this, config, trackId);
 		} else {
@@ -97,5 +94,4 @@ public class SongInformationManager implements GNSearchResultReady, ISearchStatu
 		for(ISearchStatusObserver o : searchStatusObservers)
 			o.updateSearchStatus(trackId);
 	}
-
 }

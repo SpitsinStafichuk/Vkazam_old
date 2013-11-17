@@ -6,9 +6,7 @@ import java.util.Set;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.FingerprintData;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.IFingerprintData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IFingerprintStatusObservable;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IFingerprintStatusObserver;
 import com.gracenote.mmid.MobileSDK.GNConfig;
@@ -16,10 +14,10 @@ import com.gracenote.mmid.MobileSDK.GNFingerprintResult;
 import com.gracenote.mmid.MobileSDK.GNFingerprintResultReady;
 import com.gracenote.mmid.MobileSDK.GNOperationStatusChanged;
 import com.gracenote.mmid.MobileSDK.GNOperations;
-import com.gracenote.mmid.MobileSDK.GNSearchResultReady;
 import com.gracenote.mmid.MobileSDK.GNStatus;
 
 import android.content.Context;
+import android.os.Handler;
 import android.util.Log;
 
 public class FingerprintManager implements IFingerprintStatusObservable, GNOperationStatusChanged, GNFingerprintResultReady {
@@ -27,6 +25,7 @@ public class FingerprintManager implements IFingerprintStatusObservable, GNOpera
 	public static final String FINGERPRINTING_SUCCESS = "Fingerprinting success";
 	
 	private GNConfig config;
+	private Handler handler;
 	private Set<IFingerprintStatusObserver> fingerprintStatusObservers;
 	private int fingerprintTimerPeriod;
 	private ScheduledThreadPoolExecutor fingerprintTimer;
@@ -37,9 +36,9 @@ public class FingerprintManager implements IFingerprintStatusObservable, GNOpera
 	
 	RecognizeManager recognizeManager;
 	
-	private IFingerprintData fingerprint;
+	private FingerprintData fingerprint;
 	
-	public FingerprintManager(GNConfig config, Context context, RecognizeManager recognizeManager) {
+	public FingerprintManager(GNConfig config, Context context, RecognizeManager recognizeManager, Handler handler) {
 		fingerprintStatusObservers = new HashSet<IFingerprintStatusObserver>();
 		fingerprintTimerPeriod = DEFAULT_FINGERPRINT_TIMER_PERIOD;
 		isFingerprinting = false;
@@ -47,6 +46,7 @@ public class FingerprintManager implements IFingerprintStatusObservable, GNOpera
 		isFingerprintingOneTime = false;
 		this.config = config;
 		this.recognizeManager = recognizeManager;
+		this.handler = handler;
 		//возможны проблемы с одновременным обращением к базе данных
 	}
 	
@@ -110,13 +110,13 @@ public class FingerprintManager implements IFingerprintStatusObservable, GNOpera
 	
 	public void setFingerprintStatus(String status) {
 		fingerprintStatus = status;
-		notifyFingerprintStatusObservers();
+		asyncNotifyFingerprintStatusObservers();
 	}
 	
 	@Override
 	public void GNStatusChanged(GNStatus status) {
 		fingerprintStatus = status.getMessage() + " " + status.getPercentDone() + " %";
-		notifyFingerprintStatusObservers();
+		asyncNotifyFingerprintStatusObservers();
 	}
 	
 	@Override
@@ -131,6 +131,7 @@ public class FingerprintManager implements IFingerprintStatusObservable, GNOpera
 			Log.v("Fingerprinting", "fingerprint = " + fingerprint.getFingerprint());
 			recognizeManager.recognizeFingerprint(fingerprint, false);
 		}
+		asyncNotifyFingerprintStatusObservers();
 	}
 	
 	@Override
@@ -147,5 +148,13 @@ public class FingerprintManager implements IFingerprintStatusObservable, GNOpera
 	public void notifyFingerprintStatusObservers() {
 		for(IFingerprintStatusObserver o : fingerprintStatusObservers)
 			o.updateFingerprintStatus();
+	}
+	
+	private void asyncNotifyFingerprintStatusObservers() {
+		handler.post(new Runnable() {
+			public void run() {
+				notifyFingerprintStatusObservers();
+			}
+		});
 	}
 }

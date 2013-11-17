@@ -73,17 +73,11 @@ public class HistoryPageFragment extends Fragment implements IRecognizeStatusObs
 
 	@Override
 	public void updateRecognizeStatus() {
-		parentActivity.runOnUiThread(new Runnable() {
-			
-			@Override
-			public void run() {
-				if (recognizeManager.getRecognizeStatus() != null) {
-					if(recognizeManager.getRecognizeStatus().equals(RecognizeManager.RECOGNIZING_SUCCESS)) {
-						adapter.notifyDataSetChanged();
-					}
-				}
+		if (recognizeManager.getRecognizeStatus() != null) {
+			if(recognizeManager.getRecognizeStatus().equals(RecognizeManager.RECOGNIZING_SUCCESS)) {
+				adapter.notifyDataSetChanged();
 			}
-		});
+		}
 	}
 
 }
