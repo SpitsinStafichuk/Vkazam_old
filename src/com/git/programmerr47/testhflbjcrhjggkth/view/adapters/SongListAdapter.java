@@ -79,7 +79,7 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 		}
 		
 		final View fView = view;
-		
+		//Log.v("error", "view.findViewById(R.id.songPlayPauseButton): " + view.findViewById(R.id.songListItemPlayPauseLayout).findViewById(R.id.songPlayPauseButton));
 		ImageButton playPauseButton = (ImageButton) view.findViewById(R.id.songPlayPauseButton);
 		Log.v("playPauseButton", "" + playPauseButton);
 		playPauseButton.setOnClickListener(new OnClickListener() {
