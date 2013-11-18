@@ -30,8 +30,8 @@ public class MicrophonePagerActivity extends FragmentActivity {
 		
         pager = (ViewPager) findViewById(R.id.microphonePager);
         pagerAdapter = new MicrophonePagerAdapter(getSupportFragmentManager());
-        pager.setAdapter(pagerAdapter);
         pager.setPageTransformer(true, new DepthPageTransformer());
+        pager.setAdapter(pagerAdapter);
 
         pager.setOnPageChangeListener(new OnPageChangeListener() {
 
