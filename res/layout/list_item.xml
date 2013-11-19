@@ -27,15 +27,17 @@
 
     	        <LinearLayout
     	            android:id="@+id/songListItemPlayPauseLayout"
-    	            android:layout_width="wrap_content"
-    	            android:layout_height="wrap_content" 
+    	            android:layout_width="50dp"
+    	            android:layout_height="50dp" 
     	            android:layout_centerInParent="true"
-    	            android:gravity="left|center_vertical">
+    	            android:orientation="vertical"
+    	            android:gravity="center">
 
     	            <ImageButton
     	                android:id="@+id/songPlayPauseButton"
-    	                android:layout_width="wrap_content"
-    	                android:layout_height="wrap_content"
+    	                android:layout_width="match_parent"
+    	                android:layout_height="match_parent"
+    	                android:scaleType="fitXY"
     	                android:background="@android:color/transparent"
     	                android:focusable="false"
     	                android:focusableInTouchMode="false"
@@ -45,8 +47,8 @@
     	                android:id="@+id/songItemLoading"
     	                android:layout_width="wrap_content"
     	                android:layout_height="wrap_content"
-    	                android:minHeight="15dp"
-    	                android:minWidth="30dip"
+    	                android:minHeight="30dp"
+    	                android:minWidth="30dp"
     	                android:visibility="gone"
     	                style="?android:attr/progressBarStyleSmall"/>
 

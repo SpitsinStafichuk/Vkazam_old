@@ -12,6 +12,7 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SongManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObservable;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObserver;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISearchStatusObserver;
+import com.nineoldandroids.view.ViewHelper;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
 import android.app.Activity;
@@ -105,8 +106,10 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 			}
 		});
 		
+		ViewHelper.setAlpha(view.findViewById(R.id.songListItemPlayPauseLayout), 0.75f);
 		SongData data = getSongData(position);
 		((ImageView) view.findViewById(R.id.songListItemCoverArt)).setImageResource(R.drawable.no_cover_art);
+		Log.v("SongInformation", "in trackId: " + data.getTrackId());
 		coverArts.put(data.getTrackId(), (ImageView) view.findViewById(R.id.songListItemCoverArt));
 		model.getSongInformationManager().searchCoverArtByTrackIdIfNotNull(data);
 		((TextView) view.findViewById(R.id.songListItemArtist)).setText(data.getArtist());

@@ -5,16 +5,21 @@ import com.git.programmerr47.testhflbjcrhjggkth.controllers.SongListController;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.RecognizeManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeStatusObserver;
+import com.git.programmerr47.testhflbjcrhjggkth.view.activities.SongInfoActivity;
 import com.git.programmerr47.testhflbjcrhjggkth.view.adapters.SongListAdapter;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 public class HistoryPageFragment extends Fragment implements IRecognizeStatusObserver{
@@ -47,8 +52,17 @@ public class HistoryPageFragment extends Fragment implements IRecognizeStatusObs
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View view = inflater.inflate(R.layout.history_fragment, null);
             
+            final Context instance = this.parentActivity;
             songHLV = (ListView) view.findViewById(R.id.historyList);
   		  	songHLV.setAdapter(adapter);
+  		  	songHLV.setOnItemClickListener(new OnItemClickListener() {
+
+				@Override
+				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+					Intent intent = new Intent(instance, SongInfoActivity.class);
+					startActivity(intent);
+				}
+			});
             
             return view;
     }
