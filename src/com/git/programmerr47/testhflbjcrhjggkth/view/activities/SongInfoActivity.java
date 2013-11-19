@@ -32,16 +32,16 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 			fillTextInformation(R.id.songInfoTitle, data.getTitle());
 			fillTextInformation(R.id.songInfoDate, data.getDate());
 			fillTextInformation(R.id.songInfoTrackId, data.getTrackId());
-		}
-		
-		if (data.getCoverArtURL() != null) {
-			DisplayImageOptions options = new DisplayImageOptions.Builder()
-				.showImageForEmptyUri(R.drawable.no_cover_art)
-				.showImageOnFail(R.drawable.no_cover_art)
-				.cacheOnDisc(true)
-				.cacheInMemory(true)
-				.build();
-			model.getImageLoader().displayImage(data.getCoverArtURL(), (ImageView) findViewById(R.id.songInfoCoverArt), options);
+			
+			if (data.getCoverArtURL() != null) {
+				DisplayImageOptions options = new DisplayImageOptions.Builder()
+					.showImageForEmptyUri(R.drawable.no_cover_art)
+					.showImageOnFail(R.drawable.no_cover_art)
+					.cacheOnDisc(true)
+					.cacheInMemory(true)
+					.build();
+				model.getImageLoader().displayImage(data.getCoverArtURL(), (ImageView) findViewById(R.id.songInfoCoverArt), options);
+			}
 		}
 	}
 	

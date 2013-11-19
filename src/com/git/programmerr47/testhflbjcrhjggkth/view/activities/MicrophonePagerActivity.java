@@ -3,6 +3,7 @@ package com.git.programmerr47.testhflbjcrhjggkth.view.activities;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
 import com.git.programmerr47.testhflbjcrhjggkth.view.adapters.MicrophonePagerAdapter;
+import com.nineoldandroids.view.ViewHelper;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,7 +28,6 @@ public class MicrophonePagerActivity extends FragmentActivity {
 		MicroScrobblerModel.getInstance();
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.microphone_pager_layout);
-		
         pager = (ViewPager) findViewById(R.id.microphonePager);
         pagerAdapter = new MicrophonePagerAdapter(getSupportFragmentManager());
         pager.setPageTransformer(true, new DepthPageTransformer());
@@ -37,7 +37,7 @@ public class MicrophonePagerActivity extends FragmentActivity {
 
             @Override
             public void onPageSelected(int position) {
-              Log.d("MicrophonePager", "onPageSelected, position = " + position);
+                Log.d("MicrophonePager", "onPageSelected, position = " + position);
             }
 
             @Override
