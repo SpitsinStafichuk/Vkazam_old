@@ -18,6 +18,8 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.Api;
 import com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.Audio;
 import com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.KException;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Handler;
@@ -41,17 +43,20 @@ public class SongManager implements IPlayerStateObservable {
 	private SongDAO songDAO;
 	private Handler handler;
 	
-	public SongManager(IScrobbler scrobbler, SongDAO songDAO, Handler handler) {
+	private Context context;
+	
+	public SongManager(IScrobbler scrobbler, SongDAO songDAO, Handler handler, Context context) {
 		songPlayer = new MediaPlayer();
 		this.scrobbler = scrobbler;
 		this.songDAO = songDAO;
 		this.handler = handler;
+		this.context = context;
 		isPrepared = false;
 		playerStateObservers = new HashSet<IPlayerStateObserver>();
 	}
 	
-	public SongManager(SongDAO songDAO, Handler handler) {
-		this(null, songDAO, handler);
+	public SongManager(SongDAO songDAO, Handler handler, Context context) {
+		this(null, songDAO, handler, context);
 	}
 	
 	public void set(SongData songData) {
@@ -102,19 +107,42 @@ public class SongManager implements IPlayerStateObservable {
 		isPrepared = true;
 	}
 	
+	private void sendLastFMPlaybackCompleted() {
+		context.sendBroadcast(new Intent("fm.last.android.playbackcomplete"));
+	}
+
+	private void sendLastFMTrackPaused() {
+		context.sendBroadcast(new Intent("fm.last.android.playbackpaused"));
+	}
+
+	private void sendLastFMTrackStarted() {
+		Intent localIntent = new Intent("fm.last.android.metachanged");
+		localIntent.putExtra("artist", getArtist());
+		localIntent.putExtra("track", getTitle());
+		//localIntent.putExtra("album", getAlbumName());
+		localIntent.putExtra("duration", songPlayer.getDuration());
+		context.sendBroadcast(localIntent);
+	}
+
+	private void sendLastFMTrackUnpaused() {
+		context.sendBroadcast(new Intent("fm.last.android.metachanged").putExtra("position", songPlayer.getCurrentPosition()));
+	}
+	
 	public void play() {
 		isLoading = false;
 		
 		songPlayer.start();
 		isPlaying = true;
 		Log.v("SongListController", "Song" + songData.getArtist() + "-" + songData.getTitle() + "was started");
-		if (!wasPlayed && scrobbler != null)
-			scrobbler.scrobble(songData.getArtist(), songData.getTitle());
+		sendLastFMTrackStarted();
+		/*if (!wasPlayed && scrobbler != null)
+			scrobbler.scrobble(songData.getArtist(), songData.getTitle());*/
 		wasPlayed = true;
 		asyncNotifyPlayerStateObservers();
 	}
 	
 	public void pause() {
+		sendLastFMPlaybackCompleted();
 		songPlayer.pause();
 		isPlaying = false;
 		asyncNotifyPlayerStateObservers();

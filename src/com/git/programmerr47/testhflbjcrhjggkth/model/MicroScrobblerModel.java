@@ -72,7 +72,7 @@ public class MicroScrobblerModel implements ISignInObservable, IOnSignInResultLi
 		imageLoader = ImageLoader.getInstance();
 		imageLoader.init(ImageLoaderConfiguration.createDefault(context));
 		songDAO = new SongDAO(context);
-		songManager = new SongManager(songDAO, handler);
+		songManager = new SongManager(songDAO, handler, context);
 		songInformationManager = new SongInformationManager(config, songDAO);
 		listeners = new HashSet<IOnSignInResultListener>();
 		scrobbler = new Scrobbler();
