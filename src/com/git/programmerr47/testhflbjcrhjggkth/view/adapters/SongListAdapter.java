@@ -41,6 +41,7 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 	private View currentListItemView;
 	private MicroScrobblerModel model;
 	private Map<String, ImageView> coverArts;
+	private boolean isScrollingUp;
 	
 	public SongListAdapter(Activity activity, int idItem, SongListController controller) {
 		this.activity = activity;
@@ -128,9 +129,11 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 		    ((ProgressBar) view.findViewById(R.id.songItemLoading)).setVisibility(View.GONE);
 		}
 		
-		Animation animation = new ScaleAnimation((float) 1.0, (float) 1.0,(float) 0, (float) 1.0);
-		animation.setDuration(100);
-		view.startAnimation(animation);
+		if (!isScrollingUp) {
+			Animation animation = new ScaleAnimation((float) 1.0, (float) 1.0,(float) 0, (float) 1.0);
+			animation.setDuration(100);
+			view.startAnimation(animation);
+		}
 		
 		return view;
 	}
@@ -207,5 +210,9 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 				.build();
 			model.getImageLoader().displayImage(coverArtUrl, coverArts.get(songData.getTrackId()), options);
 		}
+	}
+	
+	public void setScrollingUp(boolean answer) {
+		isScrollingUp = answer;
 	}
 }

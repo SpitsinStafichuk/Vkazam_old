@@ -17,6 +17,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -59,7 +61,32 @@ public class HistoryPageFragment extends Fragment implements IRecognizeStatusObs
 				@Override
 				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 					Intent intent = new Intent(instance, SongInfoActivity.class);
+					intent.putExtra("SongDataPosition", position);
 					startActivity(intent);
+				}
+			});
+  		  	songHLV.setOnScrollListener(new OnScrollListener() {
+				int mLastFirstVisibleItem;
+  		  		
+				@Override
+				public void onScrollStateChanged(AbsListView view, int scrollState) {
+					final ListView lw = songHLV;
+
+				    if (view.getId() == lw.getId()) {
+				        final int currentFirstVisibleItem = lw.getFirstVisiblePosition();
+
+				        if (currentFirstVisibleItem > mLastFirstVisibleItem) {
+				            adapter.setScrollingUp(false);
+				        } else if (currentFirstVisibleItem < mLastFirstVisibleItem) {
+				            adapter.setScrollingUp(true);
+				        }
+
+				        mLastFirstVisibleItem = currentFirstVisibleItem;
+				    } 
+				}
+				
+				@Override
+				public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 				}
 			});
             
