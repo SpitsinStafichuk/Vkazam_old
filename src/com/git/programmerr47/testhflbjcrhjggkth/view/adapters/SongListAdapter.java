@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.animation.ScaleAnimation;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
@@ -130,9 +131,9 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 		}
 		
 		if (!isScrollingUp) {
-			Animation animation = new ScaleAnimation((float) 1.0, (float) 1.0,(float) 0, (float) 1.0);
-			animation.setDuration(100);
-			view.startAnimation(animation);
+			view.startAnimation(AnimationUtils.loadAnimation(activity, R.anim.list_view_up_down));
+		} else {
+			view.startAnimation(AnimationUtils.loadAnimation(activity, R.anim.list_view_down_up));
 		}
 		
 		return view;

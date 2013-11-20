@@ -37,9 +37,11 @@ public class SongInformationManager implements GNSearchResultReady, ISearchStatu
 	
 	public void searchCoverArtByTrackId(SongData songData) {
 		String trackId = songData.getTrackId();
-		Log.i(TAG, "search by track id: " + trackId);
-		songsData.put(trackId, songData);
-		GNOperations.fetchByTrackId(this, config, trackId);
+		if (trackId != null) {
+			Log.i(TAG, "search by track id: " + trackId);
+			songsData.put(trackId, songData);
+			GNOperations.fetchByTrackId(this, config, trackId);
+		}
 	}
 	
 	public void searchCoverArtByTrackIdIfNotNull(SongData songData) {

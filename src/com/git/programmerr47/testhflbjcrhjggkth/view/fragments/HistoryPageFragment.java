@@ -70,19 +70,15 @@ public class HistoryPageFragment extends Fragment implements IRecognizeStatusObs
   		  		
 				@Override
 				public void onScrollStateChanged(AbsListView view, int scrollState) {
-					final ListView lw = songHLV;
+					final int currentFirstVisibleItem = view.getFirstVisiblePosition();
+					
+					if (currentFirstVisibleItem > mLastFirstVisibleItem) {
+			            adapter.setScrollingUp(false);
+			        } else if (currentFirstVisibleItem < mLastFirstVisibleItem) {
+			            adapter.setScrollingUp(true);
+			        }
 
-				    if (view.getId() == lw.getId()) {
-				        final int currentFirstVisibleItem = lw.getFirstVisiblePosition();
-
-				        if (currentFirstVisibleItem > mLastFirstVisibleItem) {
-				            adapter.setScrollingUp(false);
-				        } else if (currentFirstVisibleItem < mLastFirstVisibleItem) {
-				            adapter.setScrollingUp(true);
-				        }
-
-				        mLastFirstVisibleItem = currentFirstVisibleItem;
-				    } 
+			        mLastFirstVisibleItem = currentFirstVisibleItem;
 				}
 				
 				@Override
