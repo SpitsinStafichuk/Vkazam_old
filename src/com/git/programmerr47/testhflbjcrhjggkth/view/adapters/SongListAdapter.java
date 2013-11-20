@@ -7,11 +7,11 @@ import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.SongListController;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.SongData;
-import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SongInformationManager;
+import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SongCoverArtManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SongManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObservable;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObserver;
-import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISearchStatusObserver;
+import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISearchCoverArtStatusObserver;
 import com.nineoldandroids.view.ViewHelper;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
@@ -32,7 +32,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver, ISearchStatusObserver {
+public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver, ISearchCoverArtStatusObserver {
 
 	private Activity activity;
 	private LayoutInflater inflater;
@@ -55,7 +55,7 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 		
 		IPlayerStateObservable songManagerStateObservable = (IPlayerStateObservable) songManager;
 		songManagerStateObservable.addObserver((IPlayerStateObserver)this);
-		model.getSongInformationManager().addObserver((ISearchStatusObserver) this);
+		model.getSongInformationManager().addObserver((ISearchCoverArtStatusObserver) this);
 		Log.v("SongPlayer", "IPlayerStateObserver was added");
 		inflater = (LayoutInflater) this.activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}

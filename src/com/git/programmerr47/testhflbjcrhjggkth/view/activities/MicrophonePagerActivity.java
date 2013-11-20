@@ -3,7 +3,6 @@ package com.git.programmerr47.testhflbjcrhjggkth.view.activities;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
 import com.git.programmerr47.testhflbjcrhjggkth.view.adapters.MicrophonePagerAdapter;
-import com.nineoldandroids.view.ViewHelper;
 
 import android.content.Intent;
 import android.os.Bundle;
