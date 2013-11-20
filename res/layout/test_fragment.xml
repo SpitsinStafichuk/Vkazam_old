@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/artistCaption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Artist:" />
+
+    <EditText
+        android:id="@+id/artist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10" >
+
+        <requestFocus />
+    </EditText>
+
+    <TextView
+        android:id="@+id/titleCaption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Title:" />
+
+    <EditText
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10" />
+
+    <TextView
+        android:id="@+id/albumCaption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Album:" />
+
+    <EditText
+        android:id="@+id/album"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10" />
+
+    <Button
+        android:id="@+id/searchButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Search" />
+    
+    <TextView
+        android:id="@+id/status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Status"
+        android:visibility="visible" />
+    
+    <include layout="@layout/list_item"/>
+
+</LinearLayout>

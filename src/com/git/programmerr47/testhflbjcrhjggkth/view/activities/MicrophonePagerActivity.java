@@ -27,7 +27,6 @@ public class MicrophonePagerActivity extends FragmentActivity {
 		MicroScrobblerModel.getInstance();
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.microphone_pager_layout);
-		
         pager = (ViewPager) findViewById(R.id.microphonePager);
         pagerAdapter = new MicrophonePagerAdapter(getSupportFragmentManager());
         pager.setPageTransformer(true, new DepthPageTransformer());
@@ -37,7 +36,7 @@ public class MicrophonePagerActivity extends FragmentActivity {
 
             @Override
             public void onPageSelected(int position) {
-              Log.d("MicrophonePager", "onPageSelected, position = " + position);
+                Log.d("MicrophonePager", "onPageSelected, position = " + position);
             }
 
             @Override

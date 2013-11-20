@@ -15,7 +15,8 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.lastfm.Scrobbler;
 import com.git.programmerr47.testhflbjcrhjggkth.model.lastfm.Scrobbler.IOnSignInResultListener;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.FingerprintManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.RecognizeManager;
-import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SongInformationManager;
+import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SearchManager;
+import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SongCoverArtManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SongManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISignInObservable;
 import com.gracenote.mmid.MobileSDK.GNConfig;
@@ -42,7 +43,8 @@ public class MicroScrobblerModel implements ISignInObservable, IOnSignInResultLi
 	private FingerprintManager fingerprintManager;
 	private RecognizeManager recognizeManager;
 	private SongManager songManager;
-	private SongInformationManager songInformationManager;
+	private SongCoverArtManager songInformationManager;
+	private SearchManager searchManager;
 	private Handler handler;
 	
 	private SongDAO songDAO;
@@ -69,11 +71,26 @@ public class MicroScrobblerModel implements ISignInObservable, IOnSignInResultLi
 		handler = new Handler();
 		config = GNConfig.init(GRACENOTE_APPLICATION_ID, context);
 		config.setProperty("content.coverArt","1");
+		config.setProperty("content.contributor.images", "1");
+		config.setProperty("content.contributor.biography", "1");
+		config.setProperty("content.artistType", "1");
+		config.setProperty("content.artistType.level", "EXTENDED");
+		config.setProperty("content.era", "1");
+		config.setProperty("content.era.level", "EXTENDED");
+		config.setProperty("content.mood", "1");
+		config.setProperty("content.mood.level", "EXTENDED");
+		config.setProperty("content.origin", "1");
+		config.setProperty("content.origin.level", "EXTENDED");
+		config.setProperty("content.tempo", "1");
+		config.setProperty("content.tempo.level", "EXTENDED");
+		config.setProperty("content.genre.level", "EXTENDED");
+		config.setProperty("content.review", "1");
 		imageLoader = ImageLoader.getInstance();
 		imageLoader.init(ImageLoaderConfiguration.createDefault(context));
 		songDAO = new SongDAO(context);
-		songManager = new SongManager(songDAO, handler);
-		songInformationManager = new SongInformationManager(config, songDAO);
+		songManager = new SongManager(songDAO, handler, context);
+		searchManager = new SearchManager(config, songDAO);
+		songInformationManager = new SongCoverArtManager(config, songDAO);
 		listeners = new HashSet<IOnSignInResultListener>();
 		scrobbler = new Scrobbler();
 		sharedPreferences = context.getSharedPreferences(SAVE_LASTFM_INFO_PREF, MODE);
@@ -89,6 +106,10 @@ public class MicroScrobblerModel implements ISignInObservable, IOnSignInResultLi
 		return imageLoader;
 	}
 	
+	public SearchManager getSearchManager() {
+		return searchManager;
+	}
+	
 	public FingerprintManager getFingerprintManager() {
 		return fingerprintManager;
 	}
@@ -97,7 +118,7 @@ public class MicroScrobblerModel implements ISignInObservable, IOnSignInResultLi
 		return recognizeManager;
 	}
 	
-	public SongInformationManager getSongInformationManager() {
+	public SongCoverArtManager getSongInformationManager() {
 		return songInformationManager;
 	}
 	

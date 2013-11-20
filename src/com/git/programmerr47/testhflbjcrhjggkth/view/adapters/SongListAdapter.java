@@ -7,11 +7,11 @@ import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.SongListController;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.SongData;
-import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SongInformationManager;
+import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SongCoverArtManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SongManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObservable;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObserver;
-import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISearchStatusObserver;
+import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISearchCoverArtStatusObserver;
 import com.nineoldandroids.view.ViewHelper;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
@@ -22,6 +22,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.ScaleAnimation;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -29,7 +32,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver, ISearchStatusObserver {
+public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver, ISearchCoverArtStatusObserver {
 
 	private Activity activity;
 	private LayoutInflater inflater;
@@ -39,6 +42,7 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 	private View currentListItemView;
 	private MicroScrobblerModel model;
 	private Map<String, ImageView> coverArts;
+	private boolean isScrollingUp;
 	
 	public SongListAdapter(Activity activity, int idItem, SongListController controller) {
 		this.activity = activity;
@@ -51,7 +55,7 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 		
 		IPlayerStateObservable songManagerStateObservable = (IPlayerStateObservable) songManager;
 		songManagerStateObservable.addObserver((IPlayerStateObserver)this);
-		model.getSongInformationManager().addObserver((ISearchStatusObserver) this);
+		model.getSongInformationManager().addObserver((ISearchCoverArtStatusObserver) this);
 		Log.v("SongPlayer", "IPlayerStateObserver was added");
 		inflater = (LayoutInflater) this.activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
@@ -125,6 +129,13 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 		    ((ImageButton) view.findViewById(R.id.songPlayPauseButton)).setVisibility(View.VISIBLE);
 		    ((ProgressBar) view.findViewById(R.id.songItemLoading)).setVisibility(View.GONE);
 		}
+		
+		if (!isScrollingUp) {
+			view.startAnimation(AnimationUtils.loadAnimation(activity, R.anim.list_view_up_down));
+		} else {
+			view.startAnimation(AnimationUtils.loadAnimation(activity, R.anim.list_view_down_up));
+		}
+		
 		return view;
 	}
 
@@ -200,5 +211,9 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 				.build();
 			model.getImageLoader().displayImage(coverArtUrl, coverArts.get(songData.getTrackId()), options);
 		}
+	}
+	
+	public void setScrollingUp(boolean answer) {
+		isScrollingUp = answer;
 	}
 }

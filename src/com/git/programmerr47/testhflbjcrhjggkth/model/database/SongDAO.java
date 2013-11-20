@@ -13,7 +13,6 @@ import android.util.Log;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.SongData;
 
 public class SongDAO implements ISongDAO {
-
 	private List<SongData> songDataSet;
 	private HistoryDBHelper historyDBHelper;
 	private SQLiteDatabase database;
@@ -37,6 +36,7 @@ public class SongDAO implements ISongDAO {
 			historyDBHelper.close();
 			isFirstGetHistory = false;
 		}
+		Log.v(HistoryDBHelper.HISTORY_TAG, "songDataList.size() = " + songDataSet.size());
 		
 		return songDataSet;
 	}

@@ -36,7 +36,8 @@ public class RecognizePageFragment extends Fragment implements IRecognizeStatusO
     TextView songDate;
     TextView status;
     ImageView songCoverArt;
-
+    
+    //в чём смысл этого метода?
     public static RecognizePageFragment newInstance() {
     		RecognizePageFragment pageFragment = new RecognizePageFragment();
             Bundle arguments = new Bundle();
