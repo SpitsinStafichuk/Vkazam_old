@@ -4,12 +4,12 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class HistoryDBHelper extends SQLiteOpenHelper {
+public class DBHelper extends SQLiteOpenHelper {
 	public static final String HISTORY_TAG = "SongHistory";
 	//TODO study how to change db version in out file (in sqlite browser)
 	//TODO study to know db version from out file
 	
-	public HistoryDBHelper(Context context) {
+	public DBHelper(Context context) {
 		super(context, DBConstants.DATABASE, null, 2);
 	}
 

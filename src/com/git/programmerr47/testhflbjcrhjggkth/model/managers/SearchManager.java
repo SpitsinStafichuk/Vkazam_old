@@ -107,7 +107,13 @@ public class SearchManager implements GNSearchResultReady, ISearchResultObservab
 				Log.i(TAG, "albumgenreId: " + d.getId() + " albumgenre: " + d.getData());
 			}
 			
-			songData = new SongData(-1, artist, title, trackId, (new Date()).toString(), null, coverArtURL);
+			songData = new SongData.SongDataBuilder()
+										.setArtist(artist)
+										.setTitle(title)
+										.setTrackId(bestResponse.getTrackId())
+										.setDate((new Date()).toString())
+										.setCoverArtURL(coverArtURL)
+										.build();
 			songDAO.insert(songData);
 			
 			searchResultStatus = SEARCH_SUCCESS;

@@ -11,6 +11,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.Data;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.SongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.exceptions.SongNotFoundException;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SongManager;
@@ -27,7 +28,7 @@ public class SongListController {
 		this.model = MicroScrobblerModel.getInstance();
 	}
 	
-	public List<SongData> getList() {
+	public List<Data> getList() {
 		return model.getHistory();
 	}
 

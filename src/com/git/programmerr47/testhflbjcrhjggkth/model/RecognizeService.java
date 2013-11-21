@@ -3,6 +3,7 @@ package com.git.programmerr47.testhflbjcrhjggkth.model;
 
 import java.util.List;
 
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.Data;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.FingerprintData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.RecognizeManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeStatusObserver;
@@ -44,9 +45,9 @@ public class RecognizeService extends Service implements IRecognizeStatusObserve
 			isStarted = true;
 			Log.i(TAG, "onStartCommand");
 			recognizeManager.addObserver(this);
-			List<FingerprintData> fingerprints = recognizeManager.getFingerprints();
+			List<Data> fingerprints = recognizeManager.getFingerprints();
 			if(!fingerprints.isEmpty()) {
-				FingerprintData fingerprint = fingerprints.get(0);
+				FingerprintData fingerprint = (FingerprintData) fingerprints.get(0);
 				Log.i(TAG, "recognizing fingerprint date = " + fingerprint.getDate());
 				recognizeManager.recognizeFingerprint(fingerprint, true);
 			} else {
@@ -63,9 +64,9 @@ public class RecognizeService extends Service implements IRecognizeStatusObserve
 
 	@Override
 	public void updateRecognizeStatus() {
-		List<FingerprintData> fingerprints = recognizeManager.getFingerprints();
+		List<Data> fingerprints = recognizeManager.getFingerprints();
 		if(!fingerprints.isEmpty()) {
-			FingerprintData fingerprint = fingerprints.get(0);
+			FingerprintData fingerprint = (FingerprintData) fingerprints.get(0);
 			Log.i(TAG, "recognizing fingerprint date = " + fingerprint.getDate());
 			recognizeManager.recognizeFingerprint(fingerprint, true);
 		} else {

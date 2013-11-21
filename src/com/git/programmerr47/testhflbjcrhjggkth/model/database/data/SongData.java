@@ -1,23 +1,21 @@
 package com.git.programmerr47.testhflbjcrhjggkth.model.database.data;
 
-public class SongData {
+public class SongData extends Data{
 
 	private String artist;
 	private String title;
 	private String trackId;
-	private String date;
 	private String pleercomURL;
 	private String coverArtURL;
-	private long id;
 	
-	public SongData(long id, String artist, String title, String trackId, String date, String pleercomURL, String coverArtURL) {
-		this.id = id;
-		this.artist = artist;
-		this.title = title;
-		this.trackId = trackId;
-		this.date = date;
-		this.pleercomURL = pleercomURL;
-		this.coverArtURL = coverArtURL;
+	private SongData(SongDataBuilder builder) {
+		this.id = builder.id;
+		this.artist = builder.artist;
+		this.title = builder.title;
+		this.trackId = builder.trackId;
+		this.date = builder.date;
+		this.pleercomURL = builder.pleercomURL;
+		this.coverArtURL = builder.coverArtURL;
 	}
 	
 	public String getArtist() {
@@ -30,14 +28,6 @@ public class SongData {
 
 	public String getTrackId() {
 		return trackId;
-	}
-
-	public String getDate() {
-		return date;
-	}
-
-	public long getId() {
-		return id;
 	}
 
 	public String getPleercomURL() {
@@ -55,14 +45,55 @@ public class SongData {
 	public void setPleercomURL(String pleercomURL) {
 		this.pleercomURL = pleercomURL;
 	}
+	
+	public static class SongDataBuilder implements Builder<SongData> {
 
-	public boolean equals(Object o) {
-		if (o != null) {
-			if (o instanceof SongData) {
-				SongData oData = (SongData) o;
-				return this.date == oData.getDate();
-			}
+		private String artist;
+		private String title;
+		private String trackId;
+		private String date;
+		private String pleercomURL;
+		private String coverArtURL;
+		private long id;
+		
+		@Override
+		public SongData build() {
+			return new SongData(this);
 		}
-		return false;
+		
+		public SongDataBuilder setId(long id) {
+			this.id = id;
+			return this;
+		}
+		
+		public SongDataBuilder setArtist(String artist) {
+			this.artist = artist;
+			return this;
+		}
+		
+		public SongDataBuilder setTitle(String title) {
+			this.title = title;
+			return this;
+		}
+		
+		public SongDataBuilder setTrackId(String trackId) {
+			this.trackId = trackId;
+			return this;
+		}
+		
+		public SongDataBuilder setDate(String date) {
+			this.date = date;
+			return this;
+		}
+		
+		public SongDataBuilder setPleercomURL(String pleercomURL) {
+			this.pleercomURL = pleercomURL;
+			return this;
+		}
+		
+		public SongDataBuilder setCoverArtURL(String coverArtURL) {
+			this.coverArtURL = coverArtURL;
+			return this;
+		}
 	}
 }
