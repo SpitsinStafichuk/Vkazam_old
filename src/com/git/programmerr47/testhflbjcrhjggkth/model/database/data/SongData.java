@@ -1,14 +1,12 @@
 package com.git.programmerr47.testhflbjcrhjggkth.model.database.data;
 
-public class SongData {
+public class SongData extends Data{
 
 	private String artist;
 	private String title;
 	private String trackId;
-	private String date;
 	private String pleercomURL;
 	private String coverArtURL;
-	private long id;
 	
 	private SongData(SongDataBuilder builder) {
 		this.id = builder.id;
@@ -32,14 +30,6 @@ public class SongData {
 		return trackId;
 	}
 
-	public String getDate() {
-		return date;
-	}
-
-	public long getId() {
-		return id;
-	}
-
 	public String getPleercomURL() {
 		return pleercomURL;
 	}
@@ -54,16 +44,6 @@ public class SongData {
 	
 	public void setPleercomURL(String pleercomURL) {
 		this.pleercomURL = pleercomURL;
-	}
-
-	public boolean equals(Object o) {
-		if (o != null) {
-			if (o instanceof SongData) {
-				SongData oData = (SongData) o;
-				return this.date == oData.getDate();
-			}
-		}
-		return false;
 	}
 	
 	public static class SongDataBuilder implements Builder<SongData> {

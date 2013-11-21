@@ -1,10 +1,8 @@
 package com.git.programmerr47.testhflbjcrhjggkth.model.database.data;
 
-public class FingerprintData {
+public class FingerprintData extends Data{
 	
-	private long id;
 	private String fingerprint;
-	private String date;
 	
 	public FingerprintData(FingerprintDataBuilder builder) {
 		this.id = builder.id;
@@ -14,24 +12,6 @@ public class FingerprintData {
 
 	public String getFingerprint() {
 		return fingerprint;
-	}
-
-	public String getDate() {
-		return date;
-	}
-
-	public long getId() {
-		return id;
-	}
-	
-	public boolean equals(Object o) {
-		if (o != null) {
-			if (o instanceof FingerprintData) {
-				FingerprintData oData = (FingerprintData) o;
-				return this.date == oData.getDate();
-			}
-		}
-		return false;
 	}
 
 	public static class FingerprintDataBuilder implements Builder<FingerprintData> {

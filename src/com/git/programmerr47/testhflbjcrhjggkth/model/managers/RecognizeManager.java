@@ -11,6 +11,7 @@ import android.util.Log;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.DBConstants;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.FingerprintDAO;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongDAO;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.Data;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.FingerprintData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.SongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.lastfm.Scrobbler;
@@ -61,8 +62,8 @@ public class RecognizeManager implements GNSearchResultReady, IRecognizeStatusOb
 		return recognizeStatus;
 	}
 	
-	public List<FingerprintData> getFingerprints() {
-		return fingerprintDAO.getFingerprints();
+	public List<Data> getFingerprints() {
+		return fingerprintDAO.getHistory();
 	}
 	
 	public int removeFingerprint(FingerprintData fingerprint) {
