@@ -1,8 +1,10 @@
 package com.git.programmerr47.testhflbjcrhjggkth.model.database;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -11,16 +13,20 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.SongData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISongDAOObservable;
+import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISongDAOObserver;
 
-public class SongDAO implements ISongDAO {
+public class SongDAO implements ISongDAO, ISongDAOObservable {
 	private List<SongData> songDataSet;
 	private HistoryDBHelper historyDBHelper;
 	private SQLiteDatabase database;
 	private Context context;
 	private volatile boolean isFirstGetHistory = true;
+	private Set<ISongDAOObserver> songDAOObservers;
 	
 	public SongDAO(Context context) {
 		songDataSet = new LinkedList<SongData>();
+		songDAOObservers = new HashSet<ISongDAOObserver>();
 		this.context = context;
 	}
 
@@ -57,6 +63,7 @@ public class SongDAO implements ISongDAO {
 		historyDBHelper.close();
 		if(result > 0) {
 			songDataSet.add(songData);
+			notifySongDAOObservers();
 		}
 		return result;
 	}
@@ -83,6 +90,7 @@ public class SongDAO implements ISongDAO {
 		Log.v("Delete", "Deletion from db is " + result);
 		if(result == 1) {
 			songDataSet.remove(songData);
+			notifySongDAOObservers();
 		}
 		database.close();
 		historyDBHelper.close();
@@ -108,6 +116,22 @@ public class SongDAO implements ISongDAO {
 		}
 		
 		return songDataList;
+	}
+
+	@Override
+	public void addObserver(ISongDAOObserver o) {
+		songDAOObservers.add(o);
+	}
+
+	@Override
+	public void removeObserver(ISongDAOObserver o) {
+		songDAOObservers.remove(o);
+	}
+
+	@Override
+	public void notifySongDAOObservers() {
+		for (ISongDAOObserver o : songDAOObservers)
+			o.onHistoryListChanged();
 	}
 
 }

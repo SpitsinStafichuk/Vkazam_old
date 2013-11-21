@@ -99,6 +99,10 @@ public class MicroScrobblerModel implements ISignInObservable, IOnSignInResultLi
         setLastfmAccount(login, password);
 	}
 	
+	public SongDAO getSongDAO() {
+		return songDAO;
+	}
+	
 	public ImageLoader getImageLoader() {
 		return imageLoader;
 	}

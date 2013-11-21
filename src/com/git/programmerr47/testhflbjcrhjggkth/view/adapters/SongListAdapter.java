@@ -8,10 +8,10 @@ import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.SongListController;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.SongData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SearchManager.SearchListener;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SongManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObservable;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObserver;
-import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISearchResultObserver;
 import com.nineoldandroids.view.ViewHelper;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
@@ -30,7 +30,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver, ISearchResultObserver {
+public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver {
 	private static final String TAG = "SongListAdapter";
 	
 	private Activity activity;
@@ -54,7 +54,6 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 		
 		IPlayerStateObservable songManagerStateObservable = (IPlayerStateObservable) songManager;
 		songManagerStateObservable.addObserver((IPlayerStateObserver)this);
-		model.getSearchManager().addObserver(this);
 		Log.v("SongPlayer", "IPlayerStateObserver was added");
 		inflater = (LayoutInflater) this.activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
@@ -127,7 +126,28 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 		coverArts.put(songData.getTrackId(), (ImageView) view.findViewById(R.id.songListItemCoverArt));
 		if(songData.getCoverArtURL() == null) {
 			Log.i(TAG, "songData before search: " + songData.toString());
-			model.getSearchManager().search(songData.getTrackId());
+			model.getSearchManager().search(songData.getTrackId(), new SearchListener() {
+				
+				@Override
+				public void onSearchStatusChanged(String status) {
+				}
+				
+				@Override
+				public void onSearchResult(SongData songData) {
+					if (songData != null) {
+						Log.i(TAG, "songData after search: " + songData.toString());
+						SongData historySongData = getSongDataFromHistoryByTrackId(songData.getTrackId());
+						if(historySongData != null) {
+							Log.i(TAG, "historySongData before SetNullFields: " + historySongData.toString());
+							historySongData.setNullFields(songData);
+							Log.i(TAG, "historySongData after SetNullFields: " + historySongData.toString());
+						} else {
+							Log.i(TAG, "historySongData: null");
+						}
+						displayCoverArt(historySongData);
+					}
+				}
+			});
 		} else {
 			displayCoverArt(songData);
 		}
@@ -226,21 +246,5 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 	
 	public void setScrollingUp(boolean answer) {
 		isScrollingUp = answer;
-	}
-
-	@Override
-	public void onSearchResult(SongData songData) {
-		if (songData != null) {
-			Log.i(TAG, "songData after search: " + songData.toString());
-			SongData historySongData = getSongDataFromHistoryByTrackId(songData.getTrackId());
-			if(historySongData != null) {
-				Log.i(TAG, "historySongData before SetNullFields: " + historySongData.toString());
-				historySongData.setNullFields(songData);
-				Log.i(TAG, "historySongData after SetNullFields: " + historySongData.toString());
-			} else {
-				Log.i(TAG, "historySongData: null");
-			}
-			displayCoverArt(historySongData);
-		}
 	}
 }

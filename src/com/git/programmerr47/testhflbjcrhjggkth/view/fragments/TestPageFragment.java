@@ -14,18 +14,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.git.programmerr47.testhflbjcrhjggkth.R;
-import com.git.programmerr47.testhflbjcrhjggkth.controllers.RecognizeController;
+import com.git.programmerr47.testhflbjcrhjggkth.controllers.TestController;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.SongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SearchManager;
-import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISearchResultObserver;
-import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISearchStatusObserver;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
-public class TestPageFragment extends Fragment implements ISearchResultObserver, ISearchStatusObserver {
+public class TestPageFragment extends Fragment {
 	static final String ARGUMENT_RADIO_ID = "arg_rad_id";
     
-    RecognizeController controller;
+    TestController controller;
     MicroScrobblerModel model;
     SearchManager searchManager;
     Activity parentActivity;
@@ -47,11 +45,9 @@ public class TestPageFragment extends Fragment implements ISearchResultObserver,
     @Override
     public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            controller = new RecognizeController();
+            controller = new TestController(this);
             model = MicroScrobblerModel.getInstance();
             searchManager = model.getSearchManager();
-            searchManager.addObserver((ISearchResultObserver)this);
-            searchManager.addObserver((ISearchStatusObserver)this);
     }
 
     @Override
@@ -70,7 +66,7 @@ public class TestPageFragment extends Fragment implements ISearchResultObserver,
 		final EditText artistEditText = (EditText) view.findViewById(R.id.artist);
 		final EditText titleEditText = (EditText) view.findViewById(R.id.title);
 		final EditText albumEditText = (EditText) view.findViewById(R.id.album);
-        
+		
         Button searchButton = (Button) view.findViewById(R.id.searchButton);
         searchButton.setOnClickListener(new View.OnClickListener() {
 			
@@ -79,18 +75,35 @@ public class TestPageFragment extends Fragment implements ISearchResultObserver,
 				String artist = artistEditText.getText().toString();
 				String title = titleEditText.getText().toString();
 				String album = albumEditText.getText().toString();
-				searchManager.search(artist, album, title);
+				controller.search(artist, album, title);
 			}
 		});
         
         return view;
     }
+    
+    public void displayStatus(String statusString) {
+    	status.setText(statusString);
+    }
+    
+    public void displaySongInformationElement(SongData songData) {
+    	if(songData != null) {
+			String coverArtUrl = songData.getCoverArtURL();
+			songHistory.setVisibility(View.VISIBLE);
+			songArtist.setText(songData.getArtist());
+			songTitle.setText(songData.getTitle());
+			songDate.setText("just now");
+			DisplayImageOptions options = new DisplayImageOptions.Builder()
+				.showImageForEmptyUri(R.drawable.no_cover_art)
+				.showImageOnFail(R.drawable.no_cover_art)
+				.build();
+			model.getImageLoader().displayImage(coverArtUrl, songCoverArt, options);
+		}
+    }
    
     @Override
     public void onDestroy() {
         super.onDestroy();
-        searchManager.removeObserver((ISearchResultObserver)this);
-        searchManager.removeObserver((ISearchStatusObserver)this);
         Log.v("SongPlayer", "HistoryPageFragment onDestroy()");
     }
     
@@ -106,25 +119,4 @@ public class TestPageFragment extends Fragment implements ISearchResultObserver,
         super.onAttach(activity);
         parentActivity = activity;
     }
-
-	@Override
-	public void onSearchStatusChanged(String status) {
-		this.status.setText(status);
-	}
-
-	@Override
-	public void onSearchResult(SongData songData) {
-		if(songData != null) {
-			String coverArtUrl = songData.getCoverArtURL();
-			songHistory.setVisibility(View.VISIBLE);
-			songArtist.setText(songData.getArtist());
-			songTitle.setText(songData.getTitle());
-			songDate.setText("just now");
-			DisplayImageOptions options = new DisplayImageOptions.Builder()
-				.showImageForEmptyUri(R.drawable.no_cover_art)
-				.showImageOnFail(R.drawable.no_cover_art)
-				.build();
-			model.getImageLoader().displayImage(coverArtUrl, songCoverArt, options);
-		}
-	}
 }
