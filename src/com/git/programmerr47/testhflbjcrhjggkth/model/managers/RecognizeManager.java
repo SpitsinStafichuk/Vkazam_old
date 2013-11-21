@@ -8,6 +8,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
 
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.DBConstants;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.FingerprintDAO;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongDAO;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.FingerprintData;
@@ -32,7 +33,7 @@ public class RecognizeManager implements GNSearchResultReady, IRecognizeStatusOb
 	
 	private String artist;
 	private String title;
-	private String coverArtUrl;
+	private String coverArtURL;
 	
 	private Scrobbler scrobbler;
 	
@@ -99,9 +100,9 @@ public class RecognizeManager implements GNSearchResultReady, IRecognizeStatusOb
 				title = bestResponse.getTrackTitle();
 				if (bestResponse.getCoverArt() != null) {
 					Log.i(TAG, "URL = " + bestResponse.getCoverArt().getUrl());
-					coverArtUrl = bestResponse.getCoverArt().getUrl();
+					coverArtURL = bestResponse.getCoverArt().getUrl();
 				} else {
-					coverArtUrl = null;
+					coverArtURL = null;
 				}
 				
 				if(!artist.equals(previousArtist) || !title.equals(previousTitle)) {
@@ -111,7 +112,13 @@ public class RecognizeManager implements GNSearchResultReady, IRecognizeStatusOb
 						Log.w("Scrobbling", "scrobbler == null");
 					}
 					
-					SongData songInfo = new SongData(-1, artist, title, bestResponse.getTrackId(), currentFingerprintData.getDate(), null, coverArtUrl);
+					SongData songInfo = new SongData.SongDataBuilder()
+														.setArtist(artist)
+														.setTitle(title)
+														.setTrackId(bestResponse.getTrackId())
+														.setDate(currentFingerprintData.getDate())
+														.setCoverArtURL(coverArtURL)
+														.build();
 					songDAO.insert(songInfo);
 					if(currentFingerprintIsSaved) {
 						removeFingerprint(currentFingerprintData);
@@ -139,7 +146,7 @@ public class RecognizeManager implements GNSearchResultReady, IRecognizeStatusOb
 	}
 	
 	public String getCoverArtUrl() {
-		return coverArtUrl;
+		return coverArtURL;
 	}
 
 	@Override

@@ -76,10 +76,11 @@ public class FingerprintDAO implements IFingerprintDAO {
 		List<FingerprintData> fingerprintDataList = new ArrayList<FingerprintData>();
 		FingerprintData instance;
 		for(int i = 0; i < cursor.getCount(); i++) {
-			instance = new FingerprintData(Long.parseLong(cursor.getString(cursor.getColumnIndex(DBConstants.FINGERPRINT_ID))),
-	                				cursor.getString(cursor.getColumnIndex(DBConstants.FINGERPRINT)), 
-					                cursor.getString(cursor.getColumnIndex(DBConstants.FINGERPRINT_DATE)));
-			
+			instance = new FingerprintData.FingerprintDataBuilder()
+											.setId(Long.parseLong(cursor.getString(cursor.getColumnIndex(DBConstants.FINGERPRINT_ID))))
+											.setFingerprint(cursor.getString(cursor.getColumnIndex(DBConstants.FINGERPRINT)))
+											.setDate(cursor.getString(cursor.getColumnIndex(DBConstants.FINGERPRINT_DATE)))
+											.build();
 			fingerprintDataList.add(instance);
 			fingerprintDataSet.add(instance);
 			

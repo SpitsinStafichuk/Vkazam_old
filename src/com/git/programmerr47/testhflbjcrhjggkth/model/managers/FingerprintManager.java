@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.DBConstants;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.FingerprintData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IFingerprintStatusObservable;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IFingerprintStatusObserver;
@@ -127,7 +128,10 @@ public class FingerprintManager implements IFingerprintStatusObservable, GNOpera
 			fingerprintStatus = String.format("[%d] %s", result.getErrCode(),
 					result.getErrMessage());
 		} else {
-			fingerprint = new FingerprintData(-1, result.getFingerprintData(), (new Date()).toString());
+			fingerprint = new FingerprintData.FingerprintDataBuilder()
+												.setFingerprint(result.getFingerprintData())
+												.setDate((new Date()).toString())
+												.build();
 			Log.v("Fingerprinting", "fingerprint = " + fingerprint.getFingerprint());
 			recognizeManager.recognizeFingerprint(fingerprint, false);
 		}

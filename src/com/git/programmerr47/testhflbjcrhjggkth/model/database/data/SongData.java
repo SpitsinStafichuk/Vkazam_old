@@ -10,14 +10,14 @@ public class SongData {
 	private String coverArtURL;
 	private long id;
 	
-	public SongData(long id, String artist, String title, String trackId, String date, String pleercomURL, String coverArtURL) {
-		this.id = id;
-		this.artist = artist;
-		this.title = title;
-		this.trackId = trackId;
-		this.date = date;
-		this.pleercomURL = pleercomURL;
-		this.coverArtURL = coverArtURL;
+	private SongData(SongDataBuilder builder) {
+		this.id = builder.id;
+		this.artist = builder.artist;
+		this.title = builder.title;
+		this.trackId = builder.trackId;
+		this.date = builder.date;
+		this.pleercomURL = builder.pleercomURL;
+		this.coverArtURL = builder.coverArtURL;
 	}
 	
 	public String getArtist() {
@@ -64,5 +64,56 @@ public class SongData {
 			}
 		}
 		return false;
+	}
+	
+	public static class SongDataBuilder implements Builder<SongData> {
+
+		private String artist;
+		private String title;
+		private String trackId;
+		private String date;
+		private String pleercomURL;
+		private String coverArtURL;
+		private long id;
+		
+		@Override
+		public SongData build() {
+			return new SongData(this);
+		}
+		
+		public SongDataBuilder setId(long id) {
+			this.id = id;
+			return this;
+		}
+		
+		public SongDataBuilder setArtist(String artist) {
+			this.artist = artist;
+			return this;
+		}
+		
+		public SongDataBuilder setTitle(String title) {
+			this.title = title;
+			return this;
+		}
+		
+		public SongDataBuilder setTrackId(String trackId) {
+			this.trackId = trackId;
+			return this;
+		}
+		
+		public SongDataBuilder setDate(String date) {
+			this.date = date;
+			return this;
+		}
+		
+		public SongDataBuilder setPleercomURL(String pleercomURL) {
+			this.pleercomURL = pleercomURL;
+			return this;
+		}
+		
+		public SongDataBuilder setCoverArtURL(String coverArtURL) {
+			this.coverArtURL = coverArtURL;
+			return this;
+		}
 	}
 }

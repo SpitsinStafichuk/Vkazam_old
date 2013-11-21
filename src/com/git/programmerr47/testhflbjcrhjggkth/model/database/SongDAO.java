@@ -31,7 +31,7 @@ public class SongDAO implements ISongDAO {
 			database = historyDBHelper.getWritableDatabase();
 			Cursor cursor = database.rawQuery("SELECT * FROM " + DBConstants.MUSIC_HISTORY_TABLE, null);
 			cursor.moveToFirst();
-			getListByCursor(cursor);
+			mutateListByCursor(cursor);
 			database.close();
 			historyDBHelper.close();
 			isFirstGetHistory = false;
@@ -89,25 +89,22 @@ public class SongDAO implements ISongDAO {
 		return result;
 	}
 	
-	private List<SongData> getListByCursor(Cursor cursor) {
-		List<SongData> songDataList = new ArrayList<SongData>();
+	private void mutateListByCursor(Cursor cursor) {
 		SongData instance;
 		for(int i = 0; i < cursor.getCount(); i++) {
-			instance = new SongData(Long.parseLong(cursor.getString(cursor.getColumnIndex(DBConstants.MUSIC_HISTORY_ID))),
-	                				cursor.getString(cursor.getColumnIndex(DBConstants.MUSIC_HISTORY_ARTIST)), 
-					                cursor.getString(cursor.getColumnIndex(DBConstants.MUSIC_HISTORY_TITLE)), 
-					                cursor.getString(cursor.getColumnIndex(DBConstants.MUSIC_HISTORY_GRACENOTE_TRACK_ID)), 
-					                cursor.getString(cursor.getColumnIndex(DBConstants.MUSIC_HISTORY_DATE)),
-					                cursor.getString(cursor.getColumnIndex(DBConstants.MUSIC_HISTORY_PLEERCOM_LINK)),
-					                cursor.getString(cursor.getColumnIndex(DBConstants.MUSIC_HISTORY_COVER_ART_URL)));
-			
-			songDataList.add(instance);
+			instance = new SongData.SongDataBuilder()
+										.setId(Long.parseLong(cursor.getString(cursor.getColumnIndex(DBConstants.MUSIC_HISTORY_ID))))
+										.setArtist(cursor.getString(cursor.getColumnIndex(DBConstants.MUSIC_HISTORY_ARTIST)))
+										.setTitle(cursor.getString(cursor.getColumnIndex(DBConstants.MUSIC_HISTORY_TITLE)))
+										.setTrackId(cursor.getString(cursor.getColumnIndex(DBConstants.MUSIC_HISTORY_GRACENOTE_TRACK_ID)))
+										.setDate(cursor.getString(cursor.getColumnIndex(DBConstants.MUSIC_HISTORY_DATE)))
+										.setPleercomURL(cursor.getString(cursor.getColumnIndex(DBConstants.MUSIC_HISTORY_PLEERCOM_LINK)))
+										.setCoverArtURL(cursor.getString(cursor.getColumnIndex(DBConstants.MUSIC_HISTORY_COVER_ART_URL)))
+										.build();
 			songDataSet.add(instance);
 			
 			cursor.moveToNext();
 		}
-		
-		return songDataList;
 	}
 
 }
