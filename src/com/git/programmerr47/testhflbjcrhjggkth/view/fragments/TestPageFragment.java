@@ -17,12 +17,12 @@ import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.RecognizeController;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.SongData;
-import com.git.programmerr47.testhflbjcrhjggkth.model.managers.RecognizeManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SearchManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISearchResultObserver;
+import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISearchStatusObserver;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
-public class TestPageFragment extends Fragment implements ISearchResultObserver {
+public class TestPageFragment extends Fragment implements ISearchResultObserver, ISearchStatusObserver {
 	static final String ARGUMENT_RADIO_ID = "arg_rad_id";
     
     RecognizeController controller;
@@ -50,7 +50,8 @@ public class TestPageFragment extends Fragment implements ISearchResultObserver 
             controller = new RecognizeController();
             model = MicroScrobblerModel.getInstance();
             searchManager = model.getSearchManager();
-            searchManager.addObserver(this);
+            searchManager.addObserver((ISearchResultObserver)this);
+            searchManager.addObserver((ISearchStatusObserver)this);
     }
 
     @Override
@@ -88,7 +89,8 @@ public class TestPageFragment extends Fragment implements ISearchResultObserver 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        searchManager.removeObserver(this);
+        searchManager.removeObserver((ISearchResultObserver)this);
+        searchManager.removeObserver((ISearchStatusObserver)this);
         Log.v("SongPlayer", "HistoryPageFragment onDestroy()");
     }
     
@@ -96,6 +98,7 @@ public class TestPageFragment extends Fragment implements ISearchResultObserver 
     public void onResume() {
     	super.onResume();
     	//updateRecognizeStatus();
+    	//TODO теперь для onResume нужно сохранять текущую информацию в этом классе
     }
 	
 	@Override
@@ -105,21 +108,23 @@ public class TestPageFragment extends Fragment implements ISearchResultObserver 
     }
 
 	@Override
-	public void updateSearchStatus(String resultStatus, SongData songData) {
-		if (resultStatus != null) {
-			status.setText(resultStatus);
-			if(resultStatus.equals(SearchManager.SEARCH_SUCCESS)) {
-				String coverArtUrl = songData.getCoverArtURL();
-				songHistory.setVisibility(View.VISIBLE);
-				songArtist.setText(songData.getArtist());
-				songTitle.setText(songData.getTitle());
-				songDate.setText("just now");
-				DisplayImageOptions options = new DisplayImageOptions.Builder()
-					.showImageForEmptyUri(R.drawable.no_cover_art)
-					.showImageOnFail(R.drawable.no_cover_art)
-					.build();
-				model.getImageLoader().displayImage(coverArtUrl, songCoverArt, options);
-			}
+	public void onSearchStatusChanged(String status) {
+		this.status.setText(status);
+	}
+
+	@Override
+	public void onSearchResult(SongData songData) {
+		if(songData != null) {
+			String coverArtUrl = songData.getCoverArtURL();
+			songHistory.setVisibility(View.VISIBLE);
+			songArtist.setText(songData.getArtist());
+			songTitle.setText(songData.getTitle());
+			songDate.setText("just now");
+			DisplayImageOptions options = new DisplayImageOptions.Builder()
+				.showImageForEmptyUri(R.drawable.no_cover_art)
+				.showImageOnFail(R.drawable.no_cover_art)
+				.build();
+			model.getImageLoader().displayImage(coverArtUrl, songCoverArt, options);
 		}
 	}
 }

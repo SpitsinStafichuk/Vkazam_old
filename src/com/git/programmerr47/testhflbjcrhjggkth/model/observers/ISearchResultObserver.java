@@ -4,5 +4,5 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.SongData;
 
 public interface ISearchResultObserver {
 
-	void updateSearchStatus(String resultStatus, SongData songData);
+	void onSearchResult(SongData songData);
 }

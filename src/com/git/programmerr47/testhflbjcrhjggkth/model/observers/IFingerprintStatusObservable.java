@@ -4,5 +4,5 @@ public interface IFingerprintStatusObservable {
 	
 	void addObserver(IFingerprintStatusObserver o);
 	void removeObserver(IFingerprintStatusObserver o);
-	void notifyFingerprintStatusObservers();
+	void notifyFingerprintStatusObservers(String status);
 }

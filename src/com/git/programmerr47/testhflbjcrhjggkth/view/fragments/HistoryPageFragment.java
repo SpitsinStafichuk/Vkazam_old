@@ -3,8 +3,9 @@ package com.git.programmerr47.testhflbjcrhjggkth.view.fragments;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.SongListController;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.SongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.RecognizeManager;
-import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeStatusObserver;
+import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeResultObserver;
 import com.git.programmerr47.testhflbjcrhjggkth.view.activities.SongInfoActivity;
 import com.git.programmerr47.testhflbjcrhjggkth.view.adapters.SongListAdapter;
 
@@ -23,7 +24,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-public class HistoryPageFragment extends Fragment implements IRecognizeStatusObserver{
+public class HistoryPageFragment extends Fragment implements IRecognizeResultObserver {
 	static final String ARGUMENT_RADIO_ID = "arg_rad_id";
     
     private SongListAdapter adapter;
@@ -108,11 +109,9 @@ public class HistoryPageFragment extends Fragment implements IRecognizeStatusObs
     }
 
 	@Override
-	public void updateRecognizeStatus() {
-		if (recognizeManager.getRecognizeStatus() != null) {
-			if(recognizeManager.getRecognizeStatus().equals(RecognizeManager.RECOGNIZING_SUCCESS)) {
-				adapter.notifyDataSetChanged();
-			}
+	public void onRecognizeResult(SongData songData) {
+		if(songData != null) {
+			adapter.notifyDataSetChanged();
 		}
 	}
 

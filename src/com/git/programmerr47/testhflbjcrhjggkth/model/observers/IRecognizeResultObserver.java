@@ -2,7 +2,7 @@ package com.git.programmerr47.testhflbjcrhjggkth.model.observers;
 
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.SongData;
 
-public interface ISearchCoverArtStatusObserver {
+public interface IRecognizeResultObserver {
 
-	void updateSearchStatus(SongData songData);
+	void onRecognizeResult(SongData songData);
 }

@@ -6,5 +6,5 @@ public interface ISearchResultObservable {
 	
 	void addObserver(ISearchResultObserver o);
 	void removeObserver(ISearchResultObserver o);
-	void notifySearchStatusObservers(String resultStatus, SongData songData);
+	void notifySearchResultObservers(SongData songData);
 }
