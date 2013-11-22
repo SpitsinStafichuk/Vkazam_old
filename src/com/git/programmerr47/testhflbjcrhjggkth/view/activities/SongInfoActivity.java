@@ -3,11 +3,12 @@ package com.git.programmerr47.testhflbjcrhjggkth.view.activities;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.SongData;
-import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SongManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObserver;
+import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.HistoryPageFragment;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
@@ -23,9 +24,14 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.song_information_layout);
 		Log.i(TAG, "Creating song info activity");
+		Intent intent = getIntent();
+		int position = 0;
+		if ((intent != null) && (intent.getExtras() != null)) {
+			position = intent.getIntExtra(HistoryPageFragment.ARGUMENT_SONG_POSITION, 0);
+		}
 		
 		model = MicroScrobblerModel.getInstance();
-		SongData data = model.getSongManager().getSongData();
+		SongData data = (SongData) model.getHistoryItem(position);
 		
 		if (data != null) {
 			fillTextInformation(R.id.songInfoArtist, data.getArtist());

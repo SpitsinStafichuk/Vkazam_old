@@ -24,7 +24,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 public class HistoryPageFragment extends Fragment implements ISongDAOObserver {
-	static final String ARGUMENT_RADIO_ID = "arg_rad_id";
+	public static final String ARGUMENT_SONG_POSITION = "SongDataPosition";
     
     private SongListAdapter adapter;
     private SongListController controller;
@@ -61,7 +61,7 @@ public class HistoryPageFragment extends Fragment implements ISongDAOObserver {
 				@Override
 				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 					Intent intent = new Intent(instance, SongInfoActivity.class);
-					intent.putExtra("SongDataPosition", position);
+					intent.putExtra(ARGUMENT_SONG_POSITION, position);
 					startActivity(intent);
 				}
 			});
