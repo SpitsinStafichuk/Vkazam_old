@@ -16,7 +16,7 @@ public interface DBConstants {
 	String FINGERPRINTS_TABLE = "fingerprints";
 	
 	String FINGERPRINT_ID = "_id";
-	String FINGERPRINT = "fingerprint_data";
+	String FINGERPRINT_DATA = "fingerprint_data";
 	String FINGERPRINT_DATE = "fingerprint_date"; 
 	
 	String SQL_CREATE_MUSIC_HISTORY_TABLE = "CREATE TABLE IF NOT EXISTS "
@@ -31,7 +31,7 @@ public interface DBConstants {
 	
 	String SQL_CREATE_FINGERPRINTS_TABLE = "CREATE TABLE IF NOT EXISTS "
 			+ FINGERPRINTS_TABLE + " (" + FINGERPRINT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-			+ FINGERPRINT + " TEXT," 
+			+ FINGERPRINT_DATA + " TEXT," 
 			+ FINGERPRINT_DATE + " VARCHAR(100)" 
 			+")";
 	

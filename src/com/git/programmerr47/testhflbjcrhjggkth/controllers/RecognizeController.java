@@ -5,6 +5,7 @@ import java.util.Date;
 import android.util.Log;
 
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.DBConstants;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.FingerprintData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.SongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.FingerprintManager;
@@ -54,7 +55,10 @@ public class RecognizeController implements IFingerprintResultObserver, IRecogni
 
 	@Override
 	public void onFingerprintResult(String fingerprint) {
-		FingerprintData fingerprintData = new FingerprintData(-1, fingerprint, (new Date()).toString());
+		FingerprintData fingerprintData = new FingerprintData.FingerprintDataBuilder()
+															.setDate(fingerprint)
+															.setFingerprint((new Date()).toString())
+															.build();
         recognizeManager.recognizeFingerprint(fingerprintData, false);
 	}
 

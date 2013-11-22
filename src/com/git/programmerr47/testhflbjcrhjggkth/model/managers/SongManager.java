@@ -100,7 +100,7 @@ public class SongManager implements IPlayerStateObservable {
 		}
 		songPlayer.prepare();
 		if(songDataNeedUpdate) {
-			songData = new SongData(songData.getId(), songData.getArtist(), songData.getTitle(), songData.getTrackId(), songData.getDate(), audio.url, songData.getCoverArtURL());
+			songData.setPleercomURL(audio.url);
 			songDAO.update(songData);
 		}
 		wasPlayed = false;

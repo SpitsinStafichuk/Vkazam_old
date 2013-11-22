@@ -9,7 +9,7 @@ import android.content.SharedPreferences;
 import android.os.Handler;
 
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongDAO;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.SongData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.Data;
 import com.git.programmerr47.testhflbjcrhjggkth.model.lastfm.IScrobbler;
 import com.git.programmerr47.testhflbjcrhjggkth.model.lastfm.Scrobbler;
 import com.git.programmerr47.testhflbjcrhjggkth.model.lastfm.Scrobbler.IOnSignInResultListener;
@@ -119,7 +119,7 @@ public class MicroScrobblerModel implements ISignInObservable, IOnSignInResultLi
 		return recognizeManager;
 	}
 	
-	public List<SongData> getHistory() {
+	public List<Data> getHistory() {
 		return songDAO.getHistory();
 	}
 	

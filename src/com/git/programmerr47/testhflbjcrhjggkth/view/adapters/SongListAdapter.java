@@ -7,6 +7,7 @@ import java.util.Map;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.SongListController;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.Data;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.SongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SearchManager.SearchListener;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SongManager;
@@ -60,10 +61,10 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 	
 	//TODO переписать!!! данная реализация неэффективна
 	public SongData getSongDataFromHistoryByTrackId(String trackId) {
-		List<SongData> history = model.getHistory();
-		for(SongData i : history) {
-			if(i.getTrackId().equals(trackId)) {
-				return i;
+		List<Data> history = model.getHistory();
+		for(Data i : history) {
+			if(((SongData)i).getTrackId().equals(trackId)) {
+				return (SongData) i;
 			}
 		}
 		return null;
