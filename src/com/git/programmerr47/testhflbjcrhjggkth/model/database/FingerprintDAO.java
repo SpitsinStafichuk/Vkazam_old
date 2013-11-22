@@ -4,10 +4,12 @@ import java.util.LinkedList;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.util.Log;
 
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.Data;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.FingerprintData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.SongData;
 
 public class FingerprintDAO extends AbstractDAO {
 	
@@ -22,7 +24,7 @@ public class FingerprintDAO extends AbstractDAO {
 		databaseHelper = new DBHelper(context);
 		database = databaseHelper.getWritableDatabase();
 		ContentValues values = new ContentValues();
-		values.put(DBConstants.FINGERPRINT, fingerprintData.getFingerprint());
+		values.put(DBConstants.FINGERPRINT_DATA, fingerprintData.getFingerprint());
 		values.put(DBConstants.FINGERPRINT_DATE, fingerprintData.getDate());
 		long result = database.insert(DBConstants.FINGERPRINTS_TABLE, null, values);
 		if(result == 1) {
@@ -52,6 +54,21 @@ public class FingerprintDAO extends AbstractDAO {
 	public int update(Data data) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+	
+	@Override
+	protected void mutateListByCursor(Cursor cursor) {
+		FingerprintData instance;
+		for(int i = 0; i < cursor.getCount(); i++) {
+			instance = new FingerprintData.FingerprintDataBuilder()
+										.setId(Long.parseLong(cursor.getString(cursor.getColumnIndex(DBConstants.FINGERPRINT_ID))))
+										.setDate(cursor.getString(cursor.getColumnIndex(DBConstants.FINGERPRINT_DATE)))
+										.setFingerprint(cursor.getString(cursor.getColumnIndex(DBConstants.FINGERPRINT_DATA)))
+										.build();
+			dataSet.add(instance);
+			
+			cursor.moveToNext();
+		}
 	}
 
 }

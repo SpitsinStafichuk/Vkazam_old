@@ -3,8 +3,8 @@ package com.git.programmerr47.testhflbjcrhjggkth.view.fragments;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.SongListController;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
-import com.git.programmerr47.testhflbjcrhjggkth.model.managers.RecognizeManager;
-import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeStatusObserver;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongDAO;
+import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISongDAOObserver;
 import com.git.programmerr47.testhflbjcrhjggkth.view.activities.SongInfoActivity;
 import com.git.programmerr47.testhflbjcrhjggkth.view.adapters.SongListAdapter;
 
@@ -23,14 +23,14 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-public class HistoryPageFragment extends Fragment implements IRecognizeStatusObserver{
+public class HistoryPageFragment extends Fragment implements ISongDAOObserver {
 	static final String ARGUMENT_RADIO_ID = "arg_rad_id";
     
     private SongListAdapter adapter;
     private SongListController controller;
-    private RecognizeManager recognizeManager;
     private Activity parentActivity;
     ListView songHLV;
+    SongDAO songDAO;
 
     public static HistoryPageFragment newInstance() {
             HistoryPageFragment pageFragment = new HistoryPageFragment();
@@ -45,8 +45,8 @@ public class HistoryPageFragment extends Fragment implements IRecognizeStatusObs
             
             controller = new SongListController(this);
             adapter = new SongListAdapter(this.getActivity(), R.layout.list_item, controller);
-            recognizeManager = MicroScrobblerModel.getInstance().getRecognizeManager();
-            recognizeManager.addObserver(this);
+            songDAO = MicroScrobblerModel.getInstance().getSongDAO();
+            songDAO.addObserver(this);
     }
 
     @Override
@@ -97,7 +97,7 @@ public class HistoryPageFragment extends Fragment implements IRecognizeStatusObs
     @Override
     public void onDestroy() {
             super.onDestroy();
-            recognizeManager.removeObserver(this);
+            songDAO.removeObserver(this);
             Log.v("SongPlayer", "HistoryPageFragment onDestroy()");
     }
 	
@@ -108,12 +108,8 @@ public class HistoryPageFragment extends Fragment implements IRecognizeStatusObs
     }
 
 	@Override
-	public void updateRecognizeStatus() {
-		if (recognizeManager.getRecognizeStatus() != null) {
-			if(recognizeManager.getRecognizeStatus().equals(RecognizeManager.RECOGNIZING_SUCCESS)) {
-				adapter.notifyDataSetChanged();
-			}
-		}
+	public void onHistoryListChanged() {
+		adapter.notifyDataSetChanged();
 	}
 
 }

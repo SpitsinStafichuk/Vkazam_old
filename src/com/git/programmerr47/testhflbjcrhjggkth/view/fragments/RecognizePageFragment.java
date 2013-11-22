@@ -3,9 +3,11 @@ package com.git.programmerr47.testhflbjcrhjggkth.view.fragments;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.RecognizeController;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.SongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.FingerprintManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.RecognizeManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IFingerprintStatusObserver;
+import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeResultObserver;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeStatusObserver;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
@@ -21,7 +23,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class RecognizePageFragment extends Fragment implements IRecognizeStatusObserver, IFingerprintStatusObserver {
+public class RecognizePageFragment extends Fragment implements IRecognizeStatusObserver, IRecognizeResultObserver, IFingerprintStatusObserver {
 	static final String ARGUMENT_RADIO_ID = "arg_rad_id";
     
     RecognizeController controller;
@@ -51,9 +53,10 @@ public class RecognizePageFragment extends Fragment implements IRecognizeStatusO
             controller = new RecognizeController();
             model = MicroScrobblerModel.getInstance();
             fingerprintManager = model.getFingerprintManager();
-            fingerprintManager.addObserver(this);
+            fingerprintManager.addObserver((IFingerprintStatusObserver)this);
             recognizeManager = model.getRecognizeManager();
-            recognizeManager.addObserver(this);
+            recognizeManager.addObserver((IRecognizeStatusObserver)this);
+            recognizeManager.addObserver((IRecognizeResultObserver)this);
     }
 
     @Override
@@ -95,49 +98,48 @@ public class RecognizePageFragment extends Fragment implements IRecognizeStatusO
     public void onDestroy() {
         super.onDestroy();
         fingerprintManager.removeObserver(this);
-        recognizeManager.removeObserver(this);
+        recognizeManager.removeObserver((IRecognizeStatusObserver)this);
+        recognizeManager.removeObserver((IRecognizeResultObserver)this);
         Log.v("SongPlayer", "HistoryPageFragment onDestroy()");
     }
     
     @Override
     public void onResume() {
     	super.onResume();
-    	updateFingerprintStatus();
-    	updateRecognizeStatus();
+    	//updateFingerprintStatus();
+    	//updateRecognizeStatus();
+    	//TODO теперь нужно хранить внутри класса текущую информацию для onResume
     }
-
-	@Override
-	public void updateRecognizeStatus() {
-		if (recognizeManager.getRecognizeStatus() != null) {
-			status.setText(recognizeManager.getRecognizeStatus());
-			if(recognizeManager.getRecognizeStatus().equals(RecognizeManager.RECOGNIZING_SUCCESS)) {
-				String coverArtUrl = recognizeManager.getCoverArtUrl();
-				infoDialog.setVisibility(View.VISIBLE);
-				songArtist.setText(recognizeManager.getArtist());
-				songTitle.setText(recognizeManager.getTitle());
-				songDate.setText("just now");
-				DisplayImageOptions options = new DisplayImageOptions.Builder()
-					.showImageForEmptyUri(R.drawable.no_cover_art)
-					.showImageOnFail(R.drawable.no_cover_art)
-					.build();
-				model.getImageLoader().displayImage(coverArtUrl, songCoverArt, options);
-			}
-		}
-	}
-	
-	@Override
-	public void updateFingerprintStatus() {
-		if (fingerprintManager.getFingerprintStatus() != null) {
-			status.setText(fingerprintManager.getFingerprintStatus());
-			if(fingerprintManager.getFingerprintStatus().equals(FingerprintManager.FINGERPRINTING_SUCCESS)) {
-				
-			}
-		}
-	}
 	
 	@Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         parentActivity = activity;
     }
+
+	@Override
+	public void onFingerprintStatusChanged(String status) {
+		this.status.setText(status);
+	}
+
+	@Override
+	public void onRecognizeResult(SongData songData) {
+		if(songData != null) {
+			String coverArtUrl = songData.getCoverArtURL();
+			infoDialog.setVisibility(View.VISIBLE);
+			songArtist.setText(songData.getArtist());
+			songTitle.setText(songData.getTitle());
+			songDate.setText("just now");
+			DisplayImageOptions options = new DisplayImageOptions.Builder()
+				.showImageForEmptyUri(R.drawable.no_cover_art)
+				.showImageOnFail(R.drawable.no_cover_art)
+				.build();
+			model.getImageLoader().displayImage(coverArtUrl, songCoverArt, options);
+		}
+	}
+
+	@Override
+	public void onRecognizeStatusChanged(String status) {
+		this.status.setText(status);
+	}
 }

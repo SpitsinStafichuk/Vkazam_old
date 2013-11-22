@@ -16,7 +16,6 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.lastfm.Scrobbler.IOnSignIn
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.FingerprintManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.RecognizeManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SearchManager;
-import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SongCoverArtManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SongManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISignInObservable;
 import com.gracenote.mmid.MobileSDK.GNConfig;
@@ -43,7 +42,6 @@ public class MicroScrobblerModel implements ISignInObservable, IOnSignInResultLi
 	private FingerprintManager fingerprintManager;
 	private RecognizeManager recognizeManager;
 	private SongManager songManager;
-	private SongCoverArtManager songInformationManager;
 	private SearchManager searchManager;
 	private Handler handler;
 	
@@ -89,17 +87,20 @@ public class MicroScrobblerModel implements ISignInObservable, IOnSignInResultLi
 		imageLoader.init(ImageLoaderConfiguration.createDefault(context));
 		songDAO = new SongDAO(context);
 		songManager = new SongManager(songDAO, handler, context);
-		searchManager = new SearchManager(config, songDAO);
-		songInformationManager = new SongCoverArtManager(config, songDAO);
+		searchManager = new SearchManager(config);
 		listeners = new HashSet<IOnSignInResultListener>();
 		scrobbler = new Scrobbler();
 		sharedPreferences = context.getSharedPreferences(SAVE_LASTFM_INFO_PREF, MODE);
         final String login = sharedPreferences.getString(LASTFM_USERNAME, null);
         final String password = sharedPreferences.getString(LASTFM_PASSWORD, null);
-        recognizeManager = new RecognizeManager(config, context, scrobbler, songDAO, handler);
-        fingerprintManager = new FingerprintManager(config, context, recognizeManager, handler);
+        recognizeManager = new RecognizeManager(config, context);
+        fingerprintManager = new FingerprintManager(config, context, handler);
 
         setLastfmAccount(login, password);
+	}
+	
+	public SongDAO getSongDAO() {
+		return songDAO;
 	}
 	
 	public ImageLoader getImageLoader() {
@@ -116,10 +117,6 @@ public class MicroScrobblerModel implements ISignInObservable, IOnSignInResultLi
 	
 	public RecognizeManager getRecognizeManager() {
 		return recognizeManager;
-	}
-	
-	public SongCoverArtManager getSongInformationManager() {
-		return songInformationManager;
 	}
 	
 	public List<Data> getHistory() {

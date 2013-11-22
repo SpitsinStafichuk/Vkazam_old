@@ -46,8 +46,17 @@ public class SongData extends Data{
 		this.pleercomURL = pleercomURL;
 	}
 	
+	public void setNullFields(SongData songData) {
+		if(id == -1) id = songData.id;
+		if(artist == null) artist = songData.artist;
+		if(title == null) title = songData.title;
+		if(trackId == null) trackId = songData.trackId;
+		if(date == null) date = songData.date;
+		if(pleercomURL == null) pleercomURL = songData.pleercomURL;
+		if(coverArtURL == null) coverArtURL = songData.coverArtURL;
+	}
+	
 	public static class SongDataBuilder implements Builder<SongData> {
-
 		private String artist;
 		private String title;
 		private String trackId;
@@ -95,5 +104,16 @@ public class SongData extends Data{
 			this.coverArtURL = coverArtURL;
 			return this;
 		}
+	}
+	
+	@Override
+	public String toString() {
+		return "id: " + id + 
+				"\nartist: " + artist + 
+				"\ntitle: " + title + 
+				"\ntrackId: " + trackId + 
+				"\ndate: " + date + 
+				"\npleercomURL: " + pleercomURL + 
+				"\ncoverArtURL: " + coverArtURL;
 	}
 }

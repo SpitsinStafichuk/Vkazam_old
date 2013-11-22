@@ -1,17 +1,31 @@
 package com.git.programmerr47.testhflbjcrhjggkth.controllers;
 
+import java.util.Date;
+
 import android.util.Log;
 
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.DBConstants;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.FingerprintData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.SongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.FingerprintManager;
+import com.git.programmerr47.testhflbjcrhjggkth.model.managers.RecognizeManager;
+import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IFingerprintResultObserver;
+import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IFingerprintStatusObserver;
+import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeResultObserver;
+import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeStatusObserver;
 
-public class RecognizeController {
+public class RecognizeController implements IFingerprintResultObserver, IRecognizeResultObserver {
 	private MicroScrobblerModel model;
     private FingerprintManager fingerprintManager;
+    RecognizeManager recognizeManager;
 
     public RecognizeController() {
-            this.model = MicroScrobblerModel.getInstance();
+            model = MicroScrobblerModel.getInstance();
             fingerprintManager = model.getFingerprintManager();
+            fingerprintManager.addObserver(this);
+            recognizeManager = model.getRecognizeManager();
+            recognizeManager.addObserver(this);
     }
     
     public boolean fingerprintByTimerRecognizeCancel() {
@@ -37,4 +51,20 @@ public class RecognizeController {
     		return true;
     	}
     }
+
+
+	@Override
+	public void onFingerprintResult(String fingerprint) {
+		FingerprintData fingerprintData = new FingerprintData.FingerprintDataBuilder()
+															.setDate(fingerprint)
+															.setFingerprint((new Date()).toString())
+															.build();
+        recognizeManager.recognizeFingerprint(fingerprintData, false);
+	}
+
+	@Override
+	public void onRecognizeResult(SongData songData) {
+		// TODO Auto-generated method stub
+		
+	}
 }

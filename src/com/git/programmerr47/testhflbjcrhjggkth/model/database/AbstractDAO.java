@@ -40,23 +40,7 @@ public abstract class AbstractDAO {
 		return dataSet;
 	}
 	
-	private void mutateListByCursor(Cursor cursor) {
-		SongData instance;
-		for(int i = 0; i < cursor.getCount(); i++) {
-			instance = new SongData.SongDataBuilder()
-										.setId(Long.parseLong(cursor.getString(cursor.getColumnIndex(DBConstants.MUSIC_HISTORY_ID))))
-										.setArtist(cursor.getString(cursor.getColumnIndex(DBConstants.MUSIC_HISTORY_ARTIST)))
-										.setTitle(cursor.getString(cursor.getColumnIndex(DBConstants.MUSIC_HISTORY_TITLE)))
-										.setTrackId(cursor.getString(cursor.getColumnIndex(DBConstants.MUSIC_HISTORY_GRACENOTE_TRACK_ID)))
-										.setDate(cursor.getString(cursor.getColumnIndex(DBConstants.MUSIC_HISTORY_DATE)))
-										.setPleercomURL(cursor.getString(cursor.getColumnIndex(DBConstants.MUSIC_HISTORY_PLEERCOM_LINK)))
-										.setCoverArtURL(cursor.getString(cursor.getColumnIndex(DBConstants.MUSIC_HISTORY_COVER_ART_URL)))
-										.build();
-			dataSet.add(instance);
-			
-			cursor.moveToNext();
-		}
-	}
+	protected abstract void mutateListByCursor(Cursor cursor);
 	
 	public abstract long insert(Data data);
 	

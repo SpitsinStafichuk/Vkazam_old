@@ -41,7 +41,8 @@ public class RecognizeService extends Service implements IRecognizeStatusObserve
 	@Override 
     public synchronized int onStartCommand(Intent intent, int flags, int startId) {
 		Log.i(TAG, "on fake startCommand just for test");
-		if(!isStarted) {
+		stopSelf();
+/*		if(!isStarted) {
 			isStarted = true;
 			Log.i(TAG, "onStartCommand");
 			recognizeManager.addObserver(this);
@@ -53,7 +54,7 @@ public class RecognizeService extends Service implements IRecognizeStatusObserve
 			} else {
 				stopSelf();
 			}
-		}
+		}*/
 		return Service.START_REDELIVER_INTENT;
 	}
 	
@@ -62,7 +63,7 @@ public class RecognizeService extends Service implements IRecognizeStatusObserve
 		isStarted = false;
 	}
 
-	@Override
+/*	@Override
 	public void updateRecognizeStatus() {
 		List<Data> fingerprints = recognizeManager.getFingerprints();
 		if(!fingerprints.isEmpty()) {
@@ -72,6 +73,12 @@ public class RecognizeService extends Service implements IRecognizeStatusObserve
 		} else {
 			stopSelf();
 		}
+	}*/
+
+	@Override
+	public void onRecognizeStatusChanged(String status) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
