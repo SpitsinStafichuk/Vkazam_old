@@ -92,6 +92,7 @@ public class HistoryPageFragment extends Fragment implements ISongDAOObserver {
     @Override
     public void onResume() {
     	super.onResume();
+    	adapter.notifyDataSetChanged();
     }
    
     @Override

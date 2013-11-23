@@ -45,12 +45,12 @@
 
     	            <ProgressBar
     	                android:id="@+id/songItemLoading"
+    	                style="?android:attr/progressBarStyleSmall"
     	                android:layout_width="wrap_content"
     	                android:layout_height="wrap_content"
     	                android:minHeight="30dp"
     	                android:minWidth="30dp"
-    	                android:visibility="gone"
-    	                style="?android:attr/progressBarStyleSmall"/>
+    	                android:visibility="gone" />
 
     	        </LinearLayout>
 
