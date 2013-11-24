@@ -11,7 +11,6 @@ import org.json.JSONException;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongDAO;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.SongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.exceptions.SongNotFoundException;
-import com.git.programmerr47.testhflbjcrhjggkth.model.lastfm.IScrobbler;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObservable;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObserver;
 import com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.Api;
@@ -20,7 +19,6 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.KException;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.util.Log;
@@ -42,7 +40,7 @@ public class SongManager implements IPlayerStateObservable {
 	
 	private Context context;
 	
-	public SongManager(IScrobbler scrobbler, SongDAO songDAO, Handler handler, Context context) {
+	public SongManager(SongDAO songDAO, Handler handler, Context context) {
 		songPlayer = new MediaPlayer();
 		this.songDAO = songDAO;
 		this.handler = handler;
@@ -51,11 +49,6 @@ public class SongManager implements IPlayerStateObservable {
 		playerStateObservers = new HashSet<IPlayerStateObserver>();
 	}
 	
-	public SongManager(SongDAO songDAO, Handler handler, Context context) {
-		this(null, songDAO, handler, context);
-	}
-	
-	//
 	public void set(SongData songData) {
 		this.songData = songData;
 		isPrepared = false;
@@ -194,9 +187,6 @@ public class SongManager implements IPlayerStateObservable {
 	public void notifyPlayerStateObservers() {
 		for (IPlayerStateObserver o : playerStateObservers)
 			o.updatePlayerState();
-	}
-
-	public void setScrobbler(IScrobbler scrobbler) {
 	}
 
 	public SongData getSongData() {
