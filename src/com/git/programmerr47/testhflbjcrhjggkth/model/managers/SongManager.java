@@ -32,9 +32,6 @@ public class SongManager implements IPlayerStateObservable {
 	private MediaPlayer songPlayer;
 	
 	private SongData songData;
-	private boolean wasPlayed = false;
-	
-	private IScrobbler scrobbler;
 	
 	private boolean isLoading;
 	private boolean isPlaying;
@@ -47,7 +44,6 @@ public class SongManager implements IPlayerStateObservable {
 	
 	public SongManager(IScrobbler scrobbler, SongDAO songDAO, Handler handler, Context context) {
 		songPlayer = new MediaPlayer();
-		this.scrobbler = scrobbler;
 		this.songDAO = songDAO;
 		this.handler = handler;
 		this.context = context;
@@ -59,6 +55,7 @@ public class SongManager implements IPlayerStateObservable {
 		this(null, songDAO, handler, context);
 	}
 	
+	//
 	public void set(SongData songData) {
 		this.songData = songData;
 		isPrepared = false;
@@ -93,17 +90,18 @@ public class SongManager implements IPlayerStateObservable {
 			} catch(IOException e) {
 				songDataNeedUpdate = true;
 				audio = findSongOnPleercom(getArtist(), getTitle());
+				songPlayer.setDataSource(audio.url);
 			} catch(IllegalArgumentException e) {
 				songDataNeedUpdate = true;
 				audio = findSongOnPleercom(getArtist(), getTitle());
-			}
+				songPlayer.setDataSource(audio.url);
+			} 
 		}
 		songPlayer.prepare();
 		if(songDataNeedUpdate) {
 			songData.setPleercomURL(audio.url);
 			songDAO.update(songData);
 		}
-		wasPlayed = false;
 		isPrepared = true;
 	}
 	
@@ -135,9 +133,6 @@ public class SongManager implements IPlayerStateObservable {
 		isPlaying = true;
 		Log.v("SongListController", "Song" + songData.getArtist() + "-" + songData.getTitle() + "was started");
 		sendLastFMTrackStarted();
-		/*if (!wasPlayed && scrobbler != null)
-			scrobbler.scrobble(songData.getArtist(), songData.getTitle());*/
-		wasPlayed = true;
 		asyncNotifyPlayerStateObservers();
 	}
 	
@@ -152,7 +147,6 @@ public class SongManager implements IPlayerStateObservable {
 		songPlayer.stop();
 		isLoading = false;
 		isPlaying = false;
-		wasPlayed = false;
 		asyncNotifyPlayerStateObservers();
 	}
 	
@@ -162,31 +156,6 @@ public class SongManager implements IPlayerStateObservable {
 	
 	public int getPosition() {
 		return songPlayer.getCurrentPosition();
-	}
-	
-	public boolean isLove() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
-	public void setLove(boolean love) {
-		// TODO Auto-generated method stub
-
-	}
-	
-	public boolean isVkAdded() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
-	public void addToVk() {
-		// TODO Auto-generated method stub
-
-	}
-	
-	public void download() {
-		// TODO Auto-generated method stub
-
 	}
 	
 	public String getArtist() {
@@ -199,11 +168,6 @@ public class SongManager implements IPlayerStateObservable {
 	
 	public int getDuration() {
 		return songPlayer.getDuration();
-	}
-	
-	public Drawable getSongLogo() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	
 	public boolean isPlaying() {
@@ -233,7 +197,6 @@ public class SongManager implements IPlayerStateObservable {
 	}
 
 	public void setScrobbler(IScrobbler scrobbler) {
-		this.scrobbler = scrobbler;
 	}
 
 	public SongData getSongData() {

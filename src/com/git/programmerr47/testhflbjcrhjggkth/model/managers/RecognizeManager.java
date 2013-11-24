@@ -6,8 +6,6 @@ import java.util.Set;
 import android.content.Context;
 import android.util.Log;
 
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.DBConstants;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.Data;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.FingerprintData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.SongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeResultObservable;
@@ -82,7 +80,7 @@ public class RecognizeManager implements GNSearchResultReady, GNOperationStatusC
 				String coverArtURL = bestResponse.getCoverArt() != null ? bestResponse.getCoverArt().getUrl() : null;
 				Log.i(TAG, "coverArtUrl = " + coverArtURL);
 				
-				SongData songInfo = new SongData.SongDataBuilder()
+				songData = new SongData.SongDataBuilder()
 														.setArtist(artist)
 														.setTitle(title)
 														.setTrackId(bestResponse.getTrackId())

@@ -108,12 +108,12 @@
             android:background="@android:color/transparent"/>
         
     	<ProgressBar
-    	    android:id="@+id/songItemLoading"
+    	    android:id="@+id/songInfoLoading"
+    	    style="?android:attr/progressBarStyleSmall"
     	    android:layout_width="40dp"
     	    android:layout_height="20dp"
-            android:layout_gravity="center_vertical"
-    	    android:visibility="gone"
-    	    style="?android:attr/progressBarStyleSmall"/>
+    	    android:layout_gravity="center_vertical"
+    	    android:visibility="gone" />
 
         <ProgressBar
             android:id="@+id/songInfoPosition"

@@ -123,6 +123,14 @@ public class MicroScrobblerModel implements ISignInObservable, IOnSignInResultLi
 		return songDAO.getHistory();
 	}
 	
+	public Data getHistoryItem(int position) {
+		if ((position > -1) && (position < songDAO.getHistory().size())) {
+			return songDAO.getHistory().get(position);
+		} else {
+			return null;
+		}
+	}
+	
 	public void setLastfmAccount(String username, String password) {
         scrobbler.signIn(username, password);
         scrobbler.setOnSignInResultListener(this);
