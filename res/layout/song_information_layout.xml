@@ -108,7 +108,7 @@
             android:background="@android:color/transparent"/>
         
     	<ProgressBar
-    	    android:id="@+id/songItemLoading"
+    	    android:id="@+id/songInfoLoading"
     	    style="?android:attr/progressBarStyleSmall"
     	    android:layout_width="40dp"
     	    android:layout_height="20dp"

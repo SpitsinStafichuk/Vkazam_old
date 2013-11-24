@@ -55,6 +55,7 @@ public class SongManager implements IPlayerStateObservable {
 		this(null, songDAO, handler, context);
 	}
 	
+	//
 	public void set(SongData songData) {
 		this.songData = songData;
 		isPrepared = false;
@@ -89,10 +90,12 @@ public class SongManager implements IPlayerStateObservable {
 			} catch(IOException e) {
 				songDataNeedUpdate = true;
 				audio = findSongOnPleercom(getArtist(), getTitle());
+				songPlayer.setDataSource(audio.url);
 			} catch(IllegalArgumentException e) {
 				songDataNeedUpdate = true;
 				audio = findSongOnPleercom(getArtist(), getTitle());
-			}
+				songPlayer.setDataSource(audio.url);
+			} 
 		}
 		songPlayer.prepare();
 		if(songDataNeedUpdate) {
@@ -155,31 +158,6 @@ public class SongManager implements IPlayerStateObservable {
 		return songPlayer.getCurrentPosition();
 	}
 	
-	public boolean isLove() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
-	public void setLove(boolean love) {
-		// TODO Auto-generated method stub
-
-	}
-	
-	public boolean isVkAdded() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
-	public void addToVk() {
-		// TODO Auto-generated method stub
-
-	}
-	
-	public void download() {
-		// TODO Auto-generated method stub
-
-	}
-	
 	public String getArtist() {
 		return songData.getArtist();
 	}
@@ -190,11 +168,6 @@ public class SongManager implements IPlayerStateObservable {
 	
 	public int getDuration() {
 		return songPlayer.getDuration();
-	}
-	
-	public Drawable getSongLogo() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	
 	public boolean isPlaying() {

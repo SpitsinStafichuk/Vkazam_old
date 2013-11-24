@@ -4,7 +4,6 @@ import java.util.Date;
 
 import android.util.Log;
 
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.DBConstants;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.SongData;
 import com.git.programmerr47.testhflbjcrhjggkth.utils.LogHelper;
 import com.gracenote.mmid.MobileSDK.GNOperationStatusChanged;

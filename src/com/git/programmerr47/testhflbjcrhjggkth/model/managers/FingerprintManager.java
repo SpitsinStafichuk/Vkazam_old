@@ -45,7 +45,6 @@ public class FingerprintManager implements IFingerprintStatusObservable, IFinger
 		isFingerprintingOneTime = false;
 		this.config = config;
 		this.handler = handler;
-		//возможны проблемы с одновременным обращением к базе данных
 	}
 	
 	public void fingerprintByTimer() {
@@ -115,8 +114,7 @@ public class FingerprintManager implements IFingerprintStatusObservable, IFinger
 		String fingerprintStatus = null;
 		String fingerprint = null;
 		if(result.isFailure()) {
-			fingerprintStatus = String.format("[%d] %s", result.getErrCode(),
-					result.getErrMessage());
+			fingerprintStatus = String.format("[%d] %s", result.getErrCode(), result.getErrMessage());
 		} else {
 			fingerprintStatus = FINGERPRINTING_SUCCESS;
 			fingerprint = result.getFingerprintData();
