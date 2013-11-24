@@ -1,11 +1,10 @@
 package com.git.programmerr47.testhflbjcrhjggkth.model;
 
-import java.util.List;
 import android.content.Context;
 import android.os.Handler;
 
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongDAO;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.Data;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.Data;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongList;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.FingerprintManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.RecognizeManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SearchManager;
@@ -28,7 +27,7 @@ public class MicroScrobblerModel {
 	private SearchManager searchManager;
 	private Handler handler;
 	
-	private SongDAO songDAO;
+	private SongList songList;
 	
 	private ImageLoader imageLoader;
 	
@@ -68,15 +67,15 @@ public class MicroScrobblerModel {
 		config.setProperty("content.review", "1");
 		imageLoader = ImageLoader.getInstance();
 		imageLoader.init(ImageLoaderConfiguration.createDefault(context));
-		songDAO = new SongDAO(context);
-		songManager = new SongManager(songDAO, handler, context);
+		songList = new SongList(context);
+		songManager = new SongManager(handler, context);
 		searchManager = new SearchManager(config);
         recognizeManager = new RecognizeManager(config, context);
         fingerprintManager = new FingerprintManager(config, context, handler);
 	}
 	
-	public SongDAO getSongDAO() {
-		return songDAO;
+	public SongList getSongList() {
+		return songList;
 	}
 	
 	public ImageLoader getImageLoader() {
@@ -95,13 +94,9 @@ public class MicroScrobblerModel {
 		return recognizeManager;
 	}
 	
-	public List<Data> getHistory() {
-		return songDAO.getHistory();
-	}
-	
 	public Data getHistoryItem(int position) {
-		if ((position > -1) && (position < songDAO.getHistory().size())) {
-			return songDAO.getHistory().get(position);
+		if ((position > -1) && (position < songList.size())) {
+			return songList.get(position);
 		} else {
 			return null;
 		}

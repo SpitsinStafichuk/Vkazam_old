@@ -1,11 +1,13 @@
-package com.git.programmerr47.testhflbjcrhjggkth.model.database.data;
+package com.git.programmerr47.testhflbjcrhjggkth.model.database;
+
 
 public class Data {
 
-	protected long id;
-	protected String date;
+	protected long id = -1;
+	protected long date = -1;
+	protected AbstractDAO dao;
 	
-	public String getDate() {
+	public long getDate() {
 		return date;
 	}
 

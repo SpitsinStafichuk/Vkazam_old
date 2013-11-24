@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.TestController;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.SongData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SearchManager;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 

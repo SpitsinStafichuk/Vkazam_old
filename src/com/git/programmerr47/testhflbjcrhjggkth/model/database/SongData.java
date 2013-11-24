@@ -1,4 +1,5 @@
-package com.git.programmerr47.testhflbjcrhjggkth.model.database.data;
+package com.git.programmerr47.testhflbjcrhjggkth.model.database;
+
 
 public class SongData extends Data{
 
@@ -16,6 +17,7 @@ public class SongData extends Data{
 		this.date = builder.date;
 		this.pleercomURL = builder.pleercomURL;
 		this.coverArtURL = builder.coverArtURL;
+		this.dao = builder.dao;
 	}
 	
 	public String getArtist() {
@@ -40,10 +42,12 @@ public class SongData extends Data{
 	
 	public void setCoverArtURL(String coverArtURL) {
 		this.coverArtURL = coverArtURL;
+		dao.update(this);
 	}
 	
 	public void setPleercomURL(String pleercomURL) {
 		this.pleercomURL = pleercomURL;
+		dao.update(this);
 	}
 	
 	public void setNullFields(SongData songData) {
@@ -51,23 +55,38 @@ public class SongData extends Data{
 		if(artist == null) artist = songData.artist;
 		if(title == null) title = songData.title;
 		if(trackId == null) trackId = songData.trackId;
-		if(date == null) date = songData.date;
+		if(date == -1) date = songData.date;
 		if(pleercomURL == null) pleercomURL = songData.pleercomURL;
 		if(coverArtURL == null) coverArtURL = songData.coverArtURL;
+	}
+	
+	public void setNullFields(SongDataBuilder builder) {
+		if(id == -1) id = builder.id;
+		if(artist == null) artist = builder.artist;
+		if(title == null) title = builder.title;
+		if(trackId == null) trackId = builder.trackId;
+		if(date == -1) date = builder.date;
+		if(pleercomURL == null) pleercomURL = builder.pleercomURL;
+		if(coverArtURL == null) coverArtURL = builder.coverArtURL;
 	}
 	
 	public static class SongDataBuilder implements Builder<SongData> {
 		private String artist;
 		private String title;
 		private String trackId;
-		private String date;
+		private long date;
 		private String pleercomURL;
 		private String coverArtURL;
 		private long id;
+		private AbstractDAO dao;
 		
 		@Override
 		public SongData build() {
-			return new SongData(this);
+			if (dao == null) {
+				throw new IllegalStateException("Dao is null, you need to put builder into the list");
+			} else {
+				return new SongData(this);
+			}
 		}
 		
 		public SongDataBuilder setId(long id) {
@@ -90,7 +109,7 @@ public class SongData extends Data{
 			return this;
 		}
 		
-		public SongDataBuilder setDate(String date) {
+		public SongDataBuilder setDate(long date) {
 			this.date = date;
 			return this;
 		}
@@ -103,6 +122,31 @@ public class SongData extends Data{
 		public SongDataBuilder setCoverArtURL(String coverArtURL) {
 			this.coverArtURL = coverArtURL;
 			return this;
+		}
+		
+		SongDataBuilder setSongDAO(AbstractDAO dao) {
+			this.dao = dao;
+			return this;
+		}
+		
+		public long getId() {
+			return id;
+		}
+		
+		public String getArtist() {
+			return artist;
+		}
+
+		public String getTitle() {
+			return title;
+		}
+		
+		public String getCoverArtURL() {
+			return coverArtURL;
+		}
+
+		public String getTrackId() {
+			return trackId;
 		}
 	}
 	

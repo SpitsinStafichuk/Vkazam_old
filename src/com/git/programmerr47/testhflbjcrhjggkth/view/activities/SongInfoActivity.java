@@ -1,9 +1,11 @@
 package com.git.programmerr47.testhflbjcrhjggkth.view.activities;
 
+import java.util.Date;
+
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.SongInfoController;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.SongData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObserver;
 import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.HistoryPageFragment;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -59,7 +61,7 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 		if (data != null) {
 			fillTextInformation(R.id.songInfoArtist, data.getArtist());
 			fillTextInformation(R.id.songInfoTitle, data.getTitle());
-			fillTextInformation(R.id.songInfoDate, data.getDate());
+			fillTextInformation(R.id.songInfoDate, (new Date(data.getDate())).toString());
 			fillTextInformation(R.id.songInfoTrackId, data.getTrackId());
 			
 			if (data.getCoverArtURL() != null) {

@@ -3,7 +3,8 @@ package com.git.programmerr47.testhflbjcrhjggkth.view.fragments;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.RecognizeController;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.SongData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongData.SongDataBuilder;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.FingerprintManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.RecognizeManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IFingerprintStatusObserver;
@@ -123,12 +124,12 @@ public class RecognizePageFragment extends Fragment implements IRecognizeStatusO
 	}
 
 	@Override
-	public void onRecognizeResult(SongData songData) {
-		if(songData != null) {
-			String coverArtUrl = songData.getCoverArtURL();
+	public void onRecognizeResult(SongDataBuilder builder) {
+		if(builder != null) {
+			String coverArtUrl = builder.getCoverArtURL();
 			infoDialog.setVisibility(View.VISIBLE);
-			songArtist.setText(songData.getArtist());
-			songTitle.setText(songData.getTitle());
+			songArtist.setText(builder.getArtist());
+			songTitle.setText(builder.getTitle());
 			songDate.setText("just now");
 			DisplayImageOptions options = new DisplayImageOptions.Builder()
 				.showImageForEmptyUri(R.drawable.no_cover_art)

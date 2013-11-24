@@ -1,4 +1,5 @@
-package com.git.programmerr47.testhflbjcrhjggkth.model.database.data;
+package com.git.programmerr47.testhflbjcrhjggkth.model.database;
+
 
 public class FingerprintData extends Data{
 	
@@ -8,6 +9,7 @@ public class FingerprintData extends Data{
 		this.id = builder.id;
 		this.fingerprint = builder.fingerprint;
 		this.date = builder.date;
+		this.dao = builder.dao;
 	}
 
 	public String getFingerprint() {
@@ -18,9 +20,8 @@ public class FingerprintData extends Data{
 
 		private long id;
 		private String fingerprint;
-		private String date;
-		
-		
+		private long date;
+		private FingerprintDAO dao;
 		
 		@Override
 		public FingerprintData build() {
@@ -37,8 +38,13 @@ public class FingerprintData extends Data{
 			return this;
 		}
 		
-		public FingerprintDataBuilder setDate(String date) {
+		public FingerprintDataBuilder setDate(long date) {
 			this.date = date;
+			return this;
+		}
+		
+		FingerprintDataBuilder setFingerprintDAO(FingerprintDAO dao) {
+			this.dao = dao;
 			return this;
 		}
 	}

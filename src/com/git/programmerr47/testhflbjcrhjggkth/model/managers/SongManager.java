@@ -9,7 +9,8 @@ import java.util.Set;
 import org.json.JSONException;
 
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongDAO;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.SongData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongList;
 import com.git.programmerr47.testhflbjcrhjggkth.model.exceptions.SongNotFoundException;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObservable;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObserver;
@@ -35,14 +36,12 @@ public class SongManager implements IPlayerStateObservable {
 	private boolean isPlaying;
 	private boolean isPrepared;
 	
-	private SongDAO songDAO;
 	private Handler handler;
 	
 	private Context context;
 	
-	public SongManager(SongDAO songDAO, Handler handler, Context context) {
+	public SongManager(Handler handler, Context context) {
 		songPlayer = new MediaPlayer();
-		this.songDAO = songDAO;
 		this.handler = handler;
 		this.context = context;
 		isPrepared = false;
@@ -93,7 +92,6 @@ public class SongManager implements IPlayerStateObservable {
 		songPlayer.prepare();
 		if(songDataNeedUpdate) {
 			songData.setPleercomURL(audio.url);
-			songDAO.update(songData);
 		}
 		isPrepared = true;
 	}

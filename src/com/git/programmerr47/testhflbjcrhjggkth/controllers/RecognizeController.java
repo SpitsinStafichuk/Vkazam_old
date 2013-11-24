@@ -6,8 +6,9 @@ import android.util.Log;
 
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.DBConstants;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.FingerprintData;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.SongData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.FingerprintData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongData.SongDataBuilder;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.FingerprintManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.RecognizeManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IFingerprintResultObserver;
@@ -58,7 +59,7 @@ public class RecognizeController implements IFingerprintResultObserver, IRecogni
 	@Override
 	public void onFingerprintResult(String fingerprint) {
 		FingerprintData fingerprintData = new FingerprintData.FingerprintDataBuilder()
-															.setDate((new Date()).toString())
+															.setDate((new Date()).getTime())
 															.setFingerprint(fingerprint)
 															.build();
 		Log.i(TAG, "fingerprint = " + fingerprint);
@@ -66,8 +67,9 @@ public class RecognizeController implements IFingerprintResultObserver, IRecogni
 	}
 
 	@Override
-	public void onRecognizeResult(SongData songData) {
-		// TODO Auto-generated method stub
-		
+	public void onRecognizeResult(SongDataBuilder builder) {
+		if (builder != null) {
+			model.getSongList().add(builder);
+		}
 	}
 }

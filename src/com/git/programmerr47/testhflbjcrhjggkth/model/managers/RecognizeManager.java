@@ -6,8 +6,9 @@ import java.util.Set;
 import android.content.Context;
 import android.util.Log;
 
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.FingerprintData;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.SongData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.FingerprintData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongData.SongDataBuilder;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeResultObservable;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeResultObserver;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeStatusObservable;
@@ -62,7 +63,7 @@ public class RecognizeManager implements GNSearchResultReady, GNOperationStatusC
 	public void GNResultReady(GNSearchResult result) {
 		Log.i(TAG, "GNResultReady");
 		String recognizeStatus = null;
-		SongData songData = null;
+		SongDataBuilder songData = null;
 		if (result.isFailure()) {
 			int errCode = result.getErrCode();
 			recognizeStatus = String.format("[%d] %s", errCode,
@@ -81,13 +82,12 @@ public class RecognizeManager implements GNSearchResultReady, GNOperationStatusC
 				String coverArtURL = bestResponse.getCoverArt() != null ? bestResponse.getCoverArt().getUrl() : null;
 				Log.i(TAG, "coverArtUrl = " + coverArtURL);
 				
-				songData = new SongData.SongDataBuilder()
+				songData = new SongDataBuilder()
 														.setArtist(artist)
 														.setTitle(title)
 														.setTrackId(bestResponse.getTrackId())
 														.setDate(currentFingerprintData.getDate())
-														.setCoverArtURL(coverArtURL)
-														.build();
+														.setCoverArtURL(coverArtURL);
 				//songDAO.insert(songInfo);
 				/*if(currentFingerprintIsSaved) {
 					removeFingerprint(currentFingerprintData);
@@ -122,7 +122,7 @@ public class RecognizeManager implements GNSearchResultReady, GNOperationStatusC
 	}
 
 	@Override
-	public void notifyRecognizeResultObservers(SongData songData) {
+	public void notifyRecognizeResultObservers(SongDataBuilder songData) {
 		for(IRecognizeResultObserver o : recognizeResultObservers)
 			o.onRecognizeResult(songData);
 	}

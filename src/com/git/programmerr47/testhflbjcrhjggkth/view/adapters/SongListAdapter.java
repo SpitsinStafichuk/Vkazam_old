@@ -1,5 +1,7 @@
 package com.git.programmerr47.testhflbjcrhjggkth.view.adapters;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,8 +9,9 @@ import java.util.Map;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.SongListController;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.Data;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.SongData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.Data;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongData.SongDataBuilder;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SearchManager.SearchListener;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SongManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObservable;
@@ -60,24 +63,25 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 	}
 	
 	//TODO переписать!!! данная реализация неэффективна
-	public SongData getSongDataFromHistoryByTrackId(String trackId) {
-		List<Data> history = model.getHistory();
+	public List<SongData> getSongDataFromHistoryById(String trackId) {
+		List<SongData> result = new ArrayList<SongData>();
+		List<Data> history = model.getSongList();
 		for(Data i : history) {
 			if(((SongData)i).getTrackId().equals(trackId)) {
-				return (SongData) i;
+				result.add((SongData) i);
 			}
 		}
-		return null;
+		return result;
 	}
 	
 	@Override
 	public int getCount() {
-		return model.getHistory().size();
+		return model.getSongList().size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return model.getHistory().get(position);
+		return model.getSongList().get(position);
 	}
 
 	@Override
@@ -134,18 +138,17 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 				}
 				
 				@Override
-				public void onSearchResult(SongData songData) {
-					if (songData != null) {
-						Log.i(TAG, "songData after search: " + songData.toString());
-						SongData historySongData = getSongDataFromHistoryByTrackId(songData.getTrackId());
+				public void onSearchResult(SongDataBuilder builder) {
+					if (builder != null) {
+						List<SongData> historySongData = getSongDataFromHistoryById(builder.getTrackId());
 						if(historySongData != null) {
-							Log.i(TAG, "historySongData before SetNullFields: " + historySongData.toString());
-							historySongData.setNullFields(songData);
-							Log.i(TAG, "historySongData after SetNullFields: " + historySongData.toString());
+							for (SongData i : historySongData) {
+								if (i != null) i.setCoverArtURL(builder.getCoverArtURL());
+								displayCoverArt(i);
+							}
 						} else {
 							Log.i(TAG, "historySongData: null");
 						}
-						displayCoverArt(historySongData);
 					}
 				}
 			});
@@ -154,7 +157,7 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 		}
 		((TextView) view.findViewById(R.id.songListItemArtist)).setText(songData.getArtist());
 		((TextView) view.findViewById(R.id.songListItemTitle)).setText(songData.getTitle());
-		((TextView) view.findViewById(R.id.songListItemDate)).setText(songData.getDate());
+		((TextView) view.findViewById(R.id.songListItemDate)).setText((new Date(songData.getDate())).toString());
 		if ((songManager.getSongData() != null) && 
 		    (songManager.getSongData().equals(songData))) {
 		    ((LinearLayout) view.findViewById(R.id.songHistoryItem)).setBackgroundResource(R.drawable.song_list_item_bg_pressed);
