@@ -41,9 +41,10 @@ public class RecognizeManager implements GNSearchResultReady, GNOperationStatusC
 	
 	//TODO synchronized в данном случае не работает, нужно разобраться с блокировками
 	public synchronized void recognizeFingerprint(FingerprintData fingerprint, boolean isSaved) {
-			currentFingerprintData = fingerprint;
-			currentFingerprintIsSaved = isSaved;
-			GNOperations.searchByFingerprint(this, config, fingerprint.getFingerprint());
+		Log.i(TAG, fingerprint.getFingerprint());
+		currentFingerprintData = fingerprint;
+		currentFingerprintIsSaved = isSaved;
+		GNOperations.searchByFingerprint(this, config, fingerprint.getFingerprint());
 	}
 
 	public void recognizeFingerprintCancel() {

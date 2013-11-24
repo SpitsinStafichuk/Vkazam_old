@@ -16,6 +16,8 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeResult
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeStatusObserver;
 
 public class RecognizeController implements IFingerprintResultObserver, IRecognizeResultObserver {
+	private static final String TAG = "RecognizeController";
+	
 	private MicroScrobblerModel model;
     private FingerprintManager fingerprintManager;
     RecognizeManager recognizeManager;
@@ -56,9 +58,10 @@ public class RecognizeController implements IFingerprintResultObserver, IRecogni
 	@Override
 	public void onFingerprintResult(String fingerprint) {
 		FingerprintData fingerprintData = new FingerprintData.FingerprintDataBuilder()
-															.setDate(fingerprint)
-															.setFingerprint((new Date()).toString())
+															.setDate((new Date()).toString())
+															.setFingerprint(fingerprint)
 															.build();
+		Log.i(TAG, "fingerprint = " + fingerprint);
         recognizeManager.recognizeFingerprint(fingerprintData, false);
 	}
 
