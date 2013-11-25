@@ -53,7 +53,9 @@ public class SongManager implements IPlayerStateObservable {
 	
 	private Audio findSongOnPleercom(String artist, String title) throws SongNotFoundException, MalformedURLException, IOException, JSONException, KException {
 		String q = artist + " " + title;
+		Log.v("SongPlayer", "Searching audio from given API");
 		List<Audio> audioList = Api.searchAudio(q, 1, 1);
+		Log.v("SongPlayer", "Searching audio is complete");
 	
 		if (audioList.isEmpty()) {
 			isLoading = false;
@@ -68,6 +70,7 @@ public class SongManager implements IPlayerStateObservable {
 		Log.v("SongPlayer", "Player is loading");
 		asyncNotifyPlayerStateObservers();
 		songPlayer = new MediaPlayer();
+		Log.v("SongPlayer", "Player is reconstructed");
 		boolean songDataNeedUpdate = false;
 		Audio audio = null;
 		if(songData.getPleercomUrl() == null) {
@@ -76,6 +79,7 @@ public class SongManager implements IPlayerStateObservable {
 			songPlayer.setDataSource(audio.url);
 		} else {
 			try {
+				Log.v("SongPlayer", "Pleercomurl is " + songData.getPleercomUrl());
 				songPlayer.setDataSource(songData.getPleercomUrl());
 			} catch(IOException e) {
 				songDataNeedUpdate = true;

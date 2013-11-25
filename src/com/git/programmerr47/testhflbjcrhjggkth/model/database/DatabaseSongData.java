@@ -29,6 +29,8 @@ public class DatabaseSongData extends SongData implements Data {
 	
 	public DatabaseSongData(long id, AbstractDAO dao, SongData data) {
 		super(data);
+		this.id = id;
+		this.dao = dao;
 	}
 	
 	//возможно вообще стоит убрать сет методы для единичных полей
