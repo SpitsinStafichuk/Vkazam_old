@@ -3,36 +3,34 @@ package com.git.programmerr47.testhflbjcrhjggkth.model.database;
 public interface DBConstants {
 
 	String DATABASE = "history_database.db";
-	String MUSIC_HISTORY_TABLE = "history";
 	
-	String MUSIC_HISTORY_ID = "_id";
+	String ID = "_id";
+	String DATE = "date";
+	
+	String MUSIC_HISTORY_TABLE = "history";
 	String MUSIC_HISTORY_ARTIST = "artist";
 	String MUSIC_HISTORY_TITLE = "title"; 
-	String MUSIC_HISTORY_DATE = "date";
 	String MUSIC_HISTORY_GRACENOTE_TRACK_ID = "song_data_link";
 	String MUSIC_HISTORY_PLEERCOM_LINK = "pleercom_link";
 	String MUSIC_HISTORY_COVER_ART_URL = "cover_art_url";
 	
 	String FINGERPRINTS_TABLE = "fingerprints";
-	
-	String FINGERPRINT_ID = "_id";
 	String FINGERPRINT_DATA = "fingerprint_data";
-	String FINGERPRINT_DATE = "fingerprint_date"; 
 	
 	String SQL_CREATE_MUSIC_HISTORY_TABLE = "CREATE TABLE IF NOT EXISTS "
-			+ MUSIC_HISTORY_TABLE + " (" + MUSIC_HISTORY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+			+ MUSIC_HISTORY_TABLE + " (" + ID + " INTEGER PRIMARY KEY,"
 			+ MUSIC_HISTORY_ARTIST + " VARCHAR(100)," 
 			+ MUSIC_HISTORY_TITLE + " VARCHAR(100)," 
-			+ MUSIC_HISTORY_DATE + " VARCHAR(100)," 	
+			+ DATE + " INTEGER," 	
 			+ MUSIC_HISTORY_GRACENOTE_TRACK_ID + " VARCHAR(100)," 
 			+ MUSIC_HISTORY_PLEERCOM_LINK + " VARCHAR(100)," 
 			+ MUSIC_HISTORY_COVER_ART_URL + " TEXT"
 			+")";
 	
 	String SQL_CREATE_FINGERPRINTS_TABLE = "CREATE TABLE IF NOT EXISTS "
-			+ FINGERPRINTS_TABLE + " (" + FINGERPRINT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+			+ FINGERPRINTS_TABLE + " (" + ID + " INTEGER PRIMARY KEY,"
 			+ FINGERPRINT_DATA + " TEXT," 
-			+ FINGERPRINT_DATE + " VARCHAR(100)" 
+			+ DATE + " INTEGER" 
 			+")";
 	
 	String SQL_DROP_MUSIC_HISTORY_TABLE = "DROP TABLE IF EXISTS " + MUSIC_HISTORY_TABLE;

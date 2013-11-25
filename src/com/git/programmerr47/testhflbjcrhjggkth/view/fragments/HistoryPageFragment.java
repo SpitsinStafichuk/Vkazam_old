@@ -3,7 +3,7 @@ package com.git.programmerr47.testhflbjcrhjggkth.view.fragments;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.SongListController;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongDAO;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongList;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISongDAOObserver;
 import com.git.programmerr47.testhflbjcrhjggkth.view.activities.SongInfoActivity;
 import com.git.programmerr47.testhflbjcrhjggkth.view.adapters.SongListAdapter;
@@ -30,7 +30,7 @@ public class HistoryPageFragment extends Fragment implements ISongDAOObserver {
     private SongListController controller;
     private Activity parentActivity;
     ListView songHLV;
-    SongDAO songDAO;
+    SongList songList;
 
     public static HistoryPageFragment newInstance() {
             HistoryPageFragment pageFragment = new HistoryPageFragment();
@@ -45,8 +45,8 @@ public class HistoryPageFragment extends Fragment implements ISongDAOObserver {
             
             controller = new SongListController(this);
             adapter = new SongListAdapter(this.getActivity(), R.layout.list_item, controller);
-            songDAO = MicroScrobblerModel.getInstance().getSongDAO();
-            songDAO.addObserver(this);
+            songList = MicroScrobblerModel.getInstance().getSongList();
+            songList.addObserver(this);
     }
 
     @Override
@@ -98,7 +98,7 @@ public class HistoryPageFragment extends Fragment implements ISongDAOObserver {
     @Override
     public void onDestroy() {
             super.onDestroy();
-            songDAO.removeObserver(this);
+            songList.removeObserver(this);
             Log.v("SongPlayer", "HistoryPageFragment onDestroy()");
     }
 	

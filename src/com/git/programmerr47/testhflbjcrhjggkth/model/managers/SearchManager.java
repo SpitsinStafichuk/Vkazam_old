@@ -2,7 +2,7 @@ package com.git.programmerr47.testhflbjcrhjggkth.model.managers;
 
 import android.util.Log;
 
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.SongData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.SongData;
 import com.gracenote.mmid.MobileSDK.GNConfig;
 import com.gracenote.mmid.MobileSDK.GNOperations;
 public class SearchManager {

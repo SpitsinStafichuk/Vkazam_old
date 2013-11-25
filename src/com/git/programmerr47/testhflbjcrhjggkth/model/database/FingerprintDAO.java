@@ -1,35 +1,30 @@
 package com.git.programmerr47.testhflbjcrhjggkth.model.database;
 
+import java.util.Date;
 import java.util.LinkedList;
+import java.util.List;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
 
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.Data;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.FingerprintData;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.SongData;
 
 public class FingerprintDAO extends AbstractDAO {
 	
 	public FingerprintDAO(Context context) {
 		super(context, DBConstants.FINGERPRINTS_TABLE);
-		dataSet = new LinkedList<Data>();
 	}
 	
 	@Override
 	public synchronized long insert(Data data) {
-		FingerprintData fingerprintData = (FingerprintData) data;
+		DatabaseFingerprintData fingerprintData = (DatabaseFingerprintData) data;
 		databaseHelper = new DBHelper(context);
 		database = databaseHelper.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(DBConstants.FINGERPRINT_DATA, fingerprintData.getFingerprint());
-		values.put(DBConstants.FINGERPRINT_DATE, fingerprintData.getDate());
+		values.put(DBConstants.DATE, fingerprintData.getDate().getTime());
 		long result = database.insert(DBConstants.FINGERPRINTS_TABLE, null, values);
-		if(result == 1) {
-			dataSet.add(fingerprintData);
-		}
 		database.close();
 		databaseHelper.close();
 		return result;
@@ -37,14 +32,11 @@ public class FingerprintDAO extends AbstractDAO {
 	
 	@Override
 	public synchronized int delete(Data data) {
-		FingerprintData fingerprintData = (FingerprintData) data;
+		DatabaseFingerprintData fingerprintData = (DatabaseFingerprintData) data;
 		databaseHelper = new DBHelper(context);
 		database = databaseHelper.getWritableDatabase();
-		int result = database.delete(DBConstants.FINGERPRINTS_TABLE, DBConstants.FINGERPRINT_DATE + "=?", new String[] {fingerprintData.getDate()});
+		int result = database.delete(DBConstants.FINGERPRINTS_TABLE, DBConstants.DATE + "=?", new String[] {"" + fingerprintData.getDate()});
 		Log.v("Delete", "Deletion from db is " + result);
-		if(result == 1) {
-			dataSet.remove(fingerprintData);
-		}
 		database.close();
 		databaseHelper.close();
 		return result;
@@ -57,18 +49,20 @@ public class FingerprintDAO extends AbstractDAO {
 	}
 	
 	@Override
-	protected void mutateListByCursor(Cursor cursor) {
-		FingerprintData instance;
+	protected List<Data> getListByCursor(Cursor cursor) {
+		DatabaseFingerprintData instance;
+		List<Data> result = new LinkedList<Data>();
 		for(int i = 0; i < cursor.getCount(); i++) {
-			instance = new FingerprintData.FingerprintDataBuilder()
-										.setId(Long.parseLong(cursor.getString(cursor.getColumnIndex(DBConstants.FINGERPRINT_ID))))
-										.setDate(cursor.getString(cursor.getColumnIndex(DBConstants.FINGERPRINT_DATE)))
-										.setFingerprint(cursor.getString(cursor.getColumnIndex(DBConstants.FINGERPRINT_DATA)))
-										.build();
-			dataSet.add(instance);
+			instance = new DatabaseFingerprintData(
+					Long.parseLong(cursor.getString(cursor.getColumnIndex(DBConstants.ID))),
+					this,
+					cursor.getString(cursor.getColumnIndex(DBConstants.FINGERPRINT_DATA)),
+					new Date(Long.parseLong(cursor.getString(cursor.getColumnIndex(DBConstants.DATE)))));
+			result.add(instance);
 			
 			cursor.moveToNext();
 		}
+		return result;
 	}
 
 }

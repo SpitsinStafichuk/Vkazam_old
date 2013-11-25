@@ -1,6 +1,7 @@
 package com.git.programmerr47.testhflbjcrhjggkth.model.observers;
 
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.SongData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.SongData;
+
 
 public interface IRecognizeResultObservable {
 	

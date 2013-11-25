@@ -3,8 +3,6 @@ package com.git.programmerr47.testhflbjcrhjggkth.view.activities;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.SettingsController;
 import com.git.programmerr47.testhflbjcrhjggkth.view.activities.interfaces.IConnectionWithDialogFragment;
-import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.LastfmLoginDialogFragment;
-
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
@@ -24,7 +22,6 @@ public class SettingsActivity extends FragmentActivity implements IConnectionWit
         setContentView(R.layout.settings_layout);
        
         controller = new SettingsController(this);
-        lastfmDialog = new LastfmLoginDialogFragment();
        
         lastfmSignInOutButton = (Button) findViewById(R.id.lastFmLoginLogoutButton);
         changeLastfmButton();

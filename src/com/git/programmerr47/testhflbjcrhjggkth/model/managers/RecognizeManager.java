@@ -6,8 +6,9 @@ import java.util.Set;
 import android.content.Context;
 import android.util.Log;
 
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.FingerprintData;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.SongData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.FingerprintData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.SongData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseFingerprintData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeResultObservable;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeResultObserver;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeStatusObservable;
@@ -29,7 +30,7 @@ public class RecognizeManager implements GNSearchResultReady, GNOperationStatusC
 	
 	private GNConfig config;
 	
-	private FingerprintData currentFingerprintData;
+	private DatabaseFingerprintData currentFingerprintData;
 	private boolean currentFingerprintIsSaved;
 	
 	
@@ -41,9 +42,10 @@ public class RecognizeManager implements GNSearchResultReady, GNOperationStatusC
 	
 	//TODO synchronized в данном случае не работает, нужно разобраться с блокировками
 	public synchronized void recognizeFingerprint(FingerprintData fingerprint, boolean isSaved) {
-			currentFingerprintData = fingerprint;
-			currentFingerprintIsSaved = isSaved;
-			GNOperations.searchByFingerprint(this, config, fingerprint.getFingerprint());
+		Log.i(TAG, fingerprint.getFingerprint());
+		//currentFingerprintData = fingerprint;
+		currentFingerprintIsSaved = isSaved;
+		GNOperations.searchByFingerprint(this, config, fingerprint.getFingerprint());
 	}
 
 	public void recognizeFingerprintCancel() {
@@ -80,13 +82,7 @@ public class RecognizeManager implements GNSearchResultReady, GNOperationStatusC
 				String coverArtURL = bestResponse.getCoverArt() != null ? bestResponse.getCoverArt().getUrl() : null;
 				Log.i(TAG, "coverArtUrl = " + coverArtURL);
 				
-				songData = new SongData.SongDataBuilder()
-														.setArtist(artist)
-														.setTitle(title)
-														.setTrackId(bestResponse.getTrackId())
-														.setDate(currentFingerprintData.getDate())
-														.setCoverArtURL(coverArtURL)
-														.build();
+				songData = new SongData(bestResponse.getTrackId(), artist, title, currentFingerprintData.getDate(), coverArtURL);
 				//songDAO.insert(songInfo);
 				/*if(currentFingerprintIsSaved) {
 					removeFingerprint(currentFingerprintData);

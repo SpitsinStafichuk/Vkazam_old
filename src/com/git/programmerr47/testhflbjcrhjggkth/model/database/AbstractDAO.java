@@ -7,12 +7,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.Data;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.SongData;
 
 public abstract class AbstractDAO {
 	
-	protected List<Data> dataSet;
 	protected String tableName;
 	protected DBHelper databaseHelper;
 	protected SQLiteDatabase database;
@@ -24,23 +21,21 @@ public abstract class AbstractDAO {
 		this.tableName = tableName;
 	}
 	
-	public List<Data> getHistory() {
-		if(isFirstGetSet) {
-			databaseHelper = new DBHelper(context);
-			database = databaseHelper.getWritableDatabase();
-			Cursor cursor = database.rawQuery("SELECT * FROM " + tableName, null);
-			cursor.moveToFirst();
-			mutateListByCursor(cursor);
-			database.close();
-			databaseHelper.close();
-			isFirstGetSet = false;
-		}
-		Log.v(DBHelper.HISTORY_TAG, "songDataList.size() = " + dataSet.size());
+	List<Data> getHistory() {
+		databaseHelper = new DBHelper(context);
+		database = databaseHelper.getWritableDatabase();
+		Cursor cursor = database.rawQuery("SELECT * FROM " + tableName + " ORDER BY " + DBConstants.DATE, null);
+		cursor.moveToFirst();
+		List<Data> result = getListByCursor(cursor);
+		database.close();
+		databaseHelper.close();
+		isFirstGetSet = false;
+		Log.v(DBHelper.HISTORY_TAG, "songDataList.size() = " + result.size());
 		
-		return dataSet;
+		return result;
 	}
 	
-	protected abstract void mutateListByCursor(Cursor cursor);
+	protected abstract List<Data> getListByCursor(Cursor cursor);
 	
 	public abstract long insert(Data data);
 	

@@ -10,7 +10,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	//TODO study to know db version from out file
 	
 	public DBHelper(Context context) {
-		super(context, DBConstants.DATABASE, null, 2);
+		super(context, DBConstants.DATABASE, null, 5);
 	}
 
 	@Override

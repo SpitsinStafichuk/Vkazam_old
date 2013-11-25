@@ -8,10 +8,8 @@ import java.util.Set;
 
 import org.json.JSONException;
 
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongDAO;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.SongData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseSongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.exceptions.SongNotFoundException;
-import com.git.programmerr47.testhflbjcrhjggkth.model.lastfm.IScrobbler;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObservable;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObserver;
 import com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.Api;
@@ -20,7 +18,6 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.KException;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.util.Log;
@@ -31,32 +28,25 @@ public class SongManager implements IPlayerStateObservable {
 	
 	private MediaPlayer songPlayer;
 	
-	private SongData songData;
+	private DatabaseSongData songData;
 	
 	private boolean isLoading;
 	private boolean isPlaying;
 	private boolean isPrepared;
 	
-	private SongDAO songDAO;
 	private Handler handler;
 	
 	private Context context;
 	
-	public SongManager(IScrobbler scrobbler, SongDAO songDAO, Handler handler, Context context) {
+	public SongManager(Handler handler, Context context) {
 		songPlayer = new MediaPlayer();
-		this.songDAO = songDAO;
 		this.handler = handler;
 		this.context = context;
 		isPrepared = false;
 		playerStateObservers = new HashSet<IPlayerStateObserver>();
 	}
 	
-	public SongManager(SongDAO songDAO, Handler handler, Context context) {
-		this(null, songDAO, handler, context);
-	}
-	
-	//
-	public void set(SongData songData) {
+	public void set(DatabaseSongData songData) {
 		this.songData = songData;
 		isPrepared = false;
 	}
@@ -80,13 +70,13 @@ public class SongManager implements IPlayerStateObservable {
 		songPlayer = new MediaPlayer();
 		boolean songDataNeedUpdate = false;
 		Audio audio = null;
-		if(songData.getPleercomURL() == null) {
+		if(songData.getPleercomUrl() == null) {
 			songDataNeedUpdate = true;
 			audio = findSongOnPleercom(getArtist(), getTitle());
 			songPlayer.setDataSource(audio.url);
 		} else {
 			try {
-				songPlayer.setDataSource(songData.getPleercomURL());
+				songPlayer.setDataSource(songData.getPleercomUrl());
 			} catch(IOException e) {
 				songDataNeedUpdate = true;
 				audio = findSongOnPleercom(getArtist(), getTitle());
@@ -99,8 +89,7 @@ public class SongManager implements IPlayerStateObservable {
 		}
 		songPlayer.prepare();
 		if(songDataNeedUpdate) {
-			songData.setPleercomURL(audio.url);
-			songDAO.update(songData);
+			songData.setPleercomUrl(audio.url);
 		}
 		isPrepared = true;
 	}
@@ -196,10 +185,7 @@ public class SongManager implements IPlayerStateObservable {
 			o.updatePlayerState();
 	}
 
-	public void setScrobbler(IScrobbler scrobbler) {
-	}
-
-	public SongData getSongData() {
+	public DatabaseSongData getSongData() {
 		return songData;
 	}
 
