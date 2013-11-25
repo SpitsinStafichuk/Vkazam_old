@@ -4,11 +4,12 @@ import java.util.Date;
 
 import android.util.Log;
 
+import com.git.programmerr47.testhflbjcrhjggkth.model.FingerprintData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
+import com.git.programmerr47.testhflbjcrhjggkth.model.SongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.DBConstants;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.FingerprintData;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongData;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongData.SongDataBuilder;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseFingerprintData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseSongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.FingerprintManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.RecognizeManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IFingerprintResultObserver;
@@ -58,16 +59,13 @@ public class RecognizeController implements IFingerprintResultObserver, IRecogni
 
 	@Override
 	public void onFingerprintResult(String fingerprint) {
-		FingerprintData fingerprintData = new FingerprintData.FingerprintDataBuilder()
-															.setDate((new Date()).getTime())
-															.setFingerprint(fingerprint)
-															.build();
+		FingerprintData fingerprintData = new FingerprintData(fingerprint, new Date());
 		Log.i(TAG, "fingerprint = " + fingerprint);
         recognizeManager.recognizeFingerprint(fingerprintData, false);
 	}
 
 	@Override
-	public void onRecognizeResult(SongDataBuilder builder) {
+	public void onRecognizeResult(SongData builder) {
 		if (builder != null) {
 			model.getSongList().add(builder);
 		}

@@ -1,9 +1,8 @@
 package com.git.programmerr47.testhflbjcrhjggkth.model.observers;
 
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongData;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongData.SongDataBuilder;
+import com.git.programmerr47.testhflbjcrhjggkth.model.SongData;
 
 public interface IRecognizeResultObserver {
 
-	void onRecognizeResult(SongDataBuilder songData);
+	void onRecognizeResult(SongData songData);
 }

@@ -4,9 +4,8 @@ import java.util.Date;
 
 import android.util.Log;
 
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.SongData;
 import com.git.programmerr47.testhflbjcrhjggkth.utils.LogHelper;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongData.SongDataBuilder;
 import com.gracenote.mmid.MobileSDK.GNOperationStatusChanged;
 import com.gracenote.mmid.MobileSDK.GNSearchResponse;
 import com.gracenote.mmid.MobileSDK.GNSearchResult;
@@ -26,7 +25,7 @@ public class GNSearchResultReadyImplementation implements GNSearchResultReady, G
 	@Override
 	public void GNResultReady(GNSearchResult result) {
 		Log.i(TAG, "GNResultReady");
-		SongDataBuilder songDataBuilder = null;
+		SongData songData = null;
 		String searchResultStatus = null;
 		if (result.isFailure()) {
 			int errCode = result.getErrCode();
@@ -39,19 +38,14 @@ public class GNSearchResultReadyImplementation implements GNSearchResultReady, G
 			String trackId = bestResponse.getTrackId();
 			String coverArtURL = bestResponse.getCoverArt() != null ? bestResponse.getCoverArt().getUrl() : null;
 			
-			songDataBuilder = new SongDataBuilder()
-									.setArtist(artist)
-									.setTitle(title)
-									.setTrackId(trackId)
-									.setDate((new Date()).getTime())
-									.setCoverArtURL(coverArtURL);
+			songData = new SongData(trackId, artist, title, new Date(), coverArtURL);
 			
 			searchResultStatus = SEARCH_SUCCESS;
 		}
 		
 		Log.i(TAG, searchResultStatus);
 		listener.onSearchStatusChanged(searchResultStatus);
-		listener.onSearchResult(songDataBuilder);
+		listener.onSearchResult(songData);
 	}
 
 	@Override

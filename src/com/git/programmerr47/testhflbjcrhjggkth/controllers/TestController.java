@@ -1,8 +1,8 @@
 package com.git.programmerr47.testhflbjcrhjggkth.controllers;
 
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongData;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongData.SongDataBuilder;
+import com.git.programmerr47.testhflbjcrhjggkth.model.SongData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseSongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongList;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SearchManager;
 import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.TestPageFragment;
@@ -30,10 +30,11 @@ public class TestController {
 			}
 			
 			@Override
-			public void onSearchResult(SongDataBuilder builder) {
-				songList.add(builder);
-				//TODO брать не последний элемент, а тот, который в реальности должен быть
-				view.displaySongInformationElement((SongData)songList.get(songList.size() - 1));
+			public void onSearchResult(SongData songData) {
+				if(songData != null) {
+					DatabaseSongData databaseSongData = songList.add(songData);
+					view.displaySongInformationElement(databaseSongData);
+				}
 			}
 		});
     }

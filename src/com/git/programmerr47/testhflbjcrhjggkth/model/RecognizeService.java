@@ -4,7 +4,7 @@ package com.git.programmerr47.testhflbjcrhjggkth.model;
 import java.util.List;
 
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.Data;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.FingerprintData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseFingerprintData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.RecognizeManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeStatusObserver;
 

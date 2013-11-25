@@ -4,13 +4,12 @@ package com.git.programmerr47.testhflbjcrhjggkth.model.database;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongData.SongDataBuilder;
+import com.git.programmerr47.testhflbjcrhjggkth.model.SongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISongDAOObservable;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISongDAOObserver;
 
 import android.content.Context;
 
-@SuppressWarnings("unchecked")
 public class SongList extends DatabaseList implements ISongDAOObservable{
 	/**
 	 * 
@@ -24,16 +23,18 @@ public class SongList extends DatabaseList implements ISongDAOObservable{
 		observers = new HashSet<ISongDAOObserver>();
 	}
 
-	public boolean add(SongDataBuilder builder) {
-		boolean result = super.add(builder.setSongDAO(dao).setId(size() + 1).build());
+	public DatabaseSongData add(SongData songData) {
+		DatabaseSongData databaseSongData = new DatabaseSongData(size() + 1 , dao, songData);
+		boolean result = super.add(databaseSongData);
 		if (result) {
 			notifySongDAOObservers();
 		}
-		return result;
+		return result ? databaseSongData : null;
 	}
 	
-	public void add(int index, SongDataBuilder builder) {
-		super.add(index, builder.setSongDAO(dao).setId(size() + 1).build());
+	public void add(int index, SongData songData) {
+		DatabaseSongData databaseSongData = new DatabaseSongData(size() + 1 , dao, songData);
+		super.add(index, databaseSongData);
 		notifySongDAOObservers();
 	}
 	

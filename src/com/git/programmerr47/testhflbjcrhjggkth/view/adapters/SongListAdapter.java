@@ -9,9 +9,9 @@ import java.util.Map;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.SongListController;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
+import com.git.programmerr47.testhflbjcrhjggkth.model.SongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.Data;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongData;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongData.SongDataBuilder;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseSongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SearchManager.SearchListener;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SongManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObservable;
@@ -63,12 +63,12 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 	}
 	
 	//TODO переписать!!! данная реализация неэффективна
-	public List<SongData> getSongDataFromHistoryById(String trackId) {
-		List<SongData> result = new ArrayList<SongData>();
+	public List<DatabaseSongData> getSongDataFromHistoryById(String trackId) {
+		List<DatabaseSongData> result = new ArrayList<DatabaseSongData>();
 		List<Data> history = model.getSongList();
 		for(Data i : history) {
-			if(((SongData)i).getTrackId().equals(trackId)) {
-				result.add((SongData) i);
+			if(((DatabaseSongData)i).getTrackId().equals(trackId)) {
+				result.add((DatabaseSongData) i);
 			}
 		}
 		return result;
@@ -120,16 +120,16 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 				currentListItemView = fView;
 			    LinearLayout element = (LinearLayout) currentListItemView.findViewById(R.id.songHistoryItem);
 			    element.setBackgroundResource(R.drawable.song_list_item_bg_pressed);
-				controller.playPauseSong((SongData) getItem(position));
+				controller.playPauseSong((DatabaseSongData) getItem(position));
 			}
 		});
 		
 		ViewHelper.setAlpha(view.findViewById(R.id.songListItemPlayPauseLayout), 0.75f);
-		SongData songData = getSongData(position);
+		DatabaseSongData songData = getSongData(position);
 		((ImageView) view.findViewById(R.id.songListItemCoverArt)).setImageResource(R.drawable.no_cover_art);
 		Log.v("SongInformation", "in trackId: " + songData.getTrackId());
 		coverArts.put(songData.getTrackId(), (ImageView) view.findViewById(R.id.songListItemCoverArt));
-		if(songData.getCoverArtURL() == null) {
+		if(songData.getCoverArtUrl() == null) {
 			Log.i(TAG, "songData before search: " + songData.toString());
 			model.getSearchManager().search(songData.getTrackId(), new SearchListener() {
 				
@@ -138,12 +138,12 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 				}
 				
 				@Override
-				public void onSearchResult(SongDataBuilder builder) {
-					if (builder != null) {
-						List<SongData> historySongData = getSongDataFromHistoryById(builder.getTrackId());
+				public void onSearchResult(SongData songData) {
+					if (songData != null) {
+						List<DatabaseSongData> historySongData = getSongDataFromHistoryById(songData.getTrackId());
 						if(historySongData != null) {
-							for (SongData i : historySongData) {
-								if (i != null) i.setCoverArtURL(builder.getCoverArtURL());
+							for (DatabaseSongData i : historySongData) {
+								if (i != null) i.setCoverArtUrl(songData.getCoverArtUrl());
 								displayCoverArt(i);
 							}
 						} else {
@@ -157,7 +157,7 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 		}
 		((TextView) view.findViewById(R.id.songListItemArtist)).setText(songData.getArtist());
 		((TextView) view.findViewById(R.id.songListItemTitle)).setText(songData.getTitle());
-		((TextView) view.findViewById(R.id.songListItemDate)).setText((new Date(songData.getDate())).toString());
+		((TextView) view.findViewById(R.id.songListItemDate)).setText(songData.getDate().toString());
 		if ((songManager.getSongData() != null) && 
 		    (songManager.getSongData().equals(songData))) {
 		    ((LinearLayout) view.findViewById(R.id.songHistoryItem)).setBackgroundResource(R.drawable.song_list_item_bg_pressed);
@@ -178,8 +178,8 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 		return view;
 	}
 
-	private SongData getSongData(int position) {
-		return ((SongData) getItem(position));
+	private DatabaseSongData getSongData(int position) {
+		return ((DatabaseSongData) getItem(position));
 	}
 
 	@Override
@@ -236,8 +236,8 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 		}
 	}
 	
-	private void displayCoverArt(SongData songData) {
-		String coverArtUrl = songData.getCoverArtURL();
+	private void displayCoverArt(DatabaseSongData songData) {
+		String coverArtUrl = songData.getCoverArtUrl();
 		Log.v(TAG, "CoverArtUrl: " + coverArtUrl);
 		DisplayImageOptions options = new DisplayImageOptions.Builder()
 			.showImageForEmptyUri(R.drawable.no_cover_art)

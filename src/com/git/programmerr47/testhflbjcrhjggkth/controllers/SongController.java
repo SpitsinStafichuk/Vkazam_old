@@ -11,7 +11,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseSongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.exceptions.SongNotFoundException;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SongManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.KException;
@@ -27,7 +27,7 @@ public class SongController {
 		this.model = MicroScrobblerModel.getInstance();
 	}
 
-	public synchronized void playPauseSong(final SongData songData) {
+	public synchronized void playPauseSong(final DatabaseSongData songData) {
 		if(preparingThread != null) {
 			SongManager songManager = MicroScrobblerModel.getInstance().getSongManager();
 			songManager.set(null);
@@ -43,7 +43,7 @@ public class SongController {
 		preparingThread.start();	
 	}
 	
-	private void _playPauseSong(SongData songData) {
+	private void _playPauseSong(DatabaseSongData songData) {
 		SongManager songManager = MicroScrobblerModel.getInstance().getSongManager();
 		if(songData.equals(songManager.getSongData())) {
 			Log.v("SongListController", "songManager.getSongData() == songData == " + songData);

@@ -8,9 +8,7 @@ import java.util.Set;
 
 import org.json.JSONException;
 
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongDAO;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongData;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongList;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseSongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.exceptions.SongNotFoundException;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObservable;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObserver;
@@ -30,7 +28,7 @@ public class SongManager implements IPlayerStateObservable {
 	
 	private MediaPlayer songPlayer;
 	
-	private SongData songData;
+	private DatabaseSongData songData;
 	
 	private boolean isLoading;
 	private boolean isPlaying;
@@ -48,7 +46,7 @@ public class SongManager implements IPlayerStateObservable {
 		playerStateObservers = new HashSet<IPlayerStateObserver>();
 	}
 	
-	public void set(SongData songData) {
+	public void set(DatabaseSongData songData) {
 		this.songData = songData;
 		isPrepared = false;
 	}
@@ -72,13 +70,13 @@ public class SongManager implements IPlayerStateObservable {
 		songPlayer = new MediaPlayer();
 		boolean songDataNeedUpdate = false;
 		Audio audio = null;
-		if(songData.getPleercomURL() == null) {
+		if(songData.getPleercomUrl() == null) {
 			songDataNeedUpdate = true;
 			audio = findSongOnPleercom(getArtist(), getTitle());
 			songPlayer.setDataSource(audio.url);
 		} else {
 			try {
-				songPlayer.setDataSource(songData.getPleercomURL());
+				songPlayer.setDataSource(songData.getPleercomUrl());
 			} catch(IOException e) {
 				songDataNeedUpdate = true;
 				audio = findSongOnPleercom(getArtist(), getTitle());
@@ -91,7 +89,7 @@ public class SongManager implements IPlayerStateObservable {
 		}
 		songPlayer.prepare();
 		if(songDataNeedUpdate) {
-			songData.setPleercomURL(audio.url);
+			songData.setPleercomUrl(audio.url);
 		}
 		isPrepared = true;
 	}
@@ -187,7 +185,7 @@ public class SongManager implements IPlayerStateObservable {
 			o.updatePlayerState();
 	}
 
-	public SongData getSongData() {
+	public DatabaseSongData getSongData() {
 		return songData;
 	}
 

@@ -2,15 +2,14 @@ package com.git.programmerr47.testhflbjcrhjggkth.model.managers;
 
 import android.util.Log;
 
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongData;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongData.SongDataBuilder;
+import com.git.programmerr47.testhflbjcrhjggkth.model.SongData;
 import com.gracenote.mmid.MobileSDK.GNConfig;
 import com.gracenote.mmid.MobileSDK.GNOperations;
 public class SearchManager {
         
         public interface SearchListener {
                 void onSearchStatusChanged(String status);
-                void onSearchResult(SongDataBuilder songData);
+                void onSearchResult(SongData songData);
         }
         
         private static final String TAG = "SearchManager";

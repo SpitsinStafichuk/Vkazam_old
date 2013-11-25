@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.TestController;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseSongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SearchManager;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
@@ -86,9 +86,9 @@ public class TestPageFragment extends Fragment {
     	status.setText(statusString);
     }
     
-    public void displaySongInformationElement(SongData songData) {
+    public void displaySongInformationElement(DatabaseSongData songData) {
     	if(songData != null) {
-			String coverArtUrl = songData.getCoverArtURL();
+			String coverArtUrl = songData.getCoverArtUrl();
 			songHistory.setVisibility(View.VISIBLE);
 			songArtist.setText(songData.getArtist());
 			songTitle.setText(songData.getTitle());
