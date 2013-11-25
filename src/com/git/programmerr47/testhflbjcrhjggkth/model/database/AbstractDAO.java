@@ -24,7 +24,7 @@ public abstract class AbstractDAO {
 	List<Data> getHistory() {
 		databaseHelper = new DBHelper(context);
 		database = databaseHelper.getWritableDatabase();
-		Cursor cursor = database.rawQuery("SELECT * FROM " + tableName + " ORDER BY " + DBConstants.DATE, null);
+		Cursor cursor = database.rawQuery("SELECT * FROM " + tableName + " ORDER BY " + DBConstants.DATE + " DESC", null);
 		cursor.moveToFirst();
 		List<Data> result = getListByCursor(cursor);
 		database.close();

@@ -8,7 +8,6 @@ import android.util.Log;
 
 import com.git.programmerr47.testhflbjcrhjggkth.model.FingerprintData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.SongData;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseFingerprintData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeResultObservable;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeResultObserver;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeStatusObservable;
@@ -30,7 +29,7 @@ public class RecognizeManager implements GNSearchResultReady, GNOperationStatusC
 	
 	private GNConfig config;
 	
-	private DatabaseFingerprintData currentFingerprintData;
+	private FingerprintData currentFingerprintData;
 	private boolean currentFingerprintIsSaved;
 	
 	
@@ -43,7 +42,7 @@ public class RecognizeManager implements GNSearchResultReady, GNOperationStatusC
 	//TODO synchronized в данном случае не работает, нужно разобраться с блокировками
 	public synchronized void recognizeFingerprint(FingerprintData fingerprint, boolean isSaved) {
 		Log.i(TAG, fingerprint.getFingerprint());
-		//currentFingerprintData = fingerprint;
+		currentFingerprintData = fingerprint;
 		currentFingerprintIsSaved = isSaved;
 		GNOperations.searchByFingerprint(this, config, fingerprint.getFingerprint());
 	}

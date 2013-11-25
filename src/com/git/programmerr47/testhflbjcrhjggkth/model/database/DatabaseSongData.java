@@ -12,7 +12,7 @@ public class DatabaseSongData extends SongData implements Data {
 	
 	public DatabaseSongData(long id, AbstractDAO dao, String trackId, String artist, String title,
 			Date date, String pleercomUrl, String coverArtUrl) {
-		super(trackId, artist, title, date, coverArtUrl, pleercomUrl);
+		super(trackId, artist, title, date, pleercomUrl, coverArtUrl);
 		this.id = id;
 		this.dao = dao;
 	}
@@ -29,6 +29,8 @@ public class DatabaseSongData extends SongData implements Data {
 	
 	public DatabaseSongData(long id, AbstractDAO dao, SongData data) {
 		super(data);
+		this.id = id;
+		this.dao = dao;
 	}
 	
 	//возможно вообще стоит убрать сет методы для единичных полей

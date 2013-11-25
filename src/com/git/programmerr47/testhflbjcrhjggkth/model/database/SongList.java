@@ -32,10 +32,11 @@ public class SongList extends DatabaseList implements ISongDAOObservable{
 		return result ? databaseSongData : null;
 	}
 	
-	public void add(int index, SongData songData) {
+	public DatabaseSongData add(int index, SongData songData) {
 		DatabaseSongData databaseSongData = new DatabaseSongData(size() + 1 , dao, songData);
 		super.add(index, databaseSongData);
 		notifySongDAOObservers();
+		return databaseSongData;
 	}
 	
 	@Override
