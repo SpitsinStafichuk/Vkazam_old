@@ -7,53 +7,39 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1">
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <ImageButton
+            android:id="@+id/microTimerListenButton"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:paddingLeft="100dp"
+            android:background="@drawable/micro_image_button_rect_background"
+            android:scaleType="fitCenter"
+            android:src="@drawable/microphone_icon" />
 
         <ImageButton
             android:id="@+id/microNowListenButton"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_alignBottom="@+id/microTimerListenButton"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="32dp"
-            android:layout_weight="1"
-            android:background="@drawable/micro_image_button_background"
-            android:scaleType="fitXY"
-            android:src="@drawable/microphone_icon" />
-
-        <ImageButton
-            android:id="@+id/microTimerListenButton"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="96dp"
-            android:layout_toRightOf="@+id/microNowListenButton"
-            android:layout_weight="1"
-            android:background="@drawable/micro_image_button_background"
+            android:layout_alignLeft="@+id/microTimerListenButton"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="25dp"
+            android:background="@drawable/micro_image_button_round_background"
             android:scaleType="fitXY"
             android:src="@drawable/microphone_icon" />
 
     </RelativeLayout>
 
-    <LinearLayout
-        android:id="@+id/apearInformationDialog"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/status"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="visible" >
+        android:layout_gravity="center_horizontal"
+        android:text="Status"
+        android:visibility="visible" />
 
-        <TextView
-            android:id="@+id/status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="1"
-            android:text="Status"
-            android:visibility="visible" />
-
-    	<include layout="@layout/song_appear_information"/>
-
-    </LinearLayout>
+    <include layout="@layout/list_item"/>
 
 </LinearLayout>
