@@ -4,8 +4,8 @@ import java.util.List;
 
 import android.support.v4.app.Fragment;
 
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.Data;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.SongData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.Data;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseSongData;
 
 public class SongListController extends SongController{
 
@@ -14,10 +14,10 @@ public class SongListController extends SongController{
 	}
 	
 	public List<Data> getList() {
-		return model.getHistory();
+		return model.getSongList();
 	}
 
-	public boolean deleteSong(SongData songData) {
+	public boolean deleteSong(DatabaseSongData songData) {
 		//return model.getRadioManager().deleteSongFromHistory(songData);
 		return false;
 	}

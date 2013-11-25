@@ -4,7 +4,7 @@ import java.util.Date;
 
 import android.util.Log;
 
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.data.SongData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.SongData;
 import com.git.programmerr47.testhflbjcrhjggkth.utils.LogHelper;
 import com.gracenote.mmid.MobileSDK.GNOperationStatusChanged;
 import com.gracenote.mmid.MobileSDK.GNSearchResponse;
@@ -38,13 +38,7 @@ public class GNSearchResultReadyImplementation implements GNSearchResultReady, G
 			String trackId = bestResponse.getTrackId();
 			String coverArtURL = bestResponse.getCoverArt() != null ? bestResponse.getCoverArt().getUrl() : null;
 			
-			songData = new SongData.SongDataBuilder()
-									.setArtist(artist)
-									.setTitle(title)
-									.setTrackId(trackId)
-									.setDate((new Date()).toString())
-									.setCoverArtURL(coverArtURL)
-									.build();
+			songData = new SongData(trackId, artist, title, new Date(), coverArtURL);
 			
 			searchResultStatus = SEARCH_SUCCESS;
 		}
