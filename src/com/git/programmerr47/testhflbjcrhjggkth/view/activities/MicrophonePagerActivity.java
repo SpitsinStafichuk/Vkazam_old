@@ -30,11 +30,12 @@ public class MicrophonePagerActivity extends FragmentActivity implements Service
 	protected void onCreate(Bundle savedInstanceState) {
 		//MicroScrobblerModel.setContext(getApplicationContext());
 		//MicroScrobblerModel.getInstance();
+		Log.v(TAG, "Binding to service");
 		bindService(new Intent(MicrophonePagerActivity.this, RecognizeService.class), this, Context.BIND_AUTO_CREATE);
 		super.onCreate(savedInstanceState);
 	}
 	
-	public void setupUi() {
+	private void setupUi() {
 		setContentView(R.layout.microphone_pager_layout);
         pager = (ViewPager) findViewById(R.id.microphonePager);
         pagerAdapter = new MicrophonePagerAdapter(getSupportFragmentManager());
@@ -58,6 +59,13 @@ public class MicrophonePagerActivity extends FragmentActivity implements Service
             }
         });
 	}
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		unbindService(this);
+		Log.i(TAG, "onServiceDisconnected");
+		//RecognizeServiceConnection.setModel(null);
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -65,6 +73,7 @@ public class MicrophonePagerActivity extends FragmentActivity implements Service
 		getMenuInflater().inflate(R.menu.microphone_pager, menu);
 		return true;
 	}
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
@@ -87,7 +96,7 @@ public class MicrophonePagerActivity extends FragmentActivity implements Service
 
 	@Override
 	public void onServiceDisconnected(ComponentName className) {
-		Log.i(TAG, "onServiceDisconnected");
+		Log.i(TAG, "onServiceDisconnectedFromService");
 		RecognizeServiceConnection.setModel(null);
 	}
 	
