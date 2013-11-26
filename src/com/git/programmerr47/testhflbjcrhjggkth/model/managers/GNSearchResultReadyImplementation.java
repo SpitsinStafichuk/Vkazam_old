@@ -32,15 +32,19 @@ public class GNSearchResultReadyImplementation implements GNSearchResultReady, G
 			searchResultStatus = String.format("[%d] %s", errCode, result.getErrMessage());
 		} else {
 			GNSearchResponse bestResponse = result.getBestResponse();
-			LogHelper.print(TAG, bestResponse);
-			String artist = bestResponse.getArtist();
-			String title = bestResponse.getTrackTitle();
-			String trackId = bestResponse.getTrackId();
-			String coverArtURL = bestResponse.getCoverArt() != null ? bestResponse.getCoverArt().getUrl() : null;
-			
-			songData = new SongData(trackId, artist, title, new Date(), coverArtURL);
-			
-			searchResultStatus = SEARCH_SUCCESS;
+			if (bestResponse == null) {
+				searchResultStatus = "Music is not found";
+			} else {
+				LogHelper.print(TAG, bestResponse);
+				String artist = bestResponse.getArtist();
+				String title = bestResponse.getTrackTitle();
+				String trackId = bestResponse.getTrackId();
+				String coverArtURL = bestResponse.getCoverArt() != null ? bestResponse.getCoverArt().getUrl() : null;
+				
+				songData = new SongData(trackId, artist, title, new Date(), coverArtURL);
+				
+				searchResultStatus = SEARCH_SUCCESS;
+			}
 		}
 		
 		Log.i(TAG, searchResultStatus);
