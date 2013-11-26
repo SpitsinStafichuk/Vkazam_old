@@ -1,7 +1,5 @@
 package com.git.programmerr47.testhflbjcrhjggkth.view.fragments;
 
-import java.util.Date;
-
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.RecognizeController;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;

@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -16,7 +17,7 @@ import android.widget.TextView;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.TestController;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseSongData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.SongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SearchManager;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
@@ -34,6 +35,8 @@ public class TestPageFragment extends Fragment {
     TextView songDate;
     TextView status;
     ImageView songCoverArt;
+    
+    SongData currentApearingSong;
 
     public static TestPageFragment newInstance() {
     		TestPageFragment pageFragment = new TestPageFragment();
@@ -86,19 +89,27 @@ public class TestPageFragment extends Fragment {
     	status.setText(statusString);
     }
     
-    public void displaySongInformationElement(DatabaseSongData songData) {
+    public void displaySongInformationElement(SongData songData, boolean apearing) {
     	if(songData != null) {
 			String coverArtUrl = songData.getCoverArtUrl();
-			songHistory.setVisibility(View.VISIBLE);
 			songArtist.setText(songData.getArtist());
 			songTitle.setText(songData.getTitle());
-			songDate.setText("just now");
+			songDate.setText(songData.getDate().toString());
 			DisplayImageOptions options = new DisplayImageOptions.Builder()
 				.showImageForEmptyUri(R.drawable.no_cover_art)
 				.showImageOnFail(R.drawable.no_cover_art)
 				.build();
 			model.getImageLoader().displayImage(coverArtUrl, songCoverArt, options);
+			if (apearing) {
+				songHistory.setAnimation(AnimationUtils.loadAnimation(this.parentActivity, R.anim.appear));
+			}
+			songHistory.setVisibility(View.VISIBLE);
+			currentApearingSong = songData;
 		}
+    }
+    
+    public void displaySongInformationElement(SongData songData) {
+    	this.displaySongInformationElement(songData, true);
     }
    
     @Override
@@ -110,8 +121,7 @@ public class TestPageFragment extends Fragment {
     @Override
     public void onResume() {
     	super.onResume();
-    	//updateRecognizeStatus();
-    	//TODO теперь для onResume нужно сохранять текущую информацию в этом классе
+    	displaySongInformationElement(currentApearingSong, false);
     }
 	
 	@Override
