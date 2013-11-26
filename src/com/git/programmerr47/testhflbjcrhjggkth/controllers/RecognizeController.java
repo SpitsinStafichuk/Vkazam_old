@@ -6,16 +6,12 @@ import android.util.Log;
 
 import com.git.programmerr47.testhflbjcrhjggkth.model.FingerprintData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
+import com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeServiceConnection;
 import com.git.programmerr47.testhflbjcrhjggkth.model.SongData;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.DBConstants;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseFingerprintData;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseSongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.FingerprintManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.RecognizeManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IFingerprintResultObserver;
-import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IFingerprintStatusObserver;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeResultObserver;
-import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeStatusObserver;
 
 public class RecognizeController implements IFingerprintResultObserver, IRecognizeResultObserver {
 	private static final String TAG = "RecognizeController";
@@ -25,7 +21,7 @@ public class RecognizeController implements IFingerprintResultObserver, IRecogni
     RecognizeManager recognizeManager;
 
     public RecognizeController() {
-            model = MicroScrobblerModel.getInstance();
+            model = RecognizeServiceConnection.getModel();
             fingerprintManager = model.getFingerprintManager();
             fingerprintManager.addObserver(this);
             recognizeManager = model.getRecognizeManager();

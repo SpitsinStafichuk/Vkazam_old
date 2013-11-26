@@ -5,6 +5,7 @@ import java.util.Date;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.SongInfoController;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
+import com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeServiceConnection;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseSongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObserver;
 import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.HistoryPageFragment;
@@ -42,7 +43,7 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 		}
 		
 		controller = new SongInfoController(this);
-		model = MicroScrobblerModel.getInstance();
+		model = RecognizeServiceConnection.getModel();
 		model.getSongManager().addObserver(this);
 		data = (DatabaseSongData) model.getHistoryItem(position);
 		fillActivity(data);

@@ -3,6 +3,7 @@ package com.git.programmerr47.testhflbjcrhjggkth.controllers;
 import android.support.v4.app.FragmentManager;
 
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
+import com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeServiceConnection;
 import com.git.programmerr47.testhflbjcrhjggkth.view.activities.SettingsActivity;
 
 public class SettingsController {
@@ -12,7 +13,7 @@ public class SettingsController {
 
     public SettingsController(SettingsActivity view) {
             this.view = view;
-            this.model = MicroScrobblerModel.getInstance();
+            this.model = RecognizeServiceConnection.getModel();
     }
 
     public boolean hasLastfmAccount() {

@@ -3,6 +3,7 @@ package com.git.programmerr47.testhflbjcrhjggkth.view.fragments;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.SongListController;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
+import com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeServiceConnection;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongList;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISongDAOObserver;
 import com.git.programmerr47.testhflbjcrhjggkth.view.activities.SongInfoActivity;
@@ -45,7 +46,7 @@ public class HistoryPageFragment extends Fragment implements ISongDAOObserver {
             
             controller = new SongListController(this);
             adapter = new SongListAdapter(this.getActivity(), R.layout.list_item, controller);
-            songList = MicroScrobblerModel.getInstance().getSongList();
+            songList = RecognizeServiceConnection.getModel().getSongList();
             songList.addObserver(this);
     }
 
