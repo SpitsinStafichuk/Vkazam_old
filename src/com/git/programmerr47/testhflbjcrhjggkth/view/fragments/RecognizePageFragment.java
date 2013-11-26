@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -40,7 +41,8 @@ public class RecognizePageFragment extends Fragment implements IRecognizeStatusO
     TextView status;
     ImageView songCoverArt;
     
-    //в чём смысл этого метода?
+    boolean firstApearing = false;
+    
     public static RecognizePageFragment newInstance() {
     		RecognizePageFragment pageFragment = new RecognizePageFragment();
             Bundle arguments = new Bundle();
@@ -64,13 +66,14 @@ public class RecognizePageFragment extends Fragment implements IRecognizeStatusO
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.recognize_fragment, null);
         
-		infoDialog = (LinearLayout) view.findViewById(R.id.apearInformationDialog);
-		songArtist = (TextView) view.findViewById(R.id.songInfoArtist);
-		songTitle = (TextView) view.findViewById(R.id.songInfoTitle);
-		songDate = (TextView) view.findViewById(R.id.songInfoDate);
+		infoDialog = (LinearLayout) view.findViewById(R.id.songHistoryItem);
+		songArtist = (TextView) view.findViewById(R.id.songListItemArtist);
+		songTitle = (TextView) view.findViewById(R.id.songListItemTitle);
+		songDate = (TextView) view.findViewById(R.id.songListItemDate);
 		status = (TextView) view.findViewById(R.id.status);
+		infoDialog.setVisibility(View.INVISIBLE);
 		
-		songCoverArt = (ImageView) view.findViewById(R.id.songInfoCoverArt);
+		songCoverArt = (ImageView) view.findViewById(R.id.songListItemCoverArt);
         
         ImageButton microTimerListenButton = (ImageButton) view.findViewById(R.id.microTimerListenButton);
         microTimerListenButton.setOnLongClickListener(new View.OnLongClickListener(){
@@ -127,15 +130,16 @@ public class RecognizePageFragment extends Fragment implements IRecognizeStatusO
 	public void onRecognizeResult(SongData songData) {
 		if(songData != null) {
 			String coverArtUrl = songData.getCoverArtUrl();
-			infoDialog.setVisibility(View.VISIBLE);
 			songArtist.setText(songData.getArtist());
 			songTitle.setText(songData.getTitle());
-			songDate.setText("just now");
+			songDate.setText(songData.getDate().toString());
 			DisplayImageOptions options = new DisplayImageOptions.Builder()
 				.showImageForEmptyUri(R.drawable.no_cover_art)
 				.showImageOnFail(R.drawable.no_cover_art)
 				.build();
 			model.getImageLoader().displayImage(coverArtUrl, songCoverArt, options);
+			infoDialog.setAnimation(AnimationUtils.loadAnimation(this.parentActivity, R.anim.appear));
+			infoDialog.setVisibility(View.VISIBLE);
 		}
 	}
 

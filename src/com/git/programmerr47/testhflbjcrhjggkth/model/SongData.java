@@ -2,6 +2,8 @@ package com.git.programmerr47.testhflbjcrhjggkth.model;
 
 import java.util.Date;
 
+import android.util.Log;
+
 public class SongData {
 
 	protected String artist;
@@ -35,6 +37,9 @@ public class SongData {
 	
 	public SongData(String trackId, String artist, String title, Date date, String coverArtUrl) {
 		this(trackId, artist, null, title, null, coverArtUrl, date, null, null, null, null, null, null);
+		Log.v("SongData", "Creating data with no pleercomurl is success");
+		Log.v("SongData", "pleercomurl = " + pleercomUrl);
+		Log.v("SongData", "coverarturl = " + this.coverArtUrl);
 	} 
 	
 	public SongData(String trackId, String artist, String album, String title, Date date) {
@@ -58,6 +63,7 @@ public class SongData {
 		this.setAlbumReviewUrl(albumReviewUrl);
 		this.setAlbumReleaseYear(albumReleaseYear);
 		this.setAlbumArtist(albumArtist);
+		Log.v("SongData", "Creating: pleercomUrl is " + this.pleercomUrl);
 	}
 	
 	public void setArtist(String artist) {
@@ -68,8 +74,8 @@ public class SongData {
 		return artist;
 	}
 	
-	public void setTitle(String artist) {
-		this.artist = artist;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	public String getTitle() {

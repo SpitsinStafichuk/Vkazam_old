@@ -1,11 +1,16 @@
 package com.git.programmerr47.testhflbjcrhjggkth.controllers;
 
+import java.util.List;
+
+import android.util.Log;
+
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
 import com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeServiceConnection;
 import com.git.programmerr47.testhflbjcrhjggkth.model.SongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseSongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongList;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SearchManager;
+import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SearchManager.SearchListener;
 import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.TestPageFragment;
 
 public class TestController {
@@ -31,10 +36,26 @@ public class TestController {
 			}
 			
 			@Override
-			public void onSearchResult(SongData songData) {
+			public void onSearchResult(final SongData songData) {
 				if(songData != null) {
-					DatabaseSongData databaseSongData = songList.add(songData);
-					view.displaySongInformationElement(databaseSongData);
+					final DatabaseSongData databaseSongData = songList.add(songData);
+					searchManager.search(songData.getTrackId(), new SearchListener() {
+						
+						@Override
+						public void onSearchStatusChanged(String status) {
+						}
+						
+						@Override
+						public void onSearchResult(SongData sd) {
+							Log.v("TestController", "Songdata = " + sd);
+							if (sd != null) {
+								Log.v("TestController", "Songdata.coverArt = " + sd.getCoverArtUrl());
+								databaseSongData.setCoverArtUrl(sd.getCoverArtUrl());
+							}
+							view.displaySongInformationElement(databaseSongData);
+						}
+					
+					});
 				}
 			}
 		});
