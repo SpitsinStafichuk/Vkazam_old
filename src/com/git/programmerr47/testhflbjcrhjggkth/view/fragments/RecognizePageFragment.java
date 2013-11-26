@@ -3,6 +3,7 @@ package com.git.programmerr47.testhflbjcrhjggkth.view.fragments;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.RecognizeController;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
+import com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeServiceConnection;
 import com.git.programmerr47.testhflbjcrhjggkth.model.SongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.FingerprintManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.RecognizeManager;
@@ -51,7 +52,7 @@ public class RecognizePageFragment extends Fragment implements IRecognizeStatusO
     public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             controller = new RecognizeController();
-            model = MicroScrobblerModel.getInstance();
+            model = RecognizeServiceConnection.getModel();
             fingerprintManager = model.getFingerprintManager();
             fingerprintManager.addObserver((IFingerprintStatusObserver)this);
             recognizeManager = model.getRecognizeManager();

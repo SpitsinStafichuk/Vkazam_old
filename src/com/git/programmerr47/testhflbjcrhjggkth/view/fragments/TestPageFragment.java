@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.TestController;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
+import com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeServiceConnection;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseSongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SearchManager;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -46,7 +47,7 @@ public class TestPageFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             controller = new TestController(this);
-            model = MicroScrobblerModel.getInstance();
+            model = RecognizeServiceConnection.getModel();
             searchManager = model.getSearchManager();
     }
 

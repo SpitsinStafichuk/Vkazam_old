@@ -11,6 +11,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
+import com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeServiceConnection;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseSongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.exceptions.SongNotFoundException;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SongManager;
@@ -24,12 +25,12 @@ public class SongController {
 	
 	public SongController(Activity view) {
 		this.view = view;
-		this.model = MicroScrobblerModel.getInstance();
+		this.model = RecognizeServiceConnection.getModel();
 	}
 
 	public synchronized void playPauseSong(final DatabaseSongData songData) {
 		if(preparingThread != null) {
-			SongManager songManager = MicroScrobblerModel.getInstance().getSongManager();
+			SongManager songManager = model.getSongManager();
 			songManager.set(null);
 			preparingThread.interrupt();
 		}
@@ -44,7 +45,7 @@ public class SongController {
 	}
 	
 	private void _playPauseSong(DatabaseSongData songData) {
-		SongManager songManager = MicroScrobblerModel.getInstance().getSongManager();
+		SongManager songManager = model.getSongManager();
 		if(songData.equals(songManager.getSongData())) {
 			Log.v("SongListController", "songManager.getSongData() == songData == " + songData);
 			if(songManager.isPrepared())

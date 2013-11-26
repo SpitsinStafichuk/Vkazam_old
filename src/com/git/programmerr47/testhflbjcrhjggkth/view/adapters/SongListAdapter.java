@@ -9,6 +9,7 @@ import java.util.Map;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.SongListController;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
+import com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeServiceConnection;
 import com.git.programmerr47.testhflbjcrhjggkth.model.SongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.Data;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseSongData;
@@ -51,8 +52,8 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 		this.activity = activity;
 		this.idItem = idItem;
 		this.controller = controller;
-		songManager = MicroScrobblerModel.getInstance().getSongManager();
-		model = MicroScrobblerModel.getInstance();
+		model = RecognizeServiceConnection.getModel();
+		songManager = model.getSongManager();
 		coverArts = new HashMap<String, ImageView>();
 		Log.v("Lists", "History adapter created");
 		

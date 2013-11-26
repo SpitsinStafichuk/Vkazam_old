@@ -15,7 +15,7 @@ public class ConnectionChangeReceiver extends BroadcastReceiver {
 		    NetworkInfo activeNetInfo = connectivityManager.getActiveNetworkInfo();
 		    if (activeNetInfo != null ) {
 			    Toast.makeText( context, "Active Network Type : " + activeNetInfo.getTypeName(), Toast.LENGTH_SHORT ).show();
-			    context.startService(new Intent(context, RecognizeService.class));
+			    context.startService(new Intent(context, RecognizeHistoryService.class));
 		    } else {
 			    Toast.makeText( context, "Active Network Type : none", Toast.LENGTH_SHORT ).show();
 		    }
