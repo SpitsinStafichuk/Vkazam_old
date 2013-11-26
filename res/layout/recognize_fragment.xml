@@ -11,7 +11,7 @@
         android:padding="10dp">
 
         <ImageButton
-            android:id="@+id/microTimerListenButton"
+            android:id="@+id/microNowListenButton"
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:paddingLeft="100dp"
@@ -20,15 +20,16 @@
             android:src="@drawable/microphone_icon" />
 
         <ImageButton
-            android:id="@+id/microNowListenButton"
+            android:id="@+id/microTimerListenButton"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_alignLeft="@+id/microTimerListenButton"
             android:layout_centerVertical="true"
             android:layout_marginLeft="25dp"
+            android:padding="10dp"
             android:background="@drawable/micro_image_button_round_background"
-            android:scaleType="fitXY"
-            android:src="@drawable/microphone_icon" />
+            android:scaleType="centerInside"
+            android:src="@drawable/timer" />
 
     </RelativeLayout>
 
@@ -40,6 +41,7 @@
         android:text="Status"
         android:visibility="visible" />
 
-    <include layout="@layout/list_item"/>
+    <include layout="@layout/list_item" 
+             android:padding="5dp"/>
 
 </LinearLayout>

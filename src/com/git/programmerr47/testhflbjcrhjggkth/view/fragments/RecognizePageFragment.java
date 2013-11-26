@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -130,7 +131,6 @@ public class RecognizePageFragment extends Fragment implements IRecognizeStatusO
 	public void onRecognizeResult(SongData songData) {
 		if(songData != null) {
 			String coverArtUrl = songData.getCoverArtUrl();
-			infoDialog.setVisibility(View.VISIBLE);
 			songArtist.setText(songData.getArtist());
 			songTitle.setText(songData.getTitle());
 			songDate.setText(songData.getDate().toString());
@@ -139,6 +139,8 @@ public class RecognizePageFragment extends Fragment implements IRecognizeStatusO
 				.showImageOnFail(R.drawable.no_cover_art)
 				.build();
 			model.getImageLoader().displayImage(coverArtUrl, songCoverArt, options);
+			infoDialog.setAnimation(AnimationUtils.loadAnimation(this.parentActivity, R.anim.appear));
+			infoDialog.setVisibility(View.VISIBLE);
 		}
 	}
 
