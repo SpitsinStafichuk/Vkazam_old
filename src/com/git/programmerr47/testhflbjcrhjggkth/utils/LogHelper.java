@@ -6,20 +6,22 @@ import com.gracenote.mmid.MobileSDK.GNDescriptor;
 import com.gracenote.mmid.MobileSDK.GNSearchResponse;
 
 public class LogHelper {
-	
+
 	public static void print(String tag, GNSearchResponse response) {
 		String artist = response.getArtist();
 		String title = response.getTrackTitle();
 		String album = response.getAlbumTitle();
 		String trackId = response.getTrackId();
-		String coverArtURL = response.getCoverArt() != null ? response.getCoverArt().getUrl() : null;
-		String contributorImageURL = response.getContributorImage() != null ? response.getContributorImage().getUrl() : null;
+		String coverArtURL = response.getCoverArt() != null ? response
+				.getCoverArt().getUrl() : null;
+		String contributorImageURL = response.getContributorImage() != null ? response
+				.getContributorImage().getUrl() : null;
 		String albumArtist = response.getAlbumArtist();
 		String artistBiographyURL = response.getArtistBiographyUrl();
 		String songPosition = response.getSongPosition();
 		String albumReviewUrl = response.getAlbumReviewUrl();
 		String albumReleaseYear = response.getAlbumReleaseYear();
-		
+
 		GNDescriptor artistType[] = response.getArtistType();
 		GNDescriptor era[] = response.getEra();
 		GNDescriptor mood[] = response.getMood();
@@ -27,7 +29,7 @@ public class LogHelper {
 		GNDescriptor tempo[] = response.getTempo();
 		GNDescriptor trackGenre[] = response.getTrackGenre();
 		GNDescriptor albumGenre[] = response.getAlbumGenre();
-		
+
 		Log.i(tag, "artist: " + artist);
 		Log.i(tag, "title: " + title);
 		Log.i(tag, "album: " + album);
@@ -39,34 +41,38 @@ public class LogHelper {
 		Log.i(tag, "albumReviewUrl: " + albumReviewUrl);
 		Log.i(tag, "albumReleaseYear: " + albumReleaseYear);
 		Log.i(tag, "albumArtist: " + albumArtist);
-		
+
 		Log.i(tag, "Types:");
-		for(GNDescriptor d : artistType) {
+		for (GNDescriptor d : artistType) {
 			Log.i(tag, "typeId: " + d.getId() + " type: " + d.getData());
 		}
 		Log.i(tag, "Era:");
-		for(GNDescriptor d : era) {
+		for (GNDescriptor d : era) {
 			Log.i(tag, "eraId: " + d.getId() + " era: " + d.getData());
 		}
 		Log.i(tag, "Mood:");
-		for(GNDescriptor d : mood) {
+		for (GNDescriptor d : mood) {
 			Log.i(tag, "moodId: " + d.getId() + " mood: " + d.getData());
 		}
 		Log.i(tag, "Origin:");
-		for(GNDescriptor d : origin) {
+		for (GNDescriptor d : origin) {
 			Log.i(tag, "originId: " + d.getId() + " origin: " + d.getData());
 		}
 		Log.i(tag, "Tempo:");
-		for(GNDescriptor d : tempo) {
+		for (GNDescriptor d : tempo) {
 			Log.i(tag, "tempoId: " + d.getId() + " tempo: " + d.getData());
 		}
 		Log.i(tag, "TrackGenre:");
-		for(GNDescriptor d : trackGenre) {
-			Log.i(tag, "trackgenreId: " + d.getId() + " trackgenre: " + d.getData());
+		for (GNDescriptor d : trackGenre) {
+			Log.i(tag,
+					"trackgenreId: " + d.getId() + " trackgenre: "
+							+ d.getData());
 		}
 		Log.i(tag, "AlbumGenre:");
-		for(GNDescriptor d : albumGenre) {
-			Log.i(tag, "albumgenreId: " + d.getId() + " albumgenre: " + d.getData());
+		for (GNDescriptor d : albumGenre) {
+			Log.i(tag,
+					"albumgenreId: " + d.getId() + " albumgenre: "
+							+ d.getData());
 		}
 	}
 }
