@@ -28,6 +28,11 @@
         <activity android:name="com.git.programmerr47.testhflbjcrhjggkth.view.activities.SongInfoActivity"></activity>
         
         <service 
+            android:name="com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeHistoryService"
+        	android:enabled="true"> 
+    	</service> 
+    	
+        <service 
             android:name="com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeService"
         	android:enabled="true"> 
     	</service> 

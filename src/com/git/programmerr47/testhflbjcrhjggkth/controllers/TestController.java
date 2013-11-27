@@ -5,6 +5,7 @@ import java.util.List;
 import android.util.Log;
 
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
+import com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeServiceConnection;
 import com.git.programmerr47.testhflbjcrhjggkth.model.SongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseSongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongList;
@@ -21,7 +22,7 @@ public class TestController {
 
     public TestController(TestPageFragment view) {
             this.view = view;
-            model = MicroScrobblerModel.getInstance();
+            model = RecognizeServiceConnection.getModel();
             searchManager = model.getSearchManager();
             songList = model.getSongList();
     }
