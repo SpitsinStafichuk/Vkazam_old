@@ -2,7 +2,6 @@ package com.git.programmerr47.testhflbjcrhjggkth.view.fragments;
 
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.SongListController;
-import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
 import com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeServiceConnection;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongList;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISongDAOObserver;
@@ -25,13 +24,13 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 public class HistoryPageFragment extends Fragment implements ISongDAOObserver {
-	public static final String ARGUMENT_SONG_POSITION = "SongDataPosition";
+	public static final String ARGUMENT_SONGLIST_POSITION = "SongDataPosition";
     
     private SongListAdapter adapter;
     private SongListController controller;
     private Activity parentActivity;
-    ListView songHLV;
-    SongList songList;
+    private ListView songHLV;
+    private SongList songList;
 
     public static HistoryPageFragment newInstance() {
             HistoryPageFragment pageFragment = new HistoryPageFragment();
@@ -62,7 +61,8 @@ public class HistoryPageFragment extends Fragment implements ISongDAOObserver {
 				@Override
 				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 					Intent intent = new Intent(instance, SongInfoActivity.class);
-					intent.putExtra(ARGUMENT_SONG_POSITION, position);
+					//TODO позиция может измениться
+					intent.putExtra(ARGUMENT_SONGLIST_POSITION, position);
 					startActivity(intent);
 				}
 			});

@@ -30,28 +30,28 @@ import android.widget.TextView;
 public class RecognizePageFragment extends Fragment implements IRecognizeStatusObserver, IRecognizeResultObserver, IFingerprintStatusObserver {
 	static final String ARGUMENT_RADIO_ID = "arg_rad_id";
     
-    RecognizeController controller;
-    MicroScrobblerModel model;
-    RecognizeManager recognizeManager;
-    FingerprintManager fingerprintManager;
-    Activity parentActivity;
+    private RecognizeController controller;
+    private MicroScrobblerModel model;
+    private RecognizeManager recognizeManager;
+    private FingerprintManager fingerprintManager;
+    private Activity parentActivity;
     
-    LinearLayout song;
-    TextView songArtist;
-    TextView songTitle;
-    TextView songDate;
-    ImageView songCoverArt;
+    private LinearLayout song;
+    private TextView songArtist;
+    private TextView songTitle;
+    private TextView songDate;
+    private ImageView songCoverArt;
     
-    LinearLayout prevSong;
-    TextView prevSongArtist;
-    TextView prevSongTitle;
-    TextView prevSongDate;
-    ImageView prevSongCoverArt;
+    private LinearLayout prevSong;
+    private TextView prevSongArtist;
+    private TextView prevSongTitle;
+    private TextView prevSongDate;
+    private ImageView prevSongCoverArt;
     
-    TextView status;
+    private TextView status;
     
-    SongData currentApearingSong;
-    boolean firstTimeApearing;
+    private SongData currentApearingSong;
+    private boolean firstTimeApearing;
     
     public static RecognizePageFragment newInstance() {
     		RecognizePageFragment pageFragment = new RecognizePageFragment();

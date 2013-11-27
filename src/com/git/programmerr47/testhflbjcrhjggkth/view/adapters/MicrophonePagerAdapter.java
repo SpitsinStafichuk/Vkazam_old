@@ -12,26 +12,25 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 public class MicrophonePagerAdapter extends FragmentPagerAdapter {
+	private static final int PAGE_COUNT = 3;
+	private List<Fragment> microphoneFragments;
        
-        static final int PAGE_COUNT = 3;
-        List<Fragment> microphoneFragments;
+    public MicrophonePagerAdapter(FragmentManager fm) {
+    	super(fm);
+        microphoneFragments = new ArrayList<Fragment>();
+        microphoneFragments.add(RecognizePageFragment.newInstance());
+        microphoneFragments.add(HistoryPageFragment.newInstance());
+        microphoneFragments.add(TestPageFragment.newInstance());
+     }
+    
+    @Override
+    public Fragment getItem(int position) {
+    	return microphoneFragments.get(position);
+    }
        
-        public MicrophonePagerAdapter(FragmentManager fm) {
-                super(fm);
-                microphoneFragments = new ArrayList<Fragment>();
-                microphoneFragments.add(RecognizePageFragment.newInstance());
-                microphoneFragments.add(HistoryPageFragment.newInstance());
-                microphoneFragments.add(TestPageFragment.newInstance());
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-                return microphoneFragments.get(position);
-        }
-       
-        @Override
-        public int getCount() {
-                return PAGE_COUNT;
-        }
+     @Override
+     public int getCount() {
+    	 return PAGE_COUNT;
+     }
 }
 

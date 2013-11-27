@@ -27,27 +27,27 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 public class TestPageFragment extends Fragment {
 	static final String ARGUMENT_RADIO_ID = "arg_rad_id";
     
-    TestController controller;
-    MicroScrobblerModel model;
-    SearchManager searchManager;
-    Activity parentActivity;
+	private TestController controller;
+	private MicroScrobblerModel model;
+	private SearchManager searchManager;
+	private Activity parentActivity;
 
-    LinearLayout song;
-    TextView songArtist;
-    TextView songTitle;
-    TextView songDate;
-    ImageView songCoverArt;
+	private LinearLayout song;
+	private TextView songArtist;
+	private TextView songTitle;
+	private TextView songDate;
+	private ImageView songCoverArt;
     
-    LinearLayout prevSong;
-    TextView prevSongArtist;
-    TextView prevSongTitle;
-    TextView prevSongDate;
-    ImageView prevSongCoverArt;
+	private LinearLayout prevSong;
+	private TextView prevSongArtist;
+	private TextView prevSongTitle;
+	private TextView prevSongDate;
+	private ImageView prevSongCoverArt;
     
-    TextView status;
+	private TextView status;
     
-    SongData currentApearingSong;
-    boolean firstTimeApearing;
+	private SongData currentApearingSong;
+	private boolean firstTimeApearing;
 
     public static TestPageFragment newInstance() {
     		TestPageFragment pageFragment = new TestPageFragment();
