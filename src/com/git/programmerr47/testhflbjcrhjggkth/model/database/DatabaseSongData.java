@@ -64,20 +64,9 @@ public class DatabaseSongData extends SongData implements Data {
 		dao.update(this);
 	}
 	
-	public void setNullFields(DatabaseSongData data) {
-		super.setNullFields(data);
-		dao.update(this);
-	}
-	
 	@Override
 	public String toString() {
-		return "id: " + id + 
-				"\nartist: " + artist + 
-				"\ntitle: " + title + 
-				"\ntrackId: " + trackId + 
-				"\ndate: " + date + 
-				"\npleercomURL: " + pleercomUrl + 
-				"\ncoverArtURL: " + coverArtUrl;
+		return "id: " + id + "\n" + super.toString();
 	}
 
 	@Override

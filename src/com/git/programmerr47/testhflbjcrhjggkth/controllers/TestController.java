@@ -1,7 +1,5 @@
 package com.git.programmerr47.testhflbjcrhjggkth.controllers;
 
-import java.util.List;
-
 import android.util.Log;
 
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
@@ -51,7 +49,7 @@ public class TestController {
 								Log.v("TestController", "Songdata = " + sd);
 								if (sd != null) {
 									Log.v("TestController", "Songdata.coverArt = " + sd.getCoverArtUrl());
-									databaseSongData.setCoverArtUrl(sd.getCoverArtUrl());
+									databaseSongData.setNullFields(sd);
 								}
 								view.displaySongInformationElement(databaseSongData);
 							}

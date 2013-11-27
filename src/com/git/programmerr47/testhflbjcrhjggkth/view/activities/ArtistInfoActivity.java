@@ -63,7 +63,7 @@ public class ArtistInfoActivity extends Activity {
 					.cacheOnDisc(true)
 					.cacheInMemory(true)
 					.build();
-				model.getImageLoader().displayImage(contributorImageUrl, (ImageView) findViewById(R.id.songInfoCoverArt), options);
+				model.getImageLoader().displayImage(contributorImageUrl, (ImageView) findViewById(R.id.artistInfoImage), options);
 			}
 		}
 	}

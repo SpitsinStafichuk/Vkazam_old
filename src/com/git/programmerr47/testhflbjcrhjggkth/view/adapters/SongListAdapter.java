@@ -143,7 +143,7 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 						List<DatabaseSongData> historySongData = getSongDataFromHistoryById(songData.getTrackId());
 						if(historySongData != null) {
 							for (DatabaseSongData i : historySongData) {
-								if (i != null) i.setCoverArtUrl(songData.getCoverArtUrl());
+								if (i != null) i.setNullFields(songData);
 								displayCoverArt(i);
 							}
 						} else {
