@@ -1,4 +1,4 @@
-package com.git.programmerr47.testhflbjcrhjggkth.view.activities;
+package com.git.programmerr47.testhflbjcrhjggkth.view;
 
 import android.view.View;
 import com.nineoldandroids.view.ViewHelper;

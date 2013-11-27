@@ -24,7 +24,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-public class HistoryPageFragment extends Fragment implements ISongDAOObserver {
+public class HistoryPageFragment extends MicrophonePagerFragment implements ISongDAOObserver {
 	public static final String ARGUMENT_SONG_POSITION = "SongDataPosition";
     
     private SongListAdapter adapter;
@@ -48,6 +48,8 @@ public class HistoryPageFragment extends Fragment implements ISongDAOObserver {
             adapter = new SongListAdapter(this.getActivity(), R.layout.list_item, controller);
             songList = RecognizeServiceConnection.getModel().getSongList();
             songList.addObserver(this);
+            
+            name = "History";
     }
 
     @Override

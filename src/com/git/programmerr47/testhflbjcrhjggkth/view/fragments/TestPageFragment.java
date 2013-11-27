@@ -24,7 +24,7 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.SongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SearchManager;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
-public class TestPageFragment extends Fragment {
+public class TestPageFragment extends MicrophonePagerFragment {
 	static final String ARGUMENT_RADIO_ID = "arg_rad_id";
     
     TestController controller;
@@ -63,6 +63,8 @@ public class TestPageFragment extends Fragment {
             model = RecognizeServiceConnection.getModel();
             searchManager = model.getSearchManager();
             firstTimeApearing = true;
+            
+            name = "Text search";
     }
 
     @Override

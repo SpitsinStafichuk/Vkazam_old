@@ -27,7 +27,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class RecognizePageFragment extends Fragment implements IRecognizeStatusObserver, IRecognizeResultObserver, IFingerprintStatusObserver {
+public class RecognizePageFragment extends MicrophonePagerFragment implements IRecognizeStatusObserver, IRecognizeResultObserver, IFingerprintStatusObserver {
 	static final String ARGUMENT_RADIO_ID = "arg_rad_id";
     
     RecognizeController controller;
@@ -71,6 +71,8 @@ public class RecognizePageFragment extends Fragment implements IRecognizeStatusO
             recognizeManager.addObserver((IRecognizeStatusObserver)this);
             recognizeManager.addObserver((IRecognizeResultObserver)this);
             firstTimeApearing = true;
+            
+            name = "Recognize";
     }
 
     @Override
