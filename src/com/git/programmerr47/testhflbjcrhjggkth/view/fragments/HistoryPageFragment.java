@@ -22,7 +22,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-public class HistoryPageFragment extends MicrophonePagerFragment implements ISongDAOObserver {
+public class HistoryPageFragment extends FragmentWithName implements ISongDAOObserver {
 	public static final String ARGUMENT_SONGLIST_POSITION = "SongDataPosition";
     
     private SongListAdapter adapter;
@@ -56,10 +56,10 @@ public class HistoryPageFragment extends MicrophonePagerFragment implements ISon
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.history_fragment, null);
+            View view = inflater.inflate(R.layout.list_view_fragment, null);
             
             final Context instance = this.parentActivity;
-            songHLV = (ListView) view.findViewById(R.id.historyList);
+            songHLV = (ListView) view.findViewById(R.id.listView);
             songHLV.setAdapter(adapter);
   		  	songHLV.setOnItemClickListener(new OnItemClickListener() {
 

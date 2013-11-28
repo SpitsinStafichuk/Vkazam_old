@@ -22,7 +22,7 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeServiceConnection
 import com.git.programmerr47.testhflbjcrhjggkth.model.SongData;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
-public class TestPageFragment extends MicrophonePagerFragment {
+public class TestPageFragment extends FragmentWithName {
 	static final String ARGUMENT_RADIO_ID = "arg_rad_id";
     
 	private TestController controller;

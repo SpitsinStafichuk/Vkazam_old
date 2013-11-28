@@ -27,7 +27,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class RecognizePageFragment extends MicrophonePagerFragment implements IRecognizeStatusObserver, IRecognizeResultObserver, IFingerprintStatusObserver {
+public class RecognizePageFragment extends FragmentWithName implements IRecognizeStatusObserver, IRecognizeResultObserver, IFingerprintStatusObserver {
 	static final String ARGUMENT_RADIO_ID = "arg_rad_id";
     
     private RecognizeController controller;
