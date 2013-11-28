@@ -24,6 +24,7 @@ import android.view.animation.Animation.AnimationListener;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class RecognizePageFragment extends MicrophonePagerFragment implements IRecognizeStatusObserver, IRecognizeResultObserver, IFingerprintStatusObserver {
@@ -48,6 +49,7 @@ public class RecognizePageFragment extends MicrophonePagerFragment implements IR
     private ImageView prevSongCoverArt;
     
     private TextView status;
+    private ProgressBar statusProgress;
     
     private SongData currentApearingSong;
     private boolean firstTimeApearing;
@@ -95,6 +97,7 @@ public class RecognizePageFragment extends MicrophonePagerFragment implements IR
 		prevSongCoverArt = (ImageView) prevSong.findViewById(R.id.songListItemCoverArt);
 		
 		status = (TextView) view.findViewById(R.id.status);
+		statusProgress = (ProgressBar) view.findViewById(R.id.statusProgress);
         
         ImageButton microTimerListenButton = (ImageButton) view.findViewById(R.id.microTimerListenButton);
         microTimerListenButton.setOnLongClickListener(new View.OnLongClickListener(){
@@ -142,7 +145,14 @@ public class RecognizePageFragment extends MicrophonePagerFragment implements IR
 
 	@Override
 	public void onFingerprintStatusChanged(String status) {
-		this.status.setText(status);
+		Log.v("Status_text", status);
+		updateProgress(status);
+	}
+
+	@Override
+	public void onRecognizeStatusChanged(String status) {
+		Log.v("Status_text", status);
+		updateProgress(status);
 	}
 
 	@Override
@@ -196,9 +206,19 @@ public class RecognizePageFragment extends MicrophonePagerFragment implements IR
 			.build();
 		model.getImageLoader().displayImage(coverArtUrl, coverArt, options);
     }
+	
+	private void updateProgress(String status) {
+		int listenStep = 6;
+		int otherStep = 10;
+		String patternListening = "Listening";
+		
+		if (status.contains(patternListening)) {
+			int progress = listenStep * Integer.parseInt(status.substring(patternListening.length() + 1, status.length() - 2)) / 10;
+			statusProgress.setProgress(progress);
+		} else {
+			statusProgress.setProgress(statusProgress.getProgress() + otherStep);
+		}
 
-	@Override
-	public void onRecognizeStatusChanged(String status) {
 		this.status.setText(status);
 	}
 }
