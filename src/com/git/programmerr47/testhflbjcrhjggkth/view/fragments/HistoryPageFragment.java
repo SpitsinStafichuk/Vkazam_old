@@ -22,7 +22,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-public class HistoryPageFragment extends MicrophonePagerFragment implements ISongDAOObserver {
+public class HistoryPageFragment extends FragmentWithName implements ISongDAOObserver {
 	public static final String ARGUMENT_SONGLIST_POSITION = "SongDataPosition";
     
     private SongListAdapter adapter;
@@ -35,11 +35,8 @@ public class HistoryPageFragment extends MicrophonePagerFragment implements ISon
             HistoryPageFragment pageFragment = new HistoryPageFragment();
             Bundle arguments = new Bundle();
             pageFragment.setArguments(arguments);
+            pageFragment.setFragmentName("History");
             return pageFragment;
-    }
-    
-    public HistoryPageFragment() {
-    	name = "History";
     }
 
     @Override
@@ -50,16 +47,14 @@ public class HistoryPageFragment extends MicrophonePagerFragment implements ISon
             adapter = new SongListAdapter(this.getActivity(), R.layout.list_item, controller);
             songList = RecognizeServiceConnection.getModel().getSongList();
             songList.addObserver(this);
-            
-            name = "History";
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.history_fragment, null);
+            View view = inflater.inflate(R.layout.list_view_fragment, null);
             
             final Context instance = this.parentActivity;
-            songHLV = (ListView) view.findViewById(R.id.historyList);
+            songHLV = (ListView) view.findViewById(R.id.listView);
             songHLV.setAdapter(adapter);
   		  	songHLV.setOnItemClickListener(new OnItemClickListener() {
 

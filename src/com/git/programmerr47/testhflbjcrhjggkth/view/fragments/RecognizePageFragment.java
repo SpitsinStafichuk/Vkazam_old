@@ -27,7 +27,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class RecognizePageFragment extends MicrophonePagerFragment implements IRecognizeStatusObserver, IRecognizeResultObserver, IFingerprintStatusObserver {
+public class RecognizePageFragment extends FragmentWithName implements IRecognizeStatusObserver, IRecognizeResultObserver, IFingerprintStatusObserver {
 	static final String ARGUMENT_RADIO_ID = "arg_rad_id";
     
     private RecognizeController controller;
@@ -58,11 +58,8 @@ public class RecognizePageFragment extends MicrophonePagerFragment implements IR
     		RecognizePageFragment pageFragment = new RecognizePageFragment();
             Bundle arguments = new Bundle();
             pageFragment.setArguments(arguments);
+            pageFragment.setFragmentName("Recognize");
             return pageFragment;
-    }
-    
-    public RecognizePageFragment() {
-        name = "Recognize";
     }
 
     @Override

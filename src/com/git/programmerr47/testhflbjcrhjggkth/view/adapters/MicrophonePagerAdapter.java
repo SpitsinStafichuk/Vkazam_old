@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.HistoryPageFragment;
-import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.MicrophonePagerFragment;
+import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.FragmentWithName;
 import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.RecognizePageFragment;
 import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.TestPageFragment;
 
@@ -14,12 +14,12 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 public class MicrophonePagerAdapter extends FragmentPagerAdapter {
 
-    static final int PAGE_COUNT = 3;
-    List<MicrophonePagerFragment> microphoneFragments;
+    private static final int PAGE_COUNT = 3;
+    private List<FragmentWithName> microphoneFragments;
    
     public MicrophonePagerAdapter(FragmentManager fm) {
             super(fm);
-            microphoneFragments = new ArrayList<MicrophonePagerFragment>();
+            microphoneFragments = new ArrayList<FragmentWithName>();
             microphoneFragments.add(RecognizePageFragment.newInstance());
             microphoneFragments.add(HistoryPageFragment.newInstance());
             microphoneFragments.add(TestPageFragment.newInstance());

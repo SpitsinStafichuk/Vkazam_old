@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout 
+
+<ScrollView 
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+<LinearLayout 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/common_background"
@@ -15,13 +20,15 @@
             android:id="@+id/songInfoCoverArt"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_margin="10dp"
             android:layout_weight="1"
-            android:src="@drawable/no_cover_art"/>
+            android:scaleType="centerCrop"
+            android:src="@drawable/no_cover_art" />
         
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_margin="5dp"
             android:orientation="vertical" >
             
             <TextView
@@ -57,6 +64,34 @@
                     android:scaleType="fitCenter"
                     android:background="@android:color/transparent"
                     android:src="@drawable/download_icon" />
+            
+        	</LinearLayout>
+        	
+            <LinearLayout
+            	android:layout_width="match_parent"
+            	android:layout_height="match_parent"
+            	android:layout_weight="1"
+            	android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/deleteButton"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+            		android:layout_weight="1"
+            		android:layout_margin="5dp"
+                    android:scaleType="fitCenter"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/delete_icon" />
+
+                <ImageButton
+                    android:id="@+id/refresh"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+            		android:layout_weight="1"
+            		android:layout_margin="5dp"
+                    android:scaleType="fitCenter"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/refresh_icon" />
             
         	</LinearLayout>
         	
@@ -170,3 +205,4 @@
         android:text="Date of listening" />
 
 </LinearLayout>
+</ScrollView>

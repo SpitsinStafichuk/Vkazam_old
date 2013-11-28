@@ -13,6 +13,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
@@ -30,6 +31,7 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 	private TextView artistTextView;
 
 	ImageButton playPauseButton;
+	ImageButton changeSong;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +67,16 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 			public void onClick(View v) {
 				Intent intent = new Intent(SongInfoActivity.this, ArtistInfoActivity.class);
 				intent.putExtra(ARGUMENT_SONGLIST_POSITION, fposition);
+				startActivity(intent);
+			}
+		});
+		
+		changeSong = (ImageButton) findViewById(R.id.refresh);
+		changeSong.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(SongInfoActivity.this, RefreshPagerActivity.class);
 				startActivity(intent);
 			}
 		});
@@ -147,5 +159,12 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 				Log.v("SongPlayer", "Song is on pause");
 			}
 		}
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.common_options_menu, menu);
+		return true;
 	}
 }
