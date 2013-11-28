@@ -1,8 +1,12 @@
 package com.git.programmerr47.testhflbjcrhjggkth.view.activities;
 
+import java.lang.reflect.Field;
+
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeService;
 import com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeServiceConnection;
+import com.git.programmerr47.testhflbjcrhjggkth.view.DepthPageTransformer;
+import com.git.programmerr47.testhflbjcrhjggkth.view.SmoothPageScroller;
 import com.git.programmerr47.testhflbjcrhjggkth.view.adapters.MicrophonePagerAdapter;
 
 import android.content.ComponentName;
@@ -41,24 +45,24 @@ public class MicrophonePagerActivity extends FragmentActivity implements Service
         pagerAdapter = new MicrophonePagerAdapter(getSupportFragmentManager());
         pager.setPageTransformer(true, new DepthPageTransformer());
         pager.setAdapter(pagerAdapter);
-
-        pager.setOnPageChangeListener(new OnPageChangeListener() {
-
-            @Override
-            public void onPageSelected(int position) {
-                Log.d("MicrophonePager", "onPageSelected, position = " + position);
-            }
-
-            @Override
-            public void onPageScrolled(int position, float positionOffset,
-                int positionOffsetPixels) {
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-            }
-        });
+        
+        try {
+            Field mScroller;
+			mScroller = ViewPager.class.getDeclaredField("mScroller");
+			mScroller.setAccessible(true);
+			SmoothPageScroller scroller = new SmoothPageScroller(pager.getContext());
+			mScroller.set(pager, scroller);
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (NoSuchFieldException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
 	}
+	
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();

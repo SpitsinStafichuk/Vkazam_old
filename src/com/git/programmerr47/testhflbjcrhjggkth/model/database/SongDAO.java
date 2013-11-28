@@ -33,7 +33,13 @@ public class SongDAO extends AbstractDAO implements ISongDAOObservable {
 		values.put(DBConstants.MUSIC_HISTORY_TITLE, songData.getTitle());
 		values.put(DBConstants.MUSIC_HISTORY_GRACENOTE_TRACK_ID, songData.getTrackId());
 		values.put(DBConstants.DATE, songData.getDate().getTime());
-		values.put(DBConstants.MUSIC_HISTORY_COVER_ART_URL, songData.getCoverArtUrl());
+		if(songData.getCoverArtUrl() != null) values.put(DBConstants.MUSIC_HISTORY_COVER_ART_URL, songData.getCoverArtUrl());
+		if(songData.getPleercomUrl() != null) values.put(DBConstants.MUSIC_HISTORY_PLEERCOM_URL, songData.getPleercomUrl());
+		if(songData.getContributorImageUrl() != null) values.put(DBConstants.MUSIC_HISTORY_CONTRIBUTOR_IMAGE_URL, songData.getContributorImageUrl());
+		if(songData.getArtistBiographyURL() != null) values.put(DBConstants.MUSIC_HISTORY_BIOGRAPHY_URL, songData.getArtistBiographyURL());
+		if(songData.getAlbumReviewUrl() != null) values.put(DBConstants.MUSIC_HISTORY_ALBUM_REVIEW_URL, songData.getAlbumReviewUrl());
+		if(songData.getAlbumReleaseYear() != null) values.put(DBConstants.MUSIC_HISTORY_ALBUM_RELEASE_YEAR, songData.getAlbumReleaseYear());
+		if(songData.getAlbumArtist() != null) values.put(DBConstants.MUSIC_HISTORY_ALBUM_ARTIST, songData.getAlbumArtist());
 		long result = database.insert(DBConstants.MUSIC_HISTORY_TABLE, null, values);
 		Log.v("HistoryList", "" + result);
 		database.close();
@@ -50,8 +56,13 @@ public class SongDAO extends AbstractDAO implements ISongDAOObservable {
 		databaseHelper = new DBHelper(context);
 		database = databaseHelper.getWritableDatabase();
 		ContentValues values = new ContentValues();
-		values.put(DBConstants.MUSIC_HISTORY_PLEERCOM_LINK, songData.getPleercomUrl());
-		values.put(DBConstants.MUSIC_HISTORY_COVER_ART_URL, songData.getCoverArtUrl());
+		if(songData.getCoverArtUrl() != null) values.put(DBConstants.MUSIC_HISTORY_COVER_ART_URL, songData.getCoverArtUrl());
+		if(songData.getPleercomUrl() != null) values.put(DBConstants.MUSIC_HISTORY_PLEERCOM_URL, songData.getPleercomUrl());
+		if(songData.getContributorImageUrl() != null) values.put(DBConstants.MUSIC_HISTORY_CONTRIBUTOR_IMAGE_URL, songData.getContributorImageUrl());
+		if(songData.getArtistBiographyURL() != null) values.put(DBConstants.MUSIC_HISTORY_BIOGRAPHY_URL, songData.getArtistBiographyURL());
+		if(songData.getAlbumReviewUrl() != null) values.put(DBConstants.MUSIC_HISTORY_ALBUM_REVIEW_URL, songData.getAlbumReviewUrl());
+		if(songData.getAlbumReleaseYear() != null) values.put(DBConstants.MUSIC_HISTORY_ALBUM_RELEASE_YEAR, songData.getAlbumReleaseYear());
+		if(songData.getAlbumArtist() != null) values.put(DBConstants.MUSIC_HISTORY_ALBUM_ARTIST, songData.getAlbumArtist());
 		//TODO подумать над разумностью сравнения по датам
 		int result = database.update(DBConstants.MUSIC_HISTORY_TABLE, values, DBConstants.DATE + "=?", new String[] {"" + songData.getDate()});
 		database.close();
@@ -99,10 +110,16 @@ public class SongDAO extends AbstractDAO implements ISongDAOObservable {
 					this,
 					cursor.getString(cursor.getColumnIndex(DBConstants.MUSIC_HISTORY_GRACENOTE_TRACK_ID)),
 					cursor.getString(cursor.getColumnIndex(DBConstants.MUSIC_HISTORY_ARTIST)),
+					cursor.getString(cursor.getColumnIndex(DBConstants.MUSIC_HISTORY_ALBUM)),
 					cursor.getString(cursor.getColumnIndex(DBConstants.MUSIC_HISTORY_TITLE)),
 					new Date(Long.parseLong(cursor.getString(cursor.getColumnIndex(DBConstants.DATE)))),
-					cursor.getString(cursor.getColumnIndex(DBConstants.MUSIC_HISTORY_PLEERCOM_LINK)),
-					cursor.getString(cursor.getColumnIndex(DBConstants.MUSIC_HISTORY_COVER_ART_URL)));
+					cursor.getString(cursor.getColumnIndex(DBConstants.MUSIC_HISTORY_PLEERCOM_URL)),
+					cursor.getString(cursor.getColumnIndex(DBConstants.MUSIC_HISTORY_COVER_ART_URL)),
+					cursor.getString(cursor.getColumnIndex(DBConstants.MUSIC_HISTORY_CONTRIBUTOR_IMAGE_URL)),
+					cursor.getString(cursor.getColumnIndex(DBConstants.MUSIC_HISTORY_BIOGRAPHY_URL)),
+					cursor.getString(cursor.getColumnIndex(DBConstants.MUSIC_HISTORY_ALBUM_REVIEW_URL)),
+					cursor.getString(cursor.getColumnIndex(DBConstants.MUSIC_HISTORY_ALBUM_RELEASE_YEAR)),
+					cursor.getString(cursor.getColumnIndex(DBConstants.MUSIC_HISTORY_ALBUM_ARTIST)));
 			result.add(instance);
 			cursor.moveToNext();
 		}

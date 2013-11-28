@@ -26,6 +26,7 @@
         </activity>
         <activity android:name="com.git.programmerr47.testhflbjcrhjggkth.view.activities.SettingsActivity"></activity>
         <activity android:name="com.git.programmerr47.testhflbjcrhjggkth.view.activities.SongInfoActivity"></activity>
+        <activity android:name="com.git.programmerr47.testhflbjcrhjggkth.view.activities.ArtistInfoActivity"></activity>
         
         <service 
             android:name="com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeHistoryService"

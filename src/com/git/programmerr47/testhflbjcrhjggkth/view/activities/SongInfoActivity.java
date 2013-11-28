@@ -1,7 +1,5 @@
 package com.git.programmerr47.testhflbjcrhjggkth.view.activities;
 
-import java.util.Date;
-
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.SongInfoController;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
@@ -24,10 +22,12 @@ import android.widget.TextView;
 
 public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 	public static final String TAG = "SongInfoActivity";
+	public static final String ARGUMENT_SONGLIST_POSITION = "SongDataPosition";
 
 	private MicroScrobblerModel model;
 	private SongInfoController controller;
 	private DatabaseSongData data;
+	private TextView artistTextView;
 
 	ImageButton playPauseButton;
 	
@@ -39,7 +39,7 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 		Intent intent = getIntent();
 		int position = 0;
 		if ((intent != null) && (intent.getExtras() != null)) {
-			position = intent.getIntExtra(HistoryPageFragment.ARGUMENT_SONG_POSITION, 0);
+			position = intent.getIntExtra(HistoryPageFragment.ARGUMENT_SONGLIST_POSITION, 0);
 		}
 		
 		controller = new SongInfoController(this);
@@ -54,6 +54,18 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 			@Override
 			public void onClick(View v) {
 				controller.playPauseSong(data);
+			}
+		});
+		
+		artistTextView = (TextView) findViewById(R.id.songInfoArtist);
+		final int fposition = position;
+		artistTextView.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(SongInfoActivity.this, ArtistInfoActivity.class);
+				intent.putExtra(ARGUMENT_SONGLIST_POSITION, fposition);
+				startActivity(intent);
 			}
 		});
 	}

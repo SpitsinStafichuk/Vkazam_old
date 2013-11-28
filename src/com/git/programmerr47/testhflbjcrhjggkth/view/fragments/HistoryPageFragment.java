@@ -2,7 +2,6 @@ package com.git.programmerr47.testhflbjcrhjggkth.view.fragments;
 
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.SongListController;
-import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
 import com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeServiceConnection;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongList;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISongDAOObserver;
@@ -13,7 +12,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,20 +22,24 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-public class HistoryPageFragment extends Fragment implements ISongDAOObserver {
-	public static final String ARGUMENT_SONG_POSITION = "SongDataPosition";
+public class HistoryPageFragment extends MicrophonePagerFragment implements ISongDAOObserver {
+	public static final String ARGUMENT_SONGLIST_POSITION = "SongDataPosition";
     
     private SongListAdapter adapter;
     private SongListController controller;
     private Activity parentActivity;
-    ListView songHLV;
-    SongList songList;
+    private ListView songHLV;
+    private SongList songList;
 
     public static HistoryPageFragment newInstance() {
             HistoryPageFragment pageFragment = new HistoryPageFragment();
             Bundle arguments = new Bundle();
             pageFragment.setArguments(arguments);
             return pageFragment;
+    }
+    
+    public HistoryPageFragment() {
+    	name = "History";
     }
 
     @Override
@@ -48,6 +50,8 @@ public class HistoryPageFragment extends Fragment implements ISongDAOObserver {
             adapter = new SongListAdapter(this.getActivity(), R.layout.list_item, controller);
             songList = RecognizeServiceConnection.getModel().getSongList();
             songList.addObserver(this);
+            
+            name = "History";
     }
 
     @Override
@@ -62,7 +66,8 @@ public class HistoryPageFragment extends Fragment implements ISongDAOObserver {
 				@Override
 				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 					Intent intent = new Intent(instance, SongInfoActivity.class);
-					intent.putExtra(ARGUMENT_SONG_POSITION, position);
+					//TODO позиция может измениться
+					intent.putExtra(ARGUMENT_SONGLIST_POSITION, position);
 					startActivity(intent);
 				}
 			});

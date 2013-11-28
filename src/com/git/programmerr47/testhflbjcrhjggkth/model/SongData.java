@@ -20,6 +20,23 @@ public class SongData {
 	protected String albumReleaseYear;
 	protected String albumArtist;
 	
+	@Override
+	public String toString() {
+		return "artist: " + artist +
+			   "\nalbum: " + album +
+			   "\ntitle: " + title +
+			   "\ntrackId" + trackId +
+			   "\ndate: " + date +
+			   "\npleercomUrl: " + pleercomUrl +
+			   "\ncoverArtUrl: " + coverArtUrl +
+			   "\ncontributorImageUrl" + contributorImageUrl +
+			   "\nartistBiographyURL: " + artistBiographyURL +
+			   "\nsongPosition: " + songPosition +
+			   "\nalbumReviewUrl: " + albumReviewUrl +
+			   "\nalbumReleaseYear" + albumReleaseYear +
+			   "\nalbumArtist: " + albumArtist;
+	}
+	
 	public SongData(SongData songData) {
 		this(songData.trackId, songData.artist, songData.album, songData.title, songData.pleercomUrl,
 				songData.coverArtUrl, songData.date, songData.contributorImageUrl, songData.artistBiographyURL,

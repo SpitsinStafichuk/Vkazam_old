@@ -14,40 +14,53 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.Animation.AnimationListener;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class RecognizePageFragment extends Fragment implements IRecognizeStatusObserver, IRecognizeResultObserver, IFingerprintStatusObserver {
+public class RecognizePageFragment extends MicrophonePagerFragment implements IRecognizeStatusObserver, IRecognizeResultObserver, IFingerprintStatusObserver {
 	static final String ARGUMENT_RADIO_ID = "arg_rad_id";
     
-    RecognizeController controller;
-    MicroScrobblerModel model;
-    RecognizeManager recognizeManager;
-    FingerprintManager fingerprintManager;
-    Activity parentActivity;
+    private RecognizeController controller;
+    private MicroScrobblerModel model;
+    private RecognizeManager recognizeManager;
+    private FingerprintManager fingerprintManager;
+    private Activity parentActivity;
     
-    LinearLayout infoDialog;
-    TextView songArtist;
-    TextView songTitle;
-    TextView songDate;
-    TextView status;
-    ImageView songCoverArt;
+    private LinearLayout song;
+    private TextView songArtist;
+    private TextView songTitle;
+    private TextView songDate;
+    private ImageView songCoverArt;
     
-    boolean firstApearing = false;
+    private LinearLayout prevSong;
+    private TextView prevSongArtist;
+    private TextView prevSongTitle;
+    private TextView prevSongDate;
+    private ImageView prevSongCoverArt;
+    
+    private TextView status;
+    
+    private SongData currentApearingSong;
+    private boolean firstTimeApearing;
     
     public static RecognizePageFragment newInstance() {
     		RecognizePageFragment pageFragment = new RecognizePageFragment();
             Bundle arguments = new Bundle();
             pageFragment.setArguments(arguments);
             return pageFragment;
+    }
+    
+    public RecognizePageFragment() {
+        name = "Recognize";
     }
 
     @Override
@@ -60,20 +73,28 @@ public class RecognizePageFragment extends Fragment implements IRecognizeStatusO
             recognizeManager = model.getRecognizeManager();
             recognizeManager.addObserver((IRecognizeStatusObserver)this);
             recognizeManager.addObserver((IRecognizeResultObserver)this);
+            firstTimeApearing = true;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.recognize_fragment, null);
         
-		infoDialog = (LinearLayout) view.findViewById(R.id.songHistoryItem);
-		songArtist = (TextView) view.findViewById(R.id.songListItemArtist);
-		songTitle = (TextView) view.findViewById(R.id.songListItemTitle);
-		songDate = (TextView) view.findViewById(R.id.songListItemDate);
-		status = (TextView) view.findViewById(R.id.status);
-		infoDialog.setVisibility(View.INVISIBLE);
+        song = (LinearLayout) view.findViewById(R.id.currentSong);
+		song.setVisibility(View.GONE);
+		songArtist = (TextView) song.findViewById(R.id.songListItemArtist);
+		songTitle = (TextView) song.findViewById(R.id.songListItemTitle);
+		songDate = (TextView) song.findViewById(R.id.songListItemDate);
+		songCoverArt = (ImageView) song.findViewById(R.id.songListItemCoverArt);
 		
-		songCoverArt = (ImageView) view.findViewById(R.id.songListItemCoverArt);
+		prevSong = (LinearLayout) view.findViewById(R.id.prevSong);
+		prevSong.setVisibility(View.GONE);
+		prevSongArtist = (TextView) prevSong.findViewById(R.id.songListItemArtist);
+		prevSongTitle = (TextView) prevSong.findViewById(R.id.songListItemTitle);
+		prevSongDate = (TextView) prevSong.findViewById(R.id.songListItemDate);
+		prevSongCoverArt = (ImageView) prevSong.findViewById(R.id.songListItemCoverArt);
+		
+		status = (TextView) view.findViewById(R.id.status);
         
         ImageButton microTimerListenButton = (ImageButton) view.findViewById(R.id.microTimerListenButton);
         microTimerListenButton.setOnLongClickListener(new View.OnLongClickListener(){
@@ -110,9 +131,7 @@ public class RecognizePageFragment extends Fragment implements IRecognizeStatusO
     @Override
     public void onResume() {
     	super.onResume();
-    	//updateFingerprintStatus();
-    	//updateRecognizeStatus();
-    	//TODO теперь нужно хранить внутри класса текущую информацию для onResume
+    	displaySongInformationElement(currentApearingSong, false);
     }
 	
 	@Override
@@ -128,20 +147,55 @@ public class RecognizePageFragment extends Fragment implements IRecognizeStatusO
 
 	@Override
 	public void onRecognizeResult(SongData songData) {
-		if(songData != null) {
-			String coverArtUrl = songData.getCoverArtUrl();
-			songArtist.setText(songData.getArtist());
-			songTitle.setText(songData.getTitle());
-			songDate.setText(songData.getDate().toString());
-			DisplayImageOptions options = new DisplayImageOptions.Builder()
-				.showImageForEmptyUri(R.drawable.no_cover_art)
-				.showImageOnFail(R.drawable.no_cover_art)
-				.build();
-			model.getImageLoader().displayImage(coverArtUrl, songCoverArt, options);
-			infoDialog.setAnimation(AnimationUtils.loadAnimation(this.parentActivity, R.anim.appear));
-			infoDialog.setVisibility(View.VISIBLE);
-		}
+    	displaySongInformationElement(currentApearingSong, true);
 	}
+	
+	public void displaySongInformationElement(final SongData songData, boolean apearing) {
+    	if(songData != null) {
+			updateItem(song, songArtist, songTitle, songDate, songCoverArt, songData);
+			if (apearing) {
+				if (!firstTimeApearing) {
+					Animation disappear = AnimationUtils.loadAnimation(this.parentActivity, R.anim.disappear);
+					disappear.setAnimationListener(new AnimationListener() {
+						
+						@Override
+						public void onAnimationStart(Animation animation) {
+						}
+						
+						@Override
+						public void onAnimationRepeat(Animation animation) {
+						}
+						
+						@Override
+						public void onAnimationEnd(Animation animation) {
+							updateItem(prevSong, prevSongArtist, prevSongTitle, prevSongDate, prevSongCoverArt, songData);
+						}
+					});
+					prevSong.setAnimation(disappear);
+					prevSong.setVisibility(View.VISIBLE);
+				} else {
+					updateItem(prevSong, prevSongArtist, prevSongTitle, prevSongDate, prevSongCoverArt, songData);
+					firstTimeApearing = false;
+				}
+				song.setAnimation(AnimationUtils.loadAnimation(this.parentActivity, R.anim.appear));
+			}
+			song.setVisibility(View.VISIBLE);
+			currentApearingSong = songData;
+		}
+    }
+    
+    private void updateItem(LinearLayout song, TextView artist, TextView title, TextView date, ImageView coverArt, SongData songData) {
+    	song.setVisibility(View.INVISIBLE);
+		String coverArtUrl = songData.getCoverArtUrl();
+		artist.setText(songData.getArtist());
+		title.setText(songData.getTitle());
+		date.setText(songData.getDate().toString());
+		DisplayImageOptions options = new DisplayImageOptions.Builder()
+			.showImageForEmptyUri(R.drawable.no_cover_art)
+			.showImageOnFail(R.drawable.no_cover_art)
+			.build();
+		model.getImageLoader().displayImage(coverArtUrl, coverArt, options);
+    }
 
 	@Override
 	public void onRecognizeStatusChanged(String status) {
