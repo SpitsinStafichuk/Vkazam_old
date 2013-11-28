@@ -18,11 +18,11 @@ public class DatabaseSongData extends SongData implements Data {
 	}
 	
 	DatabaseSongData(long id, AbstractDAO dao, String trackId, String artist, String album, 
-			String title, String pleercomUrl, String coverArtUrl, Date date, String contributorImageUrl, 
-			String artistBiographyURL, String songPosition, String albumReviewUrl, String albumReleaseYear,
+			String title, Date date, String pleercomUrl, String coverArtUrl, String contributorImageUrl, 
+			String artistBiographyURL, String albumReviewUrl, String albumReleaseYear,
 			String albumArtist) {
 		super(trackId, artist, album, title, pleercomUrl, coverArtUrl, date, contributorImageUrl, 
-				artistBiographyURL, songPosition, albumReviewUrl, albumReleaseYear, albumArtist);
+				artistBiographyURL, null, albumReviewUrl, albumReleaseYear, albumArtist);
 		this.id = id;
 		this.dao = dao;
 	}
@@ -64,20 +64,9 @@ public class DatabaseSongData extends SongData implements Data {
 		dao.update(this);
 	}
 	
-	public void setNullFields(DatabaseSongData data) {
-		super.setNullFields(data);
-		dao.update(this);
-	}
-	
 	@Override
 	public String toString() {
-		return "id: " + id + 
-				"\nartist: " + artist + 
-				"\ntitle: " + title + 
-				"\ntrackId: " + trackId + 
-				"\ndate: " + date + 
-				"\npleercomURL: " + pleercomUrl + 
-				"\ncoverArtURL: " + coverArtUrl;
+		return "id: " + id + "\n" + super.toString();
 	}
 
 	@Override

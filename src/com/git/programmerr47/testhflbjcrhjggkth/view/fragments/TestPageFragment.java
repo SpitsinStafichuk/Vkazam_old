@@ -2,7 +2,6 @@ package com.git.programmerr47.testhflbjcrhjggkth.view.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,33 +20,31 @@ import com.git.programmerr47.testhflbjcrhjggkth.controllers.TestController;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
 import com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeServiceConnection;
 import com.git.programmerr47.testhflbjcrhjggkth.model.SongData;
-import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SearchManager;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
 public class TestPageFragment extends MicrophonePagerFragment {
 	static final String ARGUMENT_RADIO_ID = "arg_rad_id";
     
-    TestController controller;
-    MicroScrobblerModel model;
-    SearchManager searchManager;
-    Activity parentActivity;
+	private TestController controller;
+	private MicroScrobblerModel model;
+	private Activity parentActivity;
 
-    LinearLayout song;
-    TextView songArtist;
-    TextView songTitle;
-    TextView songDate;
-    ImageView songCoverArt;
+	private LinearLayout song;
+	private TextView songArtist;
+	private TextView songTitle;
+	private TextView songDate;
+	private ImageView songCoverArt;
     
-    LinearLayout prevSong;
-    TextView prevSongArtist;
-    TextView prevSongTitle;
-    TextView prevSongDate;
-    ImageView prevSongCoverArt;
+	private LinearLayout prevSong;
+	private TextView prevSongArtist;
+	private TextView prevSongTitle;
+	private TextView prevSongDate;
+	private ImageView prevSongCoverArt;
     
-    TextView status;
+	private TextView status;
     
-    SongData currentApearingSong;
-    boolean firstTimeApearing;
+	private SongData currentApearingSong;
+	private boolean firstTimeApearing;
 
     public static TestPageFragment newInstance() {
     		TestPageFragment pageFragment = new TestPageFragment();
@@ -55,16 +52,17 @@ public class TestPageFragment extends MicrophonePagerFragment {
             pageFragment.setArguments(arguments);
             return pageFragment;
     }
+    
+    public TestPageFragment() {
+        name = "Text search";
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             controller = new TestController(this);
             model = RecognizeServiceConnection.getModel();
-            searchManager = model.getSearchManager();
             firstTimeApearing = true;
-            
-            name = "Text search";
     }
 
     @Override

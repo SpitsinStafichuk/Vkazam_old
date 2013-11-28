@@ -1,7 +1,5 @@
 package com.git.programmerr47.testhflbjcrhjggkth.controllers;
 
-import java.util.List;
-
 import android.util.Log;
 
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
@@ -39,23 +37,25 @@ public class TestController {
 			public void onSearchResult(final SongData songData) {
 				if(songData != null) {
 					final DatabaseSongData databaseSongData = songList.add(songData);
-					searchManager.search(songData.getTrackId(), new SearchListener() {
-						
-						@Override
-						public void onSearchStatusChanged(String status) {
-						}
-						
-						@Override
-						public void onSearchResult(SongData sd) {
-							Log.v("TestController", "Songdata = " + sd);
-							if (sd != null) {
-								Log.v("TestController", "Songdata.coverArt = " + sd.getCoverArtUrl());
-								databaseSongData.setCoverArtUrl(sd.getCoverArtUrl());
+					if(databaseSongData != null) {
+						searchManager.search(songData.getTrackId(), new SearchListener() {
+							
+							@Override
+							public void onSearchStatusChanged(String status) {
 							}
-							view.displaySongInformationElement(databaseSongData);
-						}
-					
-					});
+							
+							@Override
+							public void onSearchResult(SongData sd) {
+								Log.v("TestController", "Songdata = " + sd);
+								if (sd != null) {
+									Log.v("TestController", "Songdata.coverArt = " + sd.getCoverArtUrl());
+									databaseSongData.setNullFields(sd);
+								}
+								view.displaySongInformationElement(databaseSongData);
+							}
+						
+						});
+					}
 				}
 			}
 		});

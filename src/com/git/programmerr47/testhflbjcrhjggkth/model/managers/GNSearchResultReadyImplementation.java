@@ -38,10 +38,20 @@ public class GNSearchResultReadyImplementation implements GNSearchResultReady, G
 				LogHelper.print(TAG, bestResponse);
 				String artist = bestResponse.getArtist();
 				String title = bestResponse.getTrackTitle();
+				String album = bestResponse.getAlbumTitle();
 				String trackId = bestResponse.getTrackId();
-				String coverArtURL = bestResponse.getCoverArt() != null ? bestResponse.getCoverArt().getUrl() : null;
+				String coverArtURL = bestResponse.getCoverArt() != null ? 
+						bestResponse.getCoverArt().getUrl() : null;
+				String contributorImageURL = bestResponse.getContributorImage() != null ?
+						bestResponse.getContributorImage().getUrl() : null;
+				String albumArtist = bestResponse.getAlbumArtist();
+				String artistBiographyURL = bestResponse.getArtistBiographyUrl();
+				String songPosition = bestResponse.getSongPosition();
+				String albumReviewUrl = bestResponse.getAlbumReviewUrl();
+				String albumReleaseYear = bestResponse.getAlbumReleaseYear();
 				
-				songData = new SongData(trackId, artist, title, new Date(), coverArtURL);
+				songData = new SongData(trackId, artist, album, title, null, coverArtURL, new Date(), contributorImageURL,
+						artistBiographyURL, songPosition, albumReviewUrl, albumReleaseYear, albumArtist);
 				
 				searchResultStatus = SEARCH_SUCCESS;
 			}
