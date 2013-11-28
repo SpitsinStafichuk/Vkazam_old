@@ -58,11 +58,8 @@ public class RecognizePageFragment extends FragmentWithName implements IRecogniz
     		RecognizePageFragment pageFragment = new RecognizePageFragment();
             Bundle arguments = new Bundle();
             pageFragment.setArguments(arguments);
+            pageFragment.setFragmentName("Recognize");
             return pageFragment;
-    }
-    
-    public RecognizePageFragment() {
-        name = "Recognize";
     }
 
     @Override

@@ -50,11 +50,8 @@ public class TestPageFragment extends FragmentWithName {
     		TestPageFragment pageFragment = new TestPageFragment();
             Bundle arguments = new Bundle();
             pageFragment.setArguments(arguments);
+            pageFragment.setFragmentName("Text search");
             return pageFragment;
-    }
-    
-    public TestPageFragment() {
-        name = "Text search";
     }
 
     @Override

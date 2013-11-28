@@ -35,11 +35,8 @@ public class HistoryPageFragment extends FragmentWithName implements ISongDAOObs
             HistoryPageFragment pageFragment = new HistoryPageFragment();
             Bundle arguments = new Bundle();
             pageFragment.setArguments(arguments);
+            pageFragment.setFragmentName("History");
             return pageFragment;
-    }
-    
-    public HistoryPageFragment() {
-    	name = "History";
     }
 
     @Override
@@ -50,8 +47,6 @@ public class HistoryPageFragment extends FragmentWithName implements ISongDAOObs
             adapter = new SongListAdapter(this.getActivity(), R.layout.list_item, controller);
             songList = RecognizeServiceConnection.getModel().getSongList();
             songList.addObserver(this);
-            
-            name = "History";
     }
 
     @Override

@@ -14,8 +14,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 public class MicrophonePagerAdapter extends FragmentPagerAdapter {
 
-    static final int PAGE_COUNT = 3;
-    List<FragmentWithName> microphoneFragments;
+    private static final int PAGE_COUNT = 3;
+    private List<FragmentWithName> microphoneFragments;
    
     public MicrophonePagerAdapter(FragmentManager fm) {
             super(fm);

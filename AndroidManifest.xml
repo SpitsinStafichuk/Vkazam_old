@@ -20,13 +20,14 @@
             android:configChanges="orientation">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
+                
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name="com.git.programmerr47.testhflbjcrhjggkth.view.activities.SettingsActivity"></activity>
         <activity android:name="com.git.programmerr47.testhflbjcrhjggkth.view.activities.SongInfoActivity"></activity>
         <activity android:name="com.git.programmerr47.testhflbjcrhjggkth.view.activities.ArtistInfoActivity"></activity>
+        <activity android:name="com.git.programmerr47.testhflbjcrhjggkth.view.activities.RefreshPagerActivity"></activity>
         
         <service 
             android:name="com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeHistoryService"
