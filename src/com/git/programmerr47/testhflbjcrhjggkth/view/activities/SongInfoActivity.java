@@ -6,6 +6,7 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
 import com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeServiceConnection;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseSongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObserver;
+import com.git.programmerr47.testhflbjcrhjggkth.view.DynamicImageView;
 import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.HistoryPageFragment;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
@@ -29,9 +30,11 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 	private SongInfoController controller;
 	private DatabaseSongData data;
 	private TextView artistTextView;
+	private DynamicImageView coverArt;
 
-	ImageButton playPauseButton;
-	ImageButton changeSong;
+	private ImageButton playPauseButton;
+	private ImageButton changeSong;
+	private ImageButton shareButton;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,11 +47,16 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 			position = intent.getIntExtra(HistoryPageFragment.ARGUMENT_SONGLIST_POSITION, 0);
 		}
 		
+		Log.v("testik", "findViewById(R.id.songInfoCoverArt): " + findViewById(R.id.songInfoCoverArt));
+		coverArt = ((DynamicImageView) findViewById(R.id.songInfoCoverArt));
+		coverArt.setMaxRatioKoef(1.0);
+		
 		controller = new SongInfoController(this);
 		model = RecognizeServiceConnection.getModel();
 		model.getSongManager().addObserver(this);
 		data = (DatabaseSongData) model.getHistoryItem(position);
 		fillActivity(data);
+		
 		
 		playPauseButton = (ImageButton) findViewById(R.id.songInfoPlayPauseButton);
 		playPauseButton.setOnClickListener(new OnClickListener() {
@@ -80,6 +88,19 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 				startActivity(intent);
 			}
 		});
+		
+		shareButton = (ImageButton) findViewById(R.id.shareButton);
+		shareButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+				sharingIntent.setType("text/plain");
+				sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Like song");
+				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, "I just listened a nice song on MicroScrobbler");
+				startActivity(Intent.createChooser(sharingIntent, "Share song"));
+			}
+		});
 	}
 	
 	private void fillActivity(DatabaseSongData data) {
@@ -90,13 +111,17 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 			fillTextInformation(R.id.songInfoTrackId, data.getTrackId());
 			
 			if (data.getCoverArtUrl() != null) {
+				String url = data.getCoverArtUrl();
+				if (url.contains("size=small")) {
+					url = url.replace("size=small", "size=large");
+				}
 				DisplayImageOptions options = new DisplayImageOptions.Builder()
 					.showImageForEmptyUri(R.drawable.no_cover_art)
 					.showImageOnFail(R.drawable.no_cover_art)
 					.cacheOnDisc(true)
 					.cacheInMemory(true)
 					.build();
-				model.getImageLoader().displayImage(data.getCoverArtUrl(), (ImageView) findViewById(R.id.songInfoCoverArt), options);
+				model.getImageLoader().displayImage(url, coverArt, options);
 			}
 		}
 	}

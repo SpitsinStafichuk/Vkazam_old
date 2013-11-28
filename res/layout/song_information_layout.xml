@@ -1,14 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView 
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    
+    <LinearLayout
+    	android:layout_width="match_parent"
+    	android:layout_height="40dp"
+    	android:orientation="horizontal"
+    	android:background="@drawable/title_background">
+
+                <ImageButton
+                    android:id="@+id/shareButton"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+            		android:layout_weight="1"
+            		android:layout_margin="5dp"
+                    android:scaleType="fitCenter"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_action_share" />
+
+                <ImageButton
+                    android:id="@+id/downloadButton"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+            		android:layout_weight="1"
+            		android:layout_margin="5dp"
+                    android:scaleType="fitCenter"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_action_download" />
+                
+                <ImageButton
+                    android:id="@+id/deleteButton"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+            		android:layout_weight="1"
+            		android:layout_margin="5dp"
+                    android:scaleType="fitCenter"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_action_remove" />
+
+                <ImageButton
+                    android:id="@+id/refresh"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+            		android:layout_weight="1"
+            		android:layout_margin="5dp"
+                    android:scaleType="fitCenter"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_action_refresh" />
+
+                <ImageButton
+                    android:id="@+id/addVkButton"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+            		android:layout_weight="1"
+            		android:layout_margin="5dp"
+                    android:scaleType="fitCenter"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_action_new" />
+
+                <ImageButton
+                    android:id="@+id/lastfmLoveButton"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+            		android:layout_weight="1"
+            		android:layout_margin="5dp"
+                    android:scaleType="fitCenter"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_action_favorite" />
+    </LinearLayout>
+    
+    <ScrollView 
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+    android:background="@drawable/common_background">
 
 <LinearLayout 
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/common_background"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
     
     <LinearLayout
@@ -16,114 +88,16 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         
-        <ImageView
-            android:id="@+id/songInfoCoverArt"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:scaleType="centerCrop"
-            android:src="@drawable/no_cover_art" />
-        
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:orientation="vertical" >
-            
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="Actions"
-                android:textColor="@android:color/black"
-                android:textSize="20sp" />
-            
-            <LinearLayout
-            	android:layout_width="match_parent"
-            	android:layout_height="match_parent"
-            	android:layout_weight="1"
-            	android:orientation="horizontal">
-
-                <ImageButton
-                    android:id="@+id/shareButton"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-            		android:layout_weight="1"
-            		android:layout_margin="5dp"
-                    android:scaleType="fitCenter"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/share_icon" />
-
-                <ImageButton
-                    android:id="@+id/downloadButton"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-            		android:layout_weight="1"
-            		android:layout_margin="5dp"
-                    android:scaleType="fitCenter"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/download_icon" />
-            
-        	</LinearLayout>
-        	
-            <LinearLayout
-            	android:layout_width="match_parent"
-            	android:layout_height="match_parent"
-            	android:layout_weight="1"
-            	android:orientation="horizontal">
-
-                <ImageButton
-                    android:id="@+id/deleteButton"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-            		android:layout_weight="1"
-            		android:layout_margin="5dp"
-                    android:scaleType="fitCenter"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/delete_icon" />
-
-                <ImageButton
-                    android:id="@+id/refresh"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-            		android:layout_weight="1"
-            		android:layout_margin="5dp"
-                    android:scaleType="fitCenter"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/refresh_icon" />
-            
-        	</LinearLayout>
-        	
-        	<LinearLayout
-            	android:layout_width="match_parent"
-            	android:layout_height="match_parent"
-            	android:layout_weight="1"
-            	android:orientation="horizontal">
-
-                <ImageButton
-                    android:id="@+id/addVkButton"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-            		android:layout_weight="1"
-            		android:layout_margin="5dp"
-                    android:scaleType="fitCenter"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/add_vk_icon" />
-
-                <ImageButton
-                    android:id="@+id/lastfmLoveButton"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-            		android:layout_weight="1"
-            		android:layout_margin="5dp"
-                    android:scaleType="fitCenter"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/lastfm_love_icon" />
-            
-        	</LinearLayout>
-            
-        </LinearLayout>
+    	<com.git.programmerr47.testhflbjcrhjggkth.view.DynamicImageView
+        	android:id="@+id/songInfoCoverArt"
+        	android:layout_width="match_parent"
+        	android:layout_height="wrap_content"
+        	android:layout_marginTop="10dp"
+        	android:layout_marginLeft="10dp"
+        	android:layout_marginRight="10dp"
+        	android:layout_marginBottom="5dp"
+        	android:scaleType="centerCrop"
+        	android:src="@drawable/no_cover_art" />
         
     </LinearLayout>
     
@@ -206,3 +180,6 @@
 
 </LinearLayout>
 </ScrollView>
+</LinearLayout>
+
+
