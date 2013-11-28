@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import android.widget.ImageView;
 
 public class DynamicImageView extends ImageView{
+	private double koef = 3.0 / 4;
 
 	public DynamicImageView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -18,8 +19,8 @@ public class DynamicImageView extends ImageView{
         if (d != null) {
         	int width = MeasureSpec.getSize(widthMeasureSpec);
         	int height = (int) Math.ceil(width * (float) d.getIntrinsicHeight() / d.getIntrinsicWidth());
-        	if (height > width * 3 / 4)  {
-        		height = width * 3 / 4;
+        	if (height > width * koef)  {
+        		height = (int)(width * koef);
         	}
             this.setMeasuredDimension(width, height);
         } else {
@@ -27,4 +28,7 @@ public class DynamicImageView extends ImageView{
         }
     }
 
+    public void setMaxRatioKoef(double koef) {
+    	this.koef = koef;
+    }
 }
