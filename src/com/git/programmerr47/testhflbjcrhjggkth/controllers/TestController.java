@@ -36,7 +36,7 @@ public class TestController {
 			@Override
 			public void onSearchResult(final SongData songData) {
 				if(songData != null) {
-					final DatabaseSongData databaseSongData = songList.add(songData);
+					final DatabaseSongData databaseSongData = songList.add(0, songData);
 					if(databaseSongData != null) {
 						searchManager.search(songData.getTrackId(), new SearchListener() {
 							

@@ -97,7 +97,6 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 		}
 		
 		final View fView = view;
-		//Log.v("error", "view.findViewById(R.id.songPlayPauseButton): " + view.findViewById(R.id.songListItemPlayPauseLayout).findViewById(R.id.songPlayPauseButton));
 		ImageButton playPauseButton = (ImageButton) view.findViewById(R.id.songPlayPauseButton);
 		Log.v("playPauseButton", "" + playPauseButton);
 		playPauseButton.setOnClickListener(new OnClickListener() {
@@ -112,13 +111,13 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 					playPauseButton.setImageResource(android.R.drawable.ic_media_play);
 					ProgressBar progressBar = (ProgressBar) currentListItemView.findViewById(R.id.songItemLoading);
 					progressBar.setVisibility(View.GONE);
-				    LinearLayout element = (LinearLayout) currentListItemView.findViewById(R.id.songHistoryItem);
+				    LinearLayout element = (LinearLayout) currentListItemView.findViewById(R.id.songHistoryItemInfo);
 				    element.setBackgroundResource(R.drawable.song_list_item_bg_default);
 					Log.v("SongPlayer", "Song" + /*songManager.getArtist() + " - " + songManager.getTitle() +*/ "is closing");
 				}
 				
 				currentListItemView = fView;
-			    LinearLayout element = (LinearLayout) currentListItemView.findViewById(R.id.songHistoryItem);
+			    LinearLayout element = (LinearLayout) currentListItemView.findViewById(R.id.songHistoryItemInfo);
 			    element.setBackgroundResource(R.drawable.song_list_item_bg_pressed);
 				controller.playPauseSong((DatabaseSongData) getItem(position));
 			}
@@ -160,10 +159,10 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 		((TextView) view.findViewById(R.id.songListItemDate)).setText(songData.getDate().toString());
 		if ((songManager.getSongData() != null) && 
 		    (songManager.getSongData().equals(songData))) {
-		    ((LinearLayout) view.findViewById(R.id.songHistoryItem)).setBackgroundResource(R.drawable.song_list_item_bg_pressed);
+		    ((LinearLayout) view.findViewById(R.id.songHistoryItemInfo)).setBackgroundResource(R.drawable.song_list_item_bg_pressed);
 			updateListItem(view);
 		} else {
-		    ((LinearLayout) view.findViewById(R.id.songHistoryItem)).setBackgroundResource(R.drawable.song_list_item_bg_default);
+		    ((LinearLayout) view.findViewById(R.id.songHistoryItemInfo)).setBackgroundResource(R.drawable.song_list_item_bg_default);
 		    ((ImageButton) view.findViewById(R.id.songPlayPauseButton)).setImageResource(android.R.drawable.ic_media_play);
 		    ((ImageButton) view.findViewById(R.id.songPlayPauseButton)).setVisibility(View.VISIBLE);
 		    ((ProgressBar) view.findViewById(R.id.songItemLoading)).setVisibility(View.GONE);
