@@ -10,8 +10,7 @@
     	<LinearLayout
     		android:id="@+id/songHistoryItem"
     	    android:layout_width="match_parent"
-    	    android:layout_height="match_parent"
-    		android:background="@drawable/song_list_item_selector">
+    	    android:layout_height="match_parent">
 
     	    <RelativeLayout
     	        android:layout_width="wrap_content"
@@ -57,10 +56,13 @@
     	    </RelativeLayout>
 
     	    <LinearLayout
+    			android:id="@+id/songHistoryItemInfo"
     	        android:layout_width="match_parent"
     	        android:layout_height="match_parent"
-    	        android:layout_gravity="center_vertical"
-    	        android:orientation="vertical" >
+    	        android:layout_gravity="center_vertical" 
+    	        android:layout_marginLeft="10dp"
+    	        android:orientation="vertical" 
+    			android:background="@drawable/song_list_item_selector">
 
     	        <LinearLayout
     	            android:layout_width="match_parent"
@@ -75,7 +77,7 @@
     	            	android:layout_width="match_parent"
     	            	android:layout_height="wrap_content"
     	            	android:gravity="center_vertical"
-    	            	android:paddingLeft="10dp"
+    	            	android:paddingLeft="5dp"
     	            	android:singleLine="true"
     	            	android:text="Artist"
     	            	android:textColor="#333333"
@@ -86,7 +88,7 @@
     	            	android:layout_width="match_parent"
     	            	android:layout_height="wrap_content"
     	            	android:gravity="center_vertical"
-    	            	android:paddingLeft="10dp"
+    	            	android:paddingLeft="5dp"
     	            	android:singleLine="true"
     	            	android:text="Title"
     	            	android:textColor="#333333"
@@ -101,7 +103,7 @@
     	            android:layout_marginBottom="5dp"
     	            android:layout_weight="1"
     	            android:gravity="bottom"
-    	            android:paddingLeft="10dp"
+    	            android:paddingLeft="5dp"
     	            android:singleLine="true"
     	            android:text="date"
     	            android:textColor="#99333333"

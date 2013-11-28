@@ -63,7 +63,7 @@ public class RecognizeController implements IFingerprintResultObserver, IRecogni
 	@Override
 	public void onRecognizeResult(SongData builder) {
 		if (builder != null) {
-			model.getSongList().add(builder);
+			model.getSongList().add(0, builder);
 		}
 	}
 }

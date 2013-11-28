@@ -23,7 +23,7 @@ public class SongList extends DatabaseList implements ISongDAOObservable{
 		observers = new HashSet<ISongDAOObserver>();
 	}
 
-	public DatabaseSongData add(SongData songData) {
+	public synchronized DatabaseSongData add(SongData songData) {
 		DatabaseSongData databaseSongData = new DatabaseSongData(size() + 1 , dao, songData);
 		boolean result = super.add(databaseSongData);
 		if (result) {
@@ -32,7 +32,7 @@ public class SongList extends DatabaseList implements ISongDAOObservable{
 		return result ? databaseSongData : null;
 	}
 	
-	public DatabaseSongData add(int index, SongData songData) {
+	public synchronized DatabaseSongData add(int index, SongData songData) {
 		DatabaseSongData databaseSongData = new DatabaseSongData(size() + 1 , dao, songData);
 		super.add(index, databaseSongData);
 		notifySongDAOObservers();
@@ -40,7 +40,7 @@ public class SongList extends DatabaseList implements ISongDAOObservable{
 	}
 	
 	@Override
-	public boolean remove(Object obj) {
+	public synchronized boolean remove(Object obj) {
 		boolean result = super.remove(obj);
 		if (result) {
 			notifySongDAOObservers();
