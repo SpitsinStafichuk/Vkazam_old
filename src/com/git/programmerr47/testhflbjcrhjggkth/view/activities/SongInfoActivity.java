@@ -32,6 +32,7 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 
 	ImageButton playPauseButton;
 	ImageButton changeSong;
+	ImageButton shareButton;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +79,19 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 			public void onClick(View v) {
 				Intent intent = new Intent(SongInfoActivity.this, RefreshPagerActivity.class);
 				startActivity(intent);
+			}
+		});
+		
+		shareButton = (ImageButton) findViewById(R.id.shareButton);
+		shareButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+				sharingIntent.setType("text/plain");
+				sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Like song");
+				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, "I just listened a nice song on MicroScrobbler");
+				startActivity(Intent.createChooser(sharingIntent, "Share song"));
 			}
 		});
 	}
