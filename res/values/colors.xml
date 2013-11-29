@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="black">#000000</color>
     <color name="bright_cyan">#25b6df</color>
     <color name="dark_blue">#0761a3</color>
     <color name="dark_cyan">#0088aa</color>
+    <color name="dark_grey">#555555</color>
     <color name="lime_green_semitransparent">#00fa9a</color>
     <color name="paletur_quoise">#afeeee</color>
     <color name="pure_blue">#00aaff</color>
