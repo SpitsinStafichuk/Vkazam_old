@@ -8,14 +8,14 @@
     
     <LinearLayout
     	android:layout_width="match_parent"
-    	android:layout_height="40dp"
+    	android:layout_height="50dp"
     	android:orientation="horizontal"
     	android:background="@drawable/title_background">
 
                 <ImageButton
                     android:id="@+id/shareButton"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
             		android:layout_weight="1"
             		android:layout_margin="5dp"
                     android:scaleType="fitCenter"
@@ -24,8 +24,8 @@
 
                 <ImageButton
                     android:id="@+id/downloadButton"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
             		android:layout_weight="1"
             		android:layout_margin="5dp"
                     android:scaleType="fitCenter"
@@ -34,8 +34,8 @@
                 
                 <ImageButton
                     android:id="@+id/deleteButton"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
             		android:layout_weight="1"
             		android:layout_margin="5dp"
                     android:scaleType="fitCenter"
@@ -44,8 +44,8 @@
 
                 <ImageButton
                     android:id="@+id/refresh"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
             		android:layout_weight="1"
             		android:layout_margin="5dp"
                     android:scaleType="fitCenter"
@@ -54,8 +54,8 @@
 
                 <ImageButton
                     android:id="@+id/addVkButton"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
             		android:layout_weight="1"
             		android:layout_margin="5dp"
                     android:scaleType="fitCenter"
@@ -64,8 +64,8 @@
 
                 <ImageButton
                     android:id="@+id/lastfmLoveButton"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
             		android:layout_weight="1"
             		android:layout_margin="5dp"
                     android:scaleType="fitCenter"
@@ -138,7 +138,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:textColor="@android:color/black"
+        android:textColor="@color/white"
         android:textSize="20sp"
         android:text="TrackId" />
 
@@ -147,7 +147,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:textColor="@android:color/black"
+        android:textColor="@color/white"
         android:textSize="20sp"
         android:text="Artist" />
 
@@ -156,7 +156,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:textColor="@android:color/black"
+        android:textColor="@color/white"
         android:textSize="20sp"
         android:text="Album" />
 
@@ -165,7 +165,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:textColor="@android:color/black"
+        android:textColor="@color/white"
         android:textSize="20sp"
         android:text="Title" />
 
@@ -174,7 +174,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:textColor="@android:color/black"
+        android:textColor="@color/white"
         android:textSize="20sp"
         android:text="Date of listening" />
 

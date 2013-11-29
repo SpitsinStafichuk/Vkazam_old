@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="bright_cyan">#25b6df</color>
+    <color name="dark_blue">#0761a3</color>
     <color name="dark_cyan">#0088aa</color>
     <color name="lime_green_semitransparent">#00fa9a</color>
     <color name="paletur_quoise">#afeeee</color>
@@ -7,5 +9,6 @@
     <color name="pure_cyan_semitransparent">#aa00ffff</color>
     <color name="strong_blue">#00aacc</color>
     <color name="very_light_cyan_semitransparent">#7fffd4</color>
+    <color name="white">#ffffff</color>
     <color name="white_semitransparent">#aaffffff</color>
 </resources>
