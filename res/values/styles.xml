@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
@@ -20,5 +20,12 @@
     <style name="HistoryListView" parent="@android:style/Widget.ListView">
     	<item name="android:listSelector">@android:color/transparent</item>
   	</style>
+  	
+    <style name="PagerTabStripText">
+    	<item name="android:textSize">20sp</item>
+    	<item name="android:textStyle">bold</item>
+    	<item name="android:textColor">@color/white</item>
+    	<item name="android:gravity">center</item>
+    </style>
 
 </resources>

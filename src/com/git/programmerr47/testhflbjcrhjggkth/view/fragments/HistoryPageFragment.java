@@ -31,11 +31,13 @@ public class HistoryPageFragment extends FragmentWithName implements ISongDAOObs
     private ListView songHLV;
     private SongList songList;
 
-    public static HistoryPageFragment newInstance() {
+    public static HistoryPageFragment newInstance(Context context) {
             HistoryPageFragment pageFragment = new HistoryPageFragment();
             Bundle arguments = new Bundle();
             pageFragment.setArguments(arguments);
             pageFragment.setFragmentName("History");
+            pageFragment.setFragmentIcon(R.drawable.ic_action_view_as_list);
+            pageFragment.setContext(context);
             return pageFragment;
     }
 

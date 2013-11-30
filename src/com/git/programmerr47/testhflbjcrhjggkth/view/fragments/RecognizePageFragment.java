@@ -13,6 +13,7 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeStatus
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -54,11 +55,12 @@ public class RecognizePageFragment extends FragmentWithName implements IRecogniz
     private SongData currentApearingSong;
     private boolean firstTimeApearing;
     
-    public static RecognizePageFragment newInstance() {
+    public static RecognizePageFragment newInstance(Context context) {
     		RecognizePageFragment pageFragment = new RecognizePageFragment();
             Bundle arguments = new Bundle();
             pageFragment.setArguments(arguments);
-            pageFragment.setFragmentName("Recognize");
+            pageFragment.setFragmentName("Tagging");
+            pageFragment.setContext(context);
             return pageFragment;
     }
 

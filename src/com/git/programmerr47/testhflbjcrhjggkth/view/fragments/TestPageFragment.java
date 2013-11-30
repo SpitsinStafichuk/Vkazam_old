@@ -1,6 +1,7 @@
 package com.git.programmerr47.testhflbjcrhjggkth.view.fragments;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -46,11 +47,13 @@ public class TestPageFragment extends FragmentWithName {
 	private SongData currentApearingSong;
 	private boolean firstTimeApearing;
 
-    public static TestPageFragment newInstance() {
+    public static TestPageFragment newInstance(Context context) {
     		TestPageFragment pageFragment = new TestPageFragment();
             Bundle arguments = new Bundle();
             pageFragment.setArguments(arguments);
-            pageFragment.setFragmentName("Text search");
+            pageFragment.setFragmentName("search");
+            pageFragment.setFragmentIcon(R.drawable.ic_action_search);
+            pageFragment.setContext(context);
             return pageFragment;
     }
 
