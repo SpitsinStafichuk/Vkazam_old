@@ -4,6 +4,7 @@ import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.SongInfoController;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
 import com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeServiceConnection;
+import com.git.programmerr47.testhflbjcrhjggkth.model.SongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseSongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObserver;
 import com.git.programmerr47.testhflbjcrhjggkth.view.DynamicImageView;
@@ -103,7 +104,7 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 		});
 	}
 	
-	private void fillActivity(DatabaseSongData data) {
+	private void fillActivity(SongData data) {
 		if (data != null) {
 			fillTextInformation(R.id.songInfoArtist, data.getArtist());
 			fillTextInformation(R.id.songInfoTitle, data.getTitle());
@@ -111,6 +112,7 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 			fillTextInformation(R.id.songInfoTrackId, data.getTrackId());
 			
 			if (data.getCoverArtUrl() != null) {
+				//TODO Может нужно перенести в другое место
 				String url = data.getCoverArtUrl();
 				if (url.contains("size=small")) {
 					url = url.replace("size=small", "size=large");

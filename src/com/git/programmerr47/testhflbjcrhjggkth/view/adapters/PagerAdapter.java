@@ -52,7 +52,7 @@ public class PagerAdapter extends FragmentPagerAdapter{
     	 SpannableStringBuilder sb = new SpannableStringBuilder(" " + title);
     	 Drawable icon = fragments.get(position).getIcon();
     	 if (icon != null) {
-        	 icon.setBounds(0, 0, icon.getIntrinsicWidth(), icon.getIntrinsicHeight());
+        	 icon.setBounds(0, 0, 45, 45);
         	 ImageSpan span = new ImageSpan(icon, ImageSpan.ALIGN_BOTTOM);
         	 sb.setSpan(span, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
     	 }
