@@ -12,11 +12,14 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ImageSpan;
+import android.util.Log;
 
 public class PagerAdapter extends FragmentPagerAdapter{
 
 	protected int pageCount = 3;
     protected List<FragmentWithName> fragments;
+    private int currentPosition;
+    private boolean isDraggingPage;
 
     public PagerAdapter(FragmentManager fm, int pages) {
         super(fm);
@@ -40,7 +43,13 @@ public class PagerAdapter extends FragmentPagerAdapter{
      
      @Override
      public CharSequence getPageTitle(int position) {
-    	 SpannableStringBuilder sb = new SpannableStringBuilder(" " + fragments.get(position).getFragmentName());
+    	 String title;
+    	 if (!isDraggingPage) {
+    		 title = (currentPosition == position) ? fragments.get(position).getFragmentName() : "";
+    	 } else { 
+    		 title = "";
+    	 }
+    	 SpannableStringBuilder sb = new SpannableStringBuilder(" " + title);
     	 Drawable icon = fragments.get(position).getIcon();
     	 if (icon != null) {
         	 icon.setBounds(0, 0, icon.getIntrinsicWidth(), icon.getIntrinsicHeight());
@@ -49,5 +58,16 @@ public class PagerAdapter extends FragmentPagerAdapter{
     	 }
     	 return sb;
      }
-
+     
+     public void setCurrentPage(int position) {
+    	 currentPosition = position;
+     }
+     
+     public void setIsDragging(boolean isDragging) {
+    	 this.isDraggingPage = isDragging;
+     }
+     
+     public boolean isDragging() {
+    	 return isDraggingPage;
+     }
 }

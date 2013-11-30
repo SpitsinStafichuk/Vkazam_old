@@ -156,10 +156,12 @@ public class RecognizePageFragment extends FragmentWithName implements IRecogniz
 
 	@Override
 	public void onRecognizeResult(SongData songData) {
-    	displaySongInformationElement(currentApearingSong, true);
+    	displaySongInformationElement(songData, true);
 	}
 	
 	public void displaySongInformationElement(final SongData songData, boolean apearing) {
+		Log.v("RecognizeFragment", "Displaying info element and apearing = " + apearing);
+		Log.v("RecognizeFragment", "songData = " + songData);
     	if(songData != null) {
 			updateItem(song, songArtist, songTitle, songDate, songCoverArt, songData);
 			if (apearing) {
@@ -189,6 +191,7 @@ public class RecognizePageFragment extends FragmentWithName implements IRecogniz
 				song.setAnimation(AnimationUtils.loadAnimation(this.parentActivity, R.anim.appear));
 			}
 			song.setVisibility(View.VISIBLE);
+			Log.v("RecognizeFragment", "song info visibility is " + song.getVisibility());
 			currentApearingSong = songData;
 		}
     }
