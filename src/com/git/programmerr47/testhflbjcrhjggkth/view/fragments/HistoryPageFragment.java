@@ -68,26 +68,6 @@ public class HistoryPageFragment extends FragmentWithName implements ISongDAOObs
 					startActivity(intent);
 				}
 			});
-  		  	songHLV.setOnScrollListener(new OnScrollListener() {
-				int mLastFirstVisibleItem;
-  		  		
-				@Override
-				public void onScrollStateChanged(AbsListView view, int scrollState) {
-					final int currentFirstVisibleItem = view.getFirstVisiblePosition();
-					
-					if (currentFirstVisibleItem > mLastFirstVisibleItem) {
-			            adapter.setScrollingUp(false);
-			        } else if (currentFirstVisibleItem < mLastFirstVisibleItem) {
-			            adapter.setScrollingUp(true);
-			        }
-
-			        mLastFirstVisibleItem = currentFirstVisibleItem;
-				}
-				
-				@Override
-				public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-				}
-			});
             
             return view;
     }
