@@ -67,7 +67,7 @@ public class RecognizePageFragment extends FragmentWithName implements IRecogniz
     @Override
     public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            controller = new RecognizeController();
+            controller = new RecognizeController(this.getActivity().getApplicationContext());
             model = RecognizeServiceConnection.getModel();
             fingerprintManager = model.getFingerprintManager();
             fingerprintManager.addObserver((IFingerprintStatusObserver)this);

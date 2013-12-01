@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
+    android:padding="5dp"
     android:orientation="horizontal">
 
     <ImageView
@@ -21,18 +21,20 @@
 
         <TextView
             android:id="@+id/fingerprintText"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="TextView"
+            android:singleLine="true"
             android:textSize="25sp"/>
 
         <TextView
             android:id="@+id/fingerprintDate"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="bottom"
             android:text="TextView"
-            android:textSize="25sp" />
+            android:singleLine="true"
+            android:textSize="18sp" />
 
     </LinearLayout>
 
