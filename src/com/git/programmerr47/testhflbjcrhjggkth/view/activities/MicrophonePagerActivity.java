@@ -8,9 +8,11 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
+import android.view.Window;
 
 public class MicrophonePagerActivity extends PagerActivity implements ServiceConnection{
 
@@ -26,7 +28,7 @@ public class MicrophonePagerActivity extends PagerActivity implements ServiceCon
 	@Override
 	protected void setupUi() {
 		super.setupUi();
-        pagerAdapter = new MicrophonePagerAdapter(getSupportFragmentManager());
+        pagerAdapter = new MicrophonePagerAdapter(getSupportFragmentManager(), getApplicationContext());
         pager.setAdapter(pagerAdapter);
 	}
 	
@@ -34,8 +36,6 @@ public class MicrophonePagerActivity extends PagerActivity implements ServiceCon
 	protected void onDestroy() {
 		super.onDestroy();
 		unbindService(this);
-		Log.i(TAG, "onServiceDisconnected");
-		//RecognizeServiceConnection.setModel(null);
 	}
 
 	@Override
@@ -50,5 +50,4 @@ public class MicrophonePagerActivity extends PagerActivity implements ServiceCon
 		Log.i(TAG, "onServiceDisconnectedFromService");
 		RecognizeServiceConnection.setModel(null);
 	}
-	
 }

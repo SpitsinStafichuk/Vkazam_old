@@ -4,6 +4,7 @@ import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.SongInfoController;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
 import com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeServiceConnection;
+import com.git.programmerr47.testhflbjcrhjggkth.model.SongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseSongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObserver;
 import com.git.programmerr47.testhflbjcrhjggkth.view.DynamicImageView;
@@ -15,10 +16,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -33,7 +34,6 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 	private DynamicImageView coverArt;
 
 	private ImageButton playPauseButton;
-	private ImageButton changeSong;
 	private ImageButton shareButton;
 	
 	@Override
@@ -79,16 +79,6 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 			}
 		});
 		
-		changeSong = (ImageButton) findViewById(R.id.refresh);
-		changeSong.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(SongInfoActivity.this, RefreshPagerActivity.class);
-				startActivity(intent);
-			}
-		});
-		
 		shareButton = (ImageButton) findViewById(R.id.shareButton);
 		shareButton.setOnClickListener(new OnClickListener() {
 			
@@ -103,7 +93,7 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 		});
 	}
 	
-	private void fillActivity(DatabaseSongData data) {
+	private void fillActivity(SongData data) {
 		if (data != null) {
 			fillTextInformation(R.id.songInfoArtist, data.getArtist());
 			fillTextInformation(R.id.songInfoTitle, data.getTitle());
@@ -111,6 +101,7 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 			fillTextInformation(R.id.songInfoTrackId, data.getTrackId());
 			
 			if (data.getCoverArtUrl() != null) {
+				//TODO Может нужно перенести в другое место
 				String url = data.getCoverArtUrl();
 				if (url.contains("size=small")) {
 					url = url.replace("size=small", "size=large");
@@ -185,11 +176,28 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 			}
 		}
 	}
-
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.common_options_menu, menu);
+		getMenuInflater().inflate(R.menu.song_info_options_menu, menu);
 		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+        	case R.id.settings :
+        		Log.v("Settings", "Creating settings activity");
+            	Intent intent = new Intent(SongInfoActivity.this, SettingsActivity.class);
+            	startActivity(intent);
+            	return true;
+        	case R.id.refresh :
+        		Log.v("Settings", "Creating refresh activity");
+				intent = new Intent(SongInfoActivity.this, RefreshPagerActivity.class);
+				startActivity(intent);
+            	return true;
+        	default :
+        		return super.onOptionsItemSelected(item);
+        }
 	}
 }

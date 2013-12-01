@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
+import android.util.Log;
+
 
 public abstract class DatabaseList extends LinkedList<Data>{
 
@@ -18,6 +20,7 @@ public abstract class DatabaseList extends LinkedList<Data>{
 		super();
 		this.dao = dao;
 		super.addAll(dao.getHistory());
+		Log.v("testike", "List size " + size());
 	}
 	
 	@Override
@@ -29,6 +32,7 @@ public abstract class DatabaseList extends LinkedList<Data>{
 				super.remove(element);
 			}
 		}
+		Log.v("testike", "List size " + size());
 		return result;
 	}
 	

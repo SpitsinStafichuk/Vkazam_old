@@ -5,7 +5,7 @@ import android.widget.Scroller;
 
 public class SmoothPageScroller extends Scroller{
 
-	private int mDuration = 1000;
+	private int mDuration = 1500;
 
     public SmoothPageScroller(Context context) {
         super(context);

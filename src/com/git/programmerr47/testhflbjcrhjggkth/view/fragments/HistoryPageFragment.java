@@ -31,11 +31,13 @@ public class HistoryPageFragment extends FragmentWithName implements ISongDAOObs
     private ListView songHLV;
     private SongList songList;
 
-    public static HistoryPageFragment newInstance() {
+    public static HistoryPageFragment newInstance(Context context) {
             HistoryPageFragment pageFragment = new HistoryPageFragment();
             Bundle arguments = new Bundle();
             pageFragment.setArguments(arguments);
             pageFragment.setFragmentName("History");
+            pageFragment.setFragmentIcon(R.drawable.ic_action_view_as_list);
+            pageFragment.setContext(context);
             return pageFragment;
     }
 
@@ -44,7 +46,7 @@ public class HistoryPageFragment extends FragmentWithName implements ISongDAOObs
             super.onCreate(savedInstanceState);
             
             controller = new SongListController(this);
-            adapter = new SongListAdapter(this.getActivity(), R.layout.list_item, controller);
+            adapter = new SongListAdapter(this.getActivity(), R.layout.song_list_item, controller);
             songList = RecognizeServiceConnection.getModel().getSongList();
             songList.addObserver(this);
     }
@@ -64,26 +66,6 @@ public class HistoryPageFragment extends FragmentWithName implements ISongDAOObs
 					//TODO позиция может измениться
 					intent.putExtra(ARGUMENT_SONGLIST_POSITION, position);
 					startActivity(intent);
-				}
-			});
-  		  	songHLV.setOnScrollListener(new OnScrollListener() {
-				int mLastFirstVisibleItem;
-  		  		
-				@Override
-				public void onScrollStateChanged(AbsListView view, int scrollState) {
-					final int currentFirstVisibleItem = view.getFirstVisiblePosition();
-					
-					if (currentFirstVisibleItem > mLastFirstVisibleItem) {
-			            adapter.setScrollingUp(false);
-			        } else if (currentFirstVisibleItem < mLastFirstVisibleItem) {
-			            adapter.setScrollingUp(true);
-			        }
-
-			        mLastFirstVisibleItem = currentFirstVisibleItem;
-				}
-				
-				@Override
-				public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 				}
 			});
             

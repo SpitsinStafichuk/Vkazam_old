@@ -8,14 +8,14 @@
     
     <LinearLayout
     	android:layout_width="match_parent"
-    	android:layout_height="40dp"
+    	android:layout_height="50dp"
     	android:orientation="horizontal"
     	android:background="@drawable/title_background">
 
                 <ImageButton
                     android:id="@+id/shareButton"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
             		android:layout_weight="1"
             		android:layout_margin="5dp"
                     android:scaleType="fitCenter"
@@ -24,8 +24,8 @@
 
                 <ImageButton
                     android:id="@+id/downloadButton"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
             		android:layout_weight="1"
             		android:layout_margin="5dp"
                     android:scaleType="fitCenter"
@@ -34,8 +34,8 @@
                 
                 <ImageButton
                     android:id="@+id/deleteButton"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
             		android:layout_weight="1"
             		android:layout_margin="5dp"
                     android:scaleType="fitCenter"
@@ -43,19 +43,9 @@
                     android:src="@drawable/ic_action_remove" />
 
                 <ImageButton
-                    android:id="@+id/refresh"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-            		android:layout_weight="1"
-            		android:layout_margin="5dp"
-                    android:scaleType="fitCenter"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/ic_action_refresh" />
-
-                <ImageButton
                     android:id="@+id/addVkButton"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
             		android:layout_weight="1"
             		android:layout_margin="5dp"
                     android:scaleType="fitCenter"
@@ -64,8 +54,8 @@
 
                 <ImageButton
                     android:id="@+id/lastfmLoveButton"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
             		android:layout_weight="1"
             		android:layout_margin="5dp"
                     android:scaleType="fitCenter"
@@ -86,16 +76,16 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="5dp"
         android:orientation="horizontal">
         
     	<com.git.programmerr47.testhflbjcrhjggkth.view.DynamicImageView
         	android:id="@+id/songInfoCoverArt"
         	android:layout_width="match_parent"
         	android:layout_height="wrap_content"
-        	android:layout_marginTop="10dp"
-        	android:layout_marginLeft="10dp"
-        	android:layout_marginRight="10dp"
-        	android:layout_marginBottom="5dp"
         	android:scaleType="centerCrop"
         	android:src="@drawable/no_cover_art" />
         
@@ -105,7 +95,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@android:drawable/alert_light_frame">
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/song_list_item_bg_default">
 
         <ImageButton
             android:id="@+id/songInfoPlayPauseButton"
@@ -128,55 +122,129 @@
             android:id="@+id/songInfoPosition"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+    	    android:layout_marginRight="10dp"
             android:layout_gravity="center_vertical"
             style="?android:attr/progressBarStyleHorizontal"/>
         
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/songInfoTrackId"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:textColor="@android:color/black"
-        android:textSize="20sp"
-        android:text="TrackId" />
+        android:orientation="horizontal" 
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/song_list_item_bg_default">
 
-    <TextView
-        android:id="@+id/songInfoArtist"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:textColor="@android:color/black"
-        android:textSize="20sp"
-        android:text="Artist" />
+        <LinearLayout 
+    		android:layout_width="match_parent"
+    		android:layout_height="match_parent"
+    		android:layout_weight="5"
+    		android:orientation="vertical">
+    	
+        	<TextView
+            	android:layout_width="wrap_content"
+            	android:layout_height="wrap_content"
+            	android:layout_margin="5dp"
+            	android:text="TrackId:"
+            	android:layout_gravity="right"
+            	android:textColor="@color/dark_grey"
+            	android:textSize="20sp" />
 
-    <TextView
-        android:id="@+id/songInfoAlbum"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:textColor="@android:color/black"
-        android:textSize="20sp"
-        android:text="Album" />
+        	<TextView
+            	android:layout_width="wrap_content"
+            	android:layout_height="wrap_content"
+            	android:layout_margin="5dp"
+            	android:text="Artist:"
+            	android:layout_gravity="right"
+            	android:textColor="@color/dark_grey"
+            	android:textSize="20sp" />
 
-    <TextView
-        android:id="@+id/songInfoTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:textColor="@android:color/black"
-        android:textSize="20sp"
-        android:text="Title" />
+        	<TextView
+            	android:layout_width="wrap_content"
+            	android:layout_height="wrap_content"
+            	android:layout_margin="5dp"
+            	android:text="Album:"
+            	android:layout_gravity="right"
+            	android:textColor="@color/dark_grey"
+            	android:textSize="20sp" />
 
-    <TextView
-        android:id="@+id/songInfoDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:textColor="@android:color/black"
-        android:textSize="20sp"
-        android:text="Date of listening" />
+        	<TextView
+            	android:layout_width="wrap_content"
+            	android:layout_height="wrap_content"
+            	android:layout_margin="5dp"
+            	android:text="Title:"
+            	android:layout_gravity="right"
+            	android:textColor="@color/dark_grey"
+            	android:textSize="20sp" />
+
+        	<TextView
+            	android:layout_width="wrap_content"
+            	android:layout_height="wrap_content"
+            	android:layout_margin="5dp"
+            	android:text="Date:"
+            	android:layout_gravity="right"
+            	android:textColor="@color/dark_grey"
+            	android:textSize="20sp" />
+    		
+    	</LinearLayout>
+    	
+    	<LinearLayout 
+    		android:layout_width="match_parent"
+    		android:layout_height="match_parent"
+    		android:layout_weight="2"
+    		android:orientation="vertical">
+    	
+        	<TextView
+            	android:id="@+id/songInfoTrackId"
+            	android:layout_width="wrap_content"
+            	android:layout_height="wrap_content"
+            	android:layout_margin="5dp"
+            	android:text="TrackId"
+            	android:textColor="@color/dark_grey"
+            	android:textSize="20sp" />
+
+        	<TextView
+            	android:id="@+id/songInfoArtist"
+            	android:layout_width="wrap_content"
+            	android:layout_height="wrap_content"
+            	android:layout_margin="5dp"
+            	android:text="Artist"
+            	android:textColor="@color/dark_grey"
+            	android:textSize="20sp" />
+
+        	<TextView
+            	android:id="@+id/songInfoAlbum"
+            	android:layout_width="wrap_content"
+            	android:layout_height="wrap_content"
+            	android:layout_margin="5dp"
+            	android:text="Album"
+            	android:textColor="@color/dark_grey"
+            	android:textSize="20sp" />
+
+        	<TextView
+            	android:id="@+id/songInfoTitle"
+            	android:layout_width="wrap_content"
+            	android:layout_height="wrap_content"
+            	android:layout_margin="5dp"
+            	android:text="Title"
+            	android:textColor="@color/dark_grey"
+            	android:textSize="20sp" />
+
+        	<TextView
+            	android:id="@+id/songInfoDate"
+            	android:layout_width="wrap_content"
+            	android:layout_height="wrap_content"
+            	android:layout_margin="5dp"
+            	android:text="Date"
+            	android:textColor="@color/dark_grey"
+            	android:textSize="20sp" />
+            
+    	</LinearLayout>
+    	
+    </LinearLayout>
 
 </LinearLayout>
 </ScrollView>
