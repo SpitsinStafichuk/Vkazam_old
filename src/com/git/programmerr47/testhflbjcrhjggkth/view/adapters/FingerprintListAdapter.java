@@ -6,10 +6,12 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
 import com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeServiceConnection;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseFingerprintData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.FingerprintList;
+import com.git.programmerr47.testhflbjcrhjggkth.utils.ImageUtils;
 
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.text.Html.ImageGetter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,16 +65,19 @@ public class FingerprintListAdapter extends BaseAdapter{
 			view = inflater.inflate(idItem, parent, false);
 		}
 		DatabaseFingerprintData data = getFingerprintData(position);
+		String fingerXML = data.getFingerprint();
+		String finger = fingerXML.substring(fingerXML.indexOf("<FP_BLOCK"), fingerXML.indexOf("</FP_BLOCK>") + 11);
 		
 		TextView fingerprintText = (TextView) view.findViewById(R.id.fingerprintText);
-		fingerprintText.setText(data.getFingerprint().hashCode() + "");
+		fingerprintText.setText(finger.hashCode() + "");
 		TextView fingerprintDate = (TextView) view.findViewById(R.id.fingerprintDate);
 		fingerprintDate.setText(data.getDate().toString());
 		
 		Bitmap coverArtBMP = Bitmap.createBitmap(8, 8, Bitmap.Config.RGB_565);
-		for (int i = 0; i < 8; i+=2) {
-			for (int j = 0; j < 8; j+=2) {
-				coverArtBMP.setPixel(i, j, data.getFingerprint().hashCode());
+		int[] colors = ImageUtils.getColors(finger);
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				coverArtBMP.setPixel(i, j, colors[i * 8 + j]);
 			}
 		}
 		
