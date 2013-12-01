@@ -6,6 +6,7 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
 import com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeServiceConnection;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseFingerprintData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.FingerprintList;
+
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
