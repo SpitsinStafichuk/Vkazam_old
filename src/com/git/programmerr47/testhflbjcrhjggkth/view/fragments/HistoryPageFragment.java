@@ -46,7 +46,7 @@ public class HistoryPageFragment extends FragmentWithName implements ISongDAOObs
             super.onCreate(savedInstanceState);
             
             controller = new SongListController(this);
-            adapter = new SongListAdapter(this.getActivity(), R.layout.list_item, controller);
+            adapter = new SongListAdapter(this.getActivity(), R.layout.song_list_item, controller);
             songList = RecognizeServiceConnection.getModel().getSongList();
             songList.addObserver(this);
     }

@@ -16,10 +16,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -34,7 +34,6 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 	private DynamicImageView coverArt;
 
 	private ImageButton playPauseButton;
-	private ImageButton changeSong;
 	private ImageButton shareButton;
 	
 	@Override
@@ -76,16 +75,6 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 			public void onClick(View v) {
 				Intent intent = new Intent(SongInfoActivity.this, ArtistInfoActivity.class);
 				intent.putExtra(ARGUMENT_SONGLIST_POSITION, fposition);
-				startActivity(intent);
-			}
-		});
-		
-		changeSong = (ImageButton) findViewById(R.id.refresh);
-		changeSong.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(SongInfoActivity.this, RefreshPagerActivity.class);
 				startActivity(intent);
 			}
 		});
@@ -187,11 +176,28 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 			}
 		}
 	}
-
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.common_options_menu, menu);
+		getMenuInflater().inflate(R.menu.song_info_options_menu, menu);
 		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+        	case R.id.settings :
+        		Log.v("Settings", "Creating settings activity");
+            	Intent intent = new Intent(SongInfoActivity.this, SettingsActivity.class);
+            	startActivity(intent);
+            	return true;
+        	case R.id.refresh :
+        		Log.v("Settings", "Creating refresh activity");
+				intent = new Intent(SongInfoActivity.this, RefreshPagerActivity.class);
+				startActivity(intent);
+            	return true;
+        	default :
+        		return super.onOptionsItemSelected(item);
+        }
 	}
 }
