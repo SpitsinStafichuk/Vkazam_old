@@ -28,6 +28,9 @@
         <activity android:name="com.git.programmerr47.testhflbjcrhjggkth.view.activities.SongInfoActivity"></activity>
         <activity android:name="com.git.programmerr47.testhflbjcrhjggkth.view.activities.ArtistInfoActivity"></activity>
         <activity android:name="com.git.programmerr47.testhflbjcrhjggkth.view.activities.RefreshPagerActivity"></activity>
+        <activity android:name="com.git.programmerr47.testhflbjcrhjggkth.view.activities.VkLoginActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/app_name" />
         
         <service 
             android:name="com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeHistoryService"

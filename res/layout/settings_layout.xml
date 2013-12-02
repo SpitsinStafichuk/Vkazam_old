@@ -9,23 +9,28 @@
         android:layout_height="wrap_content" >
 
         <ImageView
-            android:id="@+id/settingsLastfmIconView"
+            android:id="@+id/vkIconImage"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/lastfm_icon" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical" >
-        </LinearLayout>
+            android:src="@drawable/vk_icon" />
 
         <Button
-            android:id="@+id/lastFmLoginLogoutButton"
+            android:id="@+id/vkSingInOutButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Login" />
+            android:text="Sing In" />
+
+    </LinearLayout>
+    
+     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+         <CheckBox
+             android:id="@+id/vkPrefer"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="Prefer vk audios" />
 
     </LinearLayout>
 
