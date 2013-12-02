@@ -1,5 +1,8 @@
 package com.git.programmerr47.testhflbjcrhjggkth.view.fragments;
 
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.SongListController;
 import com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeServiceConnection;
@@ -16,8 +19,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -60,14 +61,14 @@ public class HistoryPageFragment extends FragmentWithName implements ISongDAOObs
             songHLV.setAdapter(adapter);
   		  	songHLV.setOnItemClickListener(new OnItemClickListener() {
 
-				@Override
-				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-					Intent intent = new Intent(instance, SongInfoActivity.class);
-					//TODO позиция может измениться
-					intent.putExtra(ARGUMENT_SONGLIST_POSITION, position);
-					startActivity(intent);
-				}
-			});
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent intent = new Intent(instance, SongInfoActivity.class);
+                    //TODO позиция может измениться
+                    intent.putExtra(ARGUMENT_SONGLIST_POSITION, position);
+                    startActivity(intent);
+                }
+            });
             
             return view;
     }
@@ -75,6 +76,12 @@ public class HistoryPageFragment extends FragmentWithName implements ISongDAOObs
     @Override
     public void onResume() {
     	super.onResume();
+
+        Fragment miniplayer = new MiniPlayerFragment();
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(R.id.miniplayer, miniplayer).commit();
+
     	adapter.notifyDataSetChanged();
     }
    
