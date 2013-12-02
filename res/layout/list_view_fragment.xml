@@ -10,9 +10,15 @@
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent" 
         android:padding="5dp"
+        android:layout_weight="1"
 	    android:divider="@android:color/transparent"
 	    style="@style/HistoryListView">
 
     </ListView>
+
+    <FrameLayout
+              android:id="@+id/miniplayer"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content" />
 
 </LinearLayout>
