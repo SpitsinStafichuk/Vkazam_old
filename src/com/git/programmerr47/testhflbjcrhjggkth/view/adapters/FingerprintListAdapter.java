@@ -1,5 +1,6 @@
 package com.git.programmerr47.testhflbjcrhjggkth.view.adapters;
 
+import android.graphics.drawable.BitmapDrawable;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.FingerprintListController;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
@@ -26,7 +27,6 @@ public class FingerprintListAdapter extends BaseAdapter{
 	private int idItem;
 	private Activity activity;
 	private LayoutInflater inflater;
-	private boolean isScrollingUp;
 	private MicroScrobblerModel model;
 	
 	public FingerprintListAdapter(Activity activity, int idItem, FingerprintListController controller) {
@@ -59,7 +59,6 @@ public class FingerprintListAdapter extends BaseAdapter{
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		Log.i(TAG, "getView");
 		View view = convertView;
 		if (view == null) {
 			view = inflater.inflate(idItem, parent, false);
@@ -73,16 +72,20 @@ public class FingerprintListAdapter extends BaseAdapter{
 		TextView fingerprintDate = (TextView) view.findViewById(R.id.fingerprintDate);
 		fingerprintDate.setText(data.getDate().toString());
 		
-		Bitmap coverArtBMP = Bitmap.createBitmap(8, 8, Bitmap.Config.RGB_565);
+		Bitmap coverArtBMP = Bitmap.createBitmap(8, 8, Bitmap.Config.ARGB_8888);
 		int[] colors = ImageUtils.getColors(finger);
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 				coverArtBMP.setPixel(i, j, colors[i * 8 + j]);
 			}
 		}
-		
-		ImageView coverArt = (ImageView) view.findViewById(R.id.fingerprintImage);
-		coverArt.setImageBitmap(coverArtBMP);
+        BitmapDrawable coverArt = new BitmapDrawable(activity.getResources(), coverArtBMP);
+        coverArt.setAntiAlias(false);
+        coverArt.setDither(false);
+        coverArt.setFilterBitmap(false);
+
+		ImageView fingerCoverArt = (ImageView) view.findViewById(R.id.fingerprintImage);
+        fingerCoverArt.setImageDrawable(coverArt);
 		
 		return view;
 	}
