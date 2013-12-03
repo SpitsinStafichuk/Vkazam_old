@@ -3,6 +3,7 @@ package com.git.programmerr47.testhflbjcrhjggkth.view.fragments;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.widget.AbsListView;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.SongListController;
 import com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeServiceConnection;
@@ -69,6 +70,17 @@ public class HistoryPageFragment extends FragmentWithName implements ISongDAOObs
                     startActivity(intent);
                 }
             });
+            songHLV.setOnScrollListener(new AbsListView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(AbsListView view, int scrollState) {
+                    //To change body of implemented methods use File | Settings | File Templates.
+                }
+
+                @Override
+                public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                    adapter.scrolling();
+                }
+            });
             
             return view;
     }
@@ -77,7 +89,7 @@ public class HistoryPageFragment extends FragmentWithName implements ISongDAOObs
     public void onResume() {
     	super.onResume();
 
-        Fragment miniplayer = new MiniPlayerFragment();
+        Fragment miniplayer = new MiniPlayerFragment(adapter);
         FragmentManager fm = getActivity().getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.miniplayer, miniplayer).commit();

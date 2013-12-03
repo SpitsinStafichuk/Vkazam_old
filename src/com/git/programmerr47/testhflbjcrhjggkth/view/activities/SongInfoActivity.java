@@ -46,6 +46,7 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 		if ((intent != null) && (intent.getExtras() != null)) {
 			position = intent.getIntExtra(HistoryPageFragment.ARGUMENT_SONGLIST_POSITION, 0);
 		}
+        final int positionInList = position;
 		
 		Log.v("testik", "findViewById(R.id.songInfoCoverArt): " + findViewById(R.id.songInfoCoverArt));
 		coverArt = ((DynamicImageView) findViewById(R.id.songInfoCoverArt));
@@ -63,7 +64,7 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 			
 			@Override
 			public void onClick(View v) {
-				controller.playPauseSong(data);
+				controller.playPauseSong(data, positionInList);
 			}
 		});
 		
