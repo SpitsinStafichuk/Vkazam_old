@@ -32,14 +32,13 @@ public class ImageUtils {
 		int parts = 4;
 		
 		for (int i = 0; i < parts; i++) {
-			String strPart = str.substring(str.length() * (i / parts), str.length() * ((i + 1) / 4));
+			String strPart = str.substring(str.length() * i / parts, str.length() * (i + 1) / 4);
 			byte[] answer = getMD5(strPart);
 			for (int k = 0; (k < answer.length) && (index < result.length); k++) {
 				result[index] = answer[k] + 128;
 				index++;
 			}
 		}
-		
 		return result;
 	}
 	
