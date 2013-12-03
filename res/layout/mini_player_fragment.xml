@@ -63,13 +63,33 @@
                     android:src="@android:drawable/ic_media_previous"
                     android:background="@android:color/transparent"/>
 
-            <ImageButton
-                    android:id="@+id/miniplayerPlayButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:src="@android:drawable/ic_media_play"
-                    android:background="@android:color/transparent"/>
+            <LinearLayout
+                android:id="@+id/miniplayerPlayPauseLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_centerInParent="true"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <ImageButton
+                        android:id="@+id/miniplayerPlayButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@android:drawable/ic_media_play"
+                        android:background="@android:color/transparent"/>
+
+                <ProgressBar
+                        android:id="@+id/miniplayerSongLoading"
+                        style="?android:attr/progressBarStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:minHeight="20dp"
+                        android:minWidth="20dp"
+                        android:visibility="gone"/>
+
+            </LinearLayout>
 
             <ImageButton
                     android:id="@+id/miniplayerNextButton"

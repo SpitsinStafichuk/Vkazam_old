@@ -119,7 +119,7 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 				currentListItemView = fView;
 			    LinearLayout element = (LinearLayout) currentListItemView.findViewById(R.id.songHistoryItemInfo);
 			    element.setBackgroundResource(R.drawable.song_list_item_bg_pressed);
-				controller.playPauseSong((DatabaseSongData) getItem(position));
+				controller.playPauseSong((DatabaseSongData) getItem(position), position);
 			}
 		});
 		

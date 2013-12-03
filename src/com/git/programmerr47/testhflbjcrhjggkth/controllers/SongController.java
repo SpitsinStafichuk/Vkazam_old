@@ -28,23 +28,23 @@ public class SongController {
 		this.model = RecognizeServiceConnection.getModel();
 	}
 
-	public synchronized void playPauseSong(final DatabaseSongData songData) {
+	public synchronized void playPauseSong(final DatabaseSongData songData, final int positionInList) {
 		if(preparingThread != null) {
 			SongManager songManager = model.getSongManager();
-			songManager.set(null);
+			songManager.set(null, -1);
 			preparingThread.interrupt();
 		}
 		preparingThread = new Thread(){
 			@Override
 			public void run() {
-				_playPauseSong(songData);
+				_playPauseSong(songData, positionInList);
 				preparingThread = null;
 			}
 		};
 		preparingThread.start();	
 	}
 	
-	private void _playPauseSong(DatabaseSongData songData) {
+	private void _playPauseSong(DatabaseSongData songData, int positionInList) {
 		SongManager songManager = model.getSongManager();
 		if(songData.equals(songManager.getSongData())) {
 			Log.v("SongListController", "songManager.getSongData() == songData == " + songData);
@@ -60,7 +60,7 @@ public class SongController {
 				songManager.stop();
 			}
 			songManager.release();
-			songManager.set(songData);
+			songManager.set(songData, positionInList);
 			Log.v("SongListController", "song was setted");
 			try {
 				songManager.prepare();
@@ -69,23 +69,23 @@ public class SongController {
 			} catch (SongNotFoundException e) {
 				showToast("Song is not found");
 				songManager.release();
-				songManager.set(null);
+				songManager.set(null, -1);
 			} catch (MalformedURLException e) {
 				showToast("Seems you haven't internet connection");
 				songManager.release();
-				songManager.set(null);
+				songManager.set(null, -1);
 			} catch (IOException e) {
 				showToast("Seems you haven't internet connection");
 				songManager.release();
-				songManager.set(null);
+				songManager.set(null, -1);
 			} catch (JSONException e) {
 				showToast(e.getLocalizedMessage());
 				songManager.release();
-				songManager.set(null);
+				songManager.set(null, -1);
 			} catch (KException e) {
 				showToast(e.getLocalizedMessage());
 				songManager.release();
-				songManager.set(null);
+				songManager.set(null, -1);
 			}
 		}
 	}

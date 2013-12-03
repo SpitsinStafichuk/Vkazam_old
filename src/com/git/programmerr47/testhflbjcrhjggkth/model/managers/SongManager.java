@@ -29,6 +29,7 @@ public class SongManager implements IPlayerStateObservable {
 	private MediaPlayer songPlayer;
 	
 	private DatabaseSongData songData;
+    private int positionInList;
 	
 	private boolean isLoading;
 	private boolean isPlaying;
@@ -46,8 +47,9 @@ public class SongManager implements IPlayerStateObservable {
 		playerStateObservers = new HashSet<IPlayerStateObserver>();
 	}
 	
-	public void set(DatabaseSongData songData) {
+	public void set(DatabaseSongData songData, int positionInList) {
 		this.songData = songData;
+        this.positionInList = positionInList;
 		isPrepared = false;
 	}
 	
@@ -192,6 +194,10 @@ public class SongManager implements IPlayerStateObservable {
 	public DatabaseSongData getSongData() {
 		return songData;
 	}
+
+    public int getPositionInList() {
+        return positionInList;
+    }
 
 	public void release() {
 		songPlayer.release();
