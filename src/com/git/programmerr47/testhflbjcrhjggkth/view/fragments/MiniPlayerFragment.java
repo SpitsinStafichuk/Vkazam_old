@@ -17,6 +17,7 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.SongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseSongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SongManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObserver;
+import com.git.programmerr47.testhflbjcrhjggkth.view.adapters.SongListAdapter;
 
 public class MiniPlayerFragment extends Fragment implements IPlayerStateObserver{
 
@@ -29,6 +30,11 @@ public class MiniPlayerFragment extends Fragment implements IPlayerStateObserver
 
     MicroScrobblerModel model;
     SongController controller;
+    SongListAdapter adapter;
+
+    public MiniPlayerFragment(SongListAdapter adapter) {
+        this.adapter = adapter;
+    }
 
     @Override
     public void onCreate(Bundle saveInstanceState) {
@@ -63,6 +69,7 @@ public class MiniPlayerFragment extends Fragment implements IPlayerStateObserver
             @Override
             public void onClick(View view) {
                 controller.playPauseSong(((DatabaseSongData)model.getSongList().get(currentPosition)), currentPosition);
+                adapter.notifyDataSetChanged();
             }
         });
 
@@ -74,6 +81,7 @@ public class MiniPlayerFragment extends Fragment implements IPlayerStateObserver
     @Override
     public void updatePlayerState() {
         SongManager songManager = model.getSongManager();
+        currentPosition = songManager.getPositionInList();
         if (songManager.isLoading()) {
             progressBar.setVisibility(View.VISIBLE);
             playButton.setVisibility(View.GONE);
