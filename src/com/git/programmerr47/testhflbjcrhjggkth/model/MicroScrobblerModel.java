@@ -2,6 +2,7 @@ package com.git.programmerr47.testhflbjcrhjggkth.model;
 
 import android.content.Context;
 import android.os.Handler;
+import android.util.Log;
 
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.Data;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.FingerprintList;
@@ -10,9 +11,11 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.managers.FingerprintManage
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.RecognizeManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SearchManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SongManager;
+import com.git.programmerr47.testhflbjcrhjggkth.utils.Constants;
 import com.gracenote.mmid.MobileSDK.GNConfig;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.perm.kate.api.Api;
 
 public class MicroScrobblerModel {
 	public static final String RECOGNIZING_SUCCESS = "Success";
@@ -32,6 +35,9 @@ public class MicroScrobblerModel {
 	private FingerprintList fingerprintList;
 	
 	private ImageLoader imageLoader;
+	
+	private Api vkApi;
+	private Account vkAccount;
 	
 	public static void setContext(Context con) {
 		context = con;
@@ -76,6 +82,14 @@ public class MicroScrobblerModel {
 		searchManager = new SearchManager(config);
         recognizeManager = new RecognizeManager(config, context);
         fingerprintManager = new FingerprintManager(config, context, handler);
+        
+        vkAccount = new Account();
+		vkAccount.restore(context);
+
+		if (vkAccount.access_token != null) {
+			vkApi = new Api(vkAccount.access_token, Constants.VK_API_ID);
+		}
+		Log.v("vkApi", "vkApi = " + vkApi);
 	}
 	
 	public FingerprintList getFingerprintList() {
@@ -112,5 +126,21 @@ public class MicroScrobblerModel {
 	
 	public SongManager getSongManager() {
 		return songManager;
+	}
+
+	public Api getVkApi() {
+		return vkApi;
+	}
+
+	public void setVkApi(Api vkApi) {
+		this.vkApi = vkApi;
+	}
+	
+	public void setVkApi(String access_token, long user_id, Api vkApi) {
+		vkAccount.access_token = access_token;
+		vkAccount.user_id = user_id;
+		vkAccount.save(context);
+		this.vkApi = vkApi;
+		Log.v("vkApi", "vkApi = " + vkApi);
 	}
 }
