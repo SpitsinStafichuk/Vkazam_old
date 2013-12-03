@@ -57,7 +57,10 @@ public class ArtistInfoActivity extends Activity {
 			DownloadTextTask downloadTextTask = new DownloadTextTask(biographyUrl, biographyTextView);
 			downloadTextTask.execute();
 			
-			if (data.getContributorImageUrl() != null) {
+			if (contributorImageUrl != null) {
+				if (contributorImageUrl.contains("size=small")) {
+					contributorImageUrl = contributorImageUrl.replace("size=small", "size=large");
+				}
 				DisplayImageOptions options = new DisplayImageOptions.Builder()
 					.showImageForEmptyUri(R.drawable.no_cover_art)
 					.showImageOnFail(R.drawable.no_cover_art)
@@ -142,7 +145,7 @@ public class ArtistInfoActivity extends Activity {
 						e.printStackTrace();
 					}
 				}
-				return stringBuilder.toString();
+				return stringBuilder.toString().replace("\n", "\n\n");
 			}
 			return "";
 		}

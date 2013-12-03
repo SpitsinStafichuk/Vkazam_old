@@ -13,6 +13,7 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeStatus
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -54,18 +55,19 @@ public class RecognizePageFragment extends FragmentWithName implements IRecogniz
     private SongData currentApearingSong;
     private boolean firstTimeApearing;
     
-    public static RecognizePageFragment newInstance() {
+    public static RecognizePageFragment newInstance(Context context) {
     		RecognizePageFragment pageFragment = new RecognizePageFragment();
             Bundle arguments = new Bundle();
             pageFragment.setArguments(arguments);
-            pageFragment.setFragmentName("Recognize");
+            pageFragment.setFragmentName("Tagging");
+            pageFragment.setContext(context);
             return pageFragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            controller = new RecognizeController();
+            controller = new RecognizeController(this.getActivity().getApplicationContext());
             model = RecognizeServiceConnection.getModel();
             fingerprintManager = model.getFingerprintManager();
             fingerprintManager.addObserver((IFingerprintStatusObserver)this);
@@ -154,10 +156,12 @@ public class RecognizePageFragment extends FragmentWithName implements IRecogniz
 
 	@Override
 	public void onRecognizeResult(SongData songData) {
-    	displaySongInformationElement(currentApearingSong, true);
+    	displaySongInformationElement(songData, true);
 	}
 	
 	public void displaySongInformationElement(final SongData songData, boolean apearing) {
+		Log.v("RecognizeFragment", "Displaying info element and apearing = " + apearing);
+		Log.v("RecognizeFragment", "songData = " + songData);
     	if(songData != null) {
 			updateItem(song, songArtist, songTitle, songDate, songCoverArt, songData);
 			if (apearing) {
@@ -187,6 +191,7 @@ public class RecognizePageFragment extends FragmentWithName implements IRecogniz
 				song.setAnimation(AnimationUtils.loadAnimation(this.parentActivity, R.anim.appear));
 			}
 			song.setVisibility(View.VISIBLE);
+			Log.v("RecognizeFragment", "song info visibility is " + song.getVisibility());
 			currentApearingSong = songData;
 		}
     }

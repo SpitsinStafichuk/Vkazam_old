@@ -65,10 +65,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         
-    	<include layout="@layout/list_item"
+    	<include layout="@layout/song_list_item"
     	    	 android:id="@+id/prevSong"/>
     	
-    	<include layout="@layout/list_item"
+    	<include layout="@layout/song_list_item"
     	    	 android:id="@+id/currentSong"/>
     	
     </RelativeLayout>

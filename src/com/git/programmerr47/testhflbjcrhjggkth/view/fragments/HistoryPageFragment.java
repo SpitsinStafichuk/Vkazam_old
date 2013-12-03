@@ -1,5 +1,9 @@
 package com.git.programmerr47.testhflbjcrhjggkth.view.fragments;
 
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.widget.AbsListView;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.SongListController;
 import com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeServiceConnection;
@@ -16,8 +20,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -31,11 +33,13 @@ public class HistoryPageFragment extends FragmentWithName implements ISongDAOObs
     private ListView songHLV;
     private SongList songList;
 
-    public static HistoryPageFragment newInstance() {
+    public static HistoryPageFragment newInstance(Context context) {
             HistoryPageFragment pageFragment = new HistoryPageFragment();
             Bundle arguments = new Bundle();
             pageFragment.setArguments(arguments);
             pageFragment.setFragmentName("History");
+            pageFragment.setFragmentIcon(R.drawable.ic_action_view_as_list);
+            pageFragment.setContext(context);
             return pageFragment;
     }
 
@@ -44,7 +48,7 @@ public class HistoryPageFragment extends FragmentWithName implements ISongDAOObs
             super.onCreate(savedInstanceState);
             
             controller = new SongListController(this);
-            adapter = new SongListAdapter(this.getActivity(), R.layout.list_item, controller);
+            adapter = new SongListAdapter(this.getActivity(), R.layout.song_list_item, controller);
             songList = RecognizeServiceConnection.getModel().getSongList();
             songList.addObserver(this);
     }
@@ -58,34 +62,25 @@ public class HistoryPageFragment extends FragmentWithName implements ISongDAOObs
             songHLV.setAdapter(adapter);
   		  	songHLV.setOnItemClickListener(new OnItemClickListener() {
 
-				@Override
-				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-					Intent intent = new Intent(instance, SongInfoActivity.class);
-					//TODO позиция может измениться
-					intent.putExtra(ARGUMENT_SONGLIST_POSITION, position);
-					startActivity(intent);
-				}
-			});
-  		  	songHLV.setOnScrollListener(new OnScrollListener() {
-				int mLastFirstVisibleItem;
-  		  		
-				@Override
-				public void onScrollStateChanged(AbsListView view, int scrollState) {
-					final int currentFirstVisibleItem = view.getFirstVisiblePosition();
-					
-					if (currentFirstVisibleItem > mLastFirstVisibleItem) {
-			            adapter.setScrollingUp(false);
-			        } else if (currentFirstVisibleItem < mLastFirstVisibleItem) {
-			            adapter.setScrollingUp(true);
-			        }
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent intent = new Intent(instance, SongInfoActivity.class);
+                    //TODO позиция может измениться
+                    intent.putExtra(ARGUMENT_SONGLIST_POSITION, position);
+                    startActivity(intent);
+                }
+            });
+            songHLV.setOnScrollListener(new AbsListView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(AbsListView view, int scrollState) {
+                    //To change body of implemented methods use File | Settings | File Templates.
+                }
 
-			        mLastFirstVisibleItem = currentFirstVisibleItem;
-				}
-				
-				@Override
-				public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-				}
-			});
+                @Override
+                public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                    adapter.scrolling();
+                }
+            });
             
             return view;
     }
@@ -93,6 +88,12 @@ public class HistoryPageFragment extends FragmentWithName implements ISongDAOObs
     @Override
     public void onResume() {
     	super.onResume();
+
+        Fragment miniplayer = new MiniPlayerFragment(adapter);
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(R.id.miniplayer, miniplayer).commit();
+
     	adapter.notifyDataSetChanged();
     }
    

@@ -1,42 +1,20 @@
 package com.git.programmerr47.testhflbjcrhjggkth.view.adapters;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.FingerprintPageFragment;
 import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.HistoryPageFragment;
-import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.FragmentWithName;
 import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.RecognizePageFragment;
 import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.TestPageFragment;
 
-import android.support.v4.app.Fragment;
+import android.content.Context;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 
-public class MicrophonePagerAdapter extends FragmentPagerAdapter {
-
-    private static final int PAGE_COUNT = 3;
-    private List<FragmentWithName> microphoneFragments;
+public class MicrophonePagerAdapter extends PagerAdapter {
    
-    public MicrophonePagerAdapter(FragmentManager fm) {
-            super(fm);
-            microphoneFragments = new ArrayList<FragmentWithName>();
-            microphoneFragments.add(RecognizePageFragment.newInstance());
-            microphoneFragments.add(HistoryPageFragment.newInstance());
-            microphoneFragments.add(TestPageFragment.newInstance());
+    public MicrophonePagerAdapter(FragmentManager fm, Context context) {
+            super(fm, 4);
+            fragments.add(RecognizePageFragment.newInstance(context));
+            fragments.add(HistoryPageFragment.newInstance(context));
+            fragments.add(FingerprintPageFragment.newInstance(context));
+            fragments.add(TestPageFragment.newInstance(context));
     }
-    
-    @Override
-    public Fragment getItem(int position) {
-    	return microphoneFragments.get(position);
-    }
-       
-     @Override
-     public int getCount() {
-    	 return PAGE_COUNT;
-     }
-     
-     @Override
-     public CharSequence getPageTitle(int position) {
-     	return microphoneFragments.get(position).getFragmentName();
-     }
 }
