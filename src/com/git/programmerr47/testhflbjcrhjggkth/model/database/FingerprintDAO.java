@@ -44,7 +44,6 @@ public class FingerprintDAO extends AbstractDAO {
 
 	@Override
 	public int update(Data data) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 	

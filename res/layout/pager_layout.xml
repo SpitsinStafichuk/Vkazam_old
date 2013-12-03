@@ -12,10 +12,10 @@
         <android.support.v4.view.PagerTabStrip
             android:id="@+id/pagerTabStrip"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_gravity="top"
-            android:background="@color/paletur_quoise">
-        </android.support.v4.view.PagerTabStrip>
+            android:background="@drawable/title_background"
+            android:textAppearance="@style/PagerTabStripText"/>
         
     </android.support.v4.view.ViewPager>
     

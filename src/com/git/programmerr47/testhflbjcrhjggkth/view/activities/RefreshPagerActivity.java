@@ -15,7 +15,7 @@ public class RefreshPagerActivity extends PagerActivity{
 	@Override
 	protected void setupUi() {
 		super.setupUi();
-        pagerAdapter = new SongVariationPagerAdapter(getSupportFragmentManager());
+        pagerAdapter = new SongVariationPagerAdapter(getSupportFragmentManager(), getApplicationContext());
         pager.setAdapter(pagerAdapter);
 	}
 }

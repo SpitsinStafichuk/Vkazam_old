@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.util.Log;
 
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.Data;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.FingerprintList;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongList;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.FingerprintManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.RecognizeManager;
@@ -31,6 +32,7 @@ public class MicroScrobblerModel {
 	private Handler handler;
 	
 	private SongList songList;
+	private FingerprintList fingerprintList;
 	
 	private ImageLoader imageLoader;
 	
@@ -45,7 +47,8 @@ public class MicroScrobblerModel {
 		return context != null;
 	}
 	
-	public static synchronized MicroScrobblerModel getInstance() {
+	@Deprecated
+	static synchronized MicroScrobblerModel getInstance() {
 		if (instance == null) {
 			instance = new MicroScrobblerModel();
 		}
@@ -74,6 +77,7 @@ public class MicroScrobblerModel {
 		imageLoader = ImageLoader.getInstance();
 		imageLoader.init(ImageLoaderConfiguration.createDefault(context));
 		songList = new SongList(context);
+		fingerprintList = new FingerprintList(context);
 		songManager = new SongManager(handler, context);
 		searchManager = new SearchManager(config);
         recognizeManager = new RecognizeManager(config, context);
@@ -86,6 +90,10 @@ public class MicroScrobblerModel {
 			vkApi = new Api(vkAccount.access_token, Constants.VK_API_ID);
 		}
 		Log.v("vkApi", "vkApi = " + vkApi);
+	}
+	
+	public FingerprintList getFingerprintList() {
+		return fingerprintList;
 	}
 	
 	public SongList getSongList() {

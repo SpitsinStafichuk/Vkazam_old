@@ -15,6 +15,10 @@ public class DatabaseFingerprintData extends FingerprintData implements Data {
 		this.id = id;
 		this.dao = dao;
 	}
+	
+	public DatabaseFingerprintData(long id, AbstractDAO dao, FingerprintData data) {
+		this(id, dao, data.getFingerprint(), data.getDate());
+	}
 
 	@Override
 	public long getId() {

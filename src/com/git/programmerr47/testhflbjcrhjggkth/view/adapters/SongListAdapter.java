@@ -39,13 +39,14 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 	
 	private Activity activity;
 	private LayoutInflater inflater;
+	private MicroScrobblerModel model;
+    private boolean isScrolling = false;
+	private int lastPosition;
 	private int idItem;
 	private SongListController controller;
 	private SongManager songManager;
 	private View currentListItemView;
-	private MicroScrobblerModel model;
 	private Map<String, ImageView> coverArts;
-	private boolean isScrollingUp;
 	
 	public SongListAdapter(Activity activity, int idItem, SongListController controller) {
 		this.activity = activity;
@@ -89,6 +90,16 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 		return 0;
 	}
 
+    @Override
+    public void notifyDataSetChanged() {
+        isScrolling = false;
+        super.notifyDataSetChanged();
+    }
+
+    public void scrolling() {
+        isScrolling = true;
+    }
+
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		View view = convertView;
@@ -119,7 +130,7 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 				currentListItemView = fView;
 			    LinearLayout element = (LinearLayout) currentListItemView.findViewById(R.id.songHistoryItemInfo);
 			    element.setBackgroundResource(R.drawable.song_list_item_bg_pressed);
-				controller.playPauseSong((DatabaseSongData) getItem(position));
+				controller.playPauseSong((DatabaseSongData) getItem(position), position);
 			}
 		});
 		
@@ -167,12 +178,15 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 		    ((ImageButton) view.findViewById(R.id.songPlayPauseButton)).setVisibility(View.VISIBLE);
 		    ((ProgressBar) view.findViewById(R.id.songItemLoading)).setVisibility(View.GONE);
 		}
-		
-		if (!isScrollingUp) {
-			view.startAnimation(AnimationUtils.loadAnimation(activity, R.anim.list_view_up_down));
-		} else {
-			view.startAnimation(AnimationUtils.loadAnimation(activity, R.anim.list_view_down_up));
-		}
+
+        if (isScrolling) {
+            if (position > lastPosition) {
+                view.startAnimation(AnimationUtils.loadAnimation(activity, R.anim.list_view_up_down));
+            } else {
+                view.startAnimation(AnimationUtils.loadAnimation(activity, R.anim.list_view_down_up));
+            }
+        }
+		lastPosition = position;
 		
 		return view;
 	}
@@ -245,9 +259,5 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 			.cacheInMemory(true)
 			.build();
 		model.getImageLoader().displayImage(coverArtUrl, coverArts.get(songData.getTrackId()), options);
-	}
-	
-	public void setScrollingUp(boolean answer) {
-		isScrollingUp = answer;
 	}
 }

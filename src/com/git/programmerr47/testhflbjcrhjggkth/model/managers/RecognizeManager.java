@@ -1,5 +1,6 @@
 package com.git.programmerr47.testhflbjcrhjggkth.model.managers;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,6 +13,7 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeResult
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeResultObserver;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeStatusObservable;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeStatusObserver;
+import com.git.programmerr47.testhflbjcrhjggkth.utils.LogHelper;
 import com.gracenote.mmid.MobileSDK.GNConfig;
 import com.gracenote.mmid.MobileSDK.GNOperationStatusChanged;
 import com.gracenote.mmid.MobileSDK.GNOperations;
@@ -76,16 +78,24 @@ public class RecognizeManager implements GNSearchResultReady, GNOperationStatusC
 			} else {
 				GNSearchResponse bestResponse = result.getBestResponse();
 
+
+				LogHelper.print(TAG, bestResponse);
 				String artist = bestResponse.getArtist();
 				String title = bestResponse.getTrackTitle();
-				String coverArtURL = bestResponse.getCoverArt() != null ? bestResponse.getCoverArt().getUrl() : null;
-				Log.i(TAG, "coverArtUrl = " + coverArtURL);
+				String album = bestResponse.getAlbumTitle();
+				String trackId = bestResponse.getTrackId();
+				String coverArtURL = bestResponse.getCoverArt() != null ? 
+						bestResponse.getCoverArt().getUrl() : null;
+				String contributorImageURL = bestResponse.getContributorImage() != null ?
+						bestResponse.getContributorImage().getUrl() : null;
+				String albumArtist = bestResponse.getAlbumArtist();
+				String artistBiographyURL = bestResponse.getArtistBiographyUrl();
+				String songPosition = bestResponse.getSongPosition();
+				String albumReviewUrl = bestResponse.getAlbumReviewUrl();
+				String albumReleaseYear = bestResponse.getAlbumReleaseYear();
 				
-				songData = new SongData(bestResponse.getTrackId(), artist, title, currentFingerprintData.getDate(), coverArtURL);
-				//songDAO.insert(songInfo);
-				/*if(currentFingerprintIsSaved) {
-					removeFingerprint(currentFingerprintData);
-				}*/
+				songData = new SongData(trackId, artist, album, title, null, coverArtURL, new Date(), contributorImageURL,
+						artistBiographyURL, songPosition, albumReviewUrl, albumReleaseYear, albumArtist);
 		
 				recognizeStatus = RECOGNIZING_SUCCESS;
 			}

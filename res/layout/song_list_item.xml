@@ -84,15 +84,15 @@
     	            	android:textSize="20sp" />
 
     	       		<TextView
-    	            	android:id="@+id/songListItemTitle"
-    	            	android:layout_width="match_parent"
-    	            	android:layout_height="wrap_content"
-    	            	android:gravity="center_vertical"
-    	            	android:paddingLeft="5dp"
-    	            	android:singleLine="true"
-    	            	android:text="Title"
-    	            	android:textColor="#333333"
-    	            	android:textSize="20sp" />
+    	       		    android:id="@+id/songListItemTitle"
+    	       		    android:layout_width="match_parent"
+    	       		    android:layout_height="wrap_content"
+    	       		    android:gravity="center_vertical"
+    	       		    android:paddingLeft="5dp"
+    	       		    android:singleLine="true"
+    	       		    android:text="Title"
+    	       		    android:textColor="#333333"
+    	       		    android:textSize="15sp" />
     	       		
     	        </LinearLayout>
 
