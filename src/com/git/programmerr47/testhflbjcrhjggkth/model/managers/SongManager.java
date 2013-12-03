@@ -5,15 +5,14 @@ import java.net.MalformedURLException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
-import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISongInfoObserver;
-import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISongInfoObserverable;
+import com.git.programmerr47.testhflbjcrhjggkth.model.observers.*;
 import org.json.JSONException;
 
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseSongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.exceptions.SongNotFoundException;
-import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObservable;
-import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObserver;
 import com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.Api;
 import com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.Audio;
 import com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.KException;
@@ -24,12 +23,15 @@ import android.media.MediaPlayer;
 import android.os.Handler;
 import android.util.Log;
 
-public class SongManager implements IPlayerStateObservable, ISongInfoObserverable {
+public class SongManager implements IPlayerStateObservable, ISongInfoObserverable, ISongProgressObservable {
 
 	private Set<IPlayerStateObserver> playerStateObservers;
     private Set<ISongInfoObserver> songInfoObservers;
+    private Set<ISongProgressObserver> songProgressObservers;
 	
 	private MediaPlayer songPlayer;
+    private MediaPlayer.OnBufferingUpdateListener onBufferingUpdateListener;
+    private MediaPlayer.OnCompletionListener onCompletionListener;
 	
 	private DatabaseSongData songData;
     private int positionInList;
@@ -41,6 +43,7 @@ public class SongManager implements IPlayerStateObservable, ISongInfoObserverabl
 	private Handler handler;
 	
 	private Context context;
+    private ScheduledThreadPoolExecutor songProgressTimer;
 	
 	public SongManager(Handler handler, Context context) {
 		songPlayer = new MediaPlayer();
@@ -49,6 +52,20 @@ public class SongManager implements IPlayerStateObservable, ISongInfoObserverabl
 		isPrepared = false;
         playerStateObservers = new HashSet<IPlayerStateObserver>();
         songInfoObservers = new HashSet<ISongInfoObserver>();
+        songProgressObservers = new HashSet<ISongProgressObserver>();
+
+
+        songProgressTimer = new ScheduledThreadPoolExecutor(1);
+        songProgressTimer.scheduleWithFixedDelay(new Thread() {
+
+            @Override
+            public void run() {
+                if ((songData != null)) {
+                    asyncNotifySongProgressObservers();
+                }
+            }
+
+        }, 0, 1000, TimeUnit.MILLISECONDS);
 	}
 	
 	public void set(DatabaseSongData songData, int positionInList) {
@@ -77,12 +94,15 @@ public class SongManager implements IPlayerStateObservable, ISongInfoObserverabl
 		Log.v("SongPlayer", "Player is loading");
 		asyncNotifyPlayerStateObservers();
 		songPlayer = new MediaPlayer();
+        songPlayer.setOnCompletionListener(onCompletionListener);
+        songPlayer.setOnBufferingUpdateListener(onBufferingUpdateListener);
 		Log.v("SongPlayer", "Player is reconstructed");
 		boolean songDataNeedUpdate = false;
 		Audio audio = null;
 		if(songData.getPleercomUrl() == null) {
 			songDataNeedUpdate = true;
 			audio = findSongOnPleercom(getArtist(), getTitle());
+            Log.v("SongPlayer", "new Pleercomurl is " + audio.url);
 			songPlayer.setDataSource(audio.url);
 		} else {
 			try {
@@ -221,6 +241,20 @@ public class SongManager implements IPlayerStateObservable, ISongInfoObserverabl
 		return isPrepared;
 	}
 
+    public synchronized void seekTo(int percent) {
+        if (songPlayer.getDuration() != -1) {
+            songPlayer.seekTo(songPlayer.getDuration() * percent / 100);
+        }
+    }
+
+    public synchronized void setOnButteringUpdateListener(MediaPlayer.OnBufferingUpdateListener listener) {
+        onBufferingUpdateListener = listener;
+    }
+
+    public synchronized void setOnCompletionListener(MediaPlayer.OnCompletionListener listener){
+        onCompletionListener = listener;
+    }
+
     @Override
     public void addSongIngoObserver(ISongInfoObserver o) {
         songInfoObservers.add(o);
@@ -242,6 +276,35 @@ public class SongManager implements IPlayerStateObservable, ISongInfoObserverabl
         handler.post(new Runnable() {
             public void run() {
                 notifySongInfoObservers();
+            }
+        });
+    }
+
+    @Override
+    public void addSongProgressObserver(ISongProgressObserver o) {
+        songProgressObservers.add(o);
+    }
+
+    @Override
+    public void removeSongProgressObserver(ISongProgressObserver o) {
+        songProgressObservers.remove(o);
+    }
+
+    @Override
+    public void notifySongProgressObservers(boolean isPrepared) {
+        for (ISongProgressObserver o : songProgressObservers) {
+            if (isPrepared) {
+                o.updateProgress(songPlayer.getCurrentPosition(), songPlayer.getDuration());
+            } else {
+                o.updateProgress(0, -1);
+            }
+        }
+    }
+
+    private void asyncNotifySongProgressObservers() {
+        handler.post(new Runnable() {
+            public void run() {
+                notifySongProgressObservers(isPrepared);
             }
         });
     }

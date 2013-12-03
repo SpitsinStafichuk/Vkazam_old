@@ -1,5 +1,6 @@
 package com.git.programmerr47.testhflbjcrhjggkth.view.fragments;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.SongController;
@@ -18,15 +20,18 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseSongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SongManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObserver;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISongInfoObserver;
+import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISongProgressObserver;
 import com.git.programmerr47.testhflbjcrhjggkth.view.adapters.SongListAdapter;
 
-public class MiniPlayerFragment extends Fragment implements IPlayerStateObserver, ISongInfoObserver{
+public class MiniPlayerFragment extends Fragment implements IPlayerStateObserver, ISongInfoObserver, ISongProgressObserver{
 
     TextView songInfo;
     ImageButton playButton;
     ImageButton nextButton;
     ImageButton prevButton;
     ProgressBar progressBar;
+    SeekBar songProgress;
+
     int currentPosition = 0;
 
     MicroScrobblerModel model;
@@ -45,12 +50,28 @@ public class MiniPlayerFragment extends Fragment implements IPlayerStateObserver
 
         model.getSongManager().addObserver(this);
         model.getSongManager().addSongIngoObserver(this);
+        model.getSongManager().addSongProgressObserver(this);
+        model.getSongManager().setOnButteringUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
+            @Override
+            public void onBufferingUpdate(MediaPlayer mediaPlayer, int percent) {
+                Log.v("MiniPlayer", "Song downloading is updated " + percent);
+                songProgress.setSecondaryProgress(percent);
+            }
+        });
+        model.getSongManager().setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                Log.v("MiniPlayer", "Song is completed");
+                controller.playPauseSong(currentPosition + 1);
+            }
+        });
     }
 
     @Override
     public void onResume() {
         super.onResume();
         updatePlayerState();
+        updateSongInfo();
     }
 
     @Override
@@ -91,6 +112,25 @@ public class MiniPlayerFragment extends Fragment implements IPlayerStateObserver
         });
 
         progressBar = (ProgressBar) view.findViewById(R.id.miniplayerSongLoading);
+        songProgress = (SeekBar) view.findViewById(R.id.miniplayerSongProgress);
+        songProgress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser) {
+                    controller.seekTo(progress);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                //To change body of implemented methods use File | Settings | File Templates.
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                //To change body of implemented methods use File | Settings | File Templates.
+            }
+        });
 
         return view;
     }
@@ -125,6 +165,16 @@ public class MiniPlayerFragment extends Fragment implements IPlayerStateObserver
         SongData data = model.getSongManager().getSongData();
         if (data != null) {
             songInfo.setText(data.getArtist() + " - " + data.getTitle());
+        }
+    }
+
+    @Override
+    public void updateProgress(int progress, int duration) {
+        if (duration == -1) {
+            songProgress.setProgress(0);
+            songProgress.setSecondaryProgress(0);
+        } else {
+            songProgress.setProgress(progress * 100 / duration);
         }
     }
 }

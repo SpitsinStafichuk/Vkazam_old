@@ -52,6 +52,10 @@ public class SongController {
         }
         this.playPauseSong(((DatabaseSongData)model.getSongList().get(positionInList)), positionInList);
     }
+
+    public void seekTo(int percent) {
+        model.getSongManager().seekTo(percent);
+    }
 	
 	private void _playPauseSong(DatabaseSongData songData, int positionInList) {
 		SongManager songManager = model.getSongManager();
