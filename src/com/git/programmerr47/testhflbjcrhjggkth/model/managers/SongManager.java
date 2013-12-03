@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISongInfoObserver;
+import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISongInfoObserverable;
 import org.json.JSONException;
 
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseSongData;
@@ -22,9 +24,10 @@ import android.media.MediaPlayer;
 import android.os.Handler;
 import android.util.Log;
 
-public class SongManager implements IPlayerStateObservable {
+public class SongManager implements IPlayerStateObservable, ISongInfoObserverable {
 
 	private Set<IPlayerStateObserver> playerStateObservers;
+    private Set<ISongInfoObserver> songInfoObservers;
 	
 	private MediaPlayer songPlayer;
 	
@@ -44,13 +47,15 @@ public class SongManager implements IPlayerStateObservable {
 		this.handler = handler;
 		this.context = context;
 		isPrepared = false;
-		playerStateObservers = new HashSet<IPlayerStateObserver>();
+        playerStateObservers = new HashSet<IPlayerStateObserver>();
+        songInfoObservers = new HashSet<ISongInfoObserver>();
 	}
 	
 	public void set(DatabaseSongData songData, int positionInList) {
 		this.songData = songData;
         this.positionInList = positionInList;
 		isPrepared = false;
+        asyncNotifySongInfoObservers();
 	}
 	
 	private Audio findSongOnPleercom(String artist, String title) throws SongNotFoundException, MalformedURLException, IOException, JSONException, KException {
@@ -216,4 +221,28 @@ public class SongManager implements IPlayerStateObservable {
 		return isPrepared;
 	}
 
+    @Override
+    public void addSongIngoObserver(ISongInfoObserver o) {
+        songInfoObservers.add(o);
+    }
+
+    @Override
+    public void removeSongIngoObserver(ISongInfoObserver o) {
+        songInfoObservers.remove(o);
+    }
+
+    @Override
+    public void notifySongInfoObservers() {
+        for (ISongInfoObserver o : songInfoObservers) {
+            o.updateSongInfo();
+        }
+    }
+
+    private void asyncNotifySongInfoObservers() {
+        handler.post(new Runnable() {
+            public void run() {
+                notifySongInfoObservers();
+            }
+        });
+    }
 }

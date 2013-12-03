@@ -17,9 +17,10 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.SongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseSongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SongManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObserver;
+import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISongInfoObserver;
 import com.git.programmerr47.testhflbjcrhjggkth.view.adapters.SongListAdapter;
 
-public class MiniPlayerFragment extends Fragment implements IPlayerStateObserver{
+public class MiniPlayerFragment extends Fragment implements IPlayerStateObserver, ISongInfoObserver{
 
     TextView songInfo;
     ImageButton playButton;
@@ -43,6 +44,7 @@ public class MiniPlayerFragment extends Fragment implements IPlayerStateObserver
         controller = new SongController(this.getActivity());
 
         model.getSongManager().addObserver(this);
+        model.getSongManager().addSongIngoObserver(this);
     }
 
     @Override
@@ -68,8 +70,23 @@ public class MiniPlayerFragment extends Fragment implements IPlayerStateObserver
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                controller.playPauseSong(((DatabaseSongData)model.getSongList().get(currentPosition)), currentPosition);
-                adapter.notifyDataSetChanged();
+                controller.playPauseSong(currentPosition);
+            }
+        });
+
+        nextButton = (ImageButton) view.findViewById(R.id.miniplayerNextButton);
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                controller.playPauseSong(currentPosition + 1);
+            }
+        });
+
+        prevButton = (ImageButton) view.findViewById(R.id.miniplayerPrevButton);
+        prevButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                controller.playPauseSong(currentPosition - 1);
             }
         });
 
@@ -99,6 +116,15 @@ public class MiniPlayerFragment extends Fragment implements IPlayerStateObserver
             playButton.setImageResource(android.R.drawable.ic_media_pause);
         } else {
             playButton.setImageResource(android.R.drawable.ic_media_play);
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void updateSongInfo() {
+        SongData data = model.getSongManager().getSongData();
+        if (data != null) {
+            songInfo.setText(data.getArtist() + " - " + data.getTitle());
         }
     }
 }

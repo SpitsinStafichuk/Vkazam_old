@@ -43,6 +43,15 @@ public class SongController {
 		};
 		preparingThread.start();	
 	}
+
+    public synchronized void playPauseSong(int positionInList) {
+        if (positionInList >= model.getSongList().size()) {
+            positionInList = model.getSongList().size() - 1;
+        } else if (positionInList < 0) {
+            positionInList = 0;
+        }
+        this.playPauseSong(((DatabaseSongData)model.getSongList().get(positionInList)), positionInList);
+    }
 	
 	private void _playPauseSong(DatabaseSongData songData, int positionInList) {
 		SongManager songManager = model.getSongManager();
