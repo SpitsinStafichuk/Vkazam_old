@@ -7,6 +7,7 @@ import android.widget.AbsListView;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.SongListController;
 import com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeServiceConnection;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseSongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongList;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISongDAOObserver;
 import com.git.programmerr47.testhflbjcrhjggkth.view.activities.SongInfoActivity;
@@ -65,15 +66,13 @@ public class HistoryPageFragment extends FragmentWithName implements ISongDAOObs
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Intent intent = new Intent(instance, SongInfoActivity.class);
-                    //TODO позиция может измениться
-                    intent.putExtra(ARGUMENT_SONGLIST_POSITION, position);
+                    RecognizeServiceConnection.getModel().setCurrentOpenSong((DatabaseSongData) RecognizeServiceConnection.getModel().getSongList().get(position));
                     startActivity(intent);
                 }
             });
             songHLV.setOnScrollListener(new AbsListView.OnScrollListener() {
                 @Override
                 public void onScrollStateChanged(AbsListView view, int scrollState) {
-                    //To change body of implemented methods use File | Settings | File Templates.
                 }
 
                 @Override

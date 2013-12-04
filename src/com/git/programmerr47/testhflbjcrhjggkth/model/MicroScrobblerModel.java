@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.util.Log;
 
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.Data;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseSongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.FingerprintList;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongList;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.FingerprintManager;
@@ -33,6 +34,7 @@ public class MicroScrobblerModel {
 	
 	private SongList songList;
 	private FingerprintList fingerprintList;
+    private DatabaseSongData currentOpenSong = null;
 	
 	private ImageLoader imageLoader;
 	
@@ -143,4 +145,12 @@ public class MicroScrobblerModel {
 		this.vkApi = vkApi;
 		Log.v("vkApi", "vkApi = " + vkApi);
 	}
+
+    public void setCurrentOpenSong(DatabaseSongData currentOpenSong) {
+        this.currentOpenSong = currentOpenSong;
+    }
+
+    public DatabaseSongData getCurrentOpenSong() {
+        return currentOpenSong;
+    }
 }

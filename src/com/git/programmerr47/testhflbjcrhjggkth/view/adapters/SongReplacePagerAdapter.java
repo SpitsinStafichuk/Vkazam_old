@@ -11,7 +11,7 @@ public class SongReplacePagerAdapter extends PagerAdapter{
    
     public SongReplacePagerAdapter(FragmentManager fm, Context context) {
             super(fm, 2);
-            fragments.add(SongReplacePPFragment.newInstance("pleer", context, R.drawable.ic_action_prostopleer));
-            fragments.add(SongReplaceVkFragment.newInstance("vk", context, R.drawable.ic_action_vk));
+            fragments.add(SongReplacePPFragment.newInstance(context));
+            fragments.add(SongReplaceVkFragment.newInstance(context));
     }
 }
