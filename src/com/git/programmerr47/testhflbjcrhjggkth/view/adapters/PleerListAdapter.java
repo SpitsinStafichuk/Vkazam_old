@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
@@ -100,15 +101,18 @@ public class PleerListAdapter extends BaseAdapter{
 
         LinearLayout info = (LinearLayout) view.findViewById(R.id.ppUrlListItemInfo);
         LinearLayout numbers = (LinearLayout) view.findViewById(R.id.ppUrlListItemNumbers);
+        RadioButton radioButton = (RadioButton) view.findViewById(R.id.ppUrlListItemCheckbutton);
 
         if ((currentSongData.getPleercomUrl() != null) && (currentSongData.getPleercomUrl().equals(urls.get(position).url))) {
             Log.v("PleerListAdapter", "selected");
-            info.setBackgroundResource(R.drawable.list_item_bg_pressed);
-            numbers.setBackgroundResource(R.drawable.list_item_bg_pressed);
+            //info.setBackgroundResource(R.drawable.list_item_bg_pressed);
+            //numbers.setBackgroundResource(R.drawable.list_item_bg_pressed);
+            radioButton.setChecked(true);
         } else {
             Log.v("PleerListAdapter", "don't selected");
-            info.setBackgroundResource(R.drawable.list_item_bg_default);
-            numbers.setBackgroundResource(R.drawable.list_item_bg_default);
+            //info.setBackgroundResource(R.drawable.list_item_bg_default);
+            //numbers.setBackgroundResource(R.drawable.list_item_bg_default);
+            radioButton.setChecked(false);
         }
 
         return view;
