@@ -123,13 +123,13 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 					ProgressBar progressBar = (ProgressBar) currentListItemView.findViewById(R.id.songItemLoading);
 					progressBar.setVisibility(View.GONE);
 				    LinearLayout element = (LinearLayout) currentListItemView.findViewById(R.id.songHistoryItemInfo);
-				    element.setBackgroundResource(R.drawable.song_list_item_bg_default);
+				    element.setBackgroundResource(R.drawable.list_item_bg_default);
 					Log.v("SongPlayer", "Song" + /*songManager.getArtist() + " - " + songManager.getTitle() +*/ "is closing");
 				}
 				
 				currentListItemView = fView;
 			    LinearLayout element = (LinearLayout) currentListItemView.findViewById(R.id.songHistoryItemInfo);
-			    element.setBackgroundResource(R.drawable.song_list_item_bg_pressed);
+			    element.setBackgroundResource(R.drawable.list_item_bg_pressed);
 				controller.playPauseSong((DatabaseSongData) getItem(position), position);
 			}
 		});
@@ -170,10 +170,10 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 		((TextView) view.findViewById(R.id.songListItemDate)).setText(songData.getDate().toString());
 		if ((songManager.getSongData() != null) && 
 		    (songManager.getSongData().equals(songData))) {
-		    ((LinearLayout) view.findViewById(R.id.songHistoryItemInfo)).setBackgroundResource(R.drawable.song_list_item_bg_pressed);
+		    ((LinearLayout) view.findViewById(R.id.songHistoryItemInfo)).setBackgroundResource(R.drawable.list_item_bg_pressed);
 			updateListItem(view);
 		} else {
-		    ((LinearLayout) view.findViewById(R.id.songHistoryItemInfo)).setBackgroundResource(R.drawable.song_list_item_bg_default);
+		    ((LinearLayout) view.findViewById(R.id.songHistoryItemInfo)).setBackgroundResource(R.drawable.list_item_bg_default);
 		    ((ImageButton) view.findViewById(R.id.songPlayPauseButton)).setImageResource(android.R.drawable.ic_media_play);
 		    ((ImageButton) view.findViewById(R.id.songPlayPauseButton)).setVisibility(View.VISIBLE);
 		    ((ProgressBar) view.findViewById(R.id.songItemLoading)).setVisibility(View.GONE);

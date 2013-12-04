@@ -10,13 +10,13 @@ import android.view.ViewGroup;
 
 public class SongReplaceVkFragment extends FragmentWithName{
 	
-	public static SongReplaceVkFragment newInstance(String name, Context context, int resDraw) {
+	public static SongReplaceVkFragment newInstance(Context context) {
 		SongReplaceVkFragment pageFragment = new SongReplaceVkFragment();
         Bundle arguments = new Bundle();
         pageFragment.setArguments(arguments);
-        pageFragment.setFragmentName(name);
         pageFragment.setContext(context);
-        pageFragment.setFragmentIcon(resDraw);
+        pageFragment.setFragmentName("vk");
+        pageFragment.setFragmentIcon(R.drawable.ic_action_vk);
         return pageFragment;
     }
 	

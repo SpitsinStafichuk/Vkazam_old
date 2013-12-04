@@ -62,7 +62,7 @@
     	        android:layout_gravity="center_vertical" 
     	        android:layout_marginLeft="10dp"
     	        android:orientation="vertical" 
-    			android:background="@drawable/song_list_item_selector">
+    			android:background="@drawable/list_item_selector">
 
     	        <LinearLayout
     	            android:layout_width="match_parent"
