@@ -45,6 +45,7 @@ public class SongDAO extends AbstractDAO {
 		databaseHelper = new DBHelper(context);
 		database = databaseHelper.getWritableDatabase();
 		ContentValues values = new ContentValues();
+        Log.v("Database", "" + songData.getPleercomUrl());
 		if(songData.getCoverArtUrl() != null) values.put(DBConstants.MUSIC_HISTORY_COVER_ART_URL, songData.getCoverArtUrl());
 		if(songData.getPleercomUrl() != null) values.put(DBConstants.MUSIC_HISTORY_PLEERCOM_URL, songData.getPleercomUrl());
 		if(songData.getContributorImageUrl() != null) values.put(DBConstants.MUSIC_HISTORY_CONTRIBUTOR_IMAGE_URL, songData.getContributorImageUrl());
@@ -53,7 +54,8 @@ public class SongDAO extends AbstractDAO {
 		if(songData.getAlbumReleaseYear() != null) values.put(DBConstants.MUSIC_HISTORY_ALBUM_RELEASE_YEAR, songData.getAlbumReleaseYear());
 		if(songData.getAlbumArtist() != null) values.put(DBConstants.MUSIC_HISTORY_ALBUM_ARTIST, songData.getAlbumArtist());
 		//TODO подумать над разумностью сравнения по датам
-		int result = database.update(DBConstants.MUSIC_HISTORY_TABLE, values, DBConstants.DATE + "=?", new String[] {"" + songData.getDate()});
+		int result = database.update(DBConstants.MUSIC_HISTORY_TABLE, values, DBConstants.DATE + "=?", new String[] {songData.getDate().toString()});
+        Log.v("Database", "" + result);
 		database.close();
 		databaseHelper.close();
 		return result;
