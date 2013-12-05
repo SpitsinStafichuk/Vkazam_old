@@ -170,24 +170,12 @@ public class SongManager implements IPlayerStateObservable, ISongInfoObserverabl
 		asyncNotifyPlayerStateObservers();
 	}
 	
-	public void setPosition(int position) {
-		songPlayer.seekTo(position);
-	}
-	
-	public int getPosition() {
-		return songPlayer.getCurrentPosition();
-	}
-	
 	public String getArtist() {
 		return songData.getArtist();
 	}
 	
 	public String getTitle() {
 		return songData.getTitle();
-	}
-	
-	public int getDuration() {
-		return songPlayer.getDuration();
 	}
 	
 	public boolean isPlaying() {
