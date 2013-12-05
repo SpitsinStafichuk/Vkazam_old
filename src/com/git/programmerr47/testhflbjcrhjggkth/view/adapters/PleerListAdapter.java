@@ -7,10 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.TextView;
+import android.widget.*;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
 import com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeServiceConnection;
@@ -20,6 +17,7 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.Audio;
 import com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.KException;
 import org.json.JSONException;
 
+import javax.xml.datatype.Duration;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -34,8 +32,9 @@ public class PleerListAdapter extends BaseAdapter{
     private Activity activity;
     private int resLayout;
     private int endOfListResLayout;
-    private View endOfListView = null;
-
+    private int page = 1;
+    private ProgressBar newSongLoadingBar;
+    private boolean isFullList = false;
     public PleerListAdapter(final Activity activity, int resLayout, int endOfListResLayout) {
         this.activity = activity;
         this.resLayout = resLayout;
@@ -44,27 +43,7 @@ public class PleerListAdapter extends BaseAdapter{
         currentSongData = model.getCurrentOpenSong();
         Log.v("PleerListAdapter", "Current Song url = " + currentSongData.getPleercomUrl());
         urls = new ArrayList<Audio>();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    urls = Api.searchAudio(currentSongData.getArtist() + " " + currentSongData.getTitle(), 9, 0);
-                    Log.v("PleerListAdapter", "ANSWER FROM INTERNET");
-                    activity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            PleerListAdapter.this.notifyDataSetChanged();
-                        }
-                    });
-                } catch (IOException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                } catch (JSONException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                } catch (KException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                }
-            }
-        }).start();
+        updateSongsList();
         inflater = (LayoutInflater) this.activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -92,9 +71,7 @@ public class PleerListAdapter extends BaseAdapter{
 
         Log.v("PleerListAdapter", position + " - " + urls.size());
         if (position < urls.size()) {
-            if ((view == null) || (view == endOfListView)) {
-                view = inflater.inflate(resLayout, parent, false);
-            }
+            view = inflater.inflate(resLayout, parent, false);
 
             TextView textView;
 
@@ -105,7 +82,7 @@ public class PleerListAdapter extends BaseAdapter{
             textView.setText(urls.get(position).title);
 
             textView = (TextView) view.findViewById(R.id.ppUrlListItemDuration);
-            textView.setText(urls.get(position).duration + "");
+            textView.setText(urls.get(position).duration / 60 + ":" + urls.get(position).duration % 60);
 
             textView = (TextView) view.findViewById(R.id.ppUrlListItemBitRate);
             textView.setText(urls.get(position).bitrate);
@@ -133,9 +110,68 @@ public class PleerListAdapter extends BaseAdapter{
             }
         } else {
             view = inflater.inflate(endOfListResLayout, parent, false);
-            endOfListView = view;
+
+            newSongLoadingBar = (ProgressBar) view.findViewById(R.id.moreListItemLoading);
+            if (isFullList) {
+                view.setVisibility(View.GONE);
+            }
+
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    page++;
+                    updateSongsList();
+                }
+            });
         }
 
         return view;
     }
+
+    private synchronized void updateSongsList() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        PleerListAdapter.this.newSongLoadingBar.setVisibility(View.VISIBLE);
+                    }
+                });
+                try {
+                    int listUpdate = urls.size();
+                    urls.addAll(Api.searchAudio(currentSongData.getArtist() + " " + currentSongData.getTitle(), 5, page));
+                    Log.v("PleerListAdapter", "ANSWER FROM INTERNET");
+                    final int listUpdateFinal = urls.size() - listUpdate;
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Log.v("PleerListAdapter", "" + listUpdateFinal);
+                            if (listUpdateFinal <= 0) {
+                                isFullList = true;
+                                Toast.makeText(activity, "No more songs", Toast.LENGTH_SHORT).show();
+                                Log.v("PleerListAdapter", "No more songs");
+                            }
+                            PleerListAdapter.this.notifyDataSetChanged();
+                        }
+                    });
+                } catch (IOException e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                } catch (JSONException e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                } catch (KException e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                } finally {
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            PleerListAdapter.this.newSongLoadingBar.setVisibility(View.GONE);
+                        }
+                    });
+                }
+            }
+        }).start();
+    }
+
 }
