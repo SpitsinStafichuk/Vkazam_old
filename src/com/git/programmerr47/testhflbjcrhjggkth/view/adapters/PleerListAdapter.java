@@ -2,6 +2,7 @@ package com.git.programmerr47.testhflbjcrhjggkth.view.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.location.GpsStatus;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,6 +39,7 @@ public class PleerListAdapter extends BaseAdapter{
         this.resLayout = resLayout;
         model = RecognizeServiceConnection.getModel();
         currentSongData = model.getCurrentOpenSong();
+        Log.v("PleerListAdapter", "Current Song url = " + currentSongData.getPleercomUrl());
         urls = new ArrayList<Audio>();
         new Thread(new Runnable() {
             @Override
@@ -79,7 +81,7 @@ public class PleerListAdapter extends BaseAdapter{
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         View view = convertView;
         if (view == null) {
             view = inflater.inflate(resLayout, parent, false);
@@ -102,16 +104,24 @@ public class PleerListAdapter extends BaseAdapter{
         LinearLayout info = (LinearLayout) view.findViewById(R.id.ppUrlListItemInfo);
         LinearLayout numbers = (LinearLayout) view.findViewById(R.id.ppUrlListItemNumbers);
         RadioButton radioButton = (RadioButton) view.findViewById(R.id.ppUrlListItemCheckbutton);
+        View.OnClickListener listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if ((currentSongData.getPleercomUrl() == null) || (!currentSongData.getPleercomUrl().equals(urls.get(position).url))) {
+                    currentSongData.setPleercomUrl(urls.get(position).url);
+                    PleerListAdapter.this.notifyDataSetChanged();
+                }
+            }
+        };
+        info.setOnClickListener(listener);
+        numbers.setOnClickListener(listener);
+        radioButton.setOnClickListener(listener);
 
         if ((currentSongData.getPleercomUrl() != null) && (currentSongData.getPleercomUrl().equals(urls.get(position).url))) {
             Log.v("PleerListAdapter", "selected");
-            //info.setBackgroundResource(R.drawable.list_item_bg_pressed);
-            //numbers.setBackgroundResource(R.drawable.list_item_bg_pressed);
             radioButton.setChecked(true);
         } else {
             Log.v("PleerListAdapter", "don't selected");
-            //info.setBackgroundResource(R.drawable.list_item_bg_default);
-            //numbers.setBackgroundResource(R.drawable.list_item_bg_default);
             radioButton.setChecked(false);
         }
 
