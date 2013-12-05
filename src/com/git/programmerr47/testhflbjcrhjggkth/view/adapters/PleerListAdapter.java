@@ -33,10 +33,13 @@ public class PleerListAdapter extends BaseAdapter{
     private LayoutInflater inflater;
     private Activity activity;
     private int resLayout;
+    private int endOfListResLayout;
+    private View endOfListView = null;
 
-    public PleerListAdapter(final Activity activity, int resLayout) {
+    public PleerListAdapter(final Activity activity, int resLayout, int endOfListResLayout) {
         this.activity = activity;
         this.resLayout = resLayout;
+        this.endOfListResLayout = endOfListResLayout;
         model = RecognizeServiceConnection.getModel();
         currentSongData = model.getCurrentOpenSong();
         Log.v("PleerListAdapter", "Current Song url = " + currentSongData.getPleercomUrl());
@@ -45,7 +48,7 @@ public class PleerListAdapter extends BaseAdapter{
             @Override
             public void run() {
                 try {
-                    urls = Api.searchAudio(currentSongData.getArtist() + " " + currentSongData.getTitle(), 0, 0);
+                    urls = Api.searchAudio(currentSongData.getArtist() + " " + currentSongData.getTitle(), 9, 0);
                     Log.v("PleerListAdapter", "ANSWER FROM INTERNET");
                     activity.runOnUiThread(new Runnable() {
                         @Override
@@ -67,12 +70,15 @@ public class PleerListAdapter extends BaseAdapter{
 
     @Override
     public int getCount() {
-        return urls.size();
+        return urls.size() + 1;
     }
 
     @Override
     public Object getItem(int position) {
-        return urls.get(position);
+        if (position < urls.size())
+            return urls.get(position);
+        else
+            return null;
     }
 
     @Override
@@ -83,46 +89,51 @@ public class PleerListAdapter extends BaseAdapter{
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         View view = convertView;
-        if (view == null) {
-            view = inflater.inflate(resLayout, parent, false);
-        }
 
-        TextView textView;
-
-        textView = (TextView) view.findViewById(R.id.ppUrlListItemArtist);
-        textView.setText(urls.get(position).artist);
-
-        textView = (TextView) view.findViewById(R.id.ppUrlListItemTitle);
-        textView.setText(urls.get(position).title);
-
-        textView = (TextView) view.findViewById(R.id.ppUrlListItemDuration);
-        textView.setText(urls.get(position).duration + "");
-
-        textView = (TextView) view.findViewById(R.id.ppUrlListItemBitRate);
-        textView.setText(urls.get(position).bitrate);
-
-        LinearLayout info = (LinearLayout) view.findViewById(R.id.ppUrlListItemInfo);
-        LinearLayout numbers = (LinearLayout) view.findViewById(R.id.ppUrlListItemNumbers);
-        RadioButton radioButton = (RadioButton) view.findViewById(R.id.ppUrlListItemCheckbutton);
-        View.OnClickListener listener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if ((currentSongData.getPleercomUrl() == null) || (!currentSongData.getPleercomUrl().equals(urls.get(position).url))) {
-                    currentSongData.setPleercomUrl(urls.get(position).url);
-                    PleerListAdapter.this.notifyDataSetChanged();
-                }
+        Log.v("PleerListAdapter", position + " - " + urls.size());
+        if (position < urls.size()) {
+            if ((view == null) || (view == endOfListView)) {
+                view = inflater.inflate(resLayout, parent, false);
             }
-        };
-        info.setOnClickListener(listener);
-        numbers.setOnClickListener(listener);
-        radioButton.setOnClickListener(listener);
 
-        if ((currentSongData.getPleercomUrl() != null) && (currentSongData.getPleercomUrl().equals(urls.get(position).url))) {
-            Log.v("PleerListAdapter", "selected");
-            radioButton.setChecked(true);
+            TextView textView;
+
+            textView = (TextView) view.findViewById(R.id.ppUrlListItemArtist);
+            textView.setText(urls.get(position).artist);
+
+            textView = (TextView) view.findViewById(R.id.ppUrlListItemTitle);
+            textView.setText(urls.get(position).title);
+
+            textView = (TextView) view.findViewById(R.id.ppUrlListItemDuration);
+            textView.setText(urls.get(position).duration + "");
+
+            textView = (TextView) view.findViewById(R.id.ppUrlListItemBitRate);
+            textView.setText(urls.get(position).bitrate);
+
+            LinearLayout info = (LinearLayout) view.findViewById(R.id.ppUrlListItemInfo);
+            LinearLayout numbers = (LinearLayout) view.findViewById(R.id.ppUrlListItemNumbers);
+            RadioButton radioButton = (RadioButton) view.findViewById(R.id.ppUrlListItemCheckbutton);
+            View.OnClickListener listener = new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if ((currentSongData.getPleercomUrl() == null) || (!currentSongData.getPleercomUrl().equals(urls.get(position).url))) {
+                        currentSongData.setPleercomUrl(urls.get(position).url);
+                        PleerListAdapter.this.notifyDataSetChanged();
+                    }
+                }
+            };
+            info.setOnClickListener(listener);
+            numbers.setOnClickListener(listener);
+            radioButton.setOnClickListener(listener);
+
+            if ((currentSongData.getPleercomUrl() != null) && (currentSongData.getPleercomUrl().equals(urls.get(position).url))) {
+                radioButton.setChecked(true);
+            } else {
+                radioButton.setChecked(false);
+            }
         } else {
-            Log.v("PleerListAdapter", "don't selected");
-            radioButton.setChecked(false);
+            view = inflater.inflate(endOfListResLayout, parent, false);
+            endOfListView = view;
         }
 
         return view;
