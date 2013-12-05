@@ -30,7 +30,6 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 	private MicroScrobblerModel model;
 	private SongInfoController controller;
 	private DatabaseSongData data;
-	private TextView artistTextView;
 	private DynamicImageView coverArt;
 
 	private ImageButton playPauseButton;
@@ -55,7 +54,7 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 		controller = new SongInfoController(this);
 		model = RecognizeServiceConnection.getModel();
 		model.getSongManager().addObserver(this);
-		data = (DatabaseSongData) model.getHistoryItem(position);
+		data = model.getCurrentOpenSong();
 		fillActivity(data);
 		
 		
@@ -65,18 +64,6 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 			@Override
 			public void onClick(View v) {
 				controller.playPauseSong(data, positionInList);
-			}
-		});
-		
-		artistTextView = (TextView) findViewById(R.id.songInfoArtist);
-		final int fposition = position;
-		artistTextView.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(SongInfoActivity.this, ArtistInfoActivity.class);
-				intent.putExtra(ARGUMENT_SONGLIST_POSITION, fposition);
-				startActivity(intent);
 			}
 		});
 		

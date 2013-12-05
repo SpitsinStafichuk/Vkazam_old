@@ -17,7 +17,7 @@
         android:layout_height="match_parent"
         android:layout_marginLeft="5dp"
         android:orientation="vertical"
-        android:background="@drawable/song_list_item_bg_default">
+        android:background="@drawable/list_item_bg_default">
 
         <TextView
             android:id="@+id/fingerprintText"
