@@ -82,7 +82,7 @@ public class PleerListAdapter extends BaseAdapter{
             textView.setText(urls.get(position).title);
 
             textView = (TextView) view.findViewById(R.id.ppUrlListItemDuration);
-            textView.setText(urls.get(position).duration / 60 + ":" + urls.get(position).duration % 60);
+            textView.setText(getStringTime(urls.get(position).duration));
 
             textView = (TextView) view.findViewById(R.id.ppUrlListItemBitRate);
             textView.setText(urls.get(position).bitrate);
@@ -174,4 +174,12 @@ public class PleerListAdapter extends BaseAdapter{
         }).start();
     }
 
+    private String getStringTime(long time) {
+        String result = "" + time / 60 + ":";
+        long seconds = time % 60;
+        if (seconds < 10) {
+            result += "0";
+        }
+        return result + seconds;
+    }
 }
