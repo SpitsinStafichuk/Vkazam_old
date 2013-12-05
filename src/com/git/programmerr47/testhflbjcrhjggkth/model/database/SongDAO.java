@@ -54,7 +54,7 @@ public class SongDAO extends AbstractDAO {
 		if(songData.getAlbumReleaseYear() != null) values.put(DBConstants.MUSIC_HISTORY_ALBUM_RELEASE_YEAR, songData.getAlbumReleaseYear());
 		if(songData.getAlbumArtist() != null) values.put(DBConstants.MUSIC_HISTORY_ALBUM_ARTIST, songData.getAlbumArtist());
 		//TODO подумать над разумностью сравнения по датам
-		int result = database.update(DBConstants.MUSIC_HISTORY_TABLE, values, DBConstants.DATE + "=?", new String[] {songData.getDate().toString()});
+		int result = database.update(DBConstants.MUSIC_HISTORY_TABLE, values, DBConstants.DATE + "=?", new String[] {"" + songData.getDate().getTime()});
         Log.v("Database", "" + result);
 		database.close();
 		databaseHelper.close();
