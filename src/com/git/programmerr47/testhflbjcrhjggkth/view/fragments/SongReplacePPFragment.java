@@ -37,7 +37,7 @@ public class SongReplacePPFragment extends FragmentWithName{
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        adapter = new PleerListAdapter(this.getActivity(), R.layout.pp_url_list_item);
+        adapter = new PleerListAdapter(this.getActivity(), R.layout.pp_url_list_item, R.layout.more_url_list_item);
     }
 	
     @Override

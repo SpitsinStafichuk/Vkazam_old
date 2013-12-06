@@ -57,8 +57,9 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 		coverArts = new HashMap<String, ImageView>();
 		Log.v("Lists", "History adapter created");
 		
-		IPlayerStateObservable songManagerStateObservable = (IPlayerStateObservable) songManager;
-		songManagerStateObservable.addObserver((IPlayerStateObserver)this);
+		//IPlayerStateObservable songManagerStateObservable = (IPlayerStateObservable) songManager;
+		//songManagerStateObservable.addObserver((IPlayerStateObserver)this);
+        model.getPlayer().addObserver(this);
 		Log.v("SongPlayer", "IPlayerStateObserver was added");
 		inflater = (LayoutInflater) this.activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
@@ -216,8 +217,7 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 	}
 	
 	public void release() {
-		IPlayerStateObservable songManagerStateObservable = (IPlayerStateObservable) songManager;
-		songManagerStateObservable.removeObserver((IPlayerStateObserver)this);
+        model.getPlayer().removeObserver(this);
 		Log.v("SongPlayer", "IPlayerStateObserver was removed");
 	}
 

@@ -35,6 +35,8 @@ public class MicroScrobblerModel {
 	private SongList songList;
 	private FingerprintList fingerprintList;
     private DatabaseSongData currentOpenSong = null;
+
+    private MicroScrobblerMediaPlayer player;
 	
 	private ImageLoader imageLoader;
 	
@@ -60,6 +62,7 @@ public class MicroScrobblerModel {
 	
 	private MicroScrobblerModel() {
 		handler = new Handler();
+        MicroScrobblerMediaPlayer.setHandler(handler);
 		config = GNConfig.init(GRACENOTE_APPLICATION_ID, context);
 		config.setProperty("content.coverArt","1");
 		config.setProperty("content.contributor.images", "1");
@@ -133,10 +136,6 @@ public class MicroScrobblerModel {
 	public Api getVkApi() {
 		return vkApi;
 	}
-
-	public void setVkApi(Api vkApi) {
-		this.vkApi = vkApi;
-	}
 	
 	public void setVkApi(String access_token, long user_id, Api vkApi) {
 		vkAccount.access_token = access_token;
@@ -152,5 +151,10 @@ public class MicroScrobblerModel {
 
     public DatabaseSongData getCurrentOpenSong() {
         return currentOpenSong;
+    }
+
+    public MicroScrobblerMediaPlayer getPlayer() {
+        player = MicroScrobblerMediaPlayer.getInstance();
+        return player;
     }
 }
