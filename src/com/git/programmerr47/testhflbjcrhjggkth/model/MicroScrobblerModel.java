@@ -62,6 +62,7 @@ public class MicroScrobblerModel {
 	
 	private MicroScrobblerModel() {
 		handler = new Handler();
+        MicroScrobblerMediaPlayer.setHandler(handler);
 		config = GNConfig.init(GRACENOTE_APPLICATION_ID, context);
 		config.setProperty("content.coverArt","1");
 		config.setProperty("content.contributor.images", "1");
@@ -153,10 +154,7 @@ public class MicroScrobblerModel {
     }
 
     public MicroScrobblerMediaPlayer getPlayer() {
-        if (player == null) {
-            player = MicroScrobblerMediaPlayer.getInstance();
-        }
-
+        player = MicroScrobblerMediaPlayer.getInstance();
         return player;
     }
 }

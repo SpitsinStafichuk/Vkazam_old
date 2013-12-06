@@ -136,6 +136,8 @@ public class PleerListAdapter extends BaseAdapter{
             playPause.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    controller.setCurrentElement(viewFinal);
+                    controller.playPauseSong(urls.get(position).url, activity);
                 }
             });
         }

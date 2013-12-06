@@ -24,9 +24,8 @@ import android.media.MediaPlayer;
 import android.os.Handler;
 import android.util.Log;
 
-public class SongManager implements IPlayerStateObservable, ISongInfoObserverable, ISongProgressObservable {
+public class SongManager implements ISongInfoObserverable, ISongProgressObservable {
 
-	private Set<IPlayerStateObserver> playerStateObservers;
     private Set<ISongInfoObserver> songInfoObservers;
     private Set<ISongProgressObserver> songProgressObservers;
 	
@@ -46,7 +45,6 @@ public class SongManager implements IPlayerStateObservable, ISongInfoObserverabl
 		songPlayer = MicroScrobblerMediaPlayer.getInstance();
 		this.handler = handler;
 		this.context = context;
-        playerStateObservers = new HashSet<IPlayerStateObserver>();
         songInfoObservers = new HashSet<ISongInfoObserver>();
         songProgressObservers = new HashSet<ISongProgressObserver>();
 
@@ -79,7 +77,6 @@ public class SongManager implements IPlayerStateObservable, ISongInfoObserverabl
 	
 		if (audioList.isEmpty()) {
 			songPlayer.release();
-			asyncNotifyPlayerStateObservers();
 			throw new SongNotFoundException();
 		}
 		return audioList.get(0);
@@ -89,7 +86,6 @@ public class SongManager implements IPlayerStateObservable, ISongInfoObserverabl
 		Log.v("SongPlayer", "Player is loading");
         songPlayer = MicroScrobblerMediaPlayer.getInstance();
         songPlayer.setLoadingState();
-        asyncNotifyPlayerStateObservers();
         songPlayer.setOnCompletionListener(onCompletionListener);
         songPlayer.setOnBufferingUpdateListener(onBufferingUpdateListener);
 		Log.v("SongPlayer", "Player is reconstructed");
@@ -118,7 +114,6 @@ public class SongManager implements IPlayerStateObservable, ISongInfoObserverabl
 		if(songDataNeedUpdate) {
 			songData.setPleercomUrl(audio.url);
 		}
-        asyncNotifyPlayerStateObservers();
 	}
 	
 	private void sendLastFMPlaybackCompleted() {
@@ -146,18 +141,15 @@ public class SongManager implements IPlayerStateObservable, ISongInfoObserverabl
 		songPlayer.start();
 		Log.v("SongListController", "Song" + songData.getArtist() + "-" + songData.getTitle() + "was started");
 		sendLastFMTrackStarted();
-		asyncNotifyPlayerStateObservers();
 	}
 	
 	public void pause() {
 		sendLastFMPlaybackCompleted();
 		songPlayer.pause();
-		asyncNotifyPlayerStateObservers();
 	}
 	
 	public void stop() {
 		songPlayer.stop();
-		asyncNotifyPlayerStateObservers();
 	}
 	
 	public String getArtist() {
@@ -172,28 +164,6 @@ public class SongManager implements IPlayerStateObservable, ISongInfoObserverabl
 		return songPlayer.isPlaying();
 	}
 
-	public void addObserver(IPlayerStateObserver o) {
-		Log.v("SongManager", "Add new observer"); 
-		playerStateObservers.add(o);
-	}
-
-	public void removeObserver(IPlayerStateObserver o) {
-		playerStateObservers.remove(o);
-	}
-	
-	private void asyncNotifyPlayerStateObservers() {
-		handler.post(new Runnable() {
-			public void run() {
-				notifyPlayerStateObservers();
-			}
-		});
-	}
-
-	public void notifyPlayerStateObservers() {
-		for (IPlayerStateObserver o : playerStateObservers)
-			o.updatePlayerState();
-	}
-
 	public DatabaseSongData getSongData() {
 		return songData;
 	}
@@ -205,7 +175,6 @@ public class SongManager implements IPlayerStateObservable, ISongInfoObserverabl
 	public void release() {
 		songPlayer.release();
 		Log.v("SongPlayer", "Player is released");
-		asyncNotifyPlayerStateObservers();
 	}
 
 	public boolean isLoading() {
