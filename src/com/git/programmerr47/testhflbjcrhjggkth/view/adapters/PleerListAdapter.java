@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
+import com.git.programmerr47.testhflbjcrhjggkth.controllers.URLcontroller;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
 import com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeServiceConnection;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseSongData;
@@ -27,6 +28,7 @@ public class PleerListAdapter extends BaseAdapter{
 
     private MicroScrobblerModel model;
     private DatabaseSongData currentSongData;
+    private View currentElement;
     private List<Audio> urls;
     private LayoutInflater inflater;
     private Activity activity;
@@ -35,10 +37,13 @@ public class PleerListAdapter extends BaseAdapter{
     private int page = 1;
     private ProgressBar newSongLoadingBar;
     private boolean isFullList = false;
+    private URLcontroller controller;
+
     public PleerListAdapter(final Activity activity, int resLayout, int endOfListResLayout) {
         this.activity = activity;
         this.resLayout = resLayout;
         this.endOfListResLayout = endOfListResLayout;
+        controller = new URLcontroller();
         model = RecognizeServiceConnection.getModel();
         currentSongData = model.getCurrentOpenSong();
         Log.v("PleerListAdapter", "Current Song url = " + currentSongData.getPleercomUrl());
@@ -121,6 +126,16 @@ public class PleerListAdapter extends BaseAdapter{
                 public void onClick(View view) {
                     page++;
                     updateSongsList();
+                }
+            });
+        }
+
+        if (position < urls.size()) {
+            ImageButton playPause = (ImageButton) view.findViewById(R.id.ppUrlListItemPlayPauseButton);
+            final View viewFinal = view;
+            playPause.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
                 }
             });
         }

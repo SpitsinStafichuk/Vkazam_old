@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerMediaPlayer;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.*;
 import org.json.JSONException;
 
@@ -29,16 +30,12 @@ public class SongManager implements IPlayerStateObservable, ISongInfoObserverabl
     private Set<ISongInfoObserver> songInfoObservers;
     private Set<ISongProgressObserver> songProgressObservers;
 	
-	private MediaPlayer songPlayer;
+	private MicroScrobblerMediaPlayer songPlayer;
     private MediaPlayer.OnBufferingUpdateListener onBufferingUpdateListener;
     private MediaPlayer.OnCompletionListener onCompletionListener;
 	
 	private DatabaseSongData songData;
     private int positionInList;
-	
-	private boolean isLoading;
-	private boolean isPlaying;
-	private boolean isPrepared;
 	
 	private Handler handler;
 	
@@ -46,10 +43,9 @@ public class SongManager implements IPlayerStateObservable, ISongInfoObserverabl
     private ScheduledThreadPoolExecutor songProgressTimer;
 	
 	public SongManager(Handler handler, Context context) {
-		songPlayer = new MediaPlayer();
+		songPlayer = MicroScrobblerMediaPlayer.getInstance();
 		this.handler = handler;
 		this.context = context;
-		isPrepared = false;
         playerStateObservers = new HashSet<IPlayerStateObserver>();
         songInfoObservers = new HashSet<ISongInfoObserver>();
         songProgressObservers = new HashSet<ISongProgressObserver>();
@@ -71,7 +67,7 @@ public class SongManager implements IPlayerStateObservable, ISongInfoObserverabl
 	public void set(DatabaseSongData songData, int positionInList) {
 		this.songData = songData;
         this.positionInList = positionInList;
-		isPrepared = false;
+        //isPrepared = false;
         asyncNotifySongInfoObservers();
 	}
 	
@@ -82,18 +78,18 @@ public class SongManager implements IPlayerStateObservable, ISongInfoObserverabl
 		Log.v("SongPlayer", "Searching audio is complete");
 	
 		if (audioList.isEmpty()) {
-			isLoading = false;
+			songPlayer.release();
 			asyncNotifyPlayerStateObservers();
 			throw new SongNotFoundException();
 		}
 		return audioList.get(0);
 	}
 	
-	public void prepare() throws MalformedURLException, IOException, JSONException, SongNotFoundException, KException {
-		isLoading = true;
+	public void prepare() throws IOException, JSONException, SongNotFoundException, KException {
 		Log.v("SongPlayer", "Player is loading");
-		asyncNotifyPlayerStateObservers();
-		songPlayer = new MediaPlayer();
+        songPlayer = MicroScrobblerMediaPlayer.getInstance();
+        songPlayer.setLoadingState();
+        asyncNotifyPlayerStateObservers();
         songPlayer.setOnCompletionListener(onCompletionListener);
         songPlayer.setOnBufferingUpdateListener(onBufferingUpdateListener);
 		Log.v("SongPlayer", "Player is reconstructed");
@@ -122,7 +118,7 @@ public class SongManager implements IPlayerStateObservable, ISongInfoObserverabl
 		if(songDataNeedUpdate) {
 			songData.setPleercomUrl(audio.url);
 		}
-		isPrepared = true;
+        asyncNotifyPlayerStateObservers();
 	}
 	
 	private void sendLastFMPlaybackCompleted() {
@@ -147,10 +143,7 @@ public class SongManager implements IPlayerStateObservable, ISongInfoObserverabl
 	}
 	
 	public void play() {
-		isLoading = false;
-		
 		songPlayer.start();
-		isPlaying = true;
 		Log.v("SongListController", "Song" + songData.getArtist() + "-" + songData.getTitle() + "was started");
 		sendLastFMTrackStarted();
 		asyncNotifyPlayerStateObservers();
@@ -159,14 +152,11 @@ public class SongManager implements IPlayerStateObservable, ISongInfoObserverabl
 	public void pause() {
 		sendLastFMPlaybackCompleted();
 		songPlayer.pause();
-		isPlaying = false;
 		asyncNotifyPlayerStateObservers();
 	}
 	
 	public void stop() {
 		songPlayer.stop();
-		isLoading = false;
-		isPlaying = false;
 		asyncNotifyPlayerStateObservers();
 	}
 	
@@ -179,7 +169,7 @@ public class SongManager implements IPlayerStateObservable, ISongInfoObserverabl
 	}
 	
 	public boolean isPlaying() {
-		return isPlaying;
+		return songPlayer.isPlaying();
 	}
 
 	public void addObserver(IPlayerStateObserver o) {
@@ -214,19 +204,16 @@ public class SongManager implements IPlayerStateObservable, ISongInfoObserverabl
 
 	public void release() {
 		songPlayer.release();
-		isPlaying = false;
-		isLoading = false;
-		isPrepared = true;
 		Log.v("SongPlayer", "Player is released");
 		asyncNotifyPlayerStateObservers();
 	}
 
 	public boolean isLoading() {
-		return isLoading;
+		return songPlayer.isLoading();
 	}
 
 	public boolean isPrepared() {
-		return isPrepared;
+		return songPlayer.isPrepared();
 	}
 
     public synchronized void seekTo(int percent) {
@@ -292,7 +279,7 @@ public class SongManager implements IPlayerStateObservable, ISongInfoObserverabl
     private void asyncNotifySongProgressObservers() {
         handler.post(new Runnable() {
             public void run() {
-                notifySongProgressObservers(isPrepared);
+                notifySongProgressObservers(isPrepared());
             }
         });
     }
