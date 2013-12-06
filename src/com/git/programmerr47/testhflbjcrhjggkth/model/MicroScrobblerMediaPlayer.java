@@ -1,12 +1,19 @@
 package com.git.programmerr47.testhflbjcrhjggkth.model;
 
 import android.media.MediaPlayer;
+import android.os.Handler;
+import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObservable;
+import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObserver;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 //TODO I don't know what should be here
-public class MicroScrobblerMediaPlayer extends MediaPlayer{
+public class MicroScrobblerMediaPlayer extends MediaPlayer implements IPlayerStateObservable {
     private static MicroScrobblerMediaPlayer instance;
+    private static Set<IPlayerStateObserver> playerStateObservers = new HashSet<IPlayerStateObserver>();
+    private static Handler handler;
 
     private boolean isLoading;
     private boolean isPlaying;
@@ -24,6 +31,10 @@ public class MicroScrobblerMediaPlayer extends MediaPlayer{
 
     }
 
+    public static void setHandler(Handler h) {
+        handler = h;
+    }
+
     @Override
     public void prepare() throws IOException {
         super.prepare();
@@ -31,6 +42,7 @@ public class MicroScrobblerMediaPlayer extends MediaPlayer{
         isPlaying = false;
         isLoading = false;
         isPrepared = true;
+        asyncNotifyPlayerStateObservers();
     }
 
     @Override
@@ -41,6 +53,7 @@ public class MicroScrobblerMediaPlayer extends MediaPlayer{
         isPlaying = false;
         isLoading = false;
         isPrepared = false;
+        asyncNotifyPlayerStateObservers();
     }
 
     @Override
@@ -50,6 +63,7 @@ public class MicroScrobblerMediaPlayer extends MediaPlayer{
         isPlaying = true;
         isPrepared = true;
         isLoading = false;
+        asyncNotifyPlayerStateObservers();
     }
 
     @Override
@@ -59,6 +73,7 @@ public class MicroScrobblerMediaPlayer extends MediaPlayer{
         isPlaying = false;
         isPrepared = true;
         isLoading = false;
+        asyncNotifyPlayerStateObservers();
     }
 
     @Override
@@ -68,6 +83,7 @@ public class MicroScrobblerMediaPlayer extends MediaPlayer{
         isPlaying = false;
         isPrepared = true;
         isLoading = false;
+        asyncNotifyPlayerStateObservers();
     }
 
     @Override
@@ -85,5 +101,30 @@ public class MicroScrobblerMediaPlayer extends MediaPlayer{
 
     public void setLoadingState() {
         isLoading = true;
+        asyncNotifyPlayerStateObservers();
+    }
+
+    @Override
+    public void addObserver(IPlayerStateObserver o) {
+        playerStateObservers.add(o);
+    }
+
+    @Override
+    public void removeObserver(IPlayerStateObserver o) {
+        playerStateObservers.remove(o);
+    }
+
+    private void asyncNotifyPlayerStateObservers() {
+        handler.post(new Runnable() {
+            public void run() {
+                notifyPlayerStateObservers();
+            }
+        });
+    }
+
+    @Override
+    public void notifyPlayerStateObservers() {
+        for (IPlayerStateObserver o : playerStateObservers)
+            o.updatePlayerState();
     }
 }
