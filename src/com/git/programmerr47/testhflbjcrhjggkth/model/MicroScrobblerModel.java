@@ -133,10 +133,6 @@ public class MicroScrobblerModel {
 	public Api getVkApi() {
 		return vkApi;
 	}
-
-	public void setVkApi(Api vkApi) {
-		this.vkApi = vkApi;
-	}
 	
 	public void setVkApi(String access_token, long user_id, Api vkApi) {
 		vkAccount.access_token = access_token;

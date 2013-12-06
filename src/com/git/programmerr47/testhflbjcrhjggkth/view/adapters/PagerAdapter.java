@@ -26,9 +26,9 @@ public class PagerAdapter extends FragmentPagerAdapter{
         fragments = new ArrayList<FragmentWithName>();
         pageCount = pages;
     }
-    
-    public PagerAdapter(FragmentManager fm) {
-        this(fm, 3);
+
+    protected void setPageCount(int pageCount) {
+        this.pageCount = pageCount;
     }
     
     @Override
