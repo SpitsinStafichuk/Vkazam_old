@@ -35,6 +35,8 @@ public class MicroScrobblerModel {
 	private SongList songList;
 	private FingerprintList fingerprintList;
     private DatabaseSongData currentOpenSong = null;
+
+    private MicroScrobblerMediaPlayer player;
 	
 	private ImageLoader imageLoader;
 	
@@ -148,5 +150,13 @@ public class MicroScrobblerModel {
 
     public DatabaseSongData getCurrentOpenSong() {
         return currentOpenSong;
+    }
+
+    public MicroScrobblerMediaPlayer getPlayer() {
+        if (player == null) {
+            player = MicroScrobblerMediaPlayer.getInstance();
+        }
+
+        return player;
     }
 }
