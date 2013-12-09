@@ -27,6 +27,7 @@ public class SongDAO extends AbstractDAO {
 		values.put(DBConstants.DATE, songData.getDate().getTime());
 		if(songData.getCoverArtUrl() != null) values.put(DBConstants.MUSIC_HISTORY_COVER_ART_URL, songData.getCoverArtUrl());
 		if(songData.getPleercomUrl() != null) values.put(DBConstants.MUSIC_HISTORY_PLEERCOM_URL, songData.getPleercomUrl());
+		if(songData.getPleercomUrl() != null) values.put(DBConstants.MUSIC_HISTORY_PLEERCOM_URL, songData.getPleercomUrl());
 		if(songData.getContributorImageUrl() != null) values.put(DBConstants.MUSIC_HISTORY_CONTRIBUTOR_IMAGE_URL, songData.getContributorImageUrl());
 		if(songData.getArtistBiographyURL() != null) values.put(DBConstants.MUSIC_HISTORY_BIOGRAPHY_URL, songData.getArtistBiographyURL());
 		if(songData.getAlbumReviewUrl() != null) values.put(DBConstants.MUSIC_HISTORY_ALBUM_REVIEW_URL, songData.getAlbumReviewUrl());
@@ -48,6 +49,7 @@ public class SongDAO extends AbstractDAO {
         Log.v("Database", "" + songData.getPleercomUrl());
 		if(songData.getCoverArtUrl() != null) values.put(DBConstants.MUSIC_HISTORY_COVER_ART_URL, songData.getCoverArtUrl());
 		if(songData.getPleercomUrl() != null) values.put(DBConstants.MUSIC_HISTORY_PLEERCOM_URL, songData.getPleercomUrl());
+		if(songData.getVkAudioId() != null) values.put(DBConstants.MUSIC_HISTORY_PLEERCOM_URL, songData.getVkAudioId());
 		if(songData.getContributorImageUrl() != null) values.put(DBConstants.MUSIC_HISTORY_CONTRIBUTOR_IMAGE_URL, songData.getContributorImageUrl());
 		if(songData.getArtistBiographyURL() != null) values.put(DBConstants.MUSIC_HISTORY_BIOGRAPHY_URL, songData.getArtistBiographyURL());
 		if(songData.getAlbumReviewUrl() != null) values.put(DBConstants.MUSIC_HISTORY_ALBUM_REVIEW_URL, songData.getAlbumReviewUrl());
@@ -87,6 +89,7 @@ public class SongDAO extends AbstractDAO {
 					cursor.getString(cursor.getColumnIndex(DBConstants.MUSIC_HISTORY_TITLE)),
 					new Date(Long.parseLong(cursor.getString(cursor.getColumnIndex(DBConstants.DATE)))),
 					cursor.getString(cursor.getColumnIndex(DBConstants.MUSIC_HISTORY_PLEERCOM_URL)),
+					cursor.getString(cursor.getColumnIndex(DBConstants.MUSIC_HISTORY_VK_AUDIO_ID)),
 					cursor.getString(cursor.getColumnIndex(DBConstants.MUSIC_HISTORY_COVER_ART_URL)),
 					cursor.getString(cursor.getColumnIndex(DBConstants.MUSIC_HISTORY_CONTRIBUTOR_IMAGE_URL)),
 					cursor.getString(cursor.getColumnIndex(DBConstants.MUSIC_HISTORY_BIOGRAPHY_URL)),

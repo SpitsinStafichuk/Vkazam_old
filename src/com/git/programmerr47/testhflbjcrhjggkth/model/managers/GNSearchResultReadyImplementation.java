@@ -50,7 +50,7 @@ public class GNSearchResultReadyImplementation implements GNSearchResultReady, G
 				String albumReviewUrl = bestResponse.getAlbumReviewUrl();
 				String albumReleaseYear = bestResponse.getAlbumReleaseYear();
 				
-				songData = new SongData(trackId, artist, album, title, null, coverArtURL, new Date(), contributorImageURL,
+				songData = new SongData(trackId, artist, album, title, null, null, coverArtURL, new Date(), contributorImageURL,
 						artistBiographyURL, songPosition, albumReviewUrl, albumReleaseYear, albumArtist);
 				
 				searchResultStatus = SEARCH_SUCCESS;

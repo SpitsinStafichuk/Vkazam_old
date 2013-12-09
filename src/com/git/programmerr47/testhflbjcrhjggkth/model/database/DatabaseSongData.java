@@ -18,10 +18,10 @@ public class DatabaseSongData extends SongData implements Data {
 	}
 	
 	DatabaseSongData(long id, AbstractDAO dao, String trackId, String artist, String album, 
-			String title, Date date, String pleercomUrl, String coverArtUrl, String contributorImageUrl, 
+			String title, Date date, String pleercomUrl, String vkAudioId, String coverArtUrl, String contributorImageUrl, 
 			String artistBiographyURL, String albumReviewUrl, String albumReleaseYear,
 			String albumArtist) {
-		super(trackId, artist, album, title, pleercomUrl, coverArtUrl, date, contributorImageUrl, 
+		super(trackId, artist, album, title, pleercomUrl, vkAudioId, coverArtUrl, date, contributorImageUrl, 
 				artistBiographyURL, null, albumReviewUrl, albumReleaseYear, albumArtist);
 		this.id = id;
 		this.dao = dao;
@@ -44,6 +44,12 @@ public class DatabaseSongData extends SongData implements Data {
 	@Override
 	public void setPleercomUrl(String pleercomUrl) {
 		super.setPleercomUrl(pleercomUrl);
+		dao.update(this);
+	}
+	
+	@Override
+	public void setVkAudioId(String vkAudioId) {
+		super.setVkAudioId(vkAudioId);
 		dao.update(this);
 	}
 	

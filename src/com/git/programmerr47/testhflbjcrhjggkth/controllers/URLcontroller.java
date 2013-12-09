@@ -10,12 +10,8 @@ import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerMediaPlayer;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
 import com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeServiceConnection;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseSongData;
-import com.git.programmerr47.testhflbjcrhjggkth.model.exceptions.SongNotFoundException;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SongManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObserver;
-import com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.KException;
-import org.json.JSONException;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
