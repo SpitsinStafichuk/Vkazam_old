@@ -19,6 +19,7 @@ public class SongData {
 	protected String albumReviewUrl;
 	protected String albumReleaseYear;
 	protected String albumArtist;
+	protected String vkAudioId;
 	
 	@Override
 	public String toString() {
@@ -28,6 +29,7 @@ public class SongData {
 			   "\ntrackId" + trackId +
 			   "\ndate: " + date +
 			   "\npleercomUrl: " + pleercomUrl +
+			   "\nvkAudioId: " + vkAudioId +
 			   "\ncoverArtUrl: " + coverArtUrl +
 			   "\ncontributorImageUrl" + contributorImageUrl +
 			   "\nartistBiographyURL: " + artistBiographyURL +
@@ -38,33 +40,33 @@ public class SongData {
 	}
 	
 	public SongData(SongData songData) {
-		this(songData.trackId, songData.artist, songData.album, songData.title, songData.pleercomUrl,
+		this(songData.trackId, songData.artist, songData.album, songData.title, songData.pleercomUrl, songData.vkAudioId,
 				songData.coverArtUrl, songData.date, songData.contributorImageUrl, songData.artistBiographyURL,
 				songData.songPosition, songData.albumReviewUrl, songData.albumReleaseYear, songData.albumArtist);
 	}
 	
 	public SongData(String trackId, String artist, String title, Date date) {
-		this(trackId, artist, null, title, null, null, date, null, null, null, null, null, null);
+		this(trackId, artist, null, title, null, null, null, date, null, null, null, null, null, null);
 	}
 	
 	public SongData(String trackId, String artist, String title, Date date, 
 			String pleercomUrl, String coverArtUrl) {
-		this(trackId, artist, null, title, pleercomUrl, coverArtUrl, date, null, null, null, null, null, null);
+		this(trackId, artist, null, title, pleercomUrl, null, coverArtUrl, date, null, null, null, null, null, null);
 	} 
 	
 	public SongData(String trackId, String artist, String title, Date date, String coverArtUrl) {
-		this(trackId, artist, null, title, null, coverArtUrl, date, null, null, null, null, null, null);
+		this(trackId, artist, null, title, null, null, coverArtUrl, date, null, null, null, null, null, null);
 		Log.v("SongData", "Creating data with no pleercomurl is success");
 		Log.v("SongData", "pleercomurl = " + pleercomUrl);
 		Log.v("SongData", "coverarturl = " + this.coverArtUrl);
 	} 
 	
 	public SongData(String trackId, String artist, String album, String title, Date date) {
-		this(trackId, artist, album, title, null, null, date, null, null, null, null, null, null);
+		this(trackId, artist, album, title, null, null, null, date, null, null, null, null, null, null);
 	}
 	
 	public SongData(String trackId, String artist, String album, 
-			String title, String pleercomUrl, String coverArtUrl, Date date, String contributorImageUrl, 
+			String title, String pleercomUrl, String vkAudioId, String coverArtUrl, Date date, String contributorImageUrl, 
 			String artistBiographyURL, String songPosition, String albumReviewUrl, String albumReleaseYear,
 			String albumArtist) {
 		this.artist = artist;
@@ -125,6 +127,14 @@ public class SongData {
 	
 	public void setPleercomUrl(String pleercomURL) {
 		this.pleercomUrl = pleercomURL;
+	}
+	
+	public void setVkAudioId(String vkAudioId) {
+		this.vkAudioId = vkAudioId;
+	}
+	
+	public String getVkAudioId() {
+		return vkAudioId;
 	}
 	
 	public void setNullFields(SongData songData) {

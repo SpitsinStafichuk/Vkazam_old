@@ -12,16 +12,18 @@ import com.git.programmerr47.testhflbjcrhjggkth.controllers.URLcontroller;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
 import com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeServiceConnection;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseSongData;
-import com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.Api;
-import com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.Audio;
-import com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.KException;
+import com.perm.kate.api.Api;
+import com.perm.kate.api.Audio;
+import com.perm.kate.api.KException;
+
 import org.json.JSONException;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PleerListAdapter extends BaseAdapter {
+public class VkListAdapter extends BaseAdapter {
+	private static String TAG = "VkListAdapter";
 
     private MicroScrobblerModel model;
     private DatabaseSongData currentSongData;
@@ -35,15 +37,17 @@ public class PleerListAdapter extends BaseAdapter {
     private ProgressBar newSongLoadingBar;
     private boolean isFullList = false;
     private URLcontroller controller;
+    private Api vkApi;
 
-    public PleerListAdapter(final Activity activity, int resLayout, int endOfListResLayout) {
+    public VkListAdapter(final Activity activity, int resLayout, int endOfListResLayout) {
         this.activity = activity;
         this.resLayout = resLayout;
         this.endOfListResLayout = endOfListResLayout;
         controller = new URLcontroller();
         model = RecognizeServiceConnection.getModel();
+        vkApi = model.getVkApi();
         currentSongData = model.getCurrentOpenSong();
-        Log.v("PleerListAdapter", "Current Song url = " + currentSongData.getPleercomUrl());
+        Log.v(TAG, "Current Song url = " + currentSongData.getPleercomUrl());
         urls = new ArrayList<Audio>();
         updateSongsList();
         inflater = (LayoutInflater) this.activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -71,7 +75,7 @@ public class PleerListAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         View view = convertView;
 
-        Log.v("PleerListAdapter", position + " - " + urls.size());
+        Log.v(TAG, position + " - " + urls.size());
         if (position < urls.size()) {
             view = inflater.inflate(resLayout, parent, false);
 
@@ -87,17 +91,19 @@ public class PleerListAdapter extends BaseAdapter {
             textView.setText(getStringTime(urls.get(position).duration));
 
             textView = (TextView) view.findViewById(R.id.ppUrlListItemBitRate);
-            textView.setText(urls.get(position).bitrate);
 
             LinearLayout info = (LinearLayout) view.findViewById(R.id.ppUrlListItemInfo);
             LinearLayout numbers = (LinearLayout) view.findViewById(R.id.ppUrlListItemNumbers);
             RadioButton radioButton = (RadioButton) view.findViewById(R.id.ppUrlListItemCheckbutton);
+            
             View.OnClickListener listener = new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if ((currentSongData.getPleercomUrl() == null) || (!currentSongData.getPleercomUrl().equals(urls.get(position).url))) {
-                        currentSongData.setPleercomUrl(urls.get(position).url);
-                        PleerListAdapter.this.notifyDataSetChanged();
+                	Audio audio = urls.get(position);
+                	String audioId = audio.owner_id + "_" + audio.aid;
+                    if (currentSongData.getVkAudioId() == null || !currentSongData.getVkAudioId().equals(audioId)) {
+                        currentSongData.setVkAudioId(audioId);
+                        VkListAdapter.this.notifyDataSetChanged();
                     }
                 }
             };
@@ -150,24 +156,24 @@ public class PleerListAdapter extends BaseAdapter {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        PleerListAdapter.this.newSongLoadingBar.setVisibility(View.VISIBLE);
+                        VkListAdapter.this.newSongLoadingBar.setVisibility(View.VISIBLE);
                     }
                 });
                 try {
                     int listUpdate = urls.size();
-                    urls.addAll(Api.searchAudio(currentSongData.getArtist() + " " + currentSongData.getTitle(), 5, page));
-                    Log.v("PleerListAdapter", "ANSWER FROM INTERNET");
+                    urls.addAll(vkApi.searchAudio(currentSongData.getArtist() + " " + currentSongData.getTitle(), "2", "0", 5l, (page - 1) * 5l, null, null));
+                    Log.v(TAG, "ANSWER FROM INTERNET");
                     final int listUpdateFinal = urls.size() - listUpdate;
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Log.v("PleerListAdapter", "" + listUpdateFinal);
+                            Log.v(TAG, "" + listUpdateFinal);
                             if (listUpdateFinal <= 0) {
                                 isFullList = true;
                                 Toast.makeText(activity, "No more songs", Toast.LENGTH_SHORT).show();
-                                Log.v("PleerListAdapter", "No more songs");
+                                Log.v(TAG, "No more songs");
                             }
-                            PleerListAdapter.this.notifyDataSetChanged();
+                            VkListAdapter.this.notifyDataSetChanged();
                         }
                     });
                 } catch (IOException e) {
@@ -180,7 +186,7 @@ public class PleerListAdapter extends BaseAdapter {
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            PleerListAdapter.this.newSongLoadingBar.setVisibility(View.GONE);
+                            VkListAdapter.this.newSongLoadingBar.setVisibility(View.GONE);
                         }
                     });
                 }
