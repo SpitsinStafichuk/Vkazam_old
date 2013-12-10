@@ -15,7 +15,21 @@
     <!-- Application theme. -->
 
     <style name="AppTheme" parent="AppBaseTheme">
-        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+
+        <item name="android:listChoiceIndicatorMultiple">@drawable/apptheme_btn_check_holo_light</item>
+
+        <item name="android:radioButtonStyle">@drawable/apptheme_btn_radio_holo_light</item>
+
+        <item name="android:buttonStyle">@style/ButtonAppTheme</item>
+
+        <item name="android:imageButtonStyle">@style/ImageButtonAppTheme</item>
+
+        <item name="android:progressBarStyleHorizontal">@style/ProgressBarAppTheme</item>
+
+        <item name="android:seekBarStyle">@style/SeekBarAppTheme</item>
+
+        <item name="android:scrollbarThumbVertical">@drawable/apptheme_fastscroll_thumb_holo</item>
+
     </style>
     
     <style name="HistoryListView" parent="@android:style/Widget.ListView">

@@ -7,20 +7,30 @@
     android:orientation="vertical">
     
     <LinearLayout
-    	android:layout_width="match_parent"
-    	android:layout_height="50dp"
-    	android:orientation="horizontal"
-    	android:background="@drawable/title_background">
+            android:layout_width="match_parent"
+    	    android:layout_height="50dp"
+    	    android:orientation="horizontal"
+    	    android:background="@drawable/title_background">
 
-                <ImageButton
-                    android:id="@+id/shareButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-            		android:layout_weight="1"
-            		android:layout_margin="5dp"
-                    android:scaleType="fitCenter"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/ic_action_share" />
+        <ImageButton
+                android:id="@+id/shareButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="5dp"
+                android:scaleType="fitCenter"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_action_share" />
+
+        <ImageButton
+                android:id="@+id/shareButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="5dp"
+                android:scaleType="fitCenter"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_action_youtube" />
 
                 <ImageButton
                     android:id="@+id/downloadButton"
