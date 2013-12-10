@@ -133,8 +133,8 @@
                     android:id="@+id/ppUrlListItemCheckbutton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_gravity="center"/>
+                    android:layout_gravity="center"
+                    style="@style/RadioButtonAppTheme" android:layout_marginTop="1dp"/>
 
     </LinearLayout>
 
