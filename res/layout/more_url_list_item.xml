@@ -7,7 +7,7 @@
         android:padding="5dp"
         android:descendantFocusability="blocksDescendants"
         android:orientation="vertical"
-        android:background="@android:drawable/btn_default">
+        style="@style/ButtonAppTheme">
 
     <LinearLayout
             android:id="@+id/moreListItem"
@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:minHeight="20dp"
                 android:minWidth="20dp"
-                android:visibility="gone"/>
+                android:visibility="visible"/>
 
 
         <TextView
