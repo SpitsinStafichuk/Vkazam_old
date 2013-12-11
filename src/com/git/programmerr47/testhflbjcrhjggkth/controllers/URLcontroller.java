@@ -17,7 +17,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 
 public class URLcontroller implements IPlayerStateObserver{
-
+	private static final String TAG = "URLcontroller";
+	
     private View currentElement;
     private String currentUrl;
     private MicroScrobblerMediaPlayer player;
@@ -45,6 +46,7 @@ public class URLcontroller implements IPlayerStateObserver{
             progressBar.setVisibility(View.GONE);
         }
         currentElement = v;
+        Log.v(TAG, "currentElement = " + currentElement);
     }
 
     public View getCurrentElement() {
@@ -116,26 +118,29 @@ public class URLcontroller implements IPlayerStateObserver{
 
     @Override
     public void updatePlayerState() {
-        ImageButton playPauseButton = (ImageButton) currentElement.findViewById(R.id.ppUrlListItemPlayPauseButton);
-        ProgressBar progressBar = (ProgressBar) currentElement.findViewById(R.id.ppUrlListItemLoading);
+    	if (currentElement != null) {
+            Log.v(TAG, "before updatePlayerState: currentElement = " + currentElement);
+            ImageButton playPauseButton = (ImageButton) currentElement.findViewById(R.id.ppUrlListItemPlayPauseButton);
+            ProgressBar progressBar = (ProgressBar) currentElement.findViewById(R.id.ppUrlListItemLoading);
 
-        if (player.isLoading()) {
-            progressBar.setVisibility(View.VISIBLE);
-            playPauseButton.setVisibility(View.GONE);
-        } else {
-            progressBar.setVisibility(View.GONE);
-            if (player.isPrepared()) {
-                playPauseButton.setVisibility(View.VISIBLE);
+            if (player.isLoading()) {
+                progressBar.setVisibility(View.VISIBLE);
+                playPauseButton.setVisibility(View.GONE);
             } else {
-                if (playPauseButton.getVisibility() == View.GONE)
-                    progressBar.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility(View.GONE);
+                if (player.isPrepared()) {
+                    playPauseButton.setVisibility(View.VISIBLE);
+                } else {
+                    if (playPauseButton.getVisibility() == View.GONE)
+                        progressBar.setVisibility(View.INVISIBLE);
+                }
             }
-        }
 
-        if (player.isPlaying()) {
-            playPauseButton.setImageResource(android.R.drawable.ic_media_pause);
-        } else {
-            playPauseButton.setImageResource(android.R.drawable.ic_media_play);
-        }
+            if (player.isPlaying()) {
+                playPauseButton.setImageResource(android.R.drawable.ic_media_pause);
+            } else {
+                playPauseButton.setImageResource(android.R.drawable.ic_media_play);
+            }
+    	}
     }
 }
