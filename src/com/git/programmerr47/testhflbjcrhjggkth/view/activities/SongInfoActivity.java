@@ -58,7 +58,7 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 		fillActivity(data);
 		
 		
-		playPauseButton = (ImageButton) findViewById(R.id.songInfoPlayPauseButton);
+		playPauseButton = (ImageButton) findViewById(R.id.songInfoPlayPauseButtonForPP);
 		playPauseButton.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -135,7 +135,7 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 
 	@Override
 	public void updatePlayerState() {
-		ProgressBar progressBar = (ProgressBar) findViewById(R.id.songInfoLoading);
+		ProgressBar progressBar = (ProgressBar) findViewById(R.id.songInfoLoadingForPP);
 
 		Log.v(TAG, "Current Data: " + data.getDate());
 		Log.v(TAG, "SongManager Data: " + data.getDate());
