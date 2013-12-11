@@ -14,7 +14,6 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.database.Data;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseSongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SearchManager.SearchListener;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SongManager;
-import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObservable;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObserver;
 import com.nineoldandroids.view.ViewHelper;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
