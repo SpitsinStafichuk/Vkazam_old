@@ -1,7 +1,13 @@
 package com.git.programmerr47.testhflbjcrhjggkth.view.activities;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URL;
 
 import org.json.JSONException;
 
@@ -12,6 +18,7 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeServiceConnection
 import com.git.programmerr47.testhflbjcrhjggkth.model.SongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseSongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObserver;
+import com.git.programmerr47.testhflbjcrhjggkth.utils.FileSystemUtils;
 import com.git.programmerr47.testhflbjcrhjggkth.view.DynamicImageView;
 import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.HistoryPageFragment;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -19,9 +26,14 @@ import com.perm.kate.api.Api;
 import com.perm.kate.api.KException;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.PowerManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -45,6 +57,8 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 	private ImageButton playPauseButton;
 	private ImageButton shareButton;
 	private ImageButton addVkButton;
+	private ImageButton downloadPPButton;
+	private ProgressDialog downloadPPProgressDialog;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -104,11 +118,142 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 					long aid = Long.parseLong(ids[1]);
 					new AddToVkTask().execute(oid, aid);
 				} else {
-					Toast toast = Toast.makeText(SongInfoActivity.this, "Choose song from vk before adding", Toast.LENGTH_SHORT);
-					toast.show();
+					Toast.makeText(SongInfoActivity.this, "Choose song from vk before adding", Toast.LENGTH_SHORT).show();
 				}
 			}
 		});
+		
+		downloadPPProgressDialog = new ProgressDialog(this);
+		downloadPPProgressDialog.setMessage(data.getFullTitle() + " is downloading");
+		downloadPPProgressDialog.setIndeterminate(true);
+		downloadPPProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+		downloadPPProgressDialog.setCancelable(true);
+		
+		downloadPPButton = (ImageButton) findViewById(R.id.downloadPPButton);
+		downloadPPButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				String url = data.getPleercomUrl();
+				if(url != null ) {
+					if(FileSystemUtils.isExternalStorageWritable()) {
+						final DownloadTask downloadTask = new DownloadTask(SongInfoActivity.this);
+						downloadTask.execute(url);
+						downloadPPProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+						    @Override
+						    public void onCancel(DialogInterface dialog) {
+						        downloadTask.cancel(true);
+						    }
+						});
+					} else {
+						Toast.makeText(SongInfoActivity.this, "External storage is not available", Toast.LENGTH_SHORT).show();
+					}
+				} else {
+					Toast.makeText(SongInfoActivity.this, "Choose song from pleer.com before adding", Toast.LENGTH_SHORT).show();
+				}
+			}
+		}); 
+	}
+	
+	private class DownloadTask extends AsyncTask<String, Integer, String> {
+
+	    private Context context;
+
+	    public DownloadTask(Context context) {
+	        this.context = context;
+	    }
+	    
+	    @Override
+	    protected void onPreExecute() {
+	        super.onPreExecute();
+	        downloadPPProgressDialog.show();
+	    }
+
+	    @Override
+	    protected void onProgressUpdate(Integer... progress) {
+	        super.onProgressUpdate(progress);
+	        // if we get here, length is known, now set indeterminate to false
+	        downloadPPProgressDialog.setIndeterminate(false);
+	        downloadPPProgressDialog.setMax(100);
+	        downloadPPProgressDialog.setProgress(progress[0]);
+	    }
+	    
+	    @Override
+	    protected void onPostExecute(String result) {
+	    	downloadPPProgressDialog.dismiss();
+	        if (result != null) {
+	            Toast.makeText(context, "Download error: " + result, Toast.LENGTH_LONG).show();
+	        } else {
+	            Toast.makeText(context, "File downloaded", Toast.LENGTH_SHORT).show();
+	        }
+	    }
+
+	    @Override
+	    protected String doInBackground(String... sUrl) {
+	        // take CPU lock to prevent CPU from going off if the user 
+	        // presses the power button during download
+	        PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+	        PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
+	             getClass().getName());
+	        wl.acquire();
+
+	        try {
+	            InputStream input = null;
+	            OutputStream output = null;
+	            HttpURLConnection connection = null;
+	            try {
+	                URL url = new URL(sUrl[0]);
+	                connection = (HttpURLConnection) url.openConnection();
+	                connection.connect();
+
+	                // expect HTTP 200 OK, so we don't mistakenly save error report 
+	                // instead of the file
+	                if (connection.getResponseCode() != HttpURLConnection.HTTP_OK)
+	                     return "Server returned HTTP " + connection.getResponseCode() 
+	                         + " " + connection.getResponseMessage();
+
+	                // this will be useful to display download percentage
+	                // might be -1: server did not report the length
+	                int fileLength = connection.getContentLength();
+
+	                // download the file
+	                input = connection.getInputStream();
+	                File file = new File(Environment.getExternalStoragePublicDirectory(
+	                		Environment.DIRECTORY_MUSIC), data.getFullTitle() + ".mp3");
+	                output = new FileOutputStream(file);
+
+	                byte data[] = new byte[4096];
+	                long total = 0;
+	                int count;
+	                while ((count = input.read(data)) != -1) {
+	                    // allow canceling with back button
+	                    if (isCancelled())
+	                        return null;
+	                    total += count;
+	                    // publishing the progress....
+	                    if (fileLength > 0) // only if total length is known
+	                        publishProgress((int) (total * 100 / fileLength));
+	                    output.write(data, 0, count);
+	                }
+	            } catch (Exception e) {
+	                return e.toString();
+	            } finally {
+	                try {
+	                    if (output != null)
+	                        output.close();
+	                    if (input != null)
+	                        input.close();
+	                } 
+	                catch (IOException ignored) { }
+
+	                if (connection != null)
+	                    connection.disconnect();
+	            }
+	        } finally {
+	            wl.release();
+	        }
+	        return null;
+	    }
 	}
 	
 	private class AddToVkTask extends AsyncTask<Long, Void, String> {
@@ -135,10 +280,9 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 	     }
 
 	     protected void onPostExecute(String result) {
-	    	 Toast toast = Toast.makeText(SongInfoActivity.this, result, Toast.LENGTH_SHORT);
-	    	 toast.show();
+	    	 Toast.makeText(SongInfoActivity.this, result, Toast.LENGTH_SHORT).show();
 	     }
-	 }
+	}
 	
 	private void fillActivity(SongData data) {
 		if (data != null) {

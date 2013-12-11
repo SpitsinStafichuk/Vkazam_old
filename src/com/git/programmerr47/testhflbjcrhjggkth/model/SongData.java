@@ -39,6 +39,10 @@ public class SongData {
 			   "\nalbumArtist: " + albumArtist;
 	}
 	
+	public String getFullTitle() {
+		return artist + " - " + title;
+	}
+	
 	public SongData(SongData songData) {
 		this(songData.trackId, songData.artist, songData.album, songData.title, songData.pleercomUrl, songData.vkAudioId,
 				songData.coverArtUrl, songData.date, songData.contributorImageUrl, songData.artistBiographyURL,
