@@ -139,6 +139,7 @@ public class VkListAdapter extends BaseAdapter {
             playPause.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                	Log.v(TAG, "View = " + v);
                     controller.setCurrentElement(viewFinal);
                     controller.playPauseSong(urls.get(position).url, activity);
                 }
