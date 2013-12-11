@@ -1,5 +1,10 @@
 package com.git.programmerr47.testhflbjcrhjggkth.view.activities;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+
+import org.json.JSONException;
+
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.SongInfoController;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
@@ -10,9 +15,12 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObse
 import com.git.programmerr47.testhflbjcrhjggkth.view.DynamicImageView;
 import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.HistoryPageFragment;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.perm.kate.api.Api;
+import com.perm.kate.api.KException;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -22,6 +30,7 @@ import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 	public static final String TAG = "SongInfoActivity";
@@ -31,9 +40,11 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 	private SongInfoController controller;
 	private DatabaseSongData data;
 	private DynamicImageView coverArt;
+	private Api vkApi;
 
 	private ImageButton playPauseButton;
 	private ImageButton shareButton;
+	private ImageButton addVkButton;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +64,7 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 		
 		controller = new SongInfoController(this);
 		model = RecognizeServiceConnection.getModel();
+		vkApi = model.getVkApi();
 		model.getPlayer().addObserver(this);
 		data = model.getCurrentOpenSong();
 		fillActivity(data);
@@ -79,7 +91,54 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 				startActivity(Intent.createChooser(sharingIntent, "Share song"));
 			}
 		});
+		
+		addVkButton = (ImageButton) findViewById(R.id.addVkButton);
+		addVkButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				String audioId = data.getVkAudioId();
+				if(audioId != null ) {
+					String[] ids = audioId.split("_");
+					long oid = Long.parseLong(ids[0]);
+					long aid = Long.parseLong(ids[1]);
+					new AddToVkTask().execute(oid, aid);
+				} else {
+					Toast toast = Toast.makeText(SongInfoActivity.this, "Choose song from vk before adding", Toast.LENGTH_SHORT);
+					toast.show();
+				}
+			}
+		});
 	}
+	
+	private class AddToVkTask extends AsyncTask<Long, Void, String> {
+		
+	     protected String doInBackground(Long... ids) {
+	    	 String result = null;
+	         try {
+	        	 result = "Song was added with id " + 
+	        			 vkApi.addAudio(ids[1], ids[0], null, null, null);
+	         } catch (MalformedURLException e) {
+				e.printStackTrace();
+				result = e.getMessage();
+	         } catch (IOException e) {
+	        	 result = e.getMessage();
+				e.printStackTrace();
+	         } catch (JSONException e) {
+	        	 result = e.getMessage();
+				e.printStackTrace();
+	         } catch (KException e) {
+	        	 result = e.getMessage();
+				e.printStackTrace();
+	         }
+	         return result;
+	     }
+
+	     protected void onPostExecute(String result) {
+	    	 Toast toast = Toast.makeText(SongInfoActivity.this, result, Toast.LENGTH_SHORT);
+	    	 toast.show();
+	     }
+	 }
 	
 	private void fillActivity(SongData data) {
 		if (data != null) {
