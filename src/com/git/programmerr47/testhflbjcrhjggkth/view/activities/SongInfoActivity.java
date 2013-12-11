@@ -162,6 +162,7 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 			public void onClick(View v) {
 				model.getSongList().remove(data);
 				Intent intent = new Intent(SongInfoActivity.this, MicrophonePagerActivity.class);
+				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
 			}
 		});
