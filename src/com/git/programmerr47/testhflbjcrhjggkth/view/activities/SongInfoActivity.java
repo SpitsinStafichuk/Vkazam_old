@@ -59,6 +59,7 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 	private ImageButton addVkButton;
 	private ImageButton downloadPPButton;
 	private ProgressDialog downloadPPProgressDialog;
+	private ImageButton deleteButton;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -153,6 +154,17 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 				}
 			}
 		}); 
+		
+		deleteButton = (ImageButton) findViewById(R.id.deleteButton);
+		deleteButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				model.getSongList().remove(data);
+				Intent intent = new Intent(SongInfoActivity.this, MicrophonePagerActivity.class);
+				startActivity(intent);
+			}
+		});
 	}
 	
 	private class DownloadTask extends AsyncTask<String, Integer, String> {
