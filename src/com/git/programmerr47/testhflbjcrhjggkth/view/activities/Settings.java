@@ -27,7 +27,7 @@ public class Settings extends PreferenceActivity{
         Drawable icon;
 
         pref = (IconCheckBoxPreference) findPreference("settingsVkConnection");
-        icon = res.getDrawable(R.drawable.ic_launcher);
+        icon = res.getDrawable(R.drawable.ic_settings_vk);
         pref.setIcon(icon);
 
         pref = (IconCheckBoxPreference) findPreference("settingsVkUrls");
@@ -35,15 +35,15 @@ public class Settings extends PreferenceActivity{
         pref.setIcon(icon);
 
         pref = (IconCheckBoxPreference) findPreference("settingsOnlyWiFiConntection");
-        icon = res.getDrawable(R.drawable.ic_launcher);
+        icon = res.getDrawable(R.drawable.ic_settings_wifi);
         pref.setIcon(icon);
 
         pref = (IconCheckBoxPreference) findPreference("settingsLastFmConnection");
-        icon = res.getDrawable(R.drawable.ic_launcher);
+        icon = res.getDrawable(R.drawable.ic_settings_lastfm);
         pref.setIcon(icon);
 
         pref = (IconCheckBoxPreference) findPreference("settingsAutoRecognize");
-        icon = res.getDrawable(R.drawable.ic_launcher);
+        icon = res.getDrawable(R.drawable.ic_settings_fingerprints);
         pref.setIcon(icon);
     }
 }
