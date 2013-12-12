@@ -8,11 +8,9 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
-import android.view.Window;
 
 public class MicrophonePagerActivity extends PagerActivity implements ServiceConnection{
 
