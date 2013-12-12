@@ -59,8 +59,11 @@
                         android:id="@+id/songInfoCoverArt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:padding="1dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/no_cover_art" android:layout_gravity="center"/>
+                        android:src="@drawable/no_cover_art"
+                        android:layout_gravity="center"
+                        android:background="@drawable/standart_block_background"/>
 
             </LinearLayout>
 
@@ -72,14 +75,14 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginBottom="5dp"
-                    android:background="@drawable/list_item_bg_default">
+                    android:background="@drawable/standart_block_background">
 
                 <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
                         android:layout_margin="5dp"
-                        android:background="@drawable/text_miniplayr_background">
+                        android:background="@drawable/dark_blue_background">
 
                     <ImageButton
                             android:id="@+id/songInfoPlayPauseButtonForPP"
@@ -130,7 +133,7 @@
                                 android:focusableInTouchMode="true"
                                 android:ellipsize="marquee"
                                 android:marqueeRepeatLimit="marquee_forever"
-                                android:background="@drawable/text_miniplayr_background"/>
+                                android:background="@drawable/dark_blue_background"/>
 
                         <ImageButton
                                 android:id="@+id/downloadPPButton"
@@ -139,7 +142,7 @@
                                 android:layout_marginTop="5dp"
                                 android:layout_marginRight="5dp"
                                 android:scaleType="fitCenter"
-                                android:background="@drawable/text_miniplayr_background"
+                                android:background="@drawable/dark_blue_background"
                                 android:src="@drawable/ic_action_download" />
 
                     </LinearLayout>
@@ -152,7 +155,7 @@
                             android:layout_marginBottom="5dp"
                             android:layout_marginTop="5dp"
                             android:progress="0"
-                            android:background="@drawable/text_miniplayr_background"/>
+                            android:background="@drawable/dark_blue_background"/>
 
                 </LinearLayout>
 
@@ -166,14 +169,14 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginBottom="5dp"
-                    android:background="@drawable/list_item_bg_default">
+                    android:background="@drawable/standart_block_background">
 
                 <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
                         android:layout_margin="5dp"
-                        android:background="@drawable/text_miniplayr_background">
+                        android:background="@drawable/dark_blue_background">
 
                     <ImageButton
                             android:id="@+id/songInfoPlayPauseButtonForVk"
@@ -224,7 +227,7 @@
                                 android:focusableInTouchMode="true"
                                 android:ellipsize="marquee"
                                 android:marqueeRepeatLimit="marquee_forever"
-                                android:background="@drawable/text_miniplayr_background"/>
+                                android:background="@drawable/dark_blue_background"/>
 
                         <ImageButton
                                 android:id="@+id/addVkButton"
@@ -234,7 +237,7 @@
                                 android:layout_marginRight="5dp"
                                 android:scaleType="fitCenter"
                                 android:src="@drawable/ic_action_new"
-                                android:background="@drawable/text_miniplayr_background"/>
+                                android:background="@drawable/dark_blue_background"/>
 
                     </LinearLayout>
 
@@ -246,7 +249,7 @@
                             android:layout_marginBottom="5dp"
                             android:layout_marginTop="5dp"
                             android:progress="0"
-                            android:background="@drawable/text_miniplayr_background"/>
+                            android:background="@drawable/dark_blue_background"/>
 
                 </LinearLayout>
 
@@ -267,7 +270,7 @@
                         android:padding="5dp"
                         android:scaleType="fitCenter"
                         android:src="@drawable/ic_action_youtube"
-                        android:background="@drawable/list_item_bg_default"/>
+                        android:background="@drawable/standart_block_background"/>
 
                 <TextView
                         android:layout_width="match_parent"
@@ -277,7 +280,7 @@
                         android:text="Watch on YouTube"
                         android:textSize="20sp"
                         android:gravity="center"
-                        android:background="@drawable/list_item_bg_default"/>
+                        android:background="@drawable/standart_block_background"/>
 
             </LinearLayout>
 
@@ -296,7 +299,7 @@
                         android:layout_margin="5dp"
                         android:scaleType="fitCenter"
                         android:src="@drawable/ic_action_favorite"
-                        android:background="@drawable/list_item_bg_default"/>
+                        android:background="@drawable/standart_block_background"/>
 
                 <TextView
                         android:layout_width="match_parent"
@@ -306,7 +309,7 @@
                         android:text="Love on last.fm"
                         android:textSize="20sp"
                         android:gravity="center"
-                        android:background="@drawable/list_item_bg_default"/>
+                        android:background="@drawable/standart_block_background"/>
 
             </LinearLayout>
 
@@ -318,7 +321,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginBottom="10dp"
-                    android:background="@drawable/list_item_bg_default">
+                    android:background="@drawable/standart_block_background">
 
                 <LinearLayout
                         android:layout_width="match_parent"
