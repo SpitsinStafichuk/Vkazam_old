@@ -25,7 +25,8 @@
             </intent-filter>
         </activity>
         <activity android:name="com.git.programmerr47.testhflbjcrhjggkth.view.activities.SettingsActivity"></activity>
-        <activity android:name="com.git.programmerr47.testhflbjcrhjggkth.view.activities.Settings"></activity>
+        <activity android:name="com.git.programmerr47.testhflbjcrhjggkth.view.activities.Settings"
+                  android:theme="@style/PreferencesTheme"></activity>
         <activity android:name="com.git.programmerr47.testhflbjcrhjggkth.view.activities.SongInfoActivity"></activity>
         <activity android:name="com.git.programmerr47.testhflbjcrhjggkth.view.activities.RefreshPagerActivity"></activity>
         <activity android:name="com.git.programmerr47.testhflbjcrhjggkth.view.activities.VkLoginActivity"

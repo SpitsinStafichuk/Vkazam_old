@@ -12,6 +12,10 @@
         -->
     </style>
 
+    <style name="PreferencesTheme" parent="AppTheme">
+        <item name="android:background">@color/very_pale_cyan</item>
+    </style>
+
     <!-- Application theme. -->
 
     <style name="AppTheme" parent="AppBaseTheme">
