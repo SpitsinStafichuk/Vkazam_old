@@ -23,7 +23,7 @@ public class SettingsActivity extends FragmentActivity implements IConnectionWit
        
         controller = new SettingsController(this);
        
-        vkSignInOutButton = (Button) findViewById(R.id.vkSingInOutButton);
+        //vkSignInOutButton = (Button) findViewById(R.id.vkSingInOutButton);
         changeVkButton();
         vkSignInOutButton.setOnClickListener(new OnClickListener() {
                    

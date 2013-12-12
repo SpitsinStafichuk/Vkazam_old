@@ -9,29 +9,21 @@
         android:layout_height="wrap_content" >
 
         <ImageView
-            android:id="@+id/vkIconImage"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/vk_icon" />
+            android:src="@drawable/ic_launcher" />
 
-        <Button
-            android:id="@+id/vkSingInOutButton"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sing In" />
+            android:text="SETTINGS"
+            android:textSize="20sp"/>
 
     </LinearLayout>
-    
-     <LinearLayout
+
+    <ListView
+        android:id="@+android:id/list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-         <CheckBox
-             android:id="@+id/vkPrefer"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:text="Prefer vk audios" />
-
-    </LinearLayout>
+        android:layout_height="match_parent" />
 
 </LinearLayout>

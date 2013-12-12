@@ -33,7 +33,7 @@ public class PagerActivity extends FragmentActivity{
         switch(item.getItemId()) {
         	case R.id.settings :
         		Log.v("Settings", "Creating settings activity");
-            	Intent intent = new Intent(this, SettingsActivity.class);
+            	Intent intent = new Intent(this, Settings.class);
             	startActivity(intent);
             	return true;
         	default :
