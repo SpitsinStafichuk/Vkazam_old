@@ -19,7 +19,6 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.Audio;
 import com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.KException;
 
 import android.content.Context;
-import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.util.Log;
@@ -39,15 +38,18 @@ public class SongManager implements ISongInfoObserverable, ISongProgressObservab
 	private Handler handler;
 	
 	private Context context;
+	private Scrobbler scrobbler;
     private ScheduledThreadPoolExecutor songProgressTimer;
+    
+    private boolean wasPlayed = false;
 	
 	public SongManager(Handler handler, Context context) {
 		songPlayer = MicroScrobblerMediaPlayer.getInstance();
 		this.handler = handler;
 		this.context = context;
+		scrobbler = new Scrobbler(context);
         songInfoObservers = new HashSet<ISongInfoObserver>();
         songProgressObservers = new HashSet<ISongProgressObserver>();
-
 
         songProgressTimer = new ScheduledThreadPoolExecutor(1);
         songProgressTimer.scheduleWithFixedDelay(new Thread() {
@@ -65,6 +67,7 @@ public class SongManager implements ISongInfoObserverable, ISongProgressObservab
 	public void set(DatabaseSongData songData, int positionInList) {
 		this.songData = songData;
         this.positionInList = positionInList;
+        wasPlayed = false;
         //isPrepared = false;
         asyncNotifySongInfoObservers();
 	}
@@ -116,35 +119,19 @@ public class SongManager implements ISongInfoObserverable, ISongProgressObservab
 		}
 	}
 	
-	private void sendLastFMPlaybackCompleted() {
-		context.sendBroadcast(new Intent("fm.last.android.playbackcomplete"));
-	}
-
-	private void sendLastFMTrackPaused() {
-		context.sendBroadcast(new Intent("fm.last.android.playbackpaused"));
-	}
-
-	private void sendLastFMTrackStarted() {
-		Intent localIntent = new Intent("fm.last.android.metachanged");
-		localIntent.putExtra("artist", getArtist());
-		localIntent.putExtra("track", getTitle());
-		//localIntent.putExtra("album", getAlbumName());
-		localIntent.putExtra("duration", songPlayer.getDuration());
-		context.sendBroadcast(localIntent);
-	}
-
-	private void sendLastFMTrackUnpaused() {
-		context.sendBroadcast(new Intent("fm.last.android.metachanged").putExtra("position", songPlayer.getCurrentPosition()));
-	}
-	
 	public void play() {
-		songPlayer.start();
 		Log.v("SongListController", "Song" + songData.getArtist() + "-" + songData.getTitle() + "was started");
-		sendLastFMTrackStarted();
+		if(!wasPlayed) {
+			scrobbler.sendLastFMTrackStarted(getArtist(), getTitle(), null, songPlayer.getDuration() / 1000);
+			wasPlayed = true;
+		} else {
+			scrobbler.sendLastFMTrackUnpaused(songPlayer.getCurrentPosition());
+		}
+		songPlayer.start();
 	}
 	
 	public void pause() {
-		sendLastFMPlaybackCompleted();
+		scrobbler.sendLastFMTrackPaused();
 		songPlayer.pause();
 	}
 	
@@ -173,6 +160,8 @@ public class SongManager implements ISongInfoObserverable, ISongProgressObservab
     }
 
 	public void release() {
+		if(songData != null)
+		scrobbler.sendLastFMPlaybackCompleted(getArtist(), getTitle(), null);
 		songPlayer.release();
 		Log.v("SongPlayer", "Player is released");
 	}
@@ -191,7 +180,7 @@ public class SongManager implements ISongInfoObserverable, ISongProgressObservab
         }
     }
 
-    public synchronized void setOnButteringUpdateListener(MediaPlayer.OnBufferingUpdateListener listener) {
+    public synchronized void setOnBufferingUpdateListener(MediaPlayer.OnBufferingUpdateListener listener) {
         onBufferingUpdateListener = listener;
     }
 
