@@ -13,6 +13,7 @@ public interface DBConstants {
 	String MUSIC_HISTORY_TITLE = "title"; 
 	String MUSIC_HISTORY_GRACENOTE_TRACK_ID = "song_data_link";
 	String MUSIC_HISTORY_PLEERCOM_URL = "pleercom_url";
+	String MUSIC_HISTORY_VK_AUDIO_ID = "vk_audio_id";
 	String MUSIC_HISTORY_COVER_ART_URL = "cover_art_url";
 	String MUSIC_HISTORY_BIOGRAPHY_URL = "biography_url";
 	String MUSIC_HISTORY_CONTRIBUTOR_IMAGE_URL = "contributor_image_url";
@@ -31,6 +32,7 @@ public interface DBConstants {
 			+ DATE + " INTEGER," 	
 			+ MUSIC_HISTORY_GRACENOTE_TRACK_ID + " TEXT," 
 			+ MUSIC_HISTORY_PLEERCOM_URL + " TEXT," 
+			+ MUSIC_HISTORY_VK_AUDIO_ID + " TEXT,"
 			+ MUSIC_HISTORY_COVER_ART_URL + " TEXT,"
 			+ MUSIC_HISTORY_BIOGRAPHY_URL + " TEXT,"
 			+ MUSIC_HISTORY_CONTRIBUTOR_IMAGE_URL + " TEXT,"

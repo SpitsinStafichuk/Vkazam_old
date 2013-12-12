@@ -94,7 +94,7 @@ public class RecognizeManager implements GNSearchResultReady, GNOperationStatusC
 				String albumReviewUrl = bestResponse.getAlbumReviewUrl();
 				String albumReleaseYear = bestResponse.getAlbumReleaseYear();
 				
-				songData = new SongData(trackId, artist, album, title, null, coverArtURL, new Date(), contributorImageURL,
+				songData = new SongData(trackId, artist, album, title, null, null, coverArtURL, new Date(), contributorImageURL,
 						artistBiographyURL, songPosition, albumReviewUrl, albumReleaseYear, albumArtist);
 		
 				recognizeStatus = RECOGNIZING_SUCCESS;
