@@ -1,7 +1,5 @@
 package com.git.programmerr47.testhflbjcrhjggkth.view.fragments;
 
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
@@ -11,12 +9,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeServiceConnection;
-import com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.KException;
 import com.git.programmerr47.testhflbjcrhjggkth.view.adapters.PleerListAdapter;
-import org.json.JSONException;
-
-import java.io.IOException;
 
 public class SongReplacePPFragment extends FragmentWithName{
 

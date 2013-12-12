@@ -8,7 +8,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	public static final String HISTORY_TAG = "SongHistory";
 	
 	public DBHelper(Context context) {
-		super(context, DBConstants.DATABASE, null, 8);
+		super(context, DBConstants.DATABASE, null, 9);
 	}
 
 	@Override
