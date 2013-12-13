@@ -31,7 +31,7 @@ public class SettingsController {
 
 	public void changeVkAccount() {
 		if (model.getVkApi() == null) {
-			view.vkSignInOutButton.setEnabled(false);
+			view.vkConnection.setEnabled(false);
 			Intent intent = new Intent();
 			intent.setClass(view, VkLoginActivity.class);
 			view.startActivityForResult(intent, REQUEST_VK_LOGIN);
