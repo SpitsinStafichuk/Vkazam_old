@@ -16,7 +16,6 @@ import com.git.programmerr47.testhflbjcrhjggkth.controllers.SongController;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
 import com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeServiceConnection;
 import com.git.programmerr47.testhflbjcrhjggkth.model.SongData;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseSongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SongManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObserver;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISongInfoObserver;
@@ -51,7 +50,7 @@ public class MiniPlayerFragment extends Fragment implements IPlayerStateObserver
         model.getPlayer().addObserver(this);
         model.getSongManager().addSongIngoObserver(this);
         model.getSongManager().addSongProgressObserver(this);
-        model.getSongManager().setOnButteringUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
+        model.getSongManager().setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
             @Override
             public void onBufferingUpdate(MediaPlayer mediaPlayer, int percent) {
                 Log.v("MiniPlayer", "Song downloading is updated " + percent);
