@@ -122,16 +122,16 @@ public class SongManager implements ISongInfoObserverable, ISongProgressObservab
 	public void play() {
 		Log.v("SongListController", "Song" + songData.getArtist() + "-" + songData.getTitle() + "was started");
 		if(!wasPlayed) {
-			scrobbler.sendLastFMTrackStarted(getArtist(), getTitle(), null, songPlayer.getDuration() / 1000);
+			scrobbler.sendLastFMTrackStarted(getArtist(), getTitle(), songData.getAlbum(), songPlayer.getDuration());
 			wasPlayed = true;
 		} else {
-			scrobbler.sendLastFMTrackUnpaused(songPlayer.getCurrentPosition());
+			scrobbler.sendLastFMTrackUnpaused(getArtist(), getTitle(), songData.getAlbum(), songPlayer.getDuration() , songPlayer.getCurrentPosition());
 		}
 		songPlayer.start();
 	}
 	
 	public void pause() {
-		scrobbler.sendLastFMTrackPaused();
+		scrobbler.sendLastFMTrackPaused(getArtist(), getTitle(), songData.getAlbum(), songPlayer.getDuration());
 		songPlayer.pause();
 	}
 	
@@ -161,7 +161,7 @@ public class SongManager implements ISongInfoObserverable, ISongProgressObservab
 
 	public void release() {
 		if(songData != null)
-		scrobbler.sendLastFMPlaybackCompleted(getArtist(), getTitle(), null);
+			scrobbler.sendLastFMPlaybackCompleted(getArtist(), getTitle(), songData.getAlbum(), songPlayer.getDuration());
 		songPlayer.release();
 		Log.v("SongPlayer", "Player is released");
 	}
