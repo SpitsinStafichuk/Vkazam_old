@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:title="@string/action_settings"
+        android:key="settings">
+    <com.git.programmerr47.testhflbjcrhjggkth.view.IconCheckBoxPreference
+            android:layout="@layout/checkbox_preference"
+            android:key="settingsVkConnection"
+            android:title="Vkontakte"
+            android:summary="Sync with vkontakte"/>
+    <com.git.programmerr47.testhflbjcrhjggkth.view.IconCheckBoxPreference
+            android:key="settingsVkUrls"
+            android:title="Vk Urls"
+            android:summary="Prefer to choose vk urls istead of pp urls"
+            android:enabled="false"/>
+    <com.git.programmerr47.testhflbjcrhjggkth.view.IconCheckBoxPreference
+            android:key="settingsOnlyWiFiConntection"
+            android:title="Only Wi-Fi"
+            android:summary="Enable syncronization with internet only if there is wi-fi connection"/>
+    <com.git.programmerr47.testhflbjcrhjggkth.view.IconCheckBoxPreference
+            android:key="settingsLastFmConnection"
+            android:title="Scrobbling"
+            android:summary="Enable scrobbling from standart last.fm application"/>
+    <com.git.programmerr47.testhflbjcrhjggkth.view.IconCheckBoxPreference
+            android:key="settingsAutoRecognize"
+            android:title="Auto-recognizing"
+            android:summary="Automatic recognizing all fingerprints when internet is available" />
+</PreferenceScreen>
