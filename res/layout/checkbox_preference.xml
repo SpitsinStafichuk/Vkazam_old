@@ -2,7 +2,7 @@
 
 <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/iconpref"
+        android:id="@+id/preference"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="?android:attr/listPreferredItemHeight"
@@ -10,14 +10,6 @@
         android:clickable="true"
         android:paddingRight="?android:attr/scrollbarSize"
         android:background="@drawable/pref_item_selector">
-
-    <ImageView android:id="@+id/icon"
-               android:layout_width="40dp"
-               android:layout_height="40dp"
-               android:layout_marginLeft="6dip"
-               android:layout_marginRight="6dip"
-               android:layout_gravity="center"
-               android:background="@android:color/transparent"/>
 
     <RelativeLayout android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -28,9 +20,18 @@
                     android:layout_weight="1"
                     android:background="@android:color/transparent">
 
+        <ImageView android:id="@+id/icon"
+                   android:layout_width="40dp"
+                   android:layout_height="40dp"
+                   android:layout_marginLeft="6dip"
+                   android:layout_marginRight="6dip"
+                   android:layout_gravity="center"
+                   android:background="@android:color/transparent"/>
+
         <TextView android:id="@+android:id/title"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
+                  android:layout_toRightOf="@id/icon"
                   android:singleLine="true"
                   android:textAppearance="?android:attr/textAppearanceLarge"
                   android:ellipsize="marquee"
@@ -43,17 +44,18 @@
                   android:layout_below="@android:id/title"
                   android:layout_alignLeft="@android:id/title"
                   android:textAppearance="?android:attr/textAppearanceSmall"
-                  android:maxLines="2"
+                  android:maxLines="4"
                   android:background="@android:color/transparent"/>
 
     </RelativeLayout>
 
+
     <CheckBox
-        android:id="@+android:id/checkbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="false"
-        android:focusable="false"
-        android:focusableInTouchMode="false"/>
+            android:id="@+android:id/checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"/>
 
 </LinearLayout>
