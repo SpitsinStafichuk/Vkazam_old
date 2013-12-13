@@ -28,13 +28,13 @@ public class URLcontroller implements IPlayerStateObserver{
     public URLcontroller() {
         model = RecognizeServiceConnection.getModel();
         player = model.getPlayer();
-        player.addObserver(this);
+        player.addPlayerStateObserver(this);
     }
 
     @Override
     public void finalize() throws Throwable {
         super.finalize();
-        player.removeObserver(this);
+        player.removePlayerStateObserver(this);
     }
 
     public void setCurrentElement(View v) {

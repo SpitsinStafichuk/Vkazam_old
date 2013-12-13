@@ -105,12 +105,12 @@ public class MicroScrobblerMediaPlayer extends MediaPlayer implements IPlayerSta
     }
 
     @Override
-    public void addObserver(IPlayerStateObserver o) {
+    public void addPlayerStateObserver(IPlayerStateObserver o) {
         playerStateObservers.add(o);
     }
 
     @Override
-    public void removeObserver(IPlayerStateObserver o) {
+    public void removePlayerStateObserver(IPlayerStateObserver o) {
         playerStateObservers.remove(o);
     }
 
