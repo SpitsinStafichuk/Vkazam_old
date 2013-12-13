@@ -47,7 +47,7 @@ public class MiniPlayerFragment extends Fragment implements IPlayerStateObserver
         model = RecognizeServiceConnection.getModel();
         controller = new SongController(this.getActivity());
 
-        model.getPlayer().addObserver(this);
+        model.getPlayer().addPlayerStateObserver(this);
         model.getSongManager().addSongIngoObserver(this);
         model.getSongManager().addSongProgressObserver(this);
         model.getSongManager().setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
@@ -76,7 +76,7 @@ public class MiniPlayerFragment extends Fragment implements IPlayerStateObserver
     @Override
     public void onStop() {
         super.onStop();
-        model.getPlayer().removeObserver(this);
+        model.getPlayer().removePlayerStateObserver(this);
     }
 
     @Override

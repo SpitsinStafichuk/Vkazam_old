@@ -125,12 +125,12 @@ public class FingerprintManager implements IFingerprintStatusObservable, IFinger
 	}
 	
 	@Override
-	public void addObserver(IFingerprintStatusObserver o) {
+	public void addFingerprintStatusObserver(IFingerprintStatusObserver o) {
 		fingerprintStatusObservers.add(o);
 	}
 
 	@Override
-	public void removeObserver(IFingerprintStatusObserver o) {
+	public void removeFingerprintStatusObserver(IFingerprintStatusObserver o) {
 		fingerprintStatusObservers.remove(o);
 	}
 
@@ -151,12 +151,12 @@ public class FingerprintManager implements IFingerprintStatusObservable, IFinger
 	}
 
 	@Override
-	public void addObserver(IFingerprintResultObserver o) {
+	public void addFingerprintResultObserver(IFingerprintResultObserver o) {
 		fingerprintResultObservers.add(o);
 	}
 
 	@Override
-	public void removeObserver(IFingerprintResultObserver o) {
+	public void removeFingerprintResultObserver(IFingerprintResultObserver o) {
 		fingerprintResultObservers.remove(o);
 	}
 
