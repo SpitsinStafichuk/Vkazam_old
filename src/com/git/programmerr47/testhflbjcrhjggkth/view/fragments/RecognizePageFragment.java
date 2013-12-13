@@ -70,10 +70,10 @@ public class RecognizePageFragment extends FragmentWithName implements IRecogniz
             controller = new RecognizeController(this.getActivity().getApplicationContext());
             model = RecognizeServiceConnection.getModel();
             fingerprintManager = model.getFingerprintManager();
-            fingerprintManager.addObserver((IFingerprintStatusObserver)this);
+            fingerprintManager.addFingerprintStatusObserver((IFingerprintStatusObserver)this);
             recognizeManager = model.getRecognizeManager();
-            recognizeManager.addObserver((IRecognizeStatusObserver)this);
-            recognizeManager.addObserver((IRecognizeResultObserver)this);
+            recognizeManager.addRecognizeStatusObserver((IRecognizeStatusObserver)this);
+            recognizeManager.addRecognizeResultObserver((IRecognizeResultObserver)this);
             firstTimeApearing = true;
     }
 
@@ -124,9 +124,10 @@ public class RecognizePageFragment extends FragmentWithName implements IRecogniz
     @Override
     public void onDestroy() {
         super.onDestroy();
-        fingerprintManager.removeObserver(this);
-        recognizeManager.removeObserver((IRecognizeStatusObserver)this);
-        recognizeManager.removeObserver((IRecognizeResultObserver)this);
+        fingerprintManager.removeFingerprintStatusObserver(this);
+        recognizeManager.removeRecognizeStatusObserver((IRecognizeStatusObserver)this);
+        recognizeManager.removeRecognizeResultObserver((IRecognizeResultObserver)this);
+        controller.finish();
         Log.v("SongPlayer", "HistoryPageFragment onDestroy()");
     }
     
