@@ -23,8 +23,9 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
+                android:singleLine="true"
                 android:textSize="20sp"
-                android:text="Status"/>
+                android:text="MicroScrobbler"/>
 
         <TextView
                 android:id="@+id/notificationSummary"
@@ -33,7 +34,8 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:textSize="12sp"
-                android:text="Artist - Title"/>
+                android:singleLine="true"
+                android:text="Nothing"/>
 
     </LinearLayout>
 
