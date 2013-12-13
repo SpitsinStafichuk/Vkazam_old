@@ -27,9 +27,14 @@ public class RecognizeController implements IFingerprintResultObserver, IRecogni
             model = RecognizeServiceConnection.getModel();
             this.context = context;
             fingerprintManager = model.getFingerprintManager();
-            fingerprintManager.addObserver(this);
+            fingerprintManager.addFingerprintResultObserver(this);
             recognizeManager = model.getRecognizeManager();
-            recognizeManager.addObserver(this);
+            recognizeManager.addRecognizeResultObserver(this);
+    }
+
+    public void finish() {
+        fingerprintManager.removeFingerprintResultObserver(this);
+        recognizeManager.removeRecognizeResultObserver(this);
     }
     
     public boolean fingerprintByTimerRecognizeCancel() {

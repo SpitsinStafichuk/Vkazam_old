@@ -6,11 +6,13 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
+import com.git.programmerr47.testhflbjcrhjggkth.controllers.NotificationController;
 
 public class RecognizeService extends Service {
 	
 	private static final String TAG = "RecognizeService";
 	private MicroScrobblerModel model;
+    private NotificationController notificationHandler;
 	
 	private final IBinder binder = new RecognizeBinder();
 	
@@ -32,6 +34,7 @@ public class RecognizeService extends Service {
 		toast.show();
 		MicroScrobblerModel.setContext(this);
 		model = MicroScrobblerModel.getInstance();
+        notificationHandler = new NotificationController(model, this);
 	}
 	
 	public MicroScrobblerModel getModel() {
@@ -45,6 +48,7 @@ public class RecognizeService extends Service {
 	
 	@Override 
     public void onDestroy() {
+        notificationHandler.finish();
 	}
 
 
