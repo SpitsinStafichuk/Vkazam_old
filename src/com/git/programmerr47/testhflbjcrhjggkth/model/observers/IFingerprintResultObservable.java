@@ -2,7 +2,7 @@ package com.git.programmerr47.testhflbjcrhjggkth.model.observers;
 
 public interface IFingerprintResultObservable {
 	
-	void addObserver(IFingerprintResultObserver o);
-	void removeObserver(IFingerprintResultObserver o);
+	void addFingerprintResultObserver(IFingerprintResultObserver o);
+	void removeFingerprintResultObserver(IFingerprintResultObserver o);
 	void notifyFingerprintResultObservers(String fingerprint);
 }

@@ -58,7 +58,7 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 		
 		//IPlayerStateObservable songManagerStateObservable = (IPlayerStateObservable) songManager;
 		//songManagerStateObservable.addObserver((IPlayerStateObserver)this);
-        model.getPlayer().addObserver(this);
+        model.getPlayer().addPlayerStateObserver(this);
 		Log.v("SongPlayer", "IPlayerStateObserver was added");
 		inflater = (LayoutInflater) this.activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
@@ -216,7 +216,7 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 	}
 	
 	public void release() {
-        model.getPlayer().removeObserver(this);
+        model.getPlayer().removePlayerStateObserver(this);
 		Log.v("SongPlayer", "IPlayerStateObserver was removed");
 	}
 

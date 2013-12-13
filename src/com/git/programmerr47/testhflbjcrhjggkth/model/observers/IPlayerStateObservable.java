@@ -2,7 +2,7 @@ package com.git.programmerr47.testhflbjcrhjggkth.model.observers;
 
 public interface IPlayerStateObservable {
 	
-	void addObserver(IPlayerStateObserver o);
-	void removeObserver(IPlayerStateObserver o);
+	void addPlayerStateObserver(IPlayerStateObserver o);
+	void removePlayerStateObserver(IPlayerStateObserver o);
 	void notifyPlayerStateObservers();
 }

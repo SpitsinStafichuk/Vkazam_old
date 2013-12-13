@@ -80,7 +80,7 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 		controller = new SongInfoController(this);
 		model = RecognizeServiceConnection.getModel();
 		vkApi = model.getVkApi();
-		model.getPlayer().addObserver(this);
+		model.getPlayer().addPlayerStateObserver(this);
 		data = model.getCurrentOpenSong();
 		fillActivity(data);
 		
@@ -346,7 +346,7 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 	protected void onDestroy() {
 		super.onDestroy();
 		Log.i(TAG, "Closing song info activity");
-        model.getPlayer().removeObserver(this);
+        model.getPlayer().removePlayerStateObserver(this);
 	}
 
 	@Override
