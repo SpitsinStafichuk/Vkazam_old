@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.preference.CheckBoxPreference;
+import android.preference.Preference;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -14,7 +15,9 @@ import com.git.programmerr47.testhflbjcrhjggkth.R;
 public class IconCheckBoxPreference extends CheckBoxPreference {
 
     private Drawable mIcon;
-    private TextView title;
+    private View preference;
+    private View.OnClickListener listener;
+    private int iconVisibility;
 
     public IconCheckBoxPreference(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
@@ -31,9 +34,14 @@ public class IconCheckBoxPreference extends CheckBoxPreference {
     @Override
     public void onBindView(View view) {
         super.onBindView(view);
+        preference = view.findViewById(R.id.preference);
+        if (listener != null) {
+            preference.setOnClickListener(listener);
+        }
         ImageView imageView = (ImageView) view.findViewById(R.id.icon);
         if (imageView != null && mIcon != null) {
             imageView.setImageDrawable(mIcon);
+            imageView.setVisibility(iconVisibility);
         }
     }
 
@@ -42,11 +50,16 @@ public class IconCheckBoxPreference extends CheckBoxPreference {
      *
      * @param icon The icon for this Preference
      */
-    public void setIcon(Drawable icon) {
+    public void setIcon(Drawable icon, int visibility) {
         if ((icon == null && mIcon != null) || (icon != null && !icon.equals(mIcon))) {
             mIcon = icon;
+            iconVisibility = visibility;
             notifyChanged();
         }
+    }
+
+    public void setIcon(Drawable icon) {
+        setIcon(icon, View.VISIBLE);
     }
 
     /**
@@ -57,5 +70,10 @@ public class IconCheckBoxPreference extends CheckBoxPreference {
      */
     public Drawable getIcon() {
         return mIcon;
+    }
+
+    public void setOnClickListener(View.OnClickListener listener) {
+        this.listener = listener;
+        notifyChanged();
     }
 }
