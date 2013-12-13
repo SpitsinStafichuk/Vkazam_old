@@ -16,37 +16,37 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.SongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.*;
 import com.git.programmerr47.testhflbjcrhjggkth.view.activities.MicrophonePagerActivity;
 
-public class NotificationController implements ISongInfoObserver, IRecognizeStatusObserver, IRecognizeResultObserver, IFingerprintResultObserver, IFingerprintStatusObserver{
+public class NotificationController implements ISongInfoObserver, IRecognizeStatusObserver, IRecognizeResultObserver, IFingerprintStatusObserver{
 
     private static final int PLAYBACK_SERVICE_STATUS = 1;
     private static final CharSequence PLAYING_STATUS = "Playing song";
-    private static final CharSequence NOTHING = "Nothing";
+    private static final CharSequence RECOGNIZING_STATUS = "TAGGING: ";
+    private static final CharSequence NOTHING = "Music not found";
 
     private MicroScrobblerModel model;
     private Service service;
     private Notification notification;
     private NotificationManager notificationManager;
-    private HandlerThread thread;
-    private Handler handler;
+    //private HandlerThread thread;
+    //private Handler handler;
     private PendingIntent openIntent;
     private RemoteViews notificationView;
 
-    private CharSequence status = "No status";
-    private CharSequence artistTitle = "Artist - Title";
+    private CharSequence status = "MicroScrobbler";
+    private CharSequence artistTitle = "Nothing";
 
     public NotificationController(MicroScrobblerModel model, Service service) {
         //setting variables
         this.model = model;
         this.service = service;
         notificationManager = (NotificationManager) service.getSystemService(service.NOTIFICATION_SERVICE);
-        thread = new HandlerThread(NotificationController.class.getName());
-        thread.start();
-        handler = new Handler(thread.getLooper());
+        //thread = new HandlerThread(NotificationController.class.getName());
+        //thread.start();
+        //handler = new Handler(thread.getLooper());
 
         //adding observers
         model.getSongManager().addSongIngoObserver(this);
         model.getFingerprintManager().addFingerprintStatusObserver(this);
-        model.getFingerprintManager().addFingerprintResultObserver(this);
         model.getRecognizeManager().addRecognizeResultObserver(this);
         model.getRecognizeManager().addRecognizeStatusObserver(this);
 
@@ -86,13 +86,12 @@ public class NotificationController implements ISongInfoObserver, IRecognizeStat
     }
 
     public void finish() {
-        if (thread != null) {
-            thread.quit();
-        }
+        //if (thread != null) {
+        //    thread.quit();
+        //}
 
         model.getSongManager().removeSongIngoObserver(this);
         model.getFingerprintManager().removeFingerprintStatusObserver(this);
-        model.getFingerprintManager().removeFingerprintResultObserver(this);
         model.getRecognizeManager().removeRecognizeResultObserver(this);
         model.getRecognizeManager().removeRecognizeStatusObserver(this);
     }
@@ -100,32 +99,44 @@ public class NotificationController implements ISongInfoObserver, IRecognizeStat
     @Override
     public void updateSongInfo() {
         SongData data = model.getSongManager().getSongData();
-        status = PLAYING_STATUS;
+        updateSong(PLAYING_STATUS, data);
+    }
+
+    @Override
+    public void onRecognizeStatusChanged(String status) {
+        updateStatus(status);
+    }
+
+    @Override
+    public void onRecognizeResult(SongData songData) {
+        updateSong(RECOGNIZING_STATUS + "Complete", songData);
+    }
+
+    @Override
+    public void onFingerprintStatusChanged(String status) {
+        updateStatus(status);
+    }
+
+    private void updateStatus(String status) {
+        if (status.contains("Recognizing")) {
+            status = status.substring(0, status.indexOf("Recognizing") + 11);
+        }
+        this.status = RECOGNIZING_STATUS + status;
+        String str = artistTitle.toString();
+        if (!str.contains("Previous: ")) {
+            artistTitle = "Previous: " + artistTitle;
+        }
+        recreateNotification();
+    }
+
+    private void updateSong(CharSequence status, SongData songData) {
+        SongData data = model.getSongManager().getSongData();
+        this.status = status;
         if (data != null) {
             artistTitle = data.getArtist() + " - " + data.getTitle();
         } else {
             artistTitle = NOTHING;
         }
         recreateNotification();
-    }
-
-    @Override
-    public void onRecognizeStatusChanged(String status) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public void onRecognizeResult(SongData songData) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public void onFingerprintResult(String fingerprint) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public void onFingerprintStatusChanged(String status) {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 }
