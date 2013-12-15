@@ -43,11 +43,11 @@ public class SongManager implements ISongInfoObserverable, ISongProgressObservab
     
     private boolean wasPlayed = false;
 	
-	public SongManager(Handler handler, Context context) {
+	public SongManager(Handler handler, Context context, Scrobbler scrobbler) {
 		songPlayer = MicroScrobblerMediaPlayer.getInstance();
 		this.handler = handler;
 		this.context = context;
-		scrobbler = new Scrobbler(context);
+		this.scrobbler = scrobbler;
         songInfoObservers = new HashSet<ISongInfoObserver>();
         songProgressObservers = new HashSet<ISongProgressObserver>();
 
