@@ -10,6 +10,7 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.database.FingerprintList;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongList;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.FingerprintManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.RecognizeManager;
+import com.git.programmerr47.testhflbjcrhjggkth.model.managers.Scrobbler;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SearchManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SongManager;
 import com.git.programmerr47.testhflbjcrhjggkth.utils.Constants;
@@ -42,6 +43,8 @@ public class MicroScrobblerModel {
 	
 	private Api vkApi;
 	private Account vkAccount;
+	
+	private Scrobbler scrobbler;
 	
 	public static void setContext(Context con) {
 		context = con;
@@ -83,7 +86,8 @@ public class MicroScrobblerModel {
 		imageLoader.init(ImageLoaderConfiguration.createDefault(context));
 		songList = new SongList(context);
 		fingerprintList = new FingerprintList(context);
-		songManager = new SongManager(handler, context);
+		scrobbler = new Scrobbler(context);
+		songManager = new SongManager(handler, context, scrobbler);
 		searchManager = new SearchManager(config);
         recognizeManager = new RecognizeManager(config, context);
         fingerprintManager = new FingerprintManager(config, context, handler);
@@ -95,6 +99,10 @@ public class MicroScrobblerModel {
 			vkApi = new Api(vkAccount.access_token, Constants.VK_API_ID);
 		}
 		Log.v("vkApi", "vkApi = " + vkApi);
+	}
+	
+	public Scrobbler getScrobbler() {
+		return scrobbler;
 	}
 	
 	public FingerprintList getFingerprintList() {
