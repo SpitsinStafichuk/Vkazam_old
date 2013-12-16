@@ -28,7 +28,7 @@ public class VkListAdapter extends BaseAdapter {
     private MicroScrobblerModel model;
     private DatabaseSongData currentSongData;
     private View currentElement;
-    private List<Audio> urls;
+    private List<Audio> audios;
     private LayoutInflater inflater;
     private Activity activity;
     private int resLayout;
@@ -47,21 +47,21 @@ public class VkListAdapter extends BaseAdapter {
         model = RecognizeServiceConnection.getModel();
         vkApi = model.getVkApi();
         currentSongData = model.getCurrentOpenSong();
-        Log.v(TAG, "Current Song url = " + currentSongData.getPleercomUrl());
-        urls = new ArrayList<Audio>();
+        //Log.v(TAG, "Current Song url = " + currentSongData.getPleercomUrl());
+        audios = new ArrayList<Audio>();
         updateSongsList();
         inflater = (LayoutInflater) this.activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public int getCount() {
-        return urls.size() + 1;
+        return audios.size() + 1;
     }
 
     @Override
     public Object getItem(int position) {
-        if (position < urls.size())
-            return urls.get(position);
+        if (position < audios.size())
+            return audios.get(position);
         else
             return null;
     }
@@ -75,20 +75,20 @@ public class VkListAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         View view = convertView;
 
-        Log.v(TAG, position + " - " + urls.size());
-        if (position < urls.size()) {
+        Log.v(TAG, position + " - " + audios.size());
+        if (position < audios.size()) {
             view = inflater.inflate(resLayout, parent, false);
 
             TextView textView;
 
             textView = (TextView) view.findViewById(R.id.ppUrlListItemArtist);
-            textView.setText(urls.get(position).artist);
+            textView.setText(audios.get(position).artist);
 
             textView = (TextView) view.findViewById(R.id.ppUrlListItemTitle);
-            textView.setText(urls.get(position).title);
+            textView.setText(audios.get(position).title);
 
             textView = (TextView) view.findViewById(R.id.ppUrlListItemDuration);
-            textView.setText(getStringTime(urls.get(position).duration));
+            textView.setText(getStringTime(audios.get(position).duration));
 
             textView = (TextView) view.findViewById(R.id.ppUrlListItemBitRate);
 
@@ -99,7 +99,7 @@ public class VkListAdapter extends BaseAdapter {
             View.OnClickListener listener = new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                	Audio audio = urls.get(position);
+                	Audio audio = audios.get(position);
                 	String audioId = audio.owner_id + "_" + audio.aid;
                     if (currentSongData.getVkAudioId() == null || !currentSongData.getVkAudioId().equals(audioId)) {
                         currentSongData.setVkAudioId(audioId);
@@ -110,8 +110,9 @@ public class VkListAdapter extends BaseAdapter {
             info.setOnClickListener(listener);
             numbers.setOnClickListener(listener);
             radioButton.setOnClickListener(listener);
-
-            if ((currentSongData.getPleercomUrl() != null) && (currentSongData.getPleercomUrl().equals(urls.get(position).url))) {
+            
+            String audioId = audios.get(position).owner_id + "_" + audios.get(position).aid;
+            if ((currentSongData.getVkAudioId() != null) && (currentSongData.getVkAudioId().equals(audioId))) {
                 radioButton.setChecked(true);
             } else {
                 radioButton.setChecked(false);
@@ -133,7 +134,7 @@ public class VkListAdapter extends BaseAdapter {
             });
         }
 
-        if (position < urls.size()) {
+        if (position < audios.size()) {
             ImageButton playPause = (ImageButton) view.findViewById(R.id.ppUrlListItemPlayPauseButton);
             final View viewFinal = view;
             playPause.setOnClickListener(new View.OnClickListener() {
@@ -141,7 +142,7 @@ public class VkListAdapter extends BaseAdapter {
                 public void onClick(View v) {
                 	Log.v(TAG, "View = " + v);
                     controller.setCurrentElement(viewFinal);
-                    controller.playPauseSong(urls.get(position).url, activity);
+                    controller.playPauseSong(audios.get(position).url, activity);
                 }
             });
         }
@@ -161,10 +162,10 @@ public class VkListAdapter extends BaseAdapter {
                     }
                 });
                 try {
-                    int listUpdate = urls.size();
-                    urls.addAll(vkApi.searchAudio(currentSongData.getArtist() + " " + currentSongData.getTitle(), "2", "0", 5l, (page - 1) * 5l, null, null));
+                    int listUpdate = audios.size();
+                    audios.addAll(vkApi.searchAudio(currentSongData.getArtist() + " " + currentSongData.getTitle(), "2", "0", 5l, (page - 1) * 5l, null, null));
                     Log.v(TAG, "ANSWER FROM INTERNET");
-                    final int listUpdateFinal = urls.size() - listUpdate;
+                    final int listUpdateFinal = audios.size() - listUpdate;
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

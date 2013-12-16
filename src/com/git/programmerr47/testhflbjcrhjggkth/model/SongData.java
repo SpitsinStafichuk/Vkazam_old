@@ -1,6 +1,16 @@
 package com.git.programmerr47.testhflbjcrhjggkth.model;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.Date;
+import java.util.List;
+
+import org.json.JSONException;
+
+import com.git.programmerr47.testhflbjcrhjggkth.model.exceptions.SongNotFoundException;
+import com.perm.kate.api.Api;
+import com.perm.kate.api.Audio;
+import com.perm.kate.api.KException;
 
 import android.util.Log;
 
@@ -154,6 +164,22 @@ public class SongData {
 		} else {
 			throw new IllegalArgumentException("TrackIds must be equals");
 		}
+	}
+	
+	public void findVkAudio(Api vkApi) throws MalformedURLException, IOException, JSONException, KException, SongNotFoundException {
+		List<Audio> audioList = vkApi.searchAudio(getArtist() + " " + getTitle(), "2", "0", 1l, 0l, null, null);
+		if (audioList.isEmpty()) {
+			throw new SongNotFoundException();
+		}
+		vkAudioId = audioList.get(0).owner_id + "_" + audioList.get(0).aid;
+	}
+	
+	public void findPPAudio() throws MalformedURLException, IOException, JSONException, com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.KException, SongNotFoundException {
+		List<com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.Audio> audioList = com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.Api.searchAudio(getArtist() + " " + getTitle(), 1, 1);
+		if (audioList.isEmpty()) {
+			throw new SongNotFoundException();
+		}
+		pleercomUrl = audioList.get(0).url;
 	}
 	
 	public String getContributorImageUrl() {
