@@ -1,8 +1,15 @@
 package com.git.programmerr47.testhflbjcrhjggkth.model.database;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.Date;
 
+import org.json.JSONException;
+
 import com.git.programmerr47.testhflbjcrhjggkth.model.SongData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.exceptions.SongNotFoundException;
+import com.perm.kate.api.Api;
+import com.perm.kate.api.KException;
 
 
 public class DatabaseSongData extends SongData implements Data {
@@ -78,5 +85,17 @@ public class DatabaseSongData extends SongData implements Data {
 	@Override
 	public long getId() {
 		return id;
+	}
+	
+	@Override
+	public void findVkAudio(Api vkApi) throws MalformedURLException, IOException, JSONException, KException, SongNotFoundException {
+		super.findVkAudio(vkApi);
+		dao.update(this);
+	}
+	
+	@Override
+	public void findPPAudio() throws MalformedURLException, IOException, JSONException, com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.KException, SongNotFoundException {
+		super.findPPAudio();
+		dao.update(this);
 	}
 }
