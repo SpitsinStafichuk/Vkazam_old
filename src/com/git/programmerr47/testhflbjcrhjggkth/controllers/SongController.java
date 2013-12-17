@@ -6,7 +6,6 @@ import java.net.MalformedURLException;
 import org.json.JSONException;
 
 import android.app.Activity;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -31,7 +30,7 @@ public class SongController {
 	public synchronized void playPauseSong(final DatabaseSongData songData, final int positionInList) {
 		if(preparingThread != null) {
 			SongManager songManager = model.getSongManager();
-			songManager.set(null, -1);
+			songManager.set(null, -1, model.getVkApi());
 			preparingThread.interrupt();
 		}
 		preparingThread = new Thread(){
@@ -73,7 +72,7 @@ public class SongController {
 				songManager.stop();
 			}
 			songManager.release();
-			songManager.set(songData, positionInList);
+			songManager.set(songData, positionInList, model.getVkApi());
 			Log.v("SongListController", "song was setted");
 			try {
 				songManager.prepare();
@@ -82,23 +81,27 @@ public class SongController {
 			} catch (SongNotFoundException e) {
 				showToast("Song is not found");
 				songManager.release();
-				songManager.set(null, -1);
+				songManager.set(null, -1, model.getVkApi());
 			} catch (MalformedURLException e) {
 				showToast("Seems you haven't internet connection");
 				songManager.release();
-				songManager.set(null, -1);
+				songManager.set(null, -1, model.getVkApi());
 			} catch (IOException e) {
 				showToast("Seems you haven't internet connection");
 				songManager.release();
-				songManager.set(null, -1);
+				songManager.set(null, -1, model.getVkApi());
 			} catch (JSONException e) {
 				showToast(e.getLocalizedMessage());
 				songManager.release();
-				songManager.set(null, -1);
+				songManager.set(null, -1, model.getVkApi());
 			} catch (KException e) {
 				showToast(e.getLocalizedMessage());
 				songManager.release();
-				songManager.set(null, -1);
+				songManager.set(null, -1, model.getVkApi());
+			} catch (com.perm.kate.api.KException e) {
+				showToast(e.getLocalizedMessage());
+				songManager.release();
+				songManager.set(null, -1, model.getVkApi());
 			}
 		}
 	}

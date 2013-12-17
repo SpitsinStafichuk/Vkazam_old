@@ -88,9 +88,10 @@ public class DatabaseSongData extends SongData implements Data {
 	}
 	
 	@Override
-	public void findVkAudio(Api vkApi) throws MalformedURLException, IOException, JSONException, KException, SongNotFoundException {
-		super.findVkAudio(vkApi);
+	public String findVkAudio(Api vkApi) throws MalformedURLException, IOException, JSONException, KException, SongNotFoundException {
+		String result = super.findVkAudio(vkApi);
 		dao.update(this);
+		return result;
 	}
 	
 	@Override

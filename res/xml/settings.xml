@@ -15,7 +15,8 @@
             android:key="settingsVkUrls"
             android:title="Vk Urls"
             android:summary="Prefer to choose vk urls istead of pp urls"
-            android:enabled="false"/>
+            android:dependency="settingsVkConnection"
+            android:defaultValue="true"/>
     <com.git.programmerr47.testhflbjcrhjggkth.view.IconCheckBoxPreference
             android:key="settingsOnlyWiFiConntection"
             android:title="Only Wi-Fi"

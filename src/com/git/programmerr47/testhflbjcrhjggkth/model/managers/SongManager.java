@@ -1,29 +1,31 @@
 package com.git.programmerr47.testhflbjcrhjggkth.model.managers;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerMediaPlayer;
-import com.git.programmerr47.testhflbjcrhjggkth.model.observers.*;
 import org.json.JSONException;
-
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseSongData;
-import com.git.programmerr47.testhflbjcrhjggkth.model.exceptions.SongNotFoundException;
-import com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.Api;
-import com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.Audio;
-import com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.KException;
 
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerMediaPlayer;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseSongData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.exceptions.SongNotFoundException;
+import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISongInfoObserver;
+import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISongInfoObserverable;
+import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISongProgressObservable;
+import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISongProgressObserver;
+import com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.KException;
+
 public class SongManager implements ISongInfoObserverable, ISongProgressObservable {
+	private final static String TAG = "SongManager";
 
     private Set<ISongInfoObserver> songInfoObservers;
     private Set<ISongProgressObserver> songProgressObservers;
@@ -42,6 +44,8 @@ public class SongManager implements ISongInfoObserverable, ISongProgressObservab
     private ScheduledThreadPoolExecutor songProgressTimer;
     
     private boolean wasPlayed = false;
+    
+    private com.perm.kate.api.Api vkApi;
 	
 	public SongManager(Handler handler, Context context, Scrobbler scrobbler) {
 		songPlayer = MicroScrobblerMediaPlayer.getInstance();
@@ -64,7 +68,8 @@ public class SongManager implements ISongInfoObserverable, ISongProgressObservab
         }, 0, 1000, TimeUnit.MILLISECONDS);
 	}
 	
-	public void set(DatabaseSongData songData, int positionInList) {
+	public void set(DatabaseSongData songData, int positionInList, com.perm.kate.api.Api vkApi) {
+		this.vkApi = vkApi;
 		this.songData = songData;
         this.positionInList = positionInList;
         wasPlayed = false;
@@ -72,51 +77,53 @@ public class SongManager implements ISongInfoObserverable, ISongProgressObservab
         asyncNotifySongInfoObservers();
 	}
 	
-	private Audio findSongOnPleercom(String artist, String title) throws SongNotFoundException, MalformedURLException, IOException, JSONException, KException {
-		String q = artist + " " + title;
-		Log.v("SongPlayer", "Searching audio from given API");
-		List<Audio> audioList = Api.searchAudio(q, 1, 1);
-		Log.v("SongPlayer", "Searching audio is complete");
-	
-		if (audioList.isEmpty()) {
-			songPlayer.release();
-			throw new SongNotFoundException();
-		}
-		return audioList.get(0);
-	}
-	
-	public void prepare() throws IOException, JSONException, SongNotFoundException, KException {
-		Log.v("SongPlayer", "Player is loading");
+	//есть сомнения по поводу корректности проверки рабочий ли url для песни перед попыткой его обновить: возможно, помимо setDataSource, стоит также вызывать prepare
+	public void prepare() throws IOException, JSONException, SongNotFoundException, KException, com.perm.kate.api.KException {
+		Log.v(TAG, "Player is loading");
         songPlayer = MicroScrobblerMediaPlayer.getInstance();
         songPlayer.setLoadingState();
         songPlayer.setOnCompletionListener(onCompletionListener);
         songPlayer.setOnBufferingUpdateListener(onBufferingUpdateListener);
-		Log.v("SongPlayer", "Player is reconstructed");
-		boolean songDataNeedUpdate = false;
-		Audio audio = null;
-		if(songData.getPleercomUrl() == null) {
-			songDataNeedUpdate = true;
-			audio = findSongOnPleercom(getArtist(), getTitle());
-            Log.v("SongPlayer", "new Pleercomurl is " + audio.url);
-			songPlayer.setDataSource(audio.url);
-		} else {
-			try {
-				Log.v("SongPlayer", "Pleercomurl is " + songData.getPleercomUrl());
+		Log.v(TAG, "Player is reconstructed");
+		if(!PreferenceManager.getDefaultSharedPreferences(context).getBoolean("settingsVkUrls", false)) {
+			if(songData.getPleercomUrl() == null) {
+				songData.findPPAudio();
+	            Log.i(TAG, "new Pleercomurl: " + songData.getPleercomUrl());
 				songPlayer.setDataSource(songData.getPleercomUrl());
-			} catch(IOException e) {
-				songDataNeedUpdate = true;
-				audio = findSongOnPleercom(getArtist(), getTitle());
-				songPlayer.setDataSource(audio.url);
-			} catch(IllegalArgumentException e) {
-				songDataNeedUpdate = true;
-				audio = findSongOnPleercom(getArtist(), getTitle());
-				songPlayer.setDataSource(audio.url);
-			} 
+			} else {
+				try {
+					Log.i(TAG, "Pleercomurl: " + songData.getPleercomUrl());
+					songPlayer.setDataSource(songData.getPleercomUrl());
+				} catch(IOException e) {
+					songData.findPPAudio();
+				} catch(IllegalArgumentException e) {
+					songData.findPPAudio();
+				} 
+			}
+		} else {
+			if(songData.getVkAudioId() == null) {
+				String vkUrl = songData.findVkAudio(vkApi);
+				Log.i(TAG, "vk audio id: " + songData.getVkAudioId());
+				Log.i(TAG, "vk audio url: " + vkUrl);
+				songPlayer.setDataSource(vkUrl);
+			} else {
+				try {
+					List<com.perm.kate.api.Audio> audioList = vkApi.getAudioById(songData.getVkAudioId(), null, null);
+					if (audioList.isEmpty()) {
+						throw new SongNotFoundException();
+					}
+					String vkUrl = audioList.get(0).url;
+					Log.i(TAG, "vk audio id: " + songData.getVkAudioId());
+					Log.i(TAG, "vk audio url: " + vkUrl);
+					songPlayer.setDataSource(vkUrl);
+				} catch(IOException e) {
+					songData.findVkAudio(vkApi);
+				} catch(IllegalArgumentException e) {
+					songData.findVkAudio(vkApi);
+				} 
+			}
 		}
 		songPlayer.prepare();
-		if(songDataNeedUpdate) {
-			songData.setPleercomUrl(audio.url);
-		}
 	}
 	
 	public void play() {
@@ -163,7 +170,7 @@ public class SongManager implements ISongInfoObserverable, ISongProgressObservab
 		if(songData != null)
 			scrobbler.sendLastFMPlaybackCompleted(getArtist(), getTitle(), songData.getAlbum(), songPlayer.getDuration());
 		songPlayer.release();
-		Log.v("SongPlayer", "Player is released");
+		Log.v(TAG, "Player is released");
 	}
 
 	public boolean isLoading() {
