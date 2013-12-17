@@ -18,6 +18,12 @@
             android:dependency="settingsVkConnection"
             android:defaultValue="true"/>
     <com.git.programmerr47.testhflbjcrhjggkth.view.IconCheckBoxPreference
+            android:key="settingsVkAudioBroadcast"
+            android:title="Broadcast to status"
+            android:summary="Broadcast current playing song to vk.com status"
+            android:dependency="settingsVkConnection"
+            android:defaultValue="false"/>
+    <com.git.programmerr47.testhflbjcrhjggkth.view.IconCheckBoxPreference
             android:key="settingsOnlyWiFiConntection"
             android:title="Only Wi-Fi"
             android:summary="Enable syncronization with internet only if there is wi-fi connection"/>
