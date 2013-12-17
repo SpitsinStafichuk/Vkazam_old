@@ -56,7 +56,7 @@ public class URLcontroller implements IPlayerStateObserver{
     public synchronized void playPauseSong(final String url, final Activity activity) {
         if(preparingThread != null) {
             SongManager songManager = model.getSongManager();
-            songManager.set(null, -1);
+            songManager.set(null, -1, model.getVkApi());
             preparingThread.interrupt();
         }
         preparingThread = new Thread(){
