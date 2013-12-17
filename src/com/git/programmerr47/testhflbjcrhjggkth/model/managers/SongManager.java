@@ -130,6 +130,18 @@ public class SongManager implements ISongInfoObserverable, ISongProgressObservab
 		Log.v("SongListController", "Song" + songData.getArtist() + "-" + songData.getTitle() + "was started");
 		if(!wasPlayed) {
 			scrobbler.sendLastFMTrackStarted(getArtist(), getTitle(), songData.getAlbum(), songPlayer.getDuration());
+			if(PreferenceManager.getDefaultSharedPreferences(context).getBoolean("settingsVkAudioBroadcast", false)) {
+				new Thread() {
+					@Override
+					public void run() {
+						try {
+							vkApi.setStatus(null, songData.getVkAudioId());
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				}.start();
+			}
 			wasPlayed = true;
 		} else {
 			scrobbler.sendLastFMTrackUnpaused(getArtist(), getTitle(), songData.getAlbum(), songPlayer.getDuration() , songPlayer.getCurrentPosition());
