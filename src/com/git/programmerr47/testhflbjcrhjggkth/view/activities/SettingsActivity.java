@@ -15,7 +15,7 @@ import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.SettingsController;
 import com.git.programmerr47.testhflbjcrhjggkth.view.IconCheckBoxPreference;
 
-public class SettingsActivity extends PreferenceActivity{
+public class SettingsActivity extends PreferenceActivity {
     SettingsController controller;
     public IconCheckBoxPreference vkConnection;
 
