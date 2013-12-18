@@ -79,7 +79,7 @@ public class ProgressWheel extends View {
             //super.handleMessage(msg);
         }
     };
-    int progress = 270;
+    int progress = 0;
     boolean isSpinning = false;
 
     //Other
@@ -287,6 +287,9 @@ public class ProgressWheel extends View {
     public void incrementProgress() {
         isSpinning = false;
         progress++;
+        if (progress >= 360) {
+            progress = 0;
+        }
         setText(Math.round(((float)progress/360)*100) + "%");
         spinHandler.sendEmptyMessage(0);
     }
