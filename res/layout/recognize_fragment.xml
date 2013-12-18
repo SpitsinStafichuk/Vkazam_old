@@ -36,7 +36,7 @@
                     android:src="@drawable/timer" />
 
             <com.git.programmerr47.testhflbjcrhjggkth.view.ProgressWheel
-                    android:id="@+id/progressBarTwo"
+                    android:id="@+id/fingerprintTimer"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     barLength="60dp"

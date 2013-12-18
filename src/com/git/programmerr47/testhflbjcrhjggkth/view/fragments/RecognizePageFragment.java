@@ -8,8 +8,10 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.SongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.FingerprintManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.RecognizeManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IFingerprintStatusObserver;
+import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IFingerprintTimerObserver;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeResultObserver;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeStatusObserver;
+import com.git.programmerr47.testhflbjcrhjggkth.view.ProgressWheel;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
 import android.app.Activity;
@@ -28,7 +30,15 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class RecognizePageFragment extends FragmentWithName implements IRecognizeStatusObserver, IRecognizeResultObserver, IFingerprintStatusObserver {
+public class RecognizePageFragment
+       extends
+             FragmentWithName
+       implements
+             IRecognizeStatusObserver,
+             IRecognizeResultObserver,
+             IFingerprintStatusObserver,
+             IFingerprintTimerObserver {
+
 	static final String ARGUMENT_RADIO_ID = "arg_rad_id";
     
     private RecognizeController controller;
@@ -54,27 +64,30 @@ public class RecognizePageFragment extends FragmentWithName implements IRecogniz
     
     private SongData currentApearingSong;
     private boolean firstTimeApearing;
+
+    private ProgressWheel fingerprintTimer;
     
     public static RecognizePageFragment newInstance(Context context) {
-    		RecognizePageFragment pageFragment = new RecognizePageFragment();
-            Bundle arguments = new Bundle();
-            pageFragment.setArguments(arguments);
-            pageFragment.setFragmentName("Tagging");
-            pageFragment.setContext(context);
-            return pageFragment;
+        RecognizePageFragment pageFragment = new RecognizePageFragment();
+        Bundle arguments = new Bundle();
+        pageFragment.setArguments(arguments);
+        pageFragment.setFragmentName("Tagging");
+        pageFragment.setContext(context);
+        return pageFragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            controller = new RecognizeController(this.getActivity().getApplicationContext());
-            model = RecognizeServiceConnection.getModel();
-            fingerprintManager = model.getFingerprintManager();
-            fingerprintManager.addFingerprintStatusObserver(this);
-            recognizeManager = model.getRecognizeManager();
-            recognizeManager.addRecognizeStatusObserver(this);
-            recognizeManager.addRecognizeResultObserver(this);
-            firstTimeApearing = true;
+        super.onCreate(savedInstanceState);
+        controller = new RecognizeController(this.getActivity().getApplicationContext());
+        model = RecognizeServiceConnection.getModel();
+        fingerprintManager = model.getFingerprintManager();
+        fingerprintManager.addFingerprintStatusObserver(this);
+        fingerprintManager.addFingerprintTimerObserver(this);
+        recognizeManager = model.getRecognizeManager();
+        recognizeManager.addRecognizeStatusObserver(this);
+        recognizeManager.addRecognizeResultObserver(this);
+        firstTimeApearing = true;
     }
 
     @Override
@@ -99,24 +112,26 @@ public class RecognizePageFragment extends FragmentWithName implements IRecogniz
 		statusProgress = (ProgressBar) view.findViewById(R.id.statusProgress);
         
         ImageButton microTimerListenButton = (ImageButton) view.findViewById(R.id.microTimerListenButton);
-        microTimerListenButton.setOnClickListener(new View.OnClickListener(){
+        microTimerListenButton.setOnClickListener(new View.OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
-				Log.v("Recognizing", "Recognize by timer: onLongClick");
-				controller.fingerprintByTimerRecognizeCancel();
-			}
-		});
+            @Override
+            public void onClick(View v) {
+                Log.v("Recognizing", "Recognize by timer: onLongClick");
+                controller.fingerprintByTimerRecognizeCancel();
+            }
+        });
         
         ImageButton microNowListenButton = (ImageButton) view.findViewById(R.id.microNowListenButton);
         microNowListenButton.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				Log.v("Recognizing", "Recognize now: onLongClick");
-				controller.fingerprintNowRecognizeCancel();
-			}
-		});
+
+            @Override
+            public void onClick(View v) {
+                Log.v("Recognizing", "Recognize now: onLongClick");
+                controller.fingerprintNowRecognizeCancel();
+            }
+        });
+
+        fingerprintTimer = (ProgressWheel) view.findViewById(R.id.fingerprintTimer);
         
         return view;
     }
@@ -125,6 +140,7 @@ public class RecognizePageFragment extends FragmentWithName implements IRecogniz
     public void onDestroy() {
         super.onDestroy();
         fingerprintManager.removeFingerprintStatusObserver(this);
+        fingerprintManager.removeFingerprintTimerObserver(this);
         recognizeManager.removeRecognizeStatusObserver(this);
         recognizeManager.removeRecognizeResultObserver(this);
         controller.finish();
@@ -224,4 +240,9 @@ public class RecognizePageFragment extends FragmentWithName implements IRecogniz
 
 		this.status.setText(status);
 	}
+
+    @Override
+    public void onFingerprintTimerUpdated() {
+        fingerprintTimer.incrementProgress();
+    }
 }
