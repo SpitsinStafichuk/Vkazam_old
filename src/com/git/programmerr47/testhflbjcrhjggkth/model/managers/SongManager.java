@@ -85,7 +85,7 @@ public class SongManager implements ISongInfoObserverable, ISongProgressObservab
         songPlayer.setOnCompletionListener(onCompletionListener);
         songPlayer.setOnBufferingUpdateListener(onBufferingUpdateListener);
 		Log.v(TAG, "Player is reconstructed");
-		if(!PreferenceManager.getDefaultSharedPreferences(context).getBoolean("settingsVkUrls", false)) {
+		if((!PreferenceManager.getDefaultSharedPreferences(context).getBoolean("settingsVkConnection", false)) || (!PreferenceManager.getDefaultSharedPreferences(context).getBoolean("settingsVkUrls", false))) {
 			if(songData.getPleercomUrl() == null) {
 				songData.findPPAudio();
 	            Log.i(TAG, "new Pleercomurl: " + songData.getPleercomUrl());

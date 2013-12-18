@@ -167,13 +167,17 @@ public class SongData {
 	}
 	
 	public String findVkAudio(Api vkApi) throws MalformedURLException, IOException, JSONException, KException, SongNotFoundException {
-		List<Audio> audioList = vkApi.searchAudio(getArtist() + " " + getTitle(), "2", "0", 1l, 0l, null, null);
-		if (audioList.isEmpty()) {
-			throw new SongNotFoundException();
-		}
-		Audio audio = audioList.get(0);
-	    vkAudioId = audio.owner_id + "_" + audio.aid;
-	    return audio.url;
+        if (vkApi != null) {
+            List<Audio> audioList = vkApi.searchAudio(getArtist() + " " + getTitle(), "2", "0", 1l, 0l, null, null);
+            if (audioList.isEmpty()) {
+                throw new SongNotFoundException();
+            }
+            Audio audio = audioList.get(0);
+            vkAudioId = audio.owner_id + "_" + audio.aid;
+            return audio.url;
+        } else {
+            return null;
+        }
 	}
 	
 	public void findPPAudio() throws MalformedURLException, IOException, JSONException, com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.KException, SongNotFoundException {
