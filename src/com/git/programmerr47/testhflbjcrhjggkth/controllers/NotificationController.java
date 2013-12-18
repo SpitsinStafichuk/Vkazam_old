@@ -16,10 +16,11 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.SongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.*;
 import com.git.programmerr47.testhflbjcrhjggkth.view.activities.MicrophonePagerActivity;
 
-public class NotificationController implements ISongInfoObserver, IRecognizeStatusObserver, IRecognizeResultObserver, IFingerprintStatusObserver{
+public class NotificationController implements ISongInfoObserver, IPlayerStateObserver, IRecognizeStatusObserver, IRecognizeResultObserver, IFingerprintStatusObserver{
 
     private static final int PLAYBACK_SERVICE_STATUS = 1;
     private static final CharSequence PLAYING_STATUS = "Playing song";
+    private static final CharSequence LOADING_STATUS = "Loading song";
     private static final CharSequence RECOGNIZING_STATUS = "TAGGING: ";
     private static final CharSequence NOTHING = "Music not found";
 
@@ -49,6 +50,7 @@ public class NotificationController implements ISongInfoObserver, IRecognizeStat
         model.getFingerprintManager().addFingerprintStatusObserver(this);
         model.getRecognizeManager().addRecognizeResultObserver(this);
         model.getRecognizeManager().addRecognizeStatusObserver(this);
+        model.getPlayer().addPlayerStateObserver(this);
 
         //init notification
         Intent intent = new Intent(service, MicrophonePagerActivity.class);
@@ -94,6 +96,7 @@ public class NotificationController implements ISongInfoObserver, IRecognizeStat
         model.getFingerprintManager().removeFingerprintStatusObserver(this);
         model.getRecognizeManager().removeRecognizeResultObserver(this);
         model.getRecognizeManager().removeRecognizeStatusObserver(this);
+        model.getPlayer().removePlayerStateObserver(this);
     }
 
     @Override
@@ -130,13 +133,29 @@ public class NotificationController implements ISongInfoObserver, IRecognizeStat
     }
 
     private void updateSong(CharSequence status, SongData songData) {
-        SongData data = model.getSongManager().getSongData();
         this.status = status;
-        if (data != null) {
-            artistTitle = data.getArtist() + " - " + data.getTitle();
+        if (songData != null) {
+            artistTitle = songData.getArtist() + " - " + songData.getTitle();
         } else {
             artistTitle = NOTHING;
         }
         recreateNotification();
+    }
+
+    @Override
+    public void updatePlayerState() {
+        if (model.getPlayer().isLoading()) {
+            SongData data = model.getSongManager().getSongData();
+            if (data != null) {
+                updateSong(LOADING_STATUS, data);
+            } else {
+                updateStatus(LOADING_STATUS.toString());
+            }
+        } else if (model.getPlayer().isPlaying()) {
+            SongData data = model.getSongManager().getSongData();
+            if (data != null) {
+                updateSong(PLAYING_STATUS, data);
+            }
+        }
     }
 }
