@@ -10,26 +10,42 @@
         android:layout_height="wrap_content"
         android:padding="10dp">
 
+
         <ImageButton
             android:id="@+id/microNowListenButton"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="100dp"
             android:paddingLeft="100dp"
             android:background="@drawable/micro_image_button_rect_background"
             android:scaleType="fitCenter"
             android:src="@drawable/microphone_icon" />
 
-        <ImageButton
-            android:id="@+id/microTimerListenButton"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_alignLeft="@+id/microTimerListenButton"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="25dp"
-            android:padding="10dp"
-            android:background="@drawable/micro_image_button_round_background"
-            android:scaleType="centerInside"
-            android:src="@drawable/timer" />
+        <RelativeLayout
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_alignLeft="@+id/microTimerListenButton">
+
+            <ImageButton
+                    android:id="@+id/microTimerListenButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:padding="10dp"
+                    android:background="@drawable/micro_image_button_round_background"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/timer" />
+
+            <com.git.programmerr47.testhflbjcrhjggkth.view.ProgressWheel
+                    android:id="@+id/progressBarTwo"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    barLength="60dp"
+                    barColor="#339BB9"
+                    barWidth="25dp"
+                    rimWidth="25dp"
+                    spinSpeed="3dp"/>
+
+        </RelativeLayout>
 
     </RelativeLayout>
 
