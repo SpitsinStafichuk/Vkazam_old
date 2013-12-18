@@ -22,7 +22,7 @@ import android.os.Handler;
 import android.util.Log;
 
 public class FingerprintManager implements IFingerprintStatusObservable, IFingerprintResultObservable, GNOperationStatusChanged, GNFingerprintResultReady {
-	private static final int DEFAULT_FINGERPRINT_TIMER_PERIOD = 10 * 1000;
+	private static final int DEFAULT_FINGERPRINT_TIMER_PERIOD = 20 * 1000;
 	public static final String FINGERPRINTING_SUCCESS = "Fingerprinting success";
 	public static final String TAG = "FingerprintManager";
 	

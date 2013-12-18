@@ -70,10 +70,10 @@ public class RecognizePageFragment extends FragmentWithName implements IRecogniz
             controller = new RecognizeController(this.getActivity().getApplicationContext());
             model = RecognizeServiceConnection.getModel();
             fingerprintManager = model.getFingerprintManager();
-            fingerprintManager.addFingerprintStatusObserver((IFingerprintStatusObserver)this);
+            fingerprintManager.addFingerprintStatusObserver(this);
             recognizeManager = model.getRecognizeManager();
-            recognizeManager.addRecognizeStatusObserver((IRecognizeStatusObserver)this);
-            recognizeManager.addRecognizeResultObserver((IRecognizeResultObserver)this);
+            recognizeManager.addRecognizeStatusObserver(this);
+            recognizeManager.addRecognizeResultObserver(this);
             firstTimeApearing = true;
     }
 
@@ -99,22 +99,22 @@ public class RecognizePageFragment extends FragmentWithName implements IRecogniz
 		statusProgress = (ProgressBar) view.findViewById(R.id.statusProgress);
         
         ImageButton microTimerListenButton = (ImageButton) view.findViewById(R.id.microTimerListenButton);
-        microTimerListenButton.setOnLongClickListener(new View.OnLongClickListener(){
+        microTimerListenButton.setOnClickListener(new View.OnClickListener(){
 
 			@Override
-			public boolean onLongClick(View v) {
+			public void onClick(View v) {
 				Log.v("Recognizing", "Recognize by timer: onLongClick");
-				return controller.fingerprintByTimerRecognizeCancel();
+				controller.fingerprintByTimerRecognizeCancel();
 			}
 		});
         
         ImageButton microNowListenButton = (ImageButton) view.findViewById(R.id.microNowListenButton);
-        microNowListenButton.setOnLongClickListener(new View.OnLongClickListener() {
+        microNowListenButton.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
-			public boolean onLongClick(View v) {
+			public void onClick(View v) {
 				Log.v("Recognizing", "Recognize now: onLongClick");
-				return controller.fingerprintNowRecognizeCancel();
+				controller.fingerprintNowRecognizeCancel();
 			}
 		});
         
@@ -125,8 +125,8 @@ public class RecognizePageFragment extends FragmentWithName implements IRecogniz
     public void onDestroy() {
         super.onDestroy();
         fingerprintManager.removeFingerprintStatusObserver(this);
-        recognizeManager.removeRecognizeStatusObserver((IRecognizeStatusObserver)this);
-        recognizeManager.removeRecognizeResultObserver((IRecognizeResultObserver)this);
+        recognizeManager.removeRecognizeStatusObserver(this);
+        recognizeManager.removeRecognizeResultObserver(this);
         controller.finish();
         Log.v("SongPlayer", "HistoryPageFragment onDestroy()");
     }
