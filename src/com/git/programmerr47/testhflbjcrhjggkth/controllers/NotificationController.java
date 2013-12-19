@@ -31,7 +31,6 @@ public class NotificationController implements ISongInfoObserver, IPlayerStateOb
     //private HandlerThread thread;
     //private Handler handler;
     private PendingIntent openIntent;
-    private RemoteViews notificationView;
 
     private CharSequence status = "MicroScrobbler";
     private CharSequence artistTitle = "Nothing";
@@ -60,13 +59,12 @@ public class NotificationController implements ISongInfoObserver, IPlayerStateOb
     }
 
     public void recreateNotification() {
-        notificationView = new RemoteViews(service.getPackageName(), R.layout.notification_layout);
-        notificationView.setTextViewText(R.id.notificationTitle, status);
-        notificationView.setTextViewText(R.id.notificationSummary, artistTitle);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(service);
         notification = builder.
-                setContent(notificationView).
+                setContentTitle(status).
+                setContentText(artistTitle).
                 setContentIntent(openIntent).
+                setWhen(0).
                 setOngoing(true).
                 setSmallIcon(R.drawable.ic_launcher).
                 build();
