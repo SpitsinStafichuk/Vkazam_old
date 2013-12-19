@@ -28,7 +28,7 @@ public class FingerprintManager
              GNOperationStatusChanged,
              GNFingerprintResultReady {
 
-	private static final int DEFAULT_FINGERPRINT_TIMER_PERIOD = 20 * 1000;
+	public static final int DEFAULT_FINGERPRINT_TIMER_PERIOD = 1 * 1000;
 	public static final String FINGERPRINTING_SUCCESS = "Fingerprinting success";
 	public static final String TAG = "FingerprintManager";
 	
@@ -57,31 +57,14 @@ public class FingerprintManager
 	
 	public void fingerprintByTimer() {
 		isFingerprintingByTimer = true;
-		fingerprintTimer = new ScheduledThreadPoolExecutor(1);
-		fingerprintTimer.scheduleWithFixedDelay(new Thread() {
-
-			@Override
-			public void run() {
-				fingerprint();
-			}
-			
-		}, 0, fingerprintTimerPeriod, TimeUnit.MILLISECONDS);
-	}
-	
-	public void fingerprintByTimerCancel() {
-		fingerprintTimer.shutdownNow();
-		fingerprintCancel();
-		isFingerprintingByTimer = false;
-	}
-	
-	public void fingerprintOneTime() {
-		isFingerprintingOneTime = true;
+        isFingerprintingOneTime = false;
 		fingerprint();
 	}
 	
-	public void fingerprintOneTimeCancel() {
-		fingerprintCancel();
-		isFingerprintingOneTime = false;
+	public void fingerprintOneTime() {
+        isFingerprintingByTimer = false;
+		isFingerprintingOneTime = true;
+		fingerprint();
 	}
 	
 	private void fingerprint() {
@@ -96,9 +79,11 @@ public class FingerprintManager
 	}
 	
 	
-	private void fingerprintCancel() {
+	public void fingerprintCancel() {
 		GNOperations.cancel((GNFingerprintResultReady)this);
 		isFingerprinting = false;
+        isFingerprintingByTimer = false;
+        isFingerprintingOneTime = false;
 	}
 	
 	public boolean isFingerprintingOneTime() {
@@ -130,15 +115,6 @@ public class FingerprintManager
 		}
 		notifyFingerprintStatusObserversOnUiThread(fingerprintStatus);
 		notifyFingerprintResultObserversOnUiThread(fingerprint);
-
-        int period = DEFAULT_FINGERPRINT_TIMER_PERIOD / 360;
-        Timer timer = new Timer();
-        TimerTask refresher = new TimerTask() {
-            public void run() {
-                notifyFingerprintObservers();
-            };
-        };
-        timer.scheduleAtFixedRate(refresher, 0, period);
     }
 	
 	@Override

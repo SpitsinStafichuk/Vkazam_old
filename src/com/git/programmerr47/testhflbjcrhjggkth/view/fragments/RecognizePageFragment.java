@@ -79,7 +79,6 @@ public class RecognizePageFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        controller = new RecognizeController(this.getActivity().getApplicationContext());
         model = RecognizeServiceConnection.getModel();
         fingerprintManager = model.getFingerprintManager();
         fingerprintManager.addFingerprintStatusObserver(this);
@@ -93,6 +92,15 @@ public class RecognizePageFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.recognize_fragment, null);
+
+        fingerprintTimer = (ProgressWheel) view.findViewById(R.id.fingerprintTimer);
+        controller = new RecognizeController(this.getActivity().getApplicationContext(), fingerprintTimer);
+        fingerprintTimer.setOnLoadingListener(new ProgressWheel.OnLoadingListener() {
+            @Override
+            public void onComplete() {
+                controller.fingerprint();
+            }
+        });
         
         song = (LinearLayout) view.findViewById(R.id.currentSong);
 		song.setVisibility(View.GONE);
@@ -130,8 +138,6 @@ public class RecognizePageFragment
                 controller.fingerprintNowRecognizeCancel();
             }
         });
-
-        fingerprintTimer = (ProgressWheel) view.findViewById(R.id.fingerprintTimer);
         
         return view;
     }

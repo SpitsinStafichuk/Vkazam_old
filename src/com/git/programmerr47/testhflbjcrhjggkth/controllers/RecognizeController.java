@@ -1,6 +1,8 @@
 package com.git.programmerr47.testhflbjcrhjggkth.controllers;
 
 import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import android.content.Context;
 import android.util.Log;
@@ -15,6 +17,7 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.managers.Scrobbler;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IFingerprintResultObserver;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeResultObserver;
 import com.git.programmerr47.testhflbjcrhjggkth.utils.NetworkUtils;
+import com.git.programmerr47.testhflbjcrhjggkth.view.ProgressWheel;
 
 public class RecognizeController implements IFingerprintResultObserver, IRecognizeResultObserver {
 	private static final String TAG = "RecognizeController";
@@ -23,14 +26,18 @@ public class RecognizeController implements IFingerprintResultObserver, IRecogni
     private FingerprintManager fingerprintManager;
     private RecognizeManager recognizeManager;
     private Context context;
+    private Timer timerDelay;
+    private ProgressWheel progressWheel;
 
-    public RecognizeController(Context context) {
-            model = RecognizeServiceConnection.getModel();
-            this.context = context;
-            fingerprintManager = model.getFingerprintManager();
-            fingerprintManager.addFingerprintResultObserver(this);
-            recognizeManager = model.getRecognizeManager();
-            recognizeManager.addRecognizeResultObserver(this);
+    public RecognizeController(Context context, ProgressWheel progressWheel) {
+        model = RecognizeServiceConnection.getModel();
+        this.context = context;
+        fingerprintManager = model.getFingerprintManager();
+        fingerprintManager.addFingerprintResultObserver(this);
+        recognizeManager = model.getRecognizeManager();
+        recognizeManager.addRecognizeResultObserver(this);
+        this.progressWheel = progressWheel;
+        timerDelay = new Timer();
     }
 
     public void finish() {
@@ -41,19 +48,23 @@ public class RecognizeController implements IFingerprintResultObserver, IRecogni
     public boolean fingerprintByTimerRecognizeCancel() {
     	if(fingerprintManager.isFingerprintingByTimer()) {
     		Log.v("Fingerprinting", "Cancel fingerprintByTimer");
-    		fingerprintManager.fingerprintByTimerCancel();
+            timerDelay.cancel();
+            timerDelay = new Timer();
+    		fingerprintManager.fingerprintCancel();
     		return false;
     	} else {
     		Log.v("Fingerprinting", "fingerprintByTimer");
-    		fingerprintManager.fingerprintByTimer();
+            fingerprint();
     		return true;
     	}
     }
     
     public boolean fingerprintNowRecognizeCancel() {
+        timerDelay.cancel();
+        timerDelay = new Timer();
     	if(fingerprintManager.isFingerprintingOneTime()) {
     		Log.v("Fingerprinting", "Cancel fingerprintNow");
-    		fingerprintManager.fingerprintOneTimeCancel();
+    		fingerprintManager.fingerprintCancel();
     		return false;
     	} else {
     		Log.v("Fingerprinting", "fingerprintNow");
@@ -62,6 +73,14 @@ public class RecognizeController implements IFingerprintResultObserver, IRecogni
     	}
     }
 
+    public void fingerprint() {
+        timerDelay.cancel();
+        timerDelay = new Timer();
+        if (progressWheel != null) {
+            progressWheel.resetCount();
+        }
+        fingerprintManager.fingerprintByTimer();
+    }
 
 	@Override
 	public void onFingerprintResult(String fingerprint) {
@@ -72,6 +91,7 @@ public class RecognizeController implements IFingerprintResultObserver, IRecogni
 		} else {
 			Log.v("testik", "adding offline finger");
 			model.getFingerprintList().add(fingerprintData);
+            runTimerDelay();
 		}
 	}
 
@@ -81,5 +101,21 @@ public class RecognizeController implements IFingerprintResultObserver, IRecogni
 			model.getSongList().add(0, songData);
 			model.getScrobbler().sendLastFMTrack(songData.getArtist(), songData.getTitle(), songData.getAlbum());
 		}
+        runTimerDelay();
 	}
+
+    private void runTimerDelay() {
+        if (fingerprintManager.isFingerprintingByTimer()) {
+            int period = FingerprintManager.DEFAULT_FINGERPRINT_TIMER_PERIOD / 360;
+            TimerTask task = new TimerTask() {
+                @Override
+                public void run() {
+                    if (progressWheel != null) {
+                        progressWheel.incrementProgress();
+                    }
+                }
+            };
+            timerDelay.scheduleAtFixedRate(task, 0, period);
+        }
+    }
 }

@@ -7,7 +7,7 @@
         android:title="@string/action_settings"
         android:key="settings">
     <com.git.programmerr47.testhflbjcrhjggkth.view.IconCheckBoxPreference
-            android:layout="@layout/checkbox_preference"
+            android:layout="@layout/icon_checkbox_preference"
             android:key="settingsVkConnection"
             android:title="Vkontakte"
             android:summary="Sync with vkontakte"/>
@@ -35,4 +35,8 @@
             android:key="settingsAutoRecognize"
             android:title="Auto-recognizing"
             android:summary="Automatic recognizing all fingerprints when internet is available" />
+    <com.git.programmerr47.testhflbjcrhjggkth.view.IconPreference
+            android:key="settingsTimerDelay"
+            android:title="Timer delay"
+            android:summary="Setting fingerprint timer delay" />
 </PreferenceScreen>
