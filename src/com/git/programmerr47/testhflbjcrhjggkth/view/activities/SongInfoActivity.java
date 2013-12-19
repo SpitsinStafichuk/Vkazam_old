@@ -288,25 +288,27 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 				}
 	    		 audioId = databaseSongDatas[0].getVkAudioId();
 	    	 }
-	    	 String[] ids = audioId.split("_");
-	    	 long oid = Long.parseLong(ids[0]);
-	    	 long aid = Long.parseLong(ids[1]);
-	         try {
-	        	 result = "Song was added with id " + 
-	        			 vkApi.addAudio(aid, oid, null, null, null);
-	         } catch (MalformedURLException e) {
-				e.printStackTrace();
-				result = e.getMessage();
-	         } catch (IOException e) {
-	        	 result = e.getMessage();
-				e.printStackTrace();
-	         } catch (JSONException e) {
-	        	 result = e.getMessage();
-				e.printStackTrace();
-	         } catch (KException e) {
-	        	 result = e.getMessage();
-				e.printStackTrace();
-	         }
+             if (audioId != null) {
+                 String[] ids = audioId.split("_");
+                 long oid = Long.parseLong(ids[0]);
+                 long aid = Long.parseLong(ids[1]);
+                 try {
+                     result = "Song was added with id " +
+                             vkApi.addAudio(aid, oid, null, null, null);
+                 } catch (MalformedURLException e) {
+                     e.printStackTrace();
+                     result = e.getMessage();
+                 } catch (IOException e) {
+                     result = e.getMessage();
+                     e.printStackTrace();
+                 } catch (JSONException e) {
+                     result = e.getMessage();
+                     e.printStackTrace();
+                 } catch (KException e) {
+                     result = e.getMessage();
+                     e.printStackTrace();
+                 }
+             }
 	         return result;
 	     }
 
