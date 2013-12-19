@@ -38,12 +38,7 @@
             <com.git.programmerr47.testhflbjcrhjggkth.view.ProgressWheel
                     android:id="@+id/fingerprintTimer"
                     android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    barLength="60dp"
-                    barColor="#339BB9"
-                    barWidth="25dp"
-                    rimWidth="25dp"
-                    spinSpeed="3dp"/>
+                    android:layout_height="100dp"/>
 
         </RelativeLayout>
 
