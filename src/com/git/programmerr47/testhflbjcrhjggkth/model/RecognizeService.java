@@ -48,7 +48,6 @@ public class RecognizeService extends Service {
 	
 	@Override 
     public void onDestroy() {
-        notificationHandler.hideNotification();
         notificationHandler.finish();
 	}
 
