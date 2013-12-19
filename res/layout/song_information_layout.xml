@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    
+
     <LinearLayout
             android:layout_width="match_parent"
     	    android:layout_height="50dp"
@@ -70,24 +70,41 @@
             <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/standart_block_background">
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:layout_margin="5dp"
+                        android:text="Audio player for ProstoPleer urls"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_marginTop="5dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:background="@drawable/standart_block_background">
+                    android:layout_marginBottom="5dp">
 
                 <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
-                        android:layout_margin="5dp"
-                        android:background="@drawable/dark_blue_background">
+                        android:background="@drawable/standart_block_background">
 
                     <ImageButton
                             android:id="@+id/songInfoPlayPauseButtonForPP"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
                             android:scaleType="fitXY"
                             android:layout_gravity="center"
                             android:src="@android:drawable/ic_media_play"
@@ -106,6 +123,7 @@
                 <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
                         android:orientation="vertical">
 
                     <LinearLayout
@@ -118,14 +136,13 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:layout_marginTop="5dp"
                                 android:layout_marginRight="5dp"
                                 android:paddingLeft="10dp"
                                 android:paddingBottom="5dp"
                                 android:paddingRight="5dp"
                                 android:paddingTop="5dp"
                                 android:text = "PP Song Artist - Title full with auto scrolling. XDXD"
-                                android:textColor="@color/white"
+                                android:textColor="@color/black"
                                 android:singleLine="true"
                                 android:textSize="20sp"
                                 android:scrollHorizontally="true"
@@ -133,31 +150,55 @@
                                 android:focusableInTouchMode="true"
                                 android:ellipsize="marquee"
                                 android:marqueeRepeatLimit="marquee_forever"
-                                android:background="@drawable/dark_blue_background"/>
+                                android:background="@drawable/standart_block_background"/>
 
                         <ImageButton
                                 android:id="@+id/downloadPPButton"
                                 android:layout_width="40dp"
-                                android:layout_height="35dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_marginRight="5dp"
+                                android:layout_height="match_parent"
                                 android:scaleType="fitCenter"
-                                android:background="@drawable/dark_blue_background"
+                                android:background="@drawable/standart_block_background"
                                 android:src="@drawable/ic_action_download" />
 
                     </LinearLayout>
 
-                    <SeekBar
-                            android:id="@+id/SongProgressForPP"
+                    <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="5dp"
-                            android:layout_marginBottom="5dp"
                             android:layout_marginTop="5dp"
-                            android:progress="0"
-                            android:background="@drawable/dark_blue_background"/>
+                            android:background="@drawable/standart_block_background">
+
+
+                        <SeekBar
+                                android:id="@+id/SongProgressForPP"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginRight="5dp"
+                                android:progress="0"/>
+
+                    </LinearLayout>
 
                 </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/standart_block_background">
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:layout_margin="5dp"
+                        android:text="Audio player for Vkontakte urls"/>
 
             </LinearLayout>
 
@@ -168,20 +209,18 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:background="@drawable/standart_block_background">
+                    android:layout_marginBottom="5dp">
 
                 <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
-                        android:layout_margin="5dp"
-                        android:background="@drawable/dark_blue_background">
+                        android:background="@drawable/standart_block_background">
 
                     <ImageButton
                             android:id="@+id/songInfoPlayPauseButtonForVk"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
                             android:scaleType="fitXY"
                             android:layout_gravity="center"
                             android:src="@android:drawable/ic_media_play"
@@ -200,6 +239,7 @@
                 <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
                         android:orientation="vertical">
 
                     <LinearLayout
@@ -212,14 +252,13 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:layout_marginTop="5dp"
                                 android:layout_marginRight="5dp"
                                 android:paddingLeft="10dp"
                                 android:paddingBottom="5dp"
                                 android:paddingRight="5dp"
                                 android:paddingTop="5dp"
                                 android:text = "VK Song Artist - Title full with auto scrolling. XDXD"
-                                android:textColor="@color/white"
+                                android:textColor="@color/black"
                                 android:singleLine="true"
                                 android:textSize="20sp"
                                 android:scrollHorizontally="true"
@@ -227,29 +266,50 @@
                                 android:focusableInTouchMode="true"
                                 android:ellipsize="marquee"
                                 android:marqueeRepeatLimit="marquee_forever"
-                                android:background="@drawable/dark_blue_background"/>
+                                android:background="@drawable/standart_block_background"/>
 
                         <ImageButton
                                 android:id="@+id/addVkButton"
                                 android:layout_width="40dp"
-                                android:layout_height="35dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_marginRight="5dp"
+                                android:layout_height="match_parent"
                                 android:scaleType="fitCenter"
                                 android:src="@drawable/ic_action_new"
-                                android:background="@drawable/dark_blue_background"/>
+                                android:background="@drawable/standart_block_background"/>
 
                     </LinearLayout>
 
-                    <SeekBar
-                            android:id="@+id/SongProgressForVk"
+                    <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="5dp"
-                            android:layout_marginBottom="5dp"
                             android:layout_marginTop="5dp"
-                            android:progress="0"
-                            android:background="@drawable/dark_blue_background"/>
+                            android:orientation="horizontal">
+
+                        <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginRight="5dp"
+                                android:background="@drawable/standart_block_background">
+
+                            <SeekBar
+                                    android:id="@+id/SongProgressForVk"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_marginRight="5dp"
+                                    android:progress="0"/>
+
+                        </LinearLayout>
+
+                        <ImageButton
+                                android:id="@+id/downloadVKButton"
+                                android:layout_width="40dp"
+                                android:layout_height="match_parent"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/ic_action_download"
+                                android:background="@drawable/standart_block_background"/>
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -316,7 +376,7 @@
             <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     android:layout_marginTop="5dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
@@ -325,111 +385,141 @@
 
                 <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="5"
-                        android:orientation="vertical">
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
                     <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:layout_margin="5dp"
                             android:text="TrackId:"
-                            android:layout_gravity="right"
-                            android:textColor="@color/dark_grey"
+                            android:gravity="right"
+                            android:textColor="@color/black"
                             android:textSize="20sp" />
 
                     <TextView
-                            android:layout_width="wrap_content"
+                            android:id="@+id/songInfoTrackId"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:layout_margin="5dp"
-                            android:text="Artist:"
-                            android:layout_gravity="right"
-                            android:textColor="@color/dark_grey"
-                            android:textSize="20sp" />
-
-                    <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="5dp"
-                            android:text="Album:"
-                            android:layout_gravity="right"
-                            android:textColor="@color/dark_grey"
-                            android:textSize="20sp" />
-
-                    <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="5dp"
-                            android:text="Title:"
-                            android:layout_gravity="right"
-                            android:textColor="@color/dark_grey"
-                            android:textSize="20sp" />
-
-                    <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="5dp"
-                            android:text="Date:"
-                            android:layout_gravity="right"
-                            android:textColor="@color/dark_grey"
+                            android:text="TrackId"
+                            android:textColor="@color/black"
                             android:textSize="20sp" />
 
                 </LinearLayout>
 
                 <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="2"
-                        android:orientation="vertical">
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
                     <TextView
-                            android:id="@+id/songInfoTrackId"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
-                            android:text="TrackId"
-                            android:textColor="@color/dark_grey"
+                            android:layout_weight="1"
+                            android:text="Artist:"
+                            android:gravity="right"
+                            android:textColor="@color/black"
                             android:textSize="20sp" />
 
                     <TextView
                             android:id="@+id/songInfoArtist"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
+                            android:layout_weight="1"
                             android:text="Artist"
-                            android:textColor="@color/dark_grey"
+                            android:textColor="@color/black"
+                            android:textSize="20sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                    <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:layout_weight="1"
+                            android:text="Album:"
+                            android:gravity="right"
+                            android:textColor="@color/black"
                             android:textSize="20sp" />
 
                     <TextView
                             android:id="@+id/songInfoAlbum"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
+                            android:layout_weight="1"
                             android:text="Album"
-                            android:textColor="@color/dark_grey"
+                            android:textColor="@color/black"
+                            android:textSize="20sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                    <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:layout_weight="1"
+                            android:text="Title:"
+                            android:gravity="right"
+                            android:textColor="@color/black"
                             android:textSize="20sp" />
 
                     <TextView
                             android:id="@+id/songInfoTitle"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
+                            android:layout_weight="1"
                             android:text="Title"
-                            android:textColor="@color/dark_grey"
+                            android:textColor="@color/black"
+                            android:textSize="20sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                    <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:layout_weight="1"
+                            android:text="Date:"
+                            android:gravity="right"
+                            android:textColor="@color/black"
                             android:textSize="20sp" />
 
                     <TextView
                             android:id="@+id/songInfoDate"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
+                            android:layout_weight="1"
                             android:text="Date"
-                            android:textColor="@color/dark_grey"
+                            android:textColor="@color/black"
                             android:textSize="20sp" />
 
                 </LinearLayout>
 
             </LinearLayout>
+
 
         </LinearLayout>
 
