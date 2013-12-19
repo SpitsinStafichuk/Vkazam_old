@@ -14,6 +14,7 @@ import android.widget.Button;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.SettingsController;
 import com.git.programmerr47.testhflbjcrhjggkth.view.IconCheckBoxPreference;
+import com.git.programmerr47.testhflbjcrhjggkth.view.IconPreference;
 
 public class SettingsActivity extends PreferenceActivity {
     SettingsController controller;
@@ -42,6 +43,7 @@ public class SettingsActivity extends PreferenceActivity {
         super.onResume();
 
         IconCheckBoxPreference pref;
+        IconPreference pref2;
         Resources res = getResources();
         Drawable icon;
 
@@ -63,22 +65,22 @@ public class SettingsActivity extends PreferenceActivity {
         pref = (IconCheckBoxPreference) findPreference("settingsAutoRecognize");
         icon = res.getDrawable(R.drawable.ic_settings_fingerprints);
         pref.setIcon(icon);
+
+        pref2 = (IconPreference) findPreference("settingsTimerDelay");
+        icon = res.getDrawable(R.drawable.ic_settings_timer);
+        pref2.setIcon(icon);
+        pref2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.v("IconPreference", "!!!Showdialog!!!");
+                //show dialog
+            }
+        });
     }
 
     public void changeVkButton() {
         vkConnection.setChecked(controller.hasVkAccount());
-        //if (controller.hasVkAccount()) {
-        //    vkConnection.setChecked(true);
-        //} else {
-        //    vkConnection.setChecked(false);
-       // }
     }
-
-   // @Override
-   // public void onConnect() {
-   //     changeVkButton();
-    //    vkSignInOutButton.setEnabled(true);
-   // }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
