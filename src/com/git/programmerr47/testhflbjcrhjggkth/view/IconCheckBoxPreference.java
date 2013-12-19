@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.preference.CheckBoxPreference;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
@@ -16,6 +17,7 @@ public class IconCheckBoxPreference extends CheckBoxPreference {
     private View.OnClickListener listener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            Log.v("IconPreference", "!!!Checkbox!!!");
             IconCheckBoxPreference.this.onClick();
         }
     };

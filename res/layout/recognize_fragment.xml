@@ -14,15 +14,15 @@
         <ImageButton
             android:id="@+id/microNowListenButton"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="130dp"
             android:paddingLeft="100dp"
             android:background="@drawable/micro_image_button_rect_background"
             android:scaleType="fitCenter"
             android:src="@drawable/microphone_icon" />
 
         <RelativeLayout
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="130dp"
+                android:layout_height="130dp"
                 android:layout_alignLeft="@+id/microTimerListenButton">
 
             <ImageButton
@@ -37,8 +37,8 @@
 
             <com.git.programmerr47.testhflbjcrhjggkth.view.ProgressWheel
                     android:id="@+id/fingerprintTimer"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"/>
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"/>
 
         </RelativeLayout>
 
@@ -57,7 +57,7 @@
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_margin="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"/>
 
    <RelativeLayout
         android:layout_width="wrap_content"

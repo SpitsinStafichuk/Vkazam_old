@@ -4,18 +4,26 @@ package com.git.programmerr47.testhflbjcrhjggkth.view;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 
-public class IconPreference extends Preference {
+public class IconPreference extends EditTextPreference {
 
     private Drawable mIcon;
     private View preference;
-    private View.OnClickListener listener;
+    private View.OnClickListener listener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Log.v("IconPreference", "!!!Showdialog!!!");
+            //show dialog
+        }
+    };
     private int iconVisibility;
 
     public IconPreference(Context context, AttributeSet attrs) {
