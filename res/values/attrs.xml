@@ -2,6 +2,10 @@
 <resources>
 
     <declare-styleable name="IconCheckBoxPreference">
+        <attr name="iconCheckBox" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="IconPreference">
         <attr name="icon" format="reference" />
     </declare-styleable>
 

@@ -2,14 +2,13 @@ package com.git.programmerr47.testhflbjcrhjggkth.model.managers;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.DBConstants;
-import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IFingerprintResultObservable;
-import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IFingerprintResultObserver;
-import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IFingerprintStatusObservable;
-import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IFingerprintStatusObserver;
+import com.git.programmerr47.testhflbjcrhjggkth.model.observers.*;
 import com.gracenote.mmid.MobileSDK.GNConfig;
 import com.gracenote.mmid.MobileSDK.GNFingerprintResult;
 import com.gracenote.mmid.MobileSDK.GNFingerprintResultReady;
@@ -21,8 +20,15 @@ import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
 
-public class FingerprintManager implements IFingerprintStatusObservable, IFingerprintResultObservable, GNOperationStatusChanged, GNFingerprintResultReady {
-	private static final int DEFAULT_FINGERPRINT_TIMER_PERIOD = 10 * 1000;
+public class FingerprintManager
+       implements
+             IFingerprintStatusObservable,
+             IFingerprintResultObservable,
+             IFingerprintTimerObservable,
+             GNOperationStatusChanged,
+             GNFingerprintResultReady {
+
+	public static final int DEFAULT_FINGERPRINT_TIMER_PERIOD = 1 * 1000;
 	public static final String FINGERPRINTING_SUCCESS = "Fingerprinting success";
 	public static final String TAG = "FingerprintManager";
 	
@@ -30,6 +36,7 @@ public class FingerprintManager implements IFingerprintStatusObservable, IFinger
 	private Handler handler;
 	private Set<IFingerprintStatusObserver> fingerprintStatusObservers;
 	private Set<IFingerprintResultObserver> fingerprintResultObservers;
+    private Set<IFingerprintTimerObserver> fingerprintTimerObservers;
 	private int fingerprintTimerPeriod;
 	private ScheduledThreadPoolExecutor fingerprintTimer;
 	private volatile boolean isFingerprinting;
@@ -39,6 +46,7 @@ public class FingerprintManager implements IFingerprintStatusObservable, IFinger
 	public FingerprintManager(GNConfig config, Context context, Handler handler) {
 		fingerprintStatusObservers = new HashSet<IFingerprintStatusObserver>();
 		fingerprintResultObservers = new HashSet<IFingerprintResultObserver>();
+        fingerprintTimerObservers = new HashSet<IFingerprintTimerObserver>();
 		fingerprintTimerPeriod = DEFAULT_FINGERPRINT_TIMER_PERIOD;
 		isFingerprinting = false;
 		isFingerprintingByTimer = false;
@@ -49,31 +57,14 @@ public class FingerprintManager implements IFingerprintStatusObservable, IFinger
 	
 	public void fingerprintByTimer() {
 		isFingerprintingByTimer = true;
-		fingerprintTimer = new ScheduledThreadPoolExecutor(1);
-		fingerprintTimer.scheduleWithFixedDelay(new Thread() {
-
-			@Override
-			public void run() {
-				fingerprint();
-			}
-			
-		}, 0, fingerprintTimerPeriod, TimeUnit.MILLISECONDS);
-	}
-	
-	public void fingerprintByTimerCancel() {
-		fingerprintTimer.shutdownNow();
-		fingerprintCancel();
-		isFingerprintingByTimer = false;
-	}
-	
-	public void fingerprintOneTime() {
-		isFingerprintingOneTime = true;
+        isFingerprintingOneTime = false;
 		fingerprint();
 	}
 	
-	public void fingerprintOneTimeCancel() {
-		fingerprintCancel();
-		isFingerprintingOneTime = false;
+	public void fingerprintOneTime() {
+        isFingerprintingByTimer = false;
+		isFingerprintingOneTime = true;
+		fingerprint();
 	}
 	
 	private void fingerprint() {
@@ -88,9 +79,11 @@ public class FingerprintManager implements IFingerprintStatusObservable, IFinger
 	}
 	
 	
-	private void fingerprintCancel() {
+	public void fingerprintCancel() {
 		GNOperations.cancel((GNFingerprintResultReady)this);
 		isFingerprinting = false;
+        isFingerprintingByTimer = false;
+        isFingerprintingOneTime = false;
 	}
 	
 	public boolean isFingerprintingOneTime() {
@@ -122,7 +115,7 @@ public class FingerprintManager implements IFingerprintStatusObservable, IFinger
 		}
 		notifyFingerprintStatusObserversOnUiThread(fingerprintStatus);
 		notifyFingerprintResultObserversOnUiThread(fingerprint);
-	}
+    }
 	
 	@Override
 	public void addFingerprintStatusObserver(IFingerprintStatusObserver o) {
@@ -171,4 +164,21 @@ public class FingerprintManager implements IFingerprintStatusObservable, IFinger
 		for(IFingerprintStatusObserver o : fingerprintStatusObservers)
 			o.onFingerprintStatusChanged(status);
 	}
+
+    @Override
+    public void addFingerprintTimerObserver(IFingerprintTimerObserver o) {
+        fingerprintTimerObservers.add(o);
+    }
+
+    @Override
+    public void removeFingerprintTimerObserver(IFingerprintTimerObserver o) {
+        fingerprintTimerObservers.remove(o);
+    }
+
+    @Override
+    public void notifyFingerprintObservers() {
+        for(IFingerprintTimerObserver o : fingerprintTimerObservers) {
+            o.onFingerprintTimerUpdated();
+        }
+    }
 }

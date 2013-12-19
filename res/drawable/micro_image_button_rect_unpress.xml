@@ -9,8 +9,8 @@
   	    android:endColor="#979797" 
   	    android:angle="90"/>
 
-    <corners android:bottomLeftRadius="50dp"
-             android:topLeftRadius="50dp"
+    <corners android:bottomLeftRadius="65dp"
+             android:topLeftRadius="65dp"
              android:bottomRightRadius="0dp"
              android:topRightRadius="0dp"/>
 
