@@ -72,7 +72,8 @@ public class SettingsActivity extends PreferenceActivity {
         pref2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //create editTextDialog
+                Log.v("IconPreference", "!!!Showdialog!!!");
+                //show dialog
             }
         });
     }
