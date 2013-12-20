@@ -28,7 +28,7 @@ public class FingerprintManager
              GNOperationStatusChanged,
              GNFingerprintResultReady {
 
-	public static final int DEFAULT_FINGERPRINT_TIMER_PERIOD = 1 * 1000;
+	public static final int DEFAULT_FINGERPRINT_TIMER_PERIOD = 5 * 1000;
 	public static final String FINGERPRINTING_SUCCESS = "Fingerprinting success";
 	public static final String TAG = "FingerprintManager";
 	
