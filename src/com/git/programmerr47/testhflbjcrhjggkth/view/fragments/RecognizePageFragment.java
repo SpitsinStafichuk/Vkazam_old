@@ -80,6 +80,7 @@ public class RecognizePageFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         model = RecognizeServiceConnection.getModel();
+        controller = new RecognizeController(this.getActivity().getApplicationContext());
         fingerprintManager = model.getFingerprintManager();
         fingerprintManager.addFingerprintStatusObserver(this);
         fingerprintManager.addFingerprintTimerObserver(this);
@@ -91,10 +92,11 @@ public class RecognizePageFragment
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.recognize_fragment, null);
 
         fingerprintTimer = (ProgressWheel) view.findViewById(R.id.fingerprintTimer);
-        controller = new RecognizeController(this.getActivity().getApplicationContext(), fingerprintTimer);
+        controller.setProgressWheel(fingerprintTimer);
         fingerprintTimer.setOnLoadingListener(new ProgressWheel.OnLoadingListener() {
             @Override
             public void onComplete() {
