@@ -61,8 +61,17 @@ public abstract class DatabaseList extends LinkedList<Data>{
 	}
 
 	@Override
-	public Data remove(int arg0) {
-		throw new UnsupportedOperationException();
+	public Data remove(int i) {
+        Data element = super.remove(i);
+        if (element != null) {
+            int answer = dao.delete(element);
+            Log.v("Deleting", "answer from database is " + answer);
+            boolean result = answer == 1 ? true : false;
+            if (!result) {
+                super.add(i, element);
+            }
+        }
+        return element;
 	}
 
 	@Override

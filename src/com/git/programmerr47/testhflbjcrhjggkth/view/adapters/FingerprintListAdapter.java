@@ -1,18 +1,19 @@
 package com.git.programmerr47.testhflbjcrhjggkth.view.adapters;
 
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Handler;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.FingerprintListController;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
 import com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeServiceConnection;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseFingerprintData;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.FingerprintList;
 import com.git.programmerr47.testhflbjcrhjggkth.utils.ImageUtils;
 
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.text.Html.ImageGetter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +29,8 @@ public class FingerprintListAdapter extends BaseAdapter{
 	private Activity activity;
 	private LayoutInflater inflater;
 	private MicroScrobblerModel model;
+    private boolean isScrolling = false;
+    private int lastPosition;
 	
 	public FingerprintListAdapter(Activity activity, int idItem, FingerprintListController controller) {
 		this.activity = activity;
@@ -56,6 +59,16 @@ public class FingerprintListAdapter extends BaseAdapter{
 	public long getItemId(int position) {
 		return 0;
 	}
+
+    @Override
+    public void notifyDataSetChanged() {
+        isScrolling = false;
+        super.notifyDataSetChanged();
+    }
+
+    public void scrolling() {
+        isScrolling = true;
+    }
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
@@ -86,8 +99,31 @@ public class FingerprintListAdapter extends BaseAdapter{
 
 		ImageView fingerCoverArt = (ImageView) view.findViewById(R.id.fingerprintImage);
         fingerCoverArt.setImageDrawable(coverArt);
+
+        if (isScrolling) {
+            if (position > lastPosition) {
+                view.startAnimation(AnimationUtils.loadAnimation(activity, R.anim.list_view_up_down));
+            } else {
+                view.startAnimation(AnimationUtils.loadAnimation(activity, R.anim.list_view_down_up));
+            }
+        }
+        lastPosition = position;
 		
 		return view;
 	}
+
+    public void deleteFingerprint(View view, final int position) {
+        final Animation deletionAnimation = AnimationUtils.loadAnimation(activity, R.anim.delete_element);
+        view.startAnimation(deletionAnimation);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                model.getFingerprintList().remove(position);
+                notifyDataSetChanged();
+                deletionAnimation.cancel();
+            }
+        }, 1000);
+    }
 
 }

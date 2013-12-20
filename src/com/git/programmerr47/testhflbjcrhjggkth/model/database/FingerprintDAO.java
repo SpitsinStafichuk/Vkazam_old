@@ -35,7 +35,7 @@ public class FingerprintDAO extends AbstractDAO {
 		DatabaseFingerprintData fingerprintData = (DatabaseFingerprintData) data;
 		databaseHelper = new DBHelper(context);
 		database = databaseHelper.getWritableDatabase();
-		int result = database.delete(DBConstants.FINGERPRINTS_TABLE, DBConstants.DATE + "=?", new String[] {"" + fingerprintData.getDate()});
+		int result = database.delete(DBConstants.FINGERPRINTS_TABLE, DBConstants.DATE + "=?", new String[] {"" + fingerprintData.getDate().getTime()});
 		Log.v("Delete", "Deletion from db is " + result);
 		database.close();
 		databaseHelper.close();
