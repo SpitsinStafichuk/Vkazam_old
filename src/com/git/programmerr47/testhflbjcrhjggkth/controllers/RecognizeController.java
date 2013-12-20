@@ -29,15 +29,18 @@ public class RecognizeController implements IFingerprintResultObserver, IRecogni
     private Timer timerDelay;
     private ProgressWheel progressWheel;
 
-    public RecognizeController(Context context, ProgressWheel progressWheel) {
+    public RecognizeController(Context context) {
         model = RecognizeServiceConnection.getModel();
         this.context = context;
         fingerprintManager = model.getFingerprintManager();
         fingerprintManager.addFingerprintResultObserver(this);
         recognizeManager = model.getRecognizeManager();
         recognizeManager.addRecognizeResultObserver(this);
-        this.progressWheel = progressWheel;
         timerDelay = new Timer();
+    }
+
+    public void setProgressWheel(ProgressWheel progressWheel) {
+        this.progressWheel = progressWheel;
     }
 
     public void finish() {
@@ -61,7 +64,6 @@ public class RecognizeController implements IFingerprintResultObserver, IRecogni
     
     public boolean fingerprintNowRecognizeCancel() {
         timerDelay.cancel();
-        timerDelay = new Timer();
     	if(fingerprintManager.isFingerprintingOneTime()) {
     		Log.v("Fingerprinting", "Cancel fingerprintNow");
     		fingerprintManager.fingerprintCancel();
@@ -75,7 +77,6 @@ public class RecognizeController implements IFingerprintResultObserver, IRecogni
 
     public void fingerprint() {
         timerDelay.cancel();
-        timerDelay = new Timer();
         if (progressWheel != null) {
             progressWheel.resetCount();
         }
@@ -115,6 +116,7 @@ public class RecognizeController implements IFingerprintResultObserver, IRecogni
                     }
                 }
             };
+            timerDelay = new Timer();
             timerDelay.scheduleAtFixedRate(task, 0, period);
         }
     }
