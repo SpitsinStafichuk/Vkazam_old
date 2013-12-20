@@ -60,6 +60,7 @@ public class RecognizePageFragment
     private ImageView prevSongCoverArt;
     
     private TextView status;
+    private TextView progress;
     private ProgressBar statusProgress;
     
     private SongData currentApearingSong;
@@ -112,13 +113,14 @@ public class RecognizePageFragment
 		songCoverArt = (ImageView) song.findViewById(R.id.songListItemCoverArt);
 		
 		prevSong = (LinearLayout) view.findViewById(R.id.prevSong);
-		prevSong.setVisibility(View.GONE);
+		prevSong.setVisibility(View.INVISIBLE);
 		prevSongArtist = (TextView) prevSong.findViewById(R.id.songListItemArtist);
 		prevSongTitle = (TextView) prevSong.findViewById(R.id.songListItemTitle);
 		prevSongDate = (TextView) prevSong.findViewById(R.id.songListItemDate);
 		prevSongCoverArt = (ImageView) prevSong.findViewById(R.id.songListItemCoverArt);
 		
 		status = (TextView) view.findViewById(R.id.status);
+        progress = (TextView) view.findViewById(R.id.progressPercent);
 		statusProgress = (ProgressBar) view.findViewById(R.id.statusProgress);
         
         ImageButton microTimerListenButton = (ImageButton) view.findViewById(R.id.microTimerListenButton);
@@ -238,15 +240,25 @@ public class RecognizePageFragment
 		int listenStep = 6;
 		int otherStep = 10;
 		String patternListening = "Listening";
+        String patternRecognizing = "Recognizing";
+        int progress;
 		
 		if (status.contains(patternListening)) {
-			int progress = listenStep * Integer.parseInt(status.substring(patternListening.length() + 1, status.length() - 2)) / 10;
-			statusProgress.setProgress(progress);
+			progress = listenStep * Integer.parseInt(status.substring(patternListening.length() + 1, status.length() - 2)) / 10;
 		} else {
-			statusProgress.setProgress(statusProgress.getProgress() + otherStep);
+            progress = statusProgress.getProgress() + otherStep;
 		}
+        statusProgress.setProgress(progress);
 
-		this.status.setText(status);
+        if (status.contains(patternListening)) {
+            this.status.setText(patternListening);
+        } else if (status.contains(patternRecognizing)) {
+            this.status.setText(patternRecognizing);
+        } else {
+            this.status.setText(status);
+        }
+
+        this.progress.setText(progress + " %");
 	}
 
     @Override
