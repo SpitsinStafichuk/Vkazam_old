@@ -21,7 +21,7 @@
     		    	android:layout_width="100dp"
     		    	android:layout_height="100dp"
     		    	android:scaleType="fitXY"
-    		    	android:src="@drawable/no_cover_art" />
+    		    	android:src="@drawable/cover_art_loading" />
 
 
     	        <LinearLayout
