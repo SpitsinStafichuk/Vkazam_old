@@ -31,6 +31,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -61,6 +62,7 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 	private ImageButton downloadPPButton;
 	private ProgressDialog downloadPPProgressDialog;
 	private ImageButton deleteButton;
+	private AnimationDrawable frameAnimation;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -325,7 +327,6 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 			fillTextInformation(R.id.songInfoTrackId, data.getTrackId());
 			
 			if (data.getCoverArtUrl() != null) {
-				//TODO Может нужно перенести в другое место
 				String url = data.getCoverArtUrl();
 				if (url.contains("size=small")) {
 					url = url.replace("size=small", "size=large");

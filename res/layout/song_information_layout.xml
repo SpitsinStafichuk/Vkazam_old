@@ -56,14 +56,14 @@
                     android:orientation="horizontal">
 
                 <com.git.programmerr47.testhflbjcrhjggkth.view.DynamicImageView
-                        android:id="@+id/songInfoCoverArt"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="1dp"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/no_cover_art"
-                        android:layout_gravity="center"
-                        android:background="@drawable/standart_block_background"/>
+                    android:id="@+id/songInfoCoverArt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/standart_block_background"
+                    android:padding="1dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/cover_art_loading" />
 
             </LinearLayout>
 
