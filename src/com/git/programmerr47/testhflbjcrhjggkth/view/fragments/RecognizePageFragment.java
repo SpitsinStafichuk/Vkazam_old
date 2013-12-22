@@ -111,6 +111,8 @@ public class RecognizePageFragment
 		songTitle = (TextView) song.findViewById(R.id.songListItemTitle);
 		songDate = (TextView) song.findViewById(R.id.songListItemDate);
 		songCoverArt = (ImageView) song.findViewById(R.id.songListItemCoverArt);
+		LinearLayout songPlayPauseButton = (LinearLayout) song.findViewById(R.id.songListItemPlayPauseLayout);
+		songPlayPauseButton.setVisibility(View.GONE);
 		
 		prevSong = (LinearLayout) view.findViewById(R.id.prevSong);
 		prevSong.setVisibility(View.INVISIBLE);
@@ -118,6 +120,8 @@ public class RecognizePageFragment
 		prevSongTitle = (TextView) prevSong.findViewById(R.id.songListItemTitle);
 		prevSongDate = (TextView) prevSong.findViewById(R.id.songListItemDate);
 		prevSongCoverArt = (ImageView) prevSong.findViewById(R.id.songListItemCoverArt);
+		LinearLayout prevSongPlayPauseButton = (LinearLayout) prevSong.findViewById(R.id.songListItemPlayPauseLayout);
+		prevSongPlayPauseButton.setVisibility(View.GONE);
 		
 		status = (TextView) view.findViewById(R.id.status);
         progress = (TextView) view.findViewById(R.id.progressPercent);
@@ -232,6 +236,7 @@ public class RecognizePageFragment
 		DisplayImageOptions options = new DisplayImageOptions.Builder()
 			.showImageForEmptyUri(R.drawable.no_cover_art)
 			.showImageOnFail(R.drawable.no_cover_art)
+			.showStubImage(R.drawable.cover_art_loading)
 			.build();
 		model.getImageLoader().displayImage(coverArtUrl, coverArt, options);
     }
