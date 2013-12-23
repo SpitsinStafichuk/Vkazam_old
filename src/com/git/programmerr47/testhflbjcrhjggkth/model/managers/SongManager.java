@@ -77,19 +77,18 @@ public class SongManager implements ISongInfoObserverable, ISongProgressObservab
         asyncNotifySongInfoObservers();
 	}
 	
-	//есть сомнения по поводу корректности проверки рабочий ли url для песни перед попыткой его обновить: возможно, помимо setDataSource, стоит также вызывать prepare
-	public void prepare() throws IOException, JSONException, SongNotFoundException, KException, com.perm.kate.api.KException {
-		Log.v(TAG, "Player is loading");
-        songPlayer = MicroScrobblerMediaPlayer.getInstance();
-        songPlayer.setLoadingState();
-        songPlayer.setOnCompletionListener(onCompletionListener);
-        songPlayer.setOnBufferingUpdateListener(onBufferingUpdateListener);
-		Log.v(TAG, "Player is reconstructed");
-		if((!PreferenceManager.getDefaultSharedPreferences(context).getBoolean("settingsVkConnection", false)) || (!PreferenceManager.getDefaultSharedPreferences(context).getBoolean("settingsVkUrls", false))) {
+	private boolean findPPAudio() {
+		try {
 			if(songData.getPleercomUrl() == null) {
 				songData.findPPAudio();
 	            Log.i(TAG, "new Pleercomurl: " + songData.getPleercomUrl());
-				songPlayer.setDataSource(songData.getPleercomUrl());
+	            try {
+	        		songPlayer.setDataSource(songData.getPleercomUrl());
+	        	} catch (IllegalArgumentException e) {
+	        		songData.findPPAudio();
+	        	} catch (IOException e) {
+	        		songData.findPPAudio();
+	        	}	
 			} else {
 				try {
 					Log.i(TAG, "Pleercomurl: " + songData.getPleercomUrl());
@@ -100,17 +99,36 @@ public class SongManager implements ISongInfoObserverable, ISongProgressObservab
 					songData.findPPAudio();
 				} 
 			}
-		} else {
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
+	}
+	
+	private boolean findVkAudio() {
+		try {
 			if(songData.getVkAudioId() == null) {
-				String vkUrl = songData.findVkAudio(vkApi);
+				String vkUrl;
+				vkUrl = songData.findVkAudio(vkApi);
 				Log.i(TAG, "vk audio id: " + songData.getVkAudioId());
 				Log.i(TAG, "vk audio url: " + vkUrl);
-				songPlayer.setDataSource(vkUrl);
+				try {
+	        		songPlayer.setDataSource(vkUrl);
+	        	} catch (IllegalArgumentException e) {
+	        		songData.findPPAudio();
+	        	} catch (IOException e) {
+	        		songData.findPPAudio();
+	        	}	
 			} else {
 				try {
-					List<com.perm.kate.api.Audio> audioList = vkApi.getAudioById(songData.getVkAudioId(), null, null);
+					List<com.perm.kate.api.Audio> audioList;
+					try {
+						audioList = vkApi.getAudioById(songData.getVkAudioId(), null, null);
+					} catch (Exception e) {
+						return false;
+					} 
 					if (audioList.isEmpty()) {
-						throw new SongNotFoundException();
+						return false;
 					}
 					String vkUrl = audioList.get(0).url;
 					Log.i(TAG, "vk audio id: " + songData.getVkAudioId());
@@ -122,6 +140,37 @@ public class SongManager implements ISongInfoObserverable, ISongProgressObservab
 					songData.findVkAudio(vkApi);
 				} 
 			}
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
+	}
+	
+	//есть сомнения по поводу корректности проверки рабочий ли url для песни перед попыткой его обновить: возможно, помимо setDataSource, стоит также вызывать prepare
+	public void prepare() throws IOException, JSONException, SongNotFoundException, KException, com.perm.kate.api.KException {
+		Log.v(TAG, "Player is loading");
+        songPlayer = MicroScrobblerMediaPlayer.getInstance();
+        songPlayer.setLoadingState();
+        songPlayer.setOnCompletionListener(onCompletionListener);
+        songPlayer.setOnBufferingUpdateListener(onBufferingUpdateListener);
+		Log.v(TAG, "Player is reconstructed");
+		boolean found = false;
+		if(!PreferenceManager.getDefaultSharedPreferences(context).getBoolean("settingsVkUrls", false)) {
+			found = findPPAudio();
+			if(!found) {
+				if(PreferenceManager.getDefaultSharedPreferences(context).getBoolean("settingsVkConnection", false)) {
+					found = findVkAudio();
+				}
+			}
+		} else {
+			found = findVkAudio();
+			if(!found) {
+				found = findPPAudio();
+			}
+		}
+		Log.v(TAG, "found: " + found);
+		if(!found) {
+			throw new SongNotFoundException();
 		}
 		songPlayer.prepare();
 	}
