@@ -8,7 +8,10 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
+import android.widget.*;
+import com.perm.kate.api.Audio;
 import org.json.JSONException;
 
 import com.git.programmerr47.testhflbjcrhjggkth.R;
@@ -41,10 +44,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ImageButton;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
 
 public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 	public static final String TAG = "SongInfoActivity";
@@ -60,6 +59,7 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 	private ImageButton shareButton;
 	private ImageButton addVkButton;
 	private ImageButton downloadPPButton;
+    private ImageButton downloadVKButton;
 	private ProgressDialog downloadPPProgressDialog;
 	private ImageButton deleteButton;
 	private AnimationDrawable frameAnimation;
@@ -131,7 +131,7 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 			@Override
 			public void onClick(View v) {
 				if(FileSystemUtils.isExternalStorageWritable()) {
-					final DownloadTask downloadTask = new DownloadTask(SongInfoActivity.this);
+					final DownloadTask downloadTask = new DownloadTask(SongInfoActivity.this, DownloadTask.PP_TASK);
 					downloadTask.execute(data);
 					downloadPPProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
 					    @Override
@@ -143,7 +143,26 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 					Toast.makeText(SongInfoActivity.this, "External storage is not available", Toast.LENGTH_SHORT).show();
 				}
 			}
-		}); 
+		});
+
+        downloadVKButton = (ImageButton) findViewById(R.id.downloadVKButton);
+        downloadVKButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(FileSystemUtils.isExternalStorageWritable()) {
+                    final DownloadTask downloadTask = new DownloadTask(SongInfoActivity.this, DownloadTask.VK_TASK);
+                    downloadTask.execute(data);
+                    downloadPPProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                        @Override
+                        public void onCancel(DialogInterface dialog) {
+                            downloadTask.cancel(true);
+                        }
+                    });
+                } else {
+                    Toast.makeText(SongInfoActivity.this, "External storage is not available", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 		
 		deleteButton = (ImageButton) findViewById(R.id.deleteButton);
 		deleteButton.setOnClickListener(new OnClickListener() {
@@ -160,10 +179,15 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 	
 	private class DownloadTask extends AsyncTask<DatabaseSongData, Integer, String> {
 
-	    private Context context;
+        public static final int PP_TASK = 1;
+        public static final int VK_TASK = 2;
 
-	    public DownloadTask(Context context) {
+	    private Context context;
+        private int task;
+
+	    public DownloadTask(Context context, int task) {
 	        this.context = context;
+            this.task = task;
 	    }
 	    
 	    @Override
@@ -205,12 +229,26 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 	            OutputStream output = null;
 	            HttpURLConnection connection = null;
 	            try {
-	            	String urlString = databaseSongData[0].getPleercomUrl();
-	            	if(urlString == null) {
-	            		databaseSongData[0].findPPAudio();
-	            		urlString = databaseSongData[0].getPleercomUrl();
-	            	}
-	                URL url = new URL(urlString);
+                    URL url;
+                    if (task == PP_TASK) {
+                        String urlString = databaseSongData[0].getPleercomUrl();
+                        if(urlString == null) {
+                            databaseSongData[0].findPPAudio();
+                            urlString = databaseSongData[0].getPleercomUrl();
+                        }
+                        url = new URL(urlString);
+                    } else {
+                        if (model.getVkApi() != null) {
+                            List<Audio> audioList = model.getVkApi().getAudioById(databaseSongData[0].getVkAudioId(), null, null);
+                            if (audioList.isEmpty()) {
+                                throw new SongNotFoundException();
+                            }
+                            String vkUrl = audioList.get(0).url;
+                            url = new URL(vkUrl);
+                        } else {
+                            throw new JSONException("No vk api. Try to set it in settings");
+                        }
+                    }
 	                connection = (HttpURLConnection) url.openConnection();
 	                connection.connect();
 
@@ -353,7 +391,17 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 	protected void onResume() {
 		super.onResume();
 		Log.i(TAG, "Resuming song info activity");
-		
+
+        LinearLayout vkPlayerLabel = (LinearLayout) findViewById(R.id.vkPlayerLabel);
+        LinearLayout vkPlayer = (LinearLayout) findViewById(R.id.vkPlayer);
+        if (model.getVkApi() == null) {
+            vkPlayer.setVisibility(View.GONE);
+            vkPlayerLabel.setVisibility(View.GONE);
+        } else {
+            vkPlayer.setVisibility(View.VISIBLE);
+            vkPlayerLabel.setVisibility(View.VISIBLE);
+        }
+
 		updatePlayerState();
 	}
 	
