@@ -10,6 +10,8 @@ import android.graphics.Shader;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 
@@ -17,6 +19,8 @@ import com.git.programmerr47.testhflbjcrhjggkth.R;
  * An indicator of progress similar to Android's ProgressBar.
  */
 public class ProgressWheel extends View {
+
+    private final float boundOffset =  TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics());
 
     private int layout_height = 0;
     private int layout_width = 0;
@@ -121,13 +125,13 @@ public class ProgressWheel extends View {
 
         rectBounds = new RectF(paddingLeft,
                 paddingTop,
-                this.getLayoutParams().width - paddingRight,
-                this.getLayoutParams().height - paddingBottom);
+                this.getLayoutParams().width - paddingRight + boundOffset,
+                this.getLayoutParams().height - paddingBottom + boundOffset);
 
-        circleBounds = new RectF(paddingLeft,
-                paddingTop,
-                this.getLayoutParams().width - paddingRight,
-                this.getLayoutParams().height - paddingBottom);
+        circleBounds = new RectF(paddingLeft + boundOffset,
+                paddingTop + boundOffset,
+                this.getLayoutParams().width - paddingRight - boundOffset,
+                this.getLayoutParams().height - paddingBottom - boundOffset);
 
         fullRadius = (this.getLayoutParams().width - paddingRight - barWidth)/2;
         circleRadius = (fullRadius - barWidth) + 1;
