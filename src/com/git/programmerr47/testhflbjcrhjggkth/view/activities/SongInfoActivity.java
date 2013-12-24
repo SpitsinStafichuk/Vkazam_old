@@ -10,7 +10,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
+import android.media.MediaPlayer;
 import android.widget.*;
+import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISongProgressObserver;
 import com.perm.kate.api.Audio;
 import org.json.JSONException;
 
@@ -45,7 +47,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-public class SongInfoActivity extends Activity implements IPlayerStateObserver {
+public class SongInfoActivity extends Activity implements IPlayerStateObserver, ISongProgressObserver {
 	public static final String TAG = "SongInfoActivity";
 	public static final String ARGUMENT_SONGLIST_POSITION = "SongDataPosition";
 
@@ -67,7 +69,8 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
     private ImageButton downloadVKButton;
 	private ProgressDialog downloadPPProgressDialog;
 	private ImageButton deleteButton;
-	private AnimationDrawable frameAnimation;
+    private SeekBar ppSongProgress;
+    private SeekBar vkSongProgress;
 
     private int songType = PP_SONG;
 	
@@ -85,17 +88,79 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 		model = RecognizeServiceConnection.getModel();
 		vkApi = model.getVkApi();
 		model.getPlayer().addPlayerStateObserver(this);
+        model.getSongManager().addSongProgressObserver(this);
+        model.getSongManager().setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
+            @Override
+            public void onBufferingUpdate(MediaPlayer mediaPlayer, int percent) {
+                Log.v("MiniPlayer", "Song downloading is updated " + percent);
+                SeekBar songProgress = vkSongProgress;
+                if (songType == PP_SONG) {
+                    songProgress = ppSongProgress;
+                }
+
+                if (data.equals(model.getSongManager().getSongData())) {
+                    songProgress.setSecondaryProgress(percent);
+                }
+            }
+        });
 		data = model.getCurrentOpenSong();
 		fillActivity(data);
 
+        ppSongProgress = (SeekBar) findViewById(R.id.SongProgressForPP);
+        ppSongProgress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if ((fromUser) && (songType == PP_SONG)) {
+                    controller.seekTo(progress);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                //To change body of implemented methods use File | Settings | File Templates.
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                //To change body of implemented methods use File | Settings | File Templates.
+            }
+        });
+
+        vkSongProgress = (SeekBar) findViewById(R.id.SongProgressForVk);
+        vkSongProgress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if ((fromUser) && (songType == VK_SONG)) {
+                    controller.seekTo(progress);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                //To change body of implemented methods use File | Settings | File Templates.
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                //To change body of implemented methods use File | Settings | File Templates.
+            }
+        });
 
         ppPlayPauseButton = (ImageButton) findViewById(R.id.songInfoPlayPauseButtonForPP);
         ppPlayPauseButton.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
+                if (!data.equals(model.getSongManager().getSongData())) {
+                    model.getSongManager().setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                        @Override
+                        public void onCompletion(MediaPlayer mediaPlayer) {
+                            Log.v("MiniPlayer", "pp Song is completed");
+                        }
+                    });
+                }
                 songType = PP_SONG;
-                controller.playPauseSong(data, -1, PP_SONG);
+                controller.playPauseSong(data, model.getCurrentOpenSongPosition(), PP_SONG);
             }
         });
 
@@ -104,8 +169,16 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 
             @Override
             public void onClick(View v) {
+                if (!data.equals(model.getSongManager().getSongData())) {
+                    model.getSongManager().setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                        @Override
+                        public void onCompletion(MediaPlayer mediaPlayer) {
+                            Log.v("MiniPlayer", "vk Song is completed");
+                        }
+                    });
+                }
                 songType = VK_SONG;
-                controller.playPauseSong(data, -1, VK_SONG);
+                controller.playPauseSong(data, model.getCurrentOpenSongPosition(), VK_SONG);
             }
         });
 
@@ -194,8 +267,8 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
         TextView vkSong = (TextView) findViewById(R.id.SongInfoRealArtistTitleForVk);
         vkSong.setSelected(true);
 	}
-	
-	private class DownloadTask extends AsyncTask<DatabaseSongData, Integer, String> {
+
+    private class DownloadTask extends AsyncTask<DatabaseSongData, Integer, String> {
 
         public static final int PP_TASK = 1;
         public static final int VK_TASK = 2;
@@ -434,6 +507,7 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 		super.onDestroy();
 		Log.i(TAG, "Closing song info activity");
         model.getPlayer().removePlayerStateObserver(this);
+        model.getSongManager().removeSongProgressObserver(this);
 	}
 
 	@Override
@@ -447,6 +521,8 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
             ProgressBar secPB = (ProgressBar) findViewById(R.id.songInfoLoadingForVk);
             secPB.setVisibility(View.GONE);
             vkPlayPauseButton.setImageResource(android.R.drawable.ic_media_play);
+            vkSongProgress.setProgress(0);
+            vkSongProgress.setSecondaryProgress(0);
         } else {
             progressBar = (ProgressBar) findViewById(R.id.songInfoLoadingForVk);
             playPauseButton = vkPlayPauseButton;
@@ -454,6 +530,8 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
             ProgressBar secPB = (ProgressBar) findViewById(R.id.songInfoLoadingForPP);
             secPB.setVisibility(View.GONE);
             ppPlayPauseButton.setImageResource(android.R.drawable.ic_media_play);
+            ppSongProgress.setProgress(0);
+            ppSongProgress.setSecondaryProgress(0);
         }
 
 		Log.v(TAG, "Current Data: " + data.getDate());
@@ -484,6 +562,26 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 			}
 		}
 	}
+
+    @Override
+    public void updateProgress(int progress, int duration) {
+        SeekBar songProgress = vkSongProgress;
+        if (songType == PP_SONG) {
+            songProgress = ppSongProgress;
+        }
+
+        if (data.equals(model.getSongManager().getSongData())) {
+            if (duration == -1) {
+                songProgress.setProgress(0);
+                songProgress.setSecondaryProgress(0);
+            } else {
+                songProgress.setProgress(progress * 100 / duration);
+            }
+        } else {
+            songProgress.setProgress(0);
+            songProgress.setSecondaryProgress(0);
+        }
+    }
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
