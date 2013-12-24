@@ -443,9 +443,17 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
         if (songType == PP_SONG) {
             progressBar = (ProgressBar) findViewById(R.id.songInfoLoadingForPP);
             playPauseButton = ppPlayPauseButton;
+
+            ProgressBar secPB = (ProgressBar) findViewById(R.id.songInfoLoadingForVk);
+            secPB.setVisibility(View.GONE);
+            vkPlayPauseButton.setImageResource(android.R.drawable.ic_media_play);
         } else {
             progressBar = (ProgressBar) findViewById(R.id.songInfoLoadingForVk);
             playPauseButton = vkPlayPauseButton;
+
+            ProgressBar secPB = (ProgressBar) findViewById(R.id.songInfoLoadingForPP);
+            secPB.setVisibility(View.GONE);
+            ppPlayPauseButton.setImageResource(android.R.drawable.ic_media_play);
         }
 
 		Log.v(TAG, "Current Data: " + data.getDate());

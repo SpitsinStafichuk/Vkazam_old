@@ -147,7 +147,7 @@ public class SongManager implements ISongInfoObserverable, ISongProgressObservab
 	}
 	
 	//есть сомнения по поводу корректности проверки рабочий ли url для песни перед попыткой его обновить: возможно, помимо setDataSource, стоит также вызывать prepare
-	public void prepare() throws IOException, JSONException, SongNotFoundException, KException, com.perm.kate.api.KException {
+    public void prepare(boolean force) throws IOException, JSONException, SongNotFoundException, KException, com.perm.kate.api.KException {
 		Log.v(TAG, "Player is loading");
         songPlayer = MicroScrobblerMediaPlayer.getInstance();
         songPlayer.setLoadingState();
@@ -155,16 +155,17 @@ public class SongManager implements ISongInfoObserverable, ISongProgressObservab
         songPlayer.setOnBufferingUpdateListener(onBufferingUpdateListener);
 		Log.v(TAG, "Player is reconstructed");
 		boolean found = false;
-		if(!PreferenceManager.getDefaultSharedPreferences(context).getBoolean("settingsVkUrls", false)) {
+		if(!PreferenceManager.getDefaultSharedPreferences(context).getBoolean("settingsVkConnection", false) ||
+           !PreferenceManager.getDefaultSharedPreferences(context).getBoolean("settingsVkUrls", false)) {
 			found = findPPAudio();
-			if(!found) {
+			if(!found && !force) {
 				if(PreferenceManager.getDefaultSharedPreferences(context).getBoolean("settingsVkConnection", false)) {
 					found = findVkAudio();
 				}
 			}
 		} else {
 			found = findVkAudio();
-			if(!found) {
+			if(!found && !force) {
 				found = findPPAudio();
 			}
 		}
