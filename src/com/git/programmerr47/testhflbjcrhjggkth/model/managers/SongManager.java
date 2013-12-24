@@ -263,10 +263,16 @@ public class SongManager implements ISongInfoObserverable, ISongProgressObservab
 
     public synchronized void setOnBufferingUpdateListener(MediaPlayer.OnBufferingUpdateListener listener) {
         onBufferingUpdateListener = listener;
+        if (songPlayer != null) {
+            songPlayer.setOnBufferingUpdateListener(listener);
+        }
     }
 
     public synchronized void setOnCompletionListener(MediaPlayer.OnCompletionListener listener){
         onCompletionListener = listener;
+        if (songPlayer != null) {
+            songPlayer.setOnCompletionListener(listener);
+        }
     }
 
     @Override
