@@ -73,7 +73,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_weight="1"
-                    android:text="Status"
+                    android:text="@string/status"
                     android:visibility="visible" />
 
             <TextView
