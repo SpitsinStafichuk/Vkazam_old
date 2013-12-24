@@ -95,7 +95,7 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
             @Override
             public void onClick(View v) {
                 songType = PP_SONG;
-                controller.playPauseSong(data, -1);
+                controller.playPauseSong(data, -1, PP_SONG);
             }
         });
 
@@ -105,7 +105,7 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
             @Override
             public void onClick(View v) {
                 songType = VK_SONG;
-                controller.playPauseSong(data, -1);
+                controller.playPauseSong(data, -1, VK_SONG);
             }
         });
 
