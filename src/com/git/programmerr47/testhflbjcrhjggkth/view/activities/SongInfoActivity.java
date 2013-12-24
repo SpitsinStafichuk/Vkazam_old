@@ -49,13 +49,18 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 	public static final String TAG = "SongInfoActivity";
 	public static final String ARGUMENT_SONGLIST_POSITION = "SongDataPosition";
 
+    public static final int ANY_SONG = 0;
+    public static final int VK_SONG = 1;
+    public static final int PP_SONG = 2;
+
 	private MicroScrobblerModel model;
 	private SongInfoController controller;
 	private DatabaseSongData data;
 	private DynamicImageView coverArt;
 	private Api vkApi;
 
-	private ImageButton playPauseButton;
+    private ImageButton ppPlayPauseButton;
+    private ImageButton vkPlayPauseButton;
 	private ImageButton shareButton;
 	private ImageButton addVkButton;
 	private ImageButton downloadPPButton;
@@ -63,18 +68,14 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 	private ProgressDialog downloadPPProgressDialog;
 	private ImageButton deleteButton;
 	private AnimationDrawable frameAnimation;
+
+    private int songType = PP_SONG;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.song_information_layout);
 		Log.i(TAG, "Creating song info activity");
-		Intent intent = getIntent();
-		int position = 0;
-		if ((intent != null) && (intent.getExtras() != null)) {
-			position = intent.getIntExtra(HistoryPageFragment.ARGUMENT_SONGLIST_POSITION, 0);
-		}
-        final int positionInList = position;
 		
 		Log.v("testik", "findViewById(R.id.songInfoCoverArt): " + findViewById(R.id.songInfoCoverArt));
 		coverArt = ((DynamicImageView) findViewById(R.id.songInfoCoverArt));
@@ -86,18 +87,29 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 		model.getPlayer().addPlayerStateObserver(this);
 		data = model.getCurrentOpenSong();
 		fillActivity(data);
-		
-		
-		playPauseButton = (ImageButton) findViewById(R.id.songInfoPlayPauseButtonForPP);
-		playPauseButton.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				controller.playPauseSong(data, positionInList);
-			}
-		});
-		
-		shareButton = (ImageButton) findViewById(R.id.shareButton);
+
+
+        ppPlayPauseButton = (ImageButton) findViewById(R.id.songInfoPlayPauseButtonForPP);
+        ppPlayPauseButton.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                songType = PP_SONG;
+                controller.playPauseSong(data, -1);
+            }
+        });
+
+        vkPlayPauseButton = (ImageButton) findViewById(R.id.songInfoPlayPauseButtonForVk);
+        vkPlayPauseButton.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                songType = VK_SONG;
+                controller.playPauseSong(data, -1);
+            }
+        });
+
+        shareButton = (ImageButton) findViewById(R.id.shareButton);
 		shareButton.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -175,6 +187,12 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 				startActivity(intent);
 			}
 		});
+
+        TextView ppSong = (TextView) findViewById(R.id.SongInfoRealArtistTitleForPP);
+        ppSong.setSelected(true);
+
+        TextView vkSong = (TextView) findViewById(R.id.SongInfoRealArtistTitleForVk);
+        vkSong.setSelected(true);
 	}
 	
 	private class DownloadTask extends AsyncTask<DatabaseSongData, Integer, String> {
@@ -420,7 +438,15 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 
 	@Override
 	public void updatePlayerState() {
-		ProgressBar progressBar = (ProgressBar) findViewById(R.id.songInfoLoadingForPP);
+		ProgressBar progressBar;
+        ImageButton playPauseButton;
+        if (songType == PP_SONG) {
+            progressBar = (ProgressBar) findViewById(R.id.songInfoLoadingForPP);
+            playPauseButton = ppPlayPauseButton;
+        } else {
+            progressBar = (ProgressBar) findViewById(R.id.songInfoLoadingForVk);
+            playPauseButton = vkPlayPauseButton;
+        }
 
 		Log.v(TAG, "Current Data: " + data.getDate());
 		Log.v(TAG, "SongManager Data: " + data.getDate());
@@ -428,12 +454,12 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 			Log.v(TAG, "Data are equals");
 			if (model.getSongManager().isLoading()) {
 				progressBar.setVisibility(View.VISIBLE);
-				playPauseButton.setVisibility(View.GONE);
+                playPauseButton.setVisibility(View.GONE);
 				Log.v("SongPlayer", "Song" + model.getSongManager().getArtist() + " - " + model.getSongManager().getTitle() + "is loading");
 			} else {
 				progressBar.setVisibility(View.GONE);
 				if (model.getSongManager().isPrepared()) {
-					playPauseButton.setVisibility(View.VISIBLE);
+                    playPauseButton.setVisibility(View.VISIBLE);
 				} else {
 					if (playPauseButton.getVisibility() == View.GONE)
 						progressBar.setVisibility(View.INVISIBLE);
@@ -442,10 +468,10 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver {
 			}
 			
 			if (model.getSongManager().isPlaying()) {
-				playPauseButton.setImageResource(android.R.drawable.ic_media_pause);
+                playPauseButton.setImageResource(android.R.drawable.ic_media_pause);
 				Log.v("SongPlayer", "Song" + model.getSongManager().getArtist() + " - " + model.getSongManager().getTitle() + "is playing");
 			} else {
-				playPauseButton.setImageResource(android.R.drawable.ic_media_play);
+                playPauseButton.setImageResource(android.R.drawable.ic_media_play);
 				Log.v("SongPlayer", "Song is on pause");
 			}
 		}
