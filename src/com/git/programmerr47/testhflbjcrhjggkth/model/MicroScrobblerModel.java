@@ -35,7 +35,9 @@ public class MicroScrobblerModel {
 	
 	private SongList songList;
 	private FingerprintList fingerprintList;
+
     private DatabaseSongData currentOpenSong = null;
+    private int currentOpenSongPosition = -1;
 
     private MicroScrobblerMediaPlayer player;
 	
@@ -153,12 +155,17 @@ public class MicroScrobblerModel {
 		Log.v("vkApi", "vkApi = " + vkApi);
 	}
 
-    public void setCurrentOpenSong(DatabaseSongData currentOpenSong) {
+    public void setCurrentOpenSong(DatabaseSongData currentOpenSong, int currentOpenSongPosition) {
         this.currentOpenSong = currentOpenSong;
+        this.currentOpenSongPosition = currentOpenSongPosition;
     }
 
     public DatabaseSongData getCurrentOpenSong() {
         return currentOpenSong;
+    }
+
+    public int getCurrentOpenSongPosition() {
+        return currentOpenSongPosition;
     }
 
     public MicroScrobblerMediaPlayer getPlayer() {
