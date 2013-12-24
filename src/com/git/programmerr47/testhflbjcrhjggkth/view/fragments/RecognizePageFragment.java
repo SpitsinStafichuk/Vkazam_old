@@ -72,7 +72,7 @@ public class RecognizePageFragment
         RecognizePageFragment pageFragment = new RecognizePageFragment();
         Bundle arguments = new Bundle();
         pageFragment.setArguments(arguments);
-        pageFragment.setFragmentName("Tagging");
+        pageFragment.setFragmentName(context.getString(R.string.tagging_page_fragment_caption));
         pageFragment.setContext(context);
         return pageFragment;
     }

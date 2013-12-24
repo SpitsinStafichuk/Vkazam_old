@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Test Hflbj Crhjggkth</string>
+    <string name="action_settings">Настройки</string>
+    <string name="action_refresh">Выбрать другой вариант песни</string>
+    <string name="tagging_page_fragment_caption">Распознавание</string>
+    <string name="history_page_fragment_caption">История</string>
+    <string name="fingerprints_page_fragment_caption">Отпечатки</string>
+    <string name="search_page_fragment_caption">Поиск</string>
+    <string name="status">Статус</string>
+    <string name="artist">Исполнитель</string>
+    <string name="title">Название</string>
+    <string name="album">Альбом</string>
+    <string name="search">Поиск</string>
+    
+</resources>

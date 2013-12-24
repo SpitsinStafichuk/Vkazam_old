@@ -34,7 +34,7 @@ public class FingerprintPageFragment extends FragmentWithName implements IFinger
 		FingerprintPageFragment pageFragment = new FingerprintPageFragment();
         Bundle arguments = new Bundle();
         pageFragment.setArguments(arguments);
-        pageFragment.setFragmentName("Fingers");
+        pageFragment.setFragmentName(context.getString(R.string.fingerprints_page_fragment_caption));
         pageFragment.setFragmentIcon(R.drawable.ic_action_fingerprint);
         pageFragment.setContext(context);
         return pageFragment;

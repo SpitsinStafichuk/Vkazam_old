@@ -38,7 +38,7 @@ public class HistoryPageFragment extends FragmentWithName implements ISongDAOObs
             HistoryPageFragment pageFragment = new HistoryPageFragment();
             Bundle arguments = new Bundle();
             pageFragment.setArguments(arguments);
-            pageFragment.setFragmentName("History");
+            pageFragment.setFragmentName(context.getString(R.string.history_page_fragment_caption));
             pageFragment.setFragmentIcon(R.drawable.ic_action_view_as_list);
             pageFragment.setContext(context);
             return pageFragment;

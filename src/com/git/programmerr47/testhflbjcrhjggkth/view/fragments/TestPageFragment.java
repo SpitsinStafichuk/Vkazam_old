@@ -51,7 +51,7 @@ public class TestPageFragment extends FragmentWithName {
     		TestPageFragment pageFragment = new TestPageFragment();
             Bundle arguments = new Bundle();
             pageFragment.setArguments(arguments);
-            pageFragment.setFragmentName("search");
+            pageFragment.setFragmentName(context.getString(R.string.search_page_fragment_caption));
             pageFragment.setFragmentIcon(R.drawable.ic_action_search);
             pageFragment.setContext(context);
             return pageFragment;
