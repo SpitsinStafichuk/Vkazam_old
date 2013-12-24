@@ -7,6 +7,8 @@ import java.util.Set;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import com.git.programmerr47.testhflbjcrhjggkth.model.exceptions.VkAccountNotFoundException;
+import com.git.programmerr47.testhflbjcrhjggkth.view.activities.SongInfoActivity;
 import org.json.JSONException;
 
 import android.content.Context;
@@ -147,7 +149,7 @@ public class SongManager implements ISongInfoObserverable, ISongProgressObservab
 	}
 	
 	//есть сомнения по поводу корректности проверки рабочий ли url для песни перед попыткой его обновить: возможно, помимо setDataSource, стоит также вызывать prepare
-    public void prepare(boolean force) throws IOException, JSONException, SongNotFoundException, KException, com.perm.kate.api.KException {
+    public void prepare(int type) throws IOException, JSONException, SongNotFoundException, KException, com.perm.kate.api.KException, VkAccountNotFoundException {
 		Log.v(TAG, "Player is loading");
         songPlayer = MicroScrobblerMediaPlayer.getInstance();
         songPlayer.setLoadingState();
@@ -155,20 +157,30 @@ public class SongManager implements ISongInfoObserverable, ISongProgressObservab
         songPlayer.setOnBufferingUpdateListener(onBufferingUpdateListener);
 		Log.v(TAG, "Player is reconstructed");
 		boolean found = false;
-		if(!PreferenceManager.getDefaultSharedPreferences(context).getBoolean("settingsVkConnection", false) ||
-           !PreferenceManager.getDefaultSharedPreferences(context).getBoolean("settingsVkUrls", false)) {
-			found = findPPAudio();
-			if(!found && !force) {
-				if(PreferenceManager.getDefaultSharedPreferences(context).getBoolean("settingsVkConnection", false)) {
-					found = findVkAudio();
-				}
-			}
-		} else {
-			found = findVkAudio();
-			if(!found && !force) {
-				found = findPPAudio();
-			}
-		}
+        if (type == SongInfoActivity.PP_SONG) {
+            found = findPPAudio();
+        } else if (type == SongInfoActivity.VK_SONG) {
+            if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean("settingsVkConnection", false)) {
+                found = findVkAudio();
+            } else {
+                throw new VkAccountNotFoundException();
+            }
+        } else {
+            if(!PreferenceManager.getDefaultSharedPreferences(context).getBoolean("settingsVkConnection", false) ||
+               !PreferenceManager.getDefaultSharedPreferences(context).getBoolean("settingsVkUrls", false)) {
+                found = findPPAudio();
+                if(!found) {
+                    if(PreferenceManager.getDefaultSharedPreferences(context).getBoolean("settingsVkConnection", false)) {
+                        found = findVkAudio();
+                    }
+                }
+            } else {
+                found = findVkAudio();
+                if(!found) {
+                    found = findPPAudio();
+                }
+            }
+        }
 		Log.v(TAG, "found: " + found);
 		if(!found) {
 			throw new SongNotFoundException();
