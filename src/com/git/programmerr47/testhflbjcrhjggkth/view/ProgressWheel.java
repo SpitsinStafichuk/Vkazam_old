@@ -38,7 +38,7 @@ public class ProgressWheel extends View {
 
     private int barColor = 0xAA000000;
     private int circleColor = 0x00000000;
-    private int rimColor = 0xAADDDDDD;
+    private int rimColor = R.color.dark_grey;
     private int textColor = 0xFF000000;
 
     private Paint barPaint = new Paint();
