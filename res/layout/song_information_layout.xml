@@ -59,7 +59,7 @@
                     android:id="@+id/songInfoCoverArt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
+                    android:layout_gravity="center_horizontal|top"
                     android:background="@drawable/standart_block_background"
                     android:padding="1dp"
                     android:scaleType="centerCrop"
@@ -187,7 +187,7 @@
                     android:id="@+id/vkPlayerLabel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:background="@drawable/standart_block_background">
@@ -322,6 +322,35 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="10dp"
+                    android:orientation="horizontal" android:layout_marginTop="5dp">
+
+                <ImageButton
+                        android:id="@+id/lyricsButton"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_margin="5dp"
+                        android:padding="5dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_action_lyrics"
+                        android:background="@drawable/standart_block_background"/>
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:text="Get lyrics"
+                        android:textSize="20sp"
+                        android:gravity="center"
+                        android:background="@drawable/standart_block_background"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="10dp"
                     android:orientation="horizontal">
 
                 <ImageButton
@@ -379,7 +408,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginBottom="10dp"
