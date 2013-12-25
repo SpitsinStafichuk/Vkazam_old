@@ -2,7 +2,10 @@ package com.git.programmerr47.testhflbjcrhjggkth.view.activities;
 
 import java.lang.reflect.Field;
 
+import android.view.View;
+import android.widget.ImageButton;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
+import com.git.programmerr47.testhflbjcrhjggkth.utils.AndroidUtils;
 import com.git.programmerr47.testhflbjcrhjggkth.view.DepthPageTransformer;
 import com.git.programmerr47.testhflbjcrhjggkth.view.SmoothPageScroller;
 import com.git.programmerr47.testhflbjcrhjggkth.view.adapters.PagerAdapter;
@@ -44,9 +47,21 @@ public class PagerActivity extends FragmentActivity{
 	
 	protected void setupUi() {
 		setContentView(R.layout.pager_layout);
-		
+
 		PagerTabStrip pagerTab = (PagerTabStrip) findViewById(R.id.pagerTabStrip);
 		pagerTab.setGravity(Gravity.CENTER);
+
+        ImageButton settingsButton = (ImageButton) findViewById(R.id.settingsButton);
+        if (AndroidUtils.isThereASettingsButton(this)) {
+            settingsButton.setVisibility(View.GONE);
+            pagerTab.setPadding(0,0,0,0);
+        }
+        settingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openOptionsMenu();
+            }
+        });
 		
         pager = (ViewPager) findViewById(R.id.pager);
         pager.setPageTransformer(true, new DepthPageTransformer());

@@ -11,8 +11,10 @@ import java.net.URL;
 import java.util.List;
 
 import android.media.MediaPlayer;
+import android.view.MenuInflater;
 import android.widget.*;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISongProgressObserver;
+import com.git.programmerr47.testhflbjcrhjggkth.utils.AndroidUtils;
 import com.perm.kate.api.Audio;
 import org.json.JSONException;
 
@@ -69,6 +71,7 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver, 
     private ImageButton downloadVKButton;
 	private ProgressDialog downloadPPProgressDialog;
 	private ImageButton deleteButton;
+    private ImageButton settingsButton;
     private SeekBar ppSongProgress;
     private SeekBar vkSongProgress;
 
@@ -260,6 +263,17 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver, 
 				startActivity(intent);
 			}
 		});
+
+        settingsButton = (ImageButton) findViewById(R.id.settingsButton);
+        if (AndroidUtils.isThereASettingsButton(this)) {
+            settingsButton.setVisibility(View.GONE);
+        }
+        settingsButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openOptionsMenu();
+            }
+        });
 
         TextView ppSong = (TextView) findViewById(R.id.SongInfoRealArtistTitleForPP);
         ppSong.setSelected(true);
