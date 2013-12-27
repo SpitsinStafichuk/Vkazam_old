@@ -11,6 +11,7 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.FingerprintData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
 import com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeServiceConnection;
 import com.git.programmerr47.testhflbjcrhjggkth.model.SongData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.FingerprintsDeque;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.FingerprintManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.RecognizeManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.Scrobbler;
@@ -19,10 +20,11 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeResult
 import com.git.programmerr47.testhflbjcrhjggkth.utils.NetworkUtils;
 import com.git.programmerr47.testhflbjcrhjggkth.view.ProgressWheel;
 
-public class RecognizeController implements IFingerprintResultObserver, IRecognizeResultObserver {
+public class RecognizeController implements IFingerprintResultObserver, IRecognizeResultObserver, FingerprintsDeque.OnDequeStateListener {
 	private static final String TAG = "RecognizeController";
 	
 	private MicroScrobblerModel model;
+    private FingerprintsDeque fingerprintsDeque;
     private FingerprintManager fingerprintManager;
     private RecognizeManager recognizeManager;
     private Context context;
@@ -31,6 +33,8 @@ public class RecognizeController implements IFingerprintResultObserver, IRecogni
 
     public RecognizeController(Context context) {
         model = RecognizeServiceConnection.getModel();
+        this.fingerprintsDeque = model.getFingerprintsDeque();
+        fingerprintsDeque.setOnDequeStateListener(this);
         this.context = context;
         fingerprintManager = model.getFingerprintManager();
         fingerprintManager.addFingerprintResultObserver(this);
@@ -87,11 +91,11 @@ public class RecognizeController implements IFingerprintResultObserver, IRecogni
 	public void onFingerprintResult(String fingerprint) {
 		FingerprintData fingerprintData = new FingerprintData(fingerprint, new Date());
 		Log.i(TAG, "fingerprint = " + fingerprint);
+        model.getFingerprintList().add(fingerprintData);
 		if (NetworkUtils.isNetworkAvailable(context)) {
-	        recognizeManager.recognizeFingerprint(fingerprintData, false);
+            fingerprintsDeque.addFirst(fingerprintData);
 		} else {
 			Log.v("testik", "adding offline finger");
-			model.getFingerprintList().add(fingerprintData);
             runTimerDelay();
 		}
 	}
@@ -119,5 +123,11 @@ public class RecognizeController implements IFingerprintResultObserver, IRecogni
             timerDelay = new Timer();
             timerDelay.scheduleAtFixedRate(task, 0, period);
         }
+    }
+
+    @Override
+    public void onNonEmpty() {
+        //ToDo change body of implemented methods use File | Settings | File Templates.
+        recognizeManager.recognizeFingerprint((FingerprintData)fingerprintsDeque.pollFirst(), false);
     }
 }
