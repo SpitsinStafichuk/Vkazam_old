@@ -8,6 +8,7 @@ import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.FingerprintListController;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
 import com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeServiceConnection;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.Data;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseFingerprintData;
 import com.git.programmerr47.testhflbjcrhjggkth.utils.ImageUtils;
 
@@ -112,18 +113,33 @@ public class FingerprintListAdapter extends BaseAdapter{
 		return view;
 	}
 
-    public void deleteFingerprint(View view, final int position) {
-        final Animation deletionAnimation = AnimationUtils.loadAnimation(activity, R.anim.delete_element);
-        view.startAnimation(deletionAnimation);
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
+    public void deleteFingerprint(final View view, final int position) {
+        final Data data = model.getFingerprintList().get(position);
+        final Animation addToDequeue = AnimationUtils.loadAnimation(activity, R.anim.add_to_recognize_queue);
+        addToDequeue.setAnimationListener(new Animation.AnimationListener() {
             @Override
-            public void run() {
-                model.getFingerprintList().remove(position);
-                notifyDataSetChanged();
-                deletionAnimation.cancel();
+            public void onAnimationStart(Animation animation) {}
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                //try to recognize
+                final Animation deletionAnimation = AnimationUtils.loadAnimation(activity, R.anim.complete_recognize);
+                view.startAnimation(deletionAnimation);
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        model.getFingerprintList().remove(data);
+                        notifyDataSetChanged();
+                        deletionAnimation.cancel();
+                    }
+                }, 1000);
             }
-        }, 1000);
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {}
+        });
+        view.startAnimation(addToDequeue);
     }
 
 }
