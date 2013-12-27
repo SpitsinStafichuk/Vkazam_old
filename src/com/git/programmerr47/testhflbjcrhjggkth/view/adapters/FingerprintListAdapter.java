@@ -1,15 +1,19 @@
 package com.git.programmerr47.testhflbjcrhjggkth.view.adapters;
 
+import android.content.SharedPreferences;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.*;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.FingerprintListController;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
 import com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeServiceConnection;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.Data;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseFingerprintData;
+import com.git.programmerr47.testhflbjcrhjggkth.utils.AndroidUtils;
 import com.git.programmerr47.testhflbjcrhjggkth.utils.ImageUtils;
 
 import android.app.Activity;
@@ -19,11 +23,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-public class FingerprintListAdapter extends BaseAdapter{
+public class FingerprintListAdapter extends BaseAdapter {
 	private static String TAG = "FingerprintListAdapter";
 	private FingerprintListController controller;
 	private int idItem;
@@ -150,5 +151,4 @@ public class FingerprintListAdapter extends BaseAdapter{
         });
         view.startAnimation(addToDequeue);
     }
-
 }
