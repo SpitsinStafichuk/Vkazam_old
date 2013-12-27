@@ -124,12 +124,15 @@ public class FingerprintListAdapter extends BaseAdapter{
             @Override
             public void onAnimationStart(Animation animation) {
                 countInAnimation++;
+                model.getFingerprintsDeque().addLast(data);
             }
 
             @Override
             public void onAnimationEnd(Animation animation) {
                 //try to recognize
+                countInAnimation--;
                 final Animation deletionAnimation = AnimationUtils.loadAnimation(activity, R.anim.complete_recognize);
+                countInAnimation++;
                 view.startAnimation(deletionAnimation);
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {

@@ -90,7 +90,7 @@ public class MicroScrobblerModel {
 		scrobbler = new Scrobbler(context);
 		songManager = new SongManager(handler, context, scrobbler);
 		searchManager = new SearchManager(config);
-        recognizeManager = new RecognizeManager(config, context);
+        recognizeManager = new RecognizeManager(config);
         fingerprintManager = new FingerprintManager(config, context, handler);
         
         vkAccount = new Account();
@@ -105,10 +105,14 @@ public class MicroScrobblerModel {
 	public Scrobbler getScrobbler() {
 		return scrobbler;
 	}
-	
-	public FingerprintList getFingerprintList() {
-		return fingerprintList;
-	}
+
+    public FingerprintList getFingerprintList() {
+        return fingerprintList;
+    }
+
+    public FingerprintsDeque getFingerprintsDeque() {
+        return fingerprintsDeque;
+    }
 	
 	public SongList getSongList() {
 		return songList;

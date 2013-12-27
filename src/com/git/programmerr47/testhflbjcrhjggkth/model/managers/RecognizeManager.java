@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.git.programmerr47.testhflbjcrhjggkth.model.FingerprintData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.SongData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.FingerprintsDeque;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeResultObservable;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeResultObserver;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeStatusObservable;
@@ -22,7 +23,8 @@ import com.gracenote.mmid.MobileSDK.GNSearchResult;
 import com.gracenote.mmid.MobileSDK.GNSearchResultReady;
 import com.gracenote.mmid.MobileSDK.GNStatus;
 
-public class RecognizeManager implements GNSearchResultReady, GNOperationStatusChanged, IRecognizeStatusObservable, IRecognizeResultObservable {
+public class RecognizeManager implements GNSearchResultReady, GNOperationStatusChanged,
+                                         IRecognizeStatusObservable, IRecognizeResultObservable {
 	public static final String RECOGNIZING_SUCCESS = "Recognizing success";
 	private static final String TAG = "Recognizing";
 	
@@ -30,27 +32,22 @@ public class RecognizeManager implements GNSearchResultReady, GNOperationStatusC
 	private Set<IRecognizeResultObserver> recognizeResultObservers;
 	
 	private GNConfig config;
-	
 	private FingerprintData currentFingerprintData;
-	private boolean currentFingerprintIsSaved;
 	
 	
-	public RecognizeManager(GNConfig config, Context context) {
+	public RecognizeManager(GNConfig config) {
 		this.config = config;
         recognizeStatusObservers = new HashSet<IRecognizeStatusObserver>();
         recognizeResultObservers = new HashSet<IRecognizeResultObserver>();
 	}
-	
-	//TODO synchronized в данном случае не работает, нужно разобраться с блокировками
-	public synchronized void recognizeFingerprint(FingerprintData fingerprint, boolean isSaved) {
+
+	public void recognizeFingerprint(FingerprintData fingerprint, boolean isSaved) {
 		Log.i(TAG, fingerprint.getFingerprint());
 		currentFingerprintData = fingerprint;
-		currentFingerprintIsSaved = isSaved;
 		GNOperations.searchByFingerprint(this, config, fingerprint.getFingerprint());
 	}
 
 	public void recognizeFingerprintCancel() {
-		//TODO возможно нужно сделать что-то ещё
 		GNOperations.cancel(this);
 	}
 	
@@ -94,7 +91,7 @@ public class RecognizeManager implements GNSearchResultReady, GNOperationStatusC
 				String albumReviewUrl = bestResponse.getAlbumReviewUrl();
 				String albumReleaseYear = bestResponse.getAlbumReleaseYear();
 				
-				songData = new SongData(trackId, artist, album, title, null, null, coverArtURL, new Date(), contributorImageURL,
+				songData = new SongData(trackId, artist, album, title, null, null, coverArtURL, currentFingerprintData.getDate(), contributorImageURL,
 						artistBiographyURL, songPosition, albumReviewUrl, albumReleaseYear, albumArtist);
 		
 				recognizeStatus = RECOGNIZING_SUCCESS;
