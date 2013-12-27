@@ -6,6 +6,7 @@ public class FingerprintData {
 	
 	protected String fingerprint;
 	protected Date date;
+    private boolean isInQueueForRecognizing = false;
 	
 	public FingerprintData(String fingerprint, Date date) {
 		this.fingerprint = fingerprint;
@@ -27,4 +28,12 @@ public class FingerprintData {
 	public void setDate(Date date) {
 		this.date = date;
 	}
+
+    public boolean isInQueueForRecognizing() {
+        return isInQueueForRecognizing;
+    }
+
+    public void setInQueueForRecognizing(boolean b) {
+        isInQueueForRecognizing = b;
+    }
 }
