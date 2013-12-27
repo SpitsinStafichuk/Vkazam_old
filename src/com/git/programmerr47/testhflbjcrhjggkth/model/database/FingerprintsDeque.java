@@ -2,6 +2,7 @@ package com.git.programmerr47.testhflbjcrhjggkth.model.database;
 
 import java.util.concurrent.LinkedBlockingDeque;
 
+import android.util.Log;
 import com.git.programmerr47.testhflbjcrhjggkth.model.FingerprintData;
 
 public class FingerprintsDeque<FingerprintData> extends LinkedBlockingDeque<FingerprintData>{
@@ -16,6 +17,7 @@ public class FingerprintsDeque<FingerprintData> extends LinkedBlockingDeque<Fing
 	public synchronized void addFirst(FingerprintData data) {
 		super.addFirst(data);
         if (size() == 1) {
+            Log.v("FingersQueue", "Now queue is not empty");
             listener.onNonEmpty();
         }
 	}
@@ -23,9 +25,10 @@ public class FingerprintsDeque<FingerprintData> extends LinkedBlockingDeque<Fing
 	@Override
 	public synchronized void addLast(FingerprintData data) {
 		super.addLast(data);
-		if (size() == 1) {
-            listener.onNonEmpty();
-        }
+		//if (size() == 1) {
+        //    Log.v("FingersQueue", "Now queue is not empty");
+        //    listener.onNonEmpty();
+        //}
 	}
 	
 	public void setOnDequeStateListener(OnDequeStateListener listener) {

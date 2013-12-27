@@ -9,6 +9,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.*;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.FingerprintListController;
+import com.git.programmerr47.testhflbjcrhjggkth.model.FingerprintData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
 import com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeServiceConnection;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.Data;
@@ -23,6 +24,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import com.nineoldandroids.view.ViewHelper;
 
 public class FingerprintListAdapter extends BaseAdapter {
 	private static String TAG = "FingerprintListAdapter";
@@ -106,49 +108,107 @@ public class FingerprintListAdapter extends BaseAdapter {
 		ImageView fingerCoverArt = (ImageView) view.findViewById(R.id.fingerprintImage);
         fingerCoverArt.setImageDrawable(coverArt);
 
-        if (isScrolling) {
-            if (position > lastPosition) {
-                view.startAnimation(AnimationUtils.loadAnimation(activity, R.anim.list_view_up_down));
-            } else {
-                view.startAnimation(AnimationUtils.loadAnimation(activity, R.anim.list_view_down_up));
+        if (data.isInQueueForRecognizing()) {
+            ViewHelper.setAlpha(view, 0.5f);
+            ViewHelper.setScaleX(view, 0.85f);
+            ViewHelper.setScaleY(view, 0.85f);
+            ViewHelper.setPivotX(view, view.getWidth() * 0.5f);
+            ViewHelper.setPivotY(view, view.getHeight() * 0.5f);
+
+            if (isScrolling) {
+                if (position > lastPosition) {
+                    view.startAnimation(AnimationUtils.loadAnimation(activity, R.anim.queue_fingerprint_up_down));
+                } else {
+                    view.startAnimation(AnimationUtils.loadAnimation(activity, R.anim.queue_fingerprint_down_up));
+                }
             }
+            lastPosition = position;
+
+        } else {
+            ViewHelper.setAlpha(view, 1.0f);
+            ViewHelper.setScaleX(view, 1.0f);
+            ViewHelper.setScaleY(view, 1.0f);
+            ViewHelper.setPivotX(view, 0);
+            ViewHelper.setPivotY(view, 0);
+
+            if (isScrolling) {
+                if (position > lastPosition) {
+                    view.startAnimation(AnimationUtils.loadAnimation(activity, R.anim.list_view_up_down));
+                } else {
+                    view.startAnimation(AnimationUtils.loadAnimation(activity, R.anim.list_view_down_up));
+                }
+            }
+            lastPosition = position;
+
         }
-        lastPosition = position;
 		
 		return view;
 	}
 
     public void deleteFingerprint(final View view, final int position) {
-        final Data data = model.getFingerprintList().get(position);
-        final Animation addToDequeue = AnimationUtils.loadAnimation(activity, R.anim.add_to_recognize_queue);
-        addToDequeue.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-                countInAnimation++;
-                model.getFingerprintsDeque().addLast(data);
-            }
+        final FingerprintData data = (FingerprintData) model.getFingerprintList().get(position);
+        if (!data.isInQueueForRecognizing()) {
+            final Animation addToDequeue = AnimationUtils.loadAnimation(activity, R.anim.add_to_recognize_queue);
+            addToDequeue.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+                    countInAnimation++;
+                    model.getFingerprintsDeque().addLast(data);
+                }
 
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                //try to recognize
-                countInAnimation--;
-                final Animation deletionAnimation = AnimationUtils.loadAnimation(activity, R.anim.complete_recognize);
-                countInAnimation++;
-                view.startAnimation(deletionAnimation);
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        model.getFingerprintList().remove(data);
-                        notifyDataSetChanged();
-                        deletionAnimation.cancel();
-                    }
-                }, 1000);
-            }
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    //try to recognize
+                    countInAnimation--;
+                    //final Animation deletionAnimation = AnimationUtils.loadAnimation(activity, R.anim.complete_recognize);
+                    //countInAnimation++;
+                    //view.startAnimation(deletionAnimation);
+                    //Handler handler = new Handler();
+                    //handler.postDelayed(new Runnable() {
+                    //    @Override
+                    //    public void run() {
+                    //        model.getFingerprintList().remove(data);
+                    //        notifyDataSetChanged();
+                    //        deletionAnimation.cancel();
+                    //    }
+                    //}, 1000);
+                    ViewHelper.setAlpha(view, 0.5f);
+                    ViewHelper.setScaleX(view, 0.85f);
+                    ViewHelper.setScaleY(view, 0.85f);
+                    ViewHelper.setPivotX(view, view.getWidth() * 0.5f);
+                    ViewHelper.setPivotY(view, view.getHeight() * 0.5f);
+                }
 
-            @Override
-            public void onAnimationRepeat(Animation animation) {}
-        });
-        view.startAnimation(addToDequeue);
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+                }
+            });
+            data.setInQueueForRecognizing(true);
+            view.startAnimation(addToDequeue);
+        } else {
+            data.setInQueueForRecognizing(false);
+            final Animation removeFromDequeue = AnimationUtils.loadAnimation(activity, R.anim.remove_from_recognize_queue);
+            removeFromDequeue.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+                    ViewHelper.setAlpha(view, 1.0f);
+                    ViewHelper.setScaleX(view, 1.0f);
+                    ViewHelper.setScaleY(view, 1.0f);
+                    ViewHelper.setPivotX(view, 0);
+                    ViewHelper.setPivotY(view, 0);
+                    countInAnimation++;
+                    model.getFingerprintsDeque().remove(data);
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    countInAnimation--;
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {}
+            });
+            view.startAnimation(removeFromDequeue);
+        }
     }
 }
