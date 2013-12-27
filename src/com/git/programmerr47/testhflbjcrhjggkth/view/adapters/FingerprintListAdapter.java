@@ -115,32 +115,32 @@ public class FingerprintListAdapter extends BaseAdapter {
             ViewHelper.setPivotX(view, view.getWidth() * 0.5f);
             ViewHelper.setPivotY(view, view.getHeight() * 0.5f);
 
-            if (isScrolling) {
-                if (position > lastPosition) {
-                    view.startAnimation(AnimationUtils.loadAnimation(activity, R.anim.queue_fingerprint_up_down));
-                } else {
-                    view.startAnimation(AnimationUtils.loadAnimation(activity, R.anim.queue_fingerprint_down_up));
-                }
-            }
-            lastPosition = position;
-
         } else {
             ViewHelper.setAlpha(view, 1.0f);
             ViewHelper.setScaleX(view, 1.0f);
             ViewHelper.setScaleY(view, 1.0f);
             ViewHelper.setPivotX(view, 0);
             ViewHelper.setPivotY(view, 0);
-
-            if (isScrolling) {
-                if (position > lastPosition) {
-                    view.startAnimation(AnimationUtils.loadAnimation(activity, R.anim.list_view_up_down));
-                } else {
-                    view.startAnimation(AnimationUtils.loadAnimation(activity, R.anim.list_view_down_up));
-                }
-            }
-            lastPosition = position;
+//
+//            if (isScrolling) {
+//                if (position > lastPosition) {
+//                    view.startAnimation(AnimationUtils.loadAnimation(activity, R.anim.list_view_up_down));
+//                } else {
+//                    view.startAnimation(AnimationUtils.loadAnimation(activity, R.anim.list_view_down_up));
+//                }
+//            }
+//            lastPosition = position;
 
         }
+
+        if (isScrolling) {
+            if (position > lastPosition) {
+                view.startAnimation(AnimationUtils.loadAnimation(activity, R.anim.list_view_up_down));
+            } else {
+                view.startAnimation(AnimationUtils.loadAnimation(activity, R.anim.list_view_down_up));
+            }
+        }
+        lastPosition = position;
 		
 		return view;
 	}
