@@ -24,7 +24,8 @@ import com.gracenote.mmid.MobileSDK.GNSearchResultReady;
 import com.gracenote.mmid.MobileSDK.GNStatus;
 
 public class RecognizeManager implements GNSearchResultReady, GNOperationStatusChanged,
-                                         IRecognizeStatusObservable, IRecognizeResultObservable {
+                                         IRecognizeStatusObservable, IRecognizeResultObservable,
+                                         FingerprintsDeque.OnDequeStateListener {
 	public static final String RECOGNIZING_SUCCESS = "Recognizing success";
 	private static final String TAG = "Recognizing";
 	
@@ -32,10 +33,13 @@ public class RecognizeManager implements GNSearchResultReady, GNOperationStatusC
 	private Set<IRecognizeResultObserver> recognizeResultObservers;
 	
 	private GNConfig config;
+    private FingerprintsDeque fingerprintsDeque;
 	private FingerprintData currentFingerprintData;
 	
 	
-	public RecognizeManager(GNConfig config) {
+	public RecognizeManager(GNConfig config, FingerprintsDeque fingerprintsDeque) {
+        this.fingerprintsDeque = fingerprintsDeque;
+        fingerprintsDeque.setOnDequeStateListener(this);
 		this.config = config;
         recognizeStatusObservers = new HashSet<IRecognizeStatusObserver>();
         recognizeResultObservers = new HashSet<IRecognizeResultObserver>();
@@ -100,6 +104,10 @@ public class RecognizeManager implements GNSearchResultReady, GNOperationStatusC
 		
 		notifyRecognizeStatusObservers(recognizeStatus);
 		notifyRecognizeResultObservers(songData);
+
+        if (fingerprintsDeque.size() > 0) {
+            recognizeFingerprint((FingerprintData)fingerprintsDeque.pollFirst(), false);
+        }
 	}
 
 	@Override
@@ -133,4 +141,10 @@ public class RecognizeManager implements GNSearchResultReady, GNOperationStatusC
 		for(IRecognizeStatusObserver o : recognizeStatusObservers)
 			o.onRecognizeStatusChanged(status);
 	}
+
+    @Override
+    public void onNonEmpty() {
+        //ToDo change body of implemented methods use File | Settings | File Templates.
+        recognizeFingerprint((FingerprintData)fingerprintsDeque.pollFirst(), false);
+    }
 }

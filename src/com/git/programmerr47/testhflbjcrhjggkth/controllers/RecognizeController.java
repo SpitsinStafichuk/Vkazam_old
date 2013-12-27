@@ -20,7 +20,7 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeResult
 import com.git.programmerr47.testhflbjcrhjggkth.utils.NetworkUtils;
 import com.git.programmerr47.testhflbjcrhjggkth.view.ProgressWheel;
 
-public class RecognizeController implements IFingerprintResultObserver, IRecognizeResultObserver, FingerprintsDeque.OnDequeStateListener {
+public class RecognizeController implements IFingerprintResultObserver, IRecognizeResultObserver {
 	private static final String TAG = "RecognizeController";
 	
 	private MicroScrobblerModel model;
@@ -33,9 +33,8 @@ public class RecognizeController implements IFingerprintResultObserver, IRecogni
 
     public RecognizeController(Context context) {
         model = RecognizeServiceConnection.getModel();
-        this.fingerprintsDeque = model.getFingerprintsDeque();
-        fingerprintsDeque.setOnDequeStateListener(this);
         this.context = context;
+        fingerprintsDeque = model.getFingerprintsDeque();
         fingerprintManager = model.getFingerprintManager();
         fingerprintManager.addFingerprintResultObserver(this);
         recognizeManager = model.getRecognizeManager();
@@ -123,11 +122,5 @@ public class RecognizeController implements IFingerprintResultObserver, IRecogni
             timerDelay = new Timer();
             timerDelay.scheduleAtFixedRate(task, 0, period);
         }
-    }
-
-    @Override
-    public void onNonEmpty() {
-        //ToDo change body of implemented methods use File | Settings | File Templates.
-        recognizeManager.recognizeFingerprint((FingerprintData)fingerprintsDeque.pollFirst(), false);
     }
 }
