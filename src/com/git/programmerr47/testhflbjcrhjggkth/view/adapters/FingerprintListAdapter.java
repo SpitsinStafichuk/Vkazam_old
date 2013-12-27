@@ -32,6 +32,7 @@ public class FingerprintListAdapter extends BaseAdapter{
 	private MicroScrobblerModel model;
     private boolean isScrolling = false;
     private int lastPosition;
+    private int countInAnimation = 0;
 	
 	public FingerprintListAdapter(Activity activity, int idItem, FingerprintListController controller) {
 		this.activity = activity;
@@ -63,8 +64,11 @@ public class FingerprintListAdapter extends BaseAdapter{
 
     @Override
     public void notifyDataSetChanged() {
-        isScrolling = false;
-        super.notifyDataSetChanged();
+        countInAnimation--;
+        if (countInAnimation <= 0) {
+            isScrolling = false;
+            super.notifyDataSetChanged();
+        }
     }
 
     public void scrolling() {
@@ -118,7 +122,9 @@ public class FingerprintListAdapter extends BaseAdapter{
         final Animation addToDequeue = AnimationUtils.loadAnimation(activity, R.anim.add_to_recognize_queue);
         addToDequeue.setAnimationListener(new Animation.AnimationListener() {
             @Override
-            public void onAnimationStart(Animation animation) {}
+            public void onAnimationStart(Animation animation) {
+                countInAnimation++;
+            }
 
             @Override
             public void onAnimationEnd(Animation animation) {
