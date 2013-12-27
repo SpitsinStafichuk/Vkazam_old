@@ -3,14 +3,14 @@ package com.git.programmerr47.testhflbjcrhjggkth.view.fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.ListView;
+import android.widget.*;
 
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.FingerprintListController;
@@ -20,15 +20,20 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseSongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.FingerprintList;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongList;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IFingerprintDAOObserver;
+import com.git.programmerr47.testhflbjcrhjggkth.utils.AndroidUtils;
 import com.git.programmerr47.testhflbjcrhjggkth.view.activities.SongInfoActivity;
 import com.git.programmerr47.testhflbjcrhjggkth.view.adapters.FingerprintListAdapter;
 import com.git.programmerr47.testhflbjcrhjggkth.view.adapters.SongListAdapter;
 
-public class FingerprintPageFragment extends FragmentWithName implements IFingerprintDAOObserver {
+public class FingerprintPageFragment extends FragmentWithName implements IFingerprintDAOObserver, CompoundButton.OnCheckedChangeListener {
 	private FingerprintListAdapter adapter;
     private FingerprintListController controller;
+
     private ListView fingerprintHLV;
     private FingerprintList fingerprintList;
+
+    private LinearLayout autoRecognize;
+    private CheckBox autoRecognizeCheckBox;
 
 	public static FingerprintPageFragment newInstance(Context context) {
 		FingerprintPageFragment pageFragment = new FingerprintPageFragment();
@@ -75,11 +80,37 @@ public class FingerprintPageFragment extends FragmentWithName implements IFinger
             }
         });
 
+        autoRecognize = (LinearLayout) view.findViewById(R.id.settingsAutoRecognize);
+        autoRecognizeCheckBox = (CheckBox) autoRecognize.findViewById(R.id.checkbox);
+        autoRecognizeCheckBox.setOnCheckedChangeListener(this);
+        autoRecognize.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                autoRecognizeCheckBox.setChecked(!autoRecognizeCheckBox.isChecked());
+            }
+        });
+
         return view;
 	}
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
+        autoRecognizeCheckBox.setChecked(prefs.getBoolean("settingsAutoRecognize", false));
+    }
 
 	@Override
 	public void onFingerprintListChanged() {
 		adapter.notifyDataSetChanged();
 	}
+
+    @Override
+    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
+        SharedPreferences.Editor editor=prefs.edit();
+        editor.putBoolean("settingsAutoRecognize", b);
+        editor.commit();
+    }
 }
