@@ -55,7 +55,10 @@ public class SongController {
         } else if (positionInList < 0) {
             positionInList = 0;
         }
-        this.playPauseSong(((DatabaseSongData)model.getSongList().get(positionInList)), positionInList);
+
+        if (model.getSongList().size() > 0) {
+            this.playPauseSong(((DatabaseSongData)model.getSongList().get(positionInList)), positionInList);
+        }
     }
 
     public void seekTo(int percent) {

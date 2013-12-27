@@ -15,13 +15,17 @@ public class FingerprintsDeque<FingerprintData> extends LinkedBlockingDeque<Fing
 	@Override
 	public synchronized void addFirst(FingerprintData data) {
 		super.addFirst(data);
-		listener.onNonEmpty();
+        if (size() == 1) {
+            listener.onNonEmpty();
+        }
 	}
 	
 	@Override
 	public synchronized void addLast(FingerprintData data) {
 		super.addLast(data);
-		listener.onNonEmpty();
+		if (size() == 1) {
+            listener.onNonEmpty();
+        }
 	}
 	
 	public void setOnDequeStateListener(OnDequeStateListener listener) {
