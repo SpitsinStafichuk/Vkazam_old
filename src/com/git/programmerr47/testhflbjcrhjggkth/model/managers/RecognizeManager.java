@@ -102,10 +102,6 @@ public class RecognizeManager implements GNSearchResultReady, GNOperationStatusC
 		
 		notifyRecognizeStatusObservers(recognizeStatus);
 		notifyRecognizeResultObservers(songData);
-
-        if (fingerprintsDeque.size() > 0) {
-            recognizeFingerprint((FingerprintData)fingerprintsDeque.pollFirst(), false);
-        }
 	}
 
 	@Override

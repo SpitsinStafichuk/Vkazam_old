@@ -3,6 +3,7 @@ package com.git.programmerr47.testhflbjcrhjggkth.controllers;
 import android.app.Activity;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 
 import com.git.programmerr47.testhflbjcrhjggkth.model.FingerprintData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
@@ -44,12 +45,16 @@ public class FingerprintListController implements FingerprintsDeque.OnDequeState
 	@Override
 	public void onNonEmpty() {
 		// TODO Auto-generated method stub
-		currentFinger = (FingerprintData)fingerprintsDeque.pollFirst();
+		Log.v("Fingers", "Now queue is not empty");
+		Log.v("Fingers", "before fingerprintsDeque.size() = " + fingerprintsDeque.size());
+		currentFinger = (FingerprintData)fingerprintsDeque.peekFirst();
+		Log.v("Fingers", "after fingerprintsDeque.size() = " + fingerprintsDeque.size());
 		storageRacognizeManager.recognizeFingerprint(currentFinger, false);
 	}
 
 	@Override
 	public void onRecognizeResult(SongData songData) {
+		Log.v("Fingers", "onRecognizeResult " + songData);
 		if (songData != null) {
 			model.getSongList().add(0, songData);
 			model.getScrobbler().sendLastFMTrack(songData.getArtist(), songData.getTitle(), songData.getAlbum());
@@ -66,6 +71,9 @@ public class FingerprintListController implements FingerprintsDeque.OnDequeState
             @Override
             public void run() {
             	adapter.deletionFromList(currentFinger);
+        		Log.v("Fingers", "before fingerprintsDeque.size() = " + fingerprintsDeque.size());
+        		fingerprintsDeque.pollFirst();
+        		Log.v("Fingers", "after fingerprintsDeque.size() = " + fingerprintsDeque.size());
                 if (fingerprintsDeque.size() > 0) {
                 	onNonEmpty();
                 }
@@ -76,6 +84,7 @@ public class FingerprintListController implements FingerprintsDeque.OnDequeState
 	@Override
 	public void onRecognizeStatusChanged(String status) {
 		// TODO Auto-generated method stub
+		Log.v("Fingers", "onRecognizeStatusChanged " + status);
 		adapter.updateFingerStatus(currentFinger, status);
 	}
 
