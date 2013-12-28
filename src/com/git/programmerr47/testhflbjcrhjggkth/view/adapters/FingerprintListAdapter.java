@@ -1,10 +1,14 @@
 package com.git.programmerr47.testhflbjcrhjggkth.view.adapters;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import android.content.SharedPreferences;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.widget.*;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
@@ -28,7 +32,6 @@ import com.nineoldandroids.view.ViewHelper;
 
 public class FingerprintListAdapter extends BaseAdapter {
 	private static String TAG = "FingerprintListAdapter";
-	private FingerprintListController controller;
 	private int idItem;
 	private Activity activity;
 	private LayoutInflater inflater;
@@ -36,13 +39,14 @@ public class FingerprintListAdapter extends BaseAdapter {
     private boolean isScrolling = false;
     private int lastPosition;
     private int countInAnimation = 0;
+    private Map<FingerprintData, View> fingersQueue; 
 	
-	public FingerprintListAdapter(Activity activity, int idItem, FingerprintListController controller) {
+	public FingerprintListAdapter(Activity activity, int idItem) {
 		this.activity = activity;
-		this.controller = controller;
 		this.idItem = idItem;
 		model = RecognizeServiceConnection.getModel();
 		inflater = (LayoutInflater) this.activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		fingersQueue = new HashMap<FingerprintData, View>();
 	}
 
 	@Override
@@ -121,15 +125,6 @@ public class FingerprintListAdapter extends BaseAdapter {
             ViewHelper.setScaleY(view, 1.0f);
             ViewHelper.setPivotX(view, 0);
             ViewHelper.setPivotY(view, 0);
-//
-//            if (isScrolling) {
-//                if (position > lastPosition) {
-//                    view.startAnimation(AnimationUtils.loadAnimation(activity, R.anim.list_view_up_down));
-//                } else {
-//                    view.startAnimation(AnimationUtils.loadAnimation(activity, R.anim.list_view_down_up));
-//                }
-//            }
-//            lastPosition = position;
 
         }
 
@@ -153,13 +148,15 @@ public class FingerprintListAdapter extends BaseAdapter {
                 @Override
                 public void onAnimationStart(Animation animation) {
                     countInAnimation++;
-                    model.getFingerprintsDeque().addLast(data);
                 }
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
                     //try to recognize
                     countInAnimation--;
+                    notifyDataSetChanged();
+                    model.getFingerprintsDeque().addLast(data);
+                    fingersQueue.put(data, view);
                     //final Animation deletionAnimation = AnimationUtils.loadAnimation(activity, R.anim.complete_recognize);
                     //countInAnimation++;
                     //view.startAnimation(deletionAnimation);
@@ -172,11 +169,12 @@ public class FingerprintListAdapter extends BaseAdapter {
                     //        deletionAnimation.cancel();
                     //    }
                     //}, 1000);
-                    ViewHelper.setAlpha(view, 0.5f);
-                    ViewHelper.setScaleX(view, 0.85f);
-                    ViewHelper.setScaleY(view, 0.85f);
-                    ViewHelper.setPivotX(view, view.getWidth() * 0.5f);
-                    ViewHelper.setPivotY(view, view.getHeight() * 0.5f);
+//                    
+//                    ViewHelper.setAlpha(view, 0.5f);
+//                    ViewHelper.setScaleX(view, 0.85f);
+//                    ViewHelper.setScaleY(view, 0.85f);
+//                    ViewHelper.setPivotX(view, view.getWidth() * 0.5f);
+//                    ViewHelper.setPivotY(view, view.getHeight() * 0.5f);
                 }
 
                 @Override
@@ -197,7 +195,11 @@ public class FingerprintListAdapter extends BaseAdapter {
                     ViewHelper.setPivotX(view, 0);
                     ViewHelper.setPivotY(view, 0);
                     countInAnimation++;
-                    model.getFingerprintsDeque().remove(data);
+                    if (!model.getFingerprintsDeque().contains(data)) {
+                    	model.getStorageRecognizeManager().recognizeFingerprintCancel();
+                    	model.getFingerprintsDeque().addLast(data);
+                    }
+                    fingersQueue.remove(data);
                 }
 
                 @Override
@@ -210,5 +212,35 @@ public class FingerprintListAdapter extends BaseAdapter {
             });
             view.startAnimation(removeFromDequeue);
         }
+    }
+    
+    public void updateFingerStatus(FingerprintData data, String status) {
+    	View view = fingersQueue.get(data);
+    	TextView statusTextView = (TextView) view.findViewById(R.id.fingerprintText);
+    	statusTextView.setText(status);
+    }
+    
+    public void deletionFromList(final FingerprintData data) {
+    	View view = fingersQueue.get(data);
+        final Animation deletionAnimation = AnimationUtils.loadAnimation(activity, R.anim.complete_recognize);
+        deletionAnimation.setAnimationListener(new AnimationListener() {
+			
+			@Override
+			public void onAnimationStart(Animation animation) {}
+			
+			@Override
+			public void onAnimationRepeat(Animation animation) {}
+			
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				countInAnimation--;   
+				model.getFingerprintList().remove(data);
+                notifyDataSetChanged();
+                deletionAnimation.cancel();
+                
+			}
+		});
+        countInAnimation++;
+        view.startAnimation(deletionAnimation);
     }
 }

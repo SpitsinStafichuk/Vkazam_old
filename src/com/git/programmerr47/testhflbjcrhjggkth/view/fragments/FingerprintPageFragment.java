@@ -49,8 +49,8 @@ public class FingerprintPageFragment extends FragmentWithName implements IFinger
     public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             
-            controller = new FingerprintListController(this);
-            adapter = new FingerprintListAdapter(this.getActivity(), R.layout.finger_list_item, controller);
+            adapter = new FingerprintListAdapter(this.getActivity(), R.layout.finger_list_item);
+            controller = new FingerprintListController(this, adapter);
             fingerprintList = RecognizeServiceConnection.getModel().getFingerprintList();
             fingerprintList.addObserver(this);
     }
@@ -99,6 +99,12 @@ public class FingerprintPageFragment extends FragmentWithName implements IFinger
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
         autoRecognizeCheckBox.setChecked(prefs.getBoolean("settingsAutoRecognize", false));
+    }
+    
+    @Override
+    public void onDestroy() {
+    	super.onDestroy();
+    	controller.finish();
     }
 
 	@Override

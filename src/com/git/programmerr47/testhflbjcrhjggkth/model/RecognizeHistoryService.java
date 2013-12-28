@@ -30,7 +30,7 @@ public class RecognizeHistoryService extends Service implements IRecognizeStatus
 		if(!MicroScrobblerModel.hasContext()) {
 			MicroScrobblerModel.setContext(this);
 		}
-		recognizeManager = RecognizeServiceConnection.getModel().getRecognizeManager();
+		recognizeManager = RecognizeServiceConnection.getModel().getStorageRecognizeManager();
 	}
 	
 	@Override 

@@ -25,7 +25,8 @@ public class MicroScrobblerModel {
 	private GNConfig config;
 	
 	private FingerprintManager fingerprintManager;
-	private RecognizeManager recognizeManager;
+	private RecognizeManager mainRecognizeManager;
+	private RecognizeManager storageRecognizeManager;
 	private SongManager songManager;
 	private SearchManager searchManager;
 	private Handler handler;
@@ -90,7 +91,8 @@ public class MicroScrobblerModel {
 		scrobbler = new Scrobbler(context);
 		songManager = new SongManager(handler, context, scrobbler);
 		searchManager = new SearchManager(config);
-        recognizeManager = new RecognizeManager(config, fingerprintsDeque);
+        mainRecognizeManager = new RecognizeManager(config, fingerprintsDeque);
+        storageRecognizeManager = new RecognizeManager(config, fingerprintsDeque);
         fingerprintManager = new FingerprintManager(config, context, handler);
         
         vkAccount = new Account();
@@ -130,8 +132,12 @@ public class MicroScrobblerModel {
 		return fingerprintManager;
 	}
 	
-	public RecognizeManager getRecognizeManager() {
-		return recognizeManager;
+	public RecognizeManager getMainRecognizeManager() {
+		return mainRecognizeManager;
+	}
+	
+	public RecognizeManager getStorageRecognizeManager() {
+		return storageRecognizeManager;
 	}
 	
 	public Data getHistoryItem(int position) {
