@@ -37,7 +37,7 @@ public class RecognizeController implements IFingerprintResultObserver, IRecogni
         fingerprintsDeque = model.getFingerprintsDeque();
         fingerprintManager = model.getFingerprintManager();
         fingerprintManager.addFingerprintResultObserver(this);
-        recognizeManager = model.getRecognizeManager();
+        recognizeManager = model.getMainRecognizeManager();
         recognizeManager.addRecognizeResultObserver(this);
         timerDelay = new Timer();
     }
@@ -90,11 +90,11 @@ public class RecognizeController implements IFingerprintResultObserver, IRecogni
 	public void onFingerprintResult(String fingerprint) {
 		FingerprintData fingerprintData = new FingerprintData(fingerprint, new Date());
 		Log.i(TAG, "fingerprint = " + fingerprint);
-        model.getFingerprintList().add(fingerprintData);
 		if (NetworkUtils.isNetworkAvailable(context)) {
-            fingerprintsDeque.addFirst(fingerprintData);
+            recognizeManager.recognizeFingerprint(fingerprintData, false);
 		} else {
 			Log.v("testik", "adding offline finger");
+	        model.getFingerprintList().add(fingerprintData);
             runTimerDelay();
 		}
 	}

@@ -24,8 +24,7 @@ import com.gracenote.mmid.MobileSDK.GNSearchResultReady;
 import com.gracenote.mmid.MobileSDK.GNStatus;
 
 public class RecognizeManager implements GNSearchResultReady, GNOperationStatusChanged,
-                                         IRecognizeStatusObservable, IRecognizeResultObservable,
-                                         FingerprintsDeque.OnDequeStateListener {
+                                         IRecognizeStatusObservable, IRecognizeResultObservable {
 	public static final String RECOGNIZING_SUCCESS = "Recognizing success";
 	private static final String TAG = "Recognizing";
 	
@@ -39,7 +38,6 @@ public class RecognizeManager implements GNSearchResultReady, GNOperationStatusC
 	
 	public RecognizeManager(GNConfig config, FingerprintsDeque fingerprintsDeque) {
         this.fingerprintsDeque = fingerprintsDeque;
-        fingerprintsDeque.setOnDequeStateListener(this);
 		this.config = config;
         recognizeStatusObservers = new HashSet<IRecognizeStatusObserver>();
         recognizeResultObservers = new HashSet<IRecognizeResultObserver>();
@@ -95,7 +93,7 @@ public class RecognizeManager implements GNSearchResultReady, GNOperationStatusC
 				String albumReviewUrl = bestResponse.getAlbumReviewUrl();
 				String albumReleaseYear = bestResponse.getAlbumReleaseYear();
 				
-				songData = new SongData(trackId, artist, album, title, null, null, coverArtURL, currentFingerprintData.getDate(), contributorImageURL,
+				songData = new SongData(trackId, artist, album, title, null, null, coverArtURL, new Date(), contributorImageURL,
 						artistBiographyURL, songPosition, albumReviewUrl, albumReleaseYear, albumArtist);
 		
 				recognizeStatus = RECOGNIZING_SUCCESS;
@@ -141,10 +139,4 @@ public class RecognizeManager implements GNSearchResultReady, GNOperationStatusC
 		for(IRecognizeStatusObserver o : recognizeStatusObservers)
 			o.onRecognizeStatusChanged(status);
 	}
-
-    @Override
-    public void onNonEmpty() {
-        //ToDo change body of implemented methods use File | Settings | File Templates.
-        recognizeFingerprint((FingerprintData)fingerprintsDeque.pollFirst(), false);
-    }
 }
