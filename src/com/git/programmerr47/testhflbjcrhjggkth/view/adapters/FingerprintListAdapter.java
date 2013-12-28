@@ -140,7 +140,7 @@ public class FingerprintListAdapter extends BaseAdapter {
 		return view;
 	}
 
-    public void deleteFingerprint(final View view, final int position) {
+    public void recognizeFingerprint(final View view, final int position) {
         final FingerprintData data = (FingerprintData) model.getFingerprintList().get(position);
         if (!data.isInQueueForRecognizing()) {
             final Animation addToDequeue = AnimationUtils.loadAnimation(activity, R.anim.add_to_recognize_queue);

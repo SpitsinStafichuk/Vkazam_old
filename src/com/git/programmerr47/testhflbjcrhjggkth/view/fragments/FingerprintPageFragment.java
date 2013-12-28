@@ -66,7 +66,7 @@ public class FingerprintPageFragment extends FragmentWithName implements IFinger
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.v("Deleting", "Delete fingerprint");
-                adapter.deleteFingerprint(view, position);
+                adapter.recognizeFingerprint(view, position);
             }
         });
         fingerprintHLV.setOnScrollListener(new AbsListView.OnScrollListener() {
