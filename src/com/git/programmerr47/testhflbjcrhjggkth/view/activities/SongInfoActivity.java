@@ -72,6 +72,7 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver, 
 	private ProgressDialog downloadPPProgressDialog;
 	private ImageButton deleteButton;
     private ImageButton settingsButton;
+    private ImageButton lyricsButton;
     private SeekBar ppSongProgress;
     private SeekBar vkSongProgress;
 
@@ -192,8 +193,8 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver, 
 			public void onClick(View v) {
 				Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
 				sharingIntent.setType("text/plain");
-				sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Like song");
-				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, "I just listened a nice song on MicroScrobbler");
+				sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "VKAZAM - new song");
+				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, "I recognized a nice song on VKAZAM: " + data.getArtist() + " - " + data.getTitle() + " ("+ data.getAlbum() +")");
 				startActivity(Intent.createChooser(sharingIntent, "Share song"));
 			}
 		});
@@ -272,6 +273,14 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver, 
             @Override
             public void onClick(View view) {
                 openOptionsMenu();
+            }
+        });
+
+        lyricsButton = (ImageButton) findViewById(R.id.lyricsButton);
+        lyricsButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                controller.getLyrics(data);
             }
         });
 
