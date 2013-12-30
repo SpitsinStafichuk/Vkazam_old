@@ -72,6 +72,7 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver, 
 	private ProgressDialog downloadPPProgressDialog;
 	private ImageButton deleteButton;
     private ImageButton settingsButton;
+    private ImageButton youtubeButton;
     private SeekBar ppSongProgress;
     private SeekBar vkSongProgress;
 
@@ -272,6 +273,14 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver, 
             @Override
             public void onClick(View view) {
                 openOptionsMenu();
+            }
+        });
+
+        youtubeButton = (ImageButton) findViewById(R.id.youtubeButton);
+        youtubeButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                controller.showYoutubePage(data);
             }
         });
 
