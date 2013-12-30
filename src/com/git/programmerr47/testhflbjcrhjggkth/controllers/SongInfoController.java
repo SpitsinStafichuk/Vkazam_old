@@ -2,6 +2,8 @@ package com.git.programmerr47.testhflbjcrhjggkth.controllers;
 
 import android.app.Activity;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.widget.Toast;
@@ -20,6 +22,12 @@ public class SongInfoController extends SongController{
 	}
 
     public void showYoutubePage(final SongData data) {
+        final ProgressDialog dialog = new ProgressDialog(view);
+        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        dialog.setTitle("Waiting for answer");
+        dialog.setMessage("Please wait for answer from youtube app");
+        dialog.show();
+
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -31,6 +39,7 @@ public class SongInfoController extends SongController{
                     } else {
                         view.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(youtubeUrl)));
                     }
+                    dialog.dismiss();
                 } catch (IOException e) {
                     e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.  \
                 }
