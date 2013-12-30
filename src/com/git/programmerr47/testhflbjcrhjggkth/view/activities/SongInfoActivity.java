@@ -289,6 +289,12 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver, 
 
         TextView vkSong = (TextView) findViewById(R.id.SongInfoRealArtistTitleForVk);
         vkSong.setSelected(true);
+
+        TextView artist = (TextView) findViewById(R.id.artistTitle);
+        artist.setText(data.getArtist());
+
+        TextView title = (TextView) findViewById(R.id.titleTitle);
+        title.setText(data.getTitle());
 	}
 
     private class DownloadTask extends AsyncTask<DatabaseSongData, Integer, String> {
