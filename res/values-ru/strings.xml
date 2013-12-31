@@ -38,5 +38,10 @@
     <string name="settings_timer_delay_title">Задержка таймера</string>
     <string name="settings_timer_delay_summary">Установить задержку распознавания по таймеру</string>
     <string name="settings_secs">сек</string>
+
+    <string name="timer_delay_dialog_title">Задержка таймера</string>
+    <string name="timer_delay_dialog_summary">Переместите ползунок для изменения задержки. Затем кликните по кнопке \"Принять\" для сохранения изменений или нажмите на кнопку \"Отменить\" для сброса</string>
+    <string name="accept_button">Принять</string>
+    <string name="cancel_button">Отменить</string>
     
 </resources>
