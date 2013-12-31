@@ -34,6 +34,8 @@
 
         <item name="android:scrollbarThumbVertical">@drawable/apptheme_fastscroll_thumb_holo</item>
 
+    	<item name="android:editTextStyle">@style/EditTextAppTheme</item>
+
     </style>
     
     <style name="HistoryListView" parent="@android:style/Widget.ListView">
@@ -41,7 +43,7 @@
   	</style>
   	
     <style name="PagerTabStripText">
-    	<item name="android:textSize">20sp</item>
+    	<item name="android:textSize">16sp</item>
     	<item name="android:textStyle">bold</item>
     	<item name="android:textColor">@color/white</item>
     	<item name="android:gravity">center</item>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical" >
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/title_background">
+
+        <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_settings"
+                android:background="@android:color/transparent"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="SETTINGS"
+                android:textSize="20sp"
+                android:background="@android:color/transparent"/>
+
+    </LinearLayout>
+
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/very_pale_cyan">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+            <include layout="@layout/icon_checkbox_preference"
+                     android:id="@+id/settingsVkConnection"/>
+
+            <include layout="@layout/icon_checkbox_preference"
+                     android:id="@+id/settingsVkUrls"/>
+
+            <include layout="@layout/icon_checkbox_preference"
+                     android:id="@+id/settingsVkAudioBroadcast"/>
+
+            <include layout="@layout/icon_checkbox_preference"
+                     android:id="@+id/settingsOnlyWiFiConntection"/>
+
+            <include layout="@layout/icon_checkbox_preference"
+                     android:id="@+id/settingsLastFmConnection"/>
+
+            <include layout="@layout/icon_checkbox_preference"
+                     android:id="@+id/settingsAutoRecognize"/>
+
+            <include layout="@layout/icon_preference_with_additional_info"
+                     android:id="@+id/settingsTimerDelay"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

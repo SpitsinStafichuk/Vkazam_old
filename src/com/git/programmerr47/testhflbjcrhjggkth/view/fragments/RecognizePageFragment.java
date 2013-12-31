@@ -1,5 +1,6 @@
 package com.git.programmerr47.testhflbjcrhjggkth.view.fragments;
 
+import android.widget.*;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.RecognizeController;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
@@ -24,11 +25,6 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Animation.AnimationListener;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 public class RecognizePageFragment
        extends
@@ -137,7 +133,8 @@ public class RecognizePageFragment
             }
         });
         
-        ImageButton microNowListenButton = (ImageButton) view.findViewById(R.id.microNowListenButton);
+        Button microNowListenButton = (Button) view.findViewById(R.id.microNowListenButton);
+        microNowListenButton.setText("Click on Button\n to start or stop\n recognizing");
         microNowListenButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
