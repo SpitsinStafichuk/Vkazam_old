@@ -34,6 +34,8 @@
 
         <item name="android:scrollbarThumbVertical">@drawable/apptheme_fastscroll_thumb_holo</item>
 
+    	<item name="android:editTextStyle">@style/EditTextAppTheme</item>
+
     </style>
     
     <style name="HistoryListView" parent="@android:style/Widget.ListView">
