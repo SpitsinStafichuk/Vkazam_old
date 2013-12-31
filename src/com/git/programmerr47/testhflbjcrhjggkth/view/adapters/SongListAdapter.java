@@ -45,6 +45,7 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 	private SongListController controller;
 	private SongManager songManager;
 	private View currentListItemView;
+    private int currentListItemPosition = -1;
 	private Map<String, ImageView> coverArts;
 	
 	public SongListAdapter(Activity activity, int idItem, SongListController controller) {
@@ -128,6 +129,7 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 				}
 				
 				currentListItemView = fView;
+                currentListItemPosition = position;
 			    LinearLayout element = (LinearLayout) currentListItemView.findViewById(R.id.songHistoryItemInfo);
 			    element.setBackgroundResource(R.drawable.list_item_bg_pressed);
 				controller.playPauseSong((DatabaseSongData) getItem(position), position);
@@ -259,4 +261,8 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 			.build();
 		model.getImageLoader().displayImage(coverArtUrl, coverArts.get(songData.getTrackId()), options);
 	}
+
+    public int getCurrentListPosition() {
+        return currentListItemPosition;
+    }
 }

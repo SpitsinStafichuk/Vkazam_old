@@ -24,18 +24,18 @@ import com.git.programmerr47.testhflbjcrhjggkth.view.adapters.SongListAdapter;
 
 public class MiniPlayerFragment extends Fragment implements IPlayerStateObserver, ISongInfoObserver, ISongProgressObserver{
 
-    TextView songInfo;
-    ImageButton playButton;
-    ImageButton nextButton;
-    ImageButton prevButton;
-    ProgressBar progressBar;
-    SeekBar songProgress;
+    private TextView songInfo;
+    private ImageButton playButton;
+    private ImageButton nextButton;
+    private ImageButton prevButton;
+    private ProgressBar progressBar;
+    private SeekBar songProgress;
 
-    int currentPosition = 0;
+    private int currentPosition = 0;
 
-    MicroScrobblerModel model;
-    SongController controller;
-    SongListAdapter adapter;
+    private MicroScrobblerModel model;
+    private SongController controller;
+    private SongListAdapter adapter;
 
     public MiniPlayerFragment(SongListAdapter adapter) {
         this.adapter = adapter;
@@ -50,6 +50,14 @@ public class MiniPlayerFragment extends Fragment implements IPlayerStateObserver
         model.getPlayer().addPlayerStateObserver(this);
         model.getSongManager().addSongIngoObserver(this);
         model.getSongManager().addSongProgressObserver(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        currentPosition = adapter.getCurrentListPosition();
+
         model.getSongManager().setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
             @Override
             public void onBufferingUpdate(MediaPlayer mediaPlayer, int percent) {
@@ -60,15 +68,11 @@ public class MiniPlayerFragment extends Fragment implements IPlayerStateObserver
         model.getSongManager().setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
-                Log.v("MiniPlayer", "Song is completed");
+                Log.v("MiniPlayer", "Song is completed in miniplayer");
                 controller.playPauseSong(currentPosition + 1);
             }
         });
-    }
 
-    @Override
-    public void onResume() {
-        super.onResume();
         updatePlayerState();
         updateSongInfo();
     }

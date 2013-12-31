@@ -3,6 +3,8 @@ package com.git.programmerr47.testhflbjcrhjggkth.controllers;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
+import com.git.programmerr47.testhflbjcrhjggkth.model.exceptions.VkAccountNotFoundException;
+import com.git.programmerr47.testhflbjcrhjggkth.view.activities.SongInfoActivity;
 import org.json.JSONException;
 
 import android.app.Activity;
@@ -27,21 +29,25 @@ public class SongController {
 		this.model = RecognizeServiceConnection.getModel();
 	}
 
-	public synchronized void playPauseSong(final DatabaseSongData songData, final int positionInList) {
-		if(preparingThread != null) {
-			SongManager songManager = model.getSongManager();
-			songManager.set(null, -1, model.getVkApi());
-			preparingThread.interrupt();
-		}
-		preparingThread = new Thread(){
-			@Override
-			public void run() {
-				_playPauseSong(songData, positionInList);
-				preparingThread = null;
-			}
-		};
-		preparingThread.start();	
-	}
+    public synchronized void playPauseSong(final DatabaseSongData songData, final int positionInList, final int type) {
+        if(preparingThread != null) {
+            SongManager songManager = model.getSongManager();
+            songManager.set(null, -1, model.getVkApi());
+            preparingThread.interrupt();
+        }
+        preparingThread = new Thread(){
+            @Override
+            public void run() {
+                _playPauseSong(songData, positionInList, type);
+                preparingThread = null;
+            }
+        };
+        preparingThread.start();
+    }
+
+    public synchronized void playPauseSong(final DatabaseSongData songData, final int positionInList) {
+        this.playPauseSong(songData, positionInList, SongInfoActivity.ANY_SONG);
+    }
 
     public synchronized void playPauseSong(int positionInList) {
         if (positionInList >= model.getSongList().size()) {
@@ -56,7 +62,7 @@ public class SongController {
         model.getSongManager().seekTo(percent);
     }
 	
-	private void _playPauseSong(DatabaseSongData songData, int positionInList) {
+	private void _playPauseSong(DatabaseSongData songData, int positionInList, int type) {
 		SongManager songManager = model.getSongManager();
 		if(songData.equals(songManager.getSongData())) {
 			Log.v("SongListController", "songManager.getSongData() == songData == " + songData);
@@ -75,8 +81,8 @@ public class SongController {
 			songManager.set(songData, positionInList, model.getVkApi());
 			Log.v("SongListController", "song was setted");
 			try {
-				songManager.prepare();
-				Log.v("SongListController", "song was prepared ");
+                songManager.prepare(type);
+                Log.v("SongListController", "song was prepared ");
 				songManager.play();
 			} catch (SongNotFoundException e) {
 				showToast("Song is not found");
@@ -102,7 +108,11 @@ public class SongController {
 				showToast(e.getLocalizedMessage());
 				songManager.release();
 				songManager.set(null, -1, model.getVkApi());
-			}
+			} catch (VkAccountNotFoundException e) {
+                showToast("Seems you haven't vk account. Use settings to log in");
+                songManager.release();
+                songManager.set(null, -1, model.getVkApi());
+            }
 		}
 	}
 	

@@ -66,7 +66,7 @@ public class HistoryPageFragment extends FragmentWithName implements ISongDAOObs
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Intent intent = new Intent(instance, SongInfoActivity.class);
-                    RecognizeServiceConnection.getModel().setCurrentOpenSong((DatabaseSongData) RecognizeServiceConnection.getModel().getSongList().get(position));
+                    RecognizeServiceConnection.getModel().setCurrentOpenSong((DatabaseSongData) RecognizeServiceConnection.getModel().getSongList().get(position), position);
                     startActivity(intent);
                 }
             });
