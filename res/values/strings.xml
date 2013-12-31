@@ -13,5 +13,9 @@
     <string name="title">Title</string>
     <string name="album">Album</string>
     <string name="search">Search</string>
+    <string name="recognize_button">Click on Button\nto start or stop\nrecognizing</string>
+    <string name="recognize_status">Status</string>
+    <string name="recognize_status_listening">Listening</string>
+    <string name="recognize_status_recognizing">Recognizing</string>
     
 </resources>
