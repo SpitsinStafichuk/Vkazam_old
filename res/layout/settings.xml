@@ -21,7 +21,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="SETTINGS"
+                android:text="@string/settings_title"
                 android:textSize="20sp"
                 android:background="@android:color/transparent"/>
 
