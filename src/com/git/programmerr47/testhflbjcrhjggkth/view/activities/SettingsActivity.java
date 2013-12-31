@@ -41,8 +41,6 @@ public class SettingsActivity extends FragmentActivity implements CompoundButton
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings);
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
         controller = new SettingsController(this);
         vkConnection = (LinearLayout) findViewById(R.id.settingsVkConnection);
         ((ImageView) vkConnection.findViewById(R.id.icon)).setImageResource(R.drawable.ic_settings_vk);
@@ -137,6 +135,15 @@ public class SettingsActivity extends FragmentActivity implements CompoundButton
                 timerDelayFragment.show(fragmentTransaction, SHOW_DIALOG_TAG);
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        ((TextView) timerDelay.findViewById(R.id.additional_info)).setText(prefs.getInt("settingsTimerDelay", 5) + "");
 
         vkConntectionCheckBox.setChecked(prefs.getBoolean("settingsVkConnection", false));
         vkUrlsCheckBox.setChecked(prefs.getBoolean("settingsVkUrls", true));
@@ -144,11 +151,6 @@ public class SettingsActivity extends FragmentActivity implements CompoundButton
         onlyWiFiConntectionCheckBox.setChecked(prefs.getBoolean("settingsOnlyWiFiConntection", true));
         lastFmConnectionCheckBox.setChecked(prefs.getBoolean("settingsLastFmConnection", true));
         autoRecognizeCheckBox.setChecked(prefs.getBoolean("settingsAutoRecognize", false));
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
 
         AndroidUtils.setViewEnabled(vkUrls, vkConntectionCheckBox.isChecked());
         AndroidUtils.setViewEnabled(vkAudioBroadcast, vkConntectionCheckBox.isChecked());
