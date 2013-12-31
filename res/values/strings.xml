@@ -2,20 +2,41 @@
 <resources>
 
     <string name="app_name">Vkazam</string>
+
     <string name="action_settings">Settings</string>
     <string name="action_refresh">Choose URL</string>
+
     <string name="tagging_page_fragment_caption">Tagging</string>
     <string name="history_page_fragment_caption">History</string>
     <string name="fingerprints_page_fragment_caption">Fingerprints</string>
     <string name="search_page_fragment_caption">Search</string>
+
     <string name="status">Status</string>
     <string name="artist">Artist</string>
     <string name="title">Title</string>
     <string name="album">Album</string>
     <string name="search">Search</string>
+
     <string name="recognize_button">Click on Button\nto start or stop\nrecognizing</string>
     <string name="recognize_status">Status</string>
     <string name="recognize_status_listening">Listening</string>
     <string name="recognize_status_recognizing">Recognizing</string>
+
+    <string name="settings_title">SETTINGS</string>
+    <string name="settings_vk_title">Vkontakte</string>
+    <string name="settings_vk_summary">Sync with vkontakte</string>
+    <string name="settings_vk_urls_title">Vk Urls</string>
+    <string name="settings_vk_urls_summary">Prefer to choose vk urls istead of prostopleer urls</string>
+    <string name="settings_vk_status_title">Broadcast to status</string>
+    <string name="settings_vk_status_summary">Broadcast current playing song to vk.com status</string>
+    <string name="settings_wifi_title">Only Wi-Fi</string>
+    <string name="settings_wifi_summary">Enable syncronization with internet only if there is wi-fi connection</string>
+    <string name="settings_scrobbling_title">Scrobbling</string>
+    <string name="settings_scrobbling_summary">Enable scrobbling from standart last.fm application</string>
+    <string name="settings_auto_recognizing_title">Auto-recognizing</string>
+    <string name="settings_auto_recognizing_summary">Automatic recognizing all fingerprints when internet is available</string>
+    <string name="settings_timer_delay_title">Timer delay</string>
+    <string name="settings_timer_delay_summary">Setting fingerprint timer delay</string>
+    <string name="settings_secs">sec</string>
     
 </resources>

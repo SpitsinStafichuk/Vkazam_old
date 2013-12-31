@@ -2,20 +2,41 @@
 <resources>
 
 
+
     <string name="action_settings">Настройки</string>
     <string name="action_refresh">Выбрать другой вариант песни</string>
+
     <string name="tagging_page_fragment_caption">Теггинг</string>
     <string name="history_page_fragment_caption">История</string>
     <string name="fingerprints_page_fragment_caption">Отпечатки</string>
     <string name="search_page_fragment_caption">Поиск</string>
+
     <string name="status">Статус</string>
     <string name="artist">Исполнитель</string>
     <string name="title">Название</string>
     <string name="album">Альбом</string>
     <string name="search">Поиск</string>
+
     <string name="recognize_button">Кликни по кнопке\nчтобы начать\nили остановить\nраспознавание</string>
     <string name="recognize_status">Статус</string>
     <string name="recognize_status_listening">Прослушивание</string>
     <string name="recognize_status_recognizing">Распознавание</string>
+
+    <string name="settings_title">НАСТРОЙКИ</string>
+    <string name="settings_vk_title">Вконтакте</string>
+    <string name="settings_vk_summary">Синхронизация с вконтакте</string>
+    <string name="settings_vk_urls_title">Вк ссылки</string>
+    <string name="settings_vk_urls_summary">Выбирать вк ссылки про проигрывании песни вместо ссылко просто плеера</string>
+    <string name="settings_vk_status_title">Отображать в статусе</string>
+    <string name="settings_vk_status_summary">Транслировать текущую прослушиваемую песню в статус в vk.com</string>
+    <string name="settings_wifi_title">Только Wi-Fi</string>
+    <string name="settings_wifi_summary">Позволять приложению пользоваться интернет-ресурсами только при включенном wi-fi</string>
+    <string name="settings_scrobbling_title">Скробблинг</string>
+    <string name="settings_scrobbling_summary">Разрешить скробблить стандартным last.fm приложениям</string>
+    <string name="settings_auto_recognizing_title">Авто-распознавание</string>
+    <string name="settings_auto_recognizing_summary">Автоматическое распознавание всех запомненных отпечатков, когда включен интернет</string>
+    <string name="settings_timer_delay_title">Задержка таймера</string>
+    <string name="settings_timer_delay_summary">Установить задержку распознавания по таймеру</string>
+    <string name="settings_secs">сек</string>
     
 </resources>
