@@ -16,9 +16,11 @@ import android.widget.*;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.SettingsController;
 import com.git.programmerr47.testhflbjcrhjggkth.utils.AndroidUtils;
+import com.git.programmerr47.testhflbjcrhjggkth.view.activities.interfaces.IConnectedDialogFragmentDissmised;
 import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.TimerDelayDialogFragment;
 
-public class SettingsActivity extends FragmentActivity implements CompoundButton.OnCheckedChangeListener {
+public class SettingsActivity extends FragmentActivity implements CompoundButton.OnCheckedChangeListener,
+                                                                  IConnectedDialogFragmentDissmised {
     private static final String SHOW_DIALOG_TAG = "dialog";
 
     SettingsController controller;
@@ -193,5 +195,10 @@ public class SettingsActivity extends FragmentActivity implements CompoundButton
             editor.putBoolean("settingsAutoRecognize", b);
         }
         editor.commit();
+    }
+
+    @Override
+    public void onComplete() {
+        onResume();
     }
 }
