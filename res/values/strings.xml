@@ -38,5 +38,10 @@
     <string name="settings_timer_delay_title">Timer delay</string>
     <string name="settings_timer_delay_summary">Setting fingerprint timer delay</string>
     <string name="settings_secs">sec</string>
+
+    <string name="timer_delay_dialog_title">Timer delay</string>
+    <string name="timer_delay_dialog_summary">Move the slider to set custom timer delay. Then click accept button to save changes or push cancel button to discard them</string>
+    <string name="accept_button">Accept</string>
+    <string name="cancel_button">Cancel</string>
     
 </resources>

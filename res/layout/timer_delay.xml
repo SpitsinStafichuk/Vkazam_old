@@ -26,7 +26,7 @@
         <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Timer delay"
+                android:text="@string/timer_delay_dialog_title"
                 android:textStyle="bold"
                 android:textSize="20sp"
                 android:textColor="@color/black"
@@ -38,8 +38,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:text="Move the slider to set custom timer delay. Then click accept button to save changes or push cancel button to discard them"
-            android:textSize="16sp"/>
+            android:text="@string/timer_delay_dialog_summary"
+            android:textSize="16sp"
+            android:textColor="@color/black"/>
 
     <LinearLayout
             android:layout_width="match_parent"
@@ -49,11 +50,12 @@
             android:orientation="horizontal">
 
         <TextView
+                android:id="@+id/minDelay"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
-                android:text="2 sec"
+                android:text="2"
                 android:textColor="@color/black"/>
 
         <EditText
@@ -66,11 +68,12 @@
                 style="@style/EditTextAppTheme"/>
 
         <TextView
+                android:id="@+id/maxDelay"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="right|center_vertical"
-                android:text="300 sec"
+                android:text="300"
                 android:textColor="@color/black"/>
 
     </LinearLayout>
@@ -97,7 +100,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
-                android:text="Accept"
+                android:text="@string/accept_button"
                 android:textColor="@color/black"
                 style="@style/ButtonAppTheme"/>
 
@@ -107,7 +110,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
-                android:text="Cancel"
+                android:text="@string/cancel_button"
                 android:textColor="@color/black"
                 style="@style/ButtonAppTheme"/>
 
