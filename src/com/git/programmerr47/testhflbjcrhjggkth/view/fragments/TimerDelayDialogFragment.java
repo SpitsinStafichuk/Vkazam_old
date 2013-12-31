@@ -1,5 +1,7 @@
 package com.git.programmerr47.testhflbjcrhjggkth.view.fragments;
 
+import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -15,6 +17,7 @@ import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.Toast;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
+import com.git.programmerr47.testhflbjcrhjggkth.view.activities.interfaces.IConnectedDialogFragmentDissmised;
 
 public class TimerDelayDialogFragment extends DialogFragment{
     public static final String TAG = "timerDelay";
@@ -25,9 +28,22 @@ public class TimerDelayDialogFragment extends DialogFragment{
     private EditText resultValue;
     private SeekBar chooseBar;
 
+    private IConnectedDialogFragmentDissmised mListener;
+
     public static TimerDelayDialogFragment newInstance() {
         TimerDelayDialogFragment fragment = new TimerDelayDialogFragment();
         return fragment;
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            this.mListener = (IConnectedDialogFragmentDissmised)activity;
+        }
+        catch (final ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " must implement OnCompleteListener");
+        }
     }
 
     @Override
@@ -100,5 +116,11 @@ public class TimerDelayDialogFragment extends DialogFragment{
         });
 
         return view;
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        mListener.onComplete();
     }
 }
