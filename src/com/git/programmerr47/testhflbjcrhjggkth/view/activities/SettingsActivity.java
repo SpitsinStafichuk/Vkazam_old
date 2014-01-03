@@ -6,14 +6,23 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.widget.*;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.SettingsController;
 import com.git.programmerr47.testhflbjcrhjggkth.utils.AndroidUtils;
+import com.git.programmerr47.testhflbjcrhjggkth.view.activities.interfaces.IConnectedDialogFragmentDissmised;
+import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.TimerDelayDialogFragment;
 
-public class SettingsActivity extends Activity implements CompoundButton.OnCheckedChangeListener {
+public class SettingsActivity extends FragmentActivity implements CompoundButton.OnCheckedChangeListener,
+                                                                  IConnectedDialogFragmentDissmised {
+    private static final String SHOW_DIALOG_TAG = "dialog";
+
     SettingsController controller;
     public LinearLayout vkConnection;
     private LinearLayout vkUrls;
@@ -35,8 +44,6 @@ public class SettingsActivity extends Activity implements CompoundButton.OnCheck
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings);
-
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         controller = new SettingsController(this);
         vkConnection = (LinearLayout) findViewById(R.id.settingsVkConnection);
@@ -131,6 +138,28 @@ public class SettingsActivity extends Activity implements CompoundButton.OnCheck
         ((ImageView) timerDelay.findViewById(R.id.icon)).setImageResource(R.drawable.ic_settings_timer);
         ((TextView) timerDelay.findViewById(R.id.title)).setText("Timer delay");
         ((TextView) timerDelay.findViewById(R.id.summary)).setText("Setting fingerprint timer delay");
+        timerDelay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                Fragment prev = getSupportFragmentManager().findFragmentByTag(SHOW_DIALOG_TAG);
+                if (prev != null) {
+                    fragmentTransaction.remove(prev);
+                }
+
+                DialogFragment timerDelayFragment = TimerDelayDialogFragment.newInstance();
+                timerDelayFragment.show(fragmentTransaction, SHOW_DIALOG_TAG);
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        ((TextView) timerDelay.findViewById(R.id.additional_info)).setText(prefs.getInt("settingsTimerDelay", 5) + "");
 
         vkConntectionCheckBox.setChecked(prefs.getBoolean("settingsVkConnection", false));
         vkUrlsCheckBox.setChecked(prefs.getBoolean("settingsVkUrls", true));
@@ -139,11 +168,6 @@ public class SettingsActivity extends Activity implements CompoundButton.OnCheck
         onlyWiFiConntectionCheckBox.setChecked(prefs.getBoolean("settingsOnlyWiFiConntection", true));
         lastFmConnectionCheckBox.setChecked(prefs.getBoolean("settingsLastFmConnection", true));
         autoRecognizeCheckBox.setChecked(prefs.getBoolean("settingsAutoRecognize", false));
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
 
         AndroidUtils.setViewEnabled(vkUrls, vkConntectionCheckBox.isChecked());
         AndroidUtils.setViewEnabled(vkAudioBroadcast, vkConntectionCheckBox.isChecked());
@@ -191,5 +215,10 @@ public class SettingsActivity extends Activity implements CompoundButton.OnCheck
             editor.putBoolean("settingsAutoRecognize", b);
         }
         editor.commit();
+    }
+
+    @Override
+    public void onComplete() {
+        onResume();
     }
 }
