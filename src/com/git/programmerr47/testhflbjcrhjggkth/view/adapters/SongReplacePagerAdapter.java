@@ -8,6 +8,7 @@ import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.SongReplacePPFrag
 import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.SongReplaceVkFragment;
 
 public class SongReplacePagerAdapter extends PagerAdapter{
+	public static final int VK_PAGE_NUMBER = 1;
    
     public SongReplacePagerAdapter(FragmentManager fm, Context context) {
         super(fm, 1);

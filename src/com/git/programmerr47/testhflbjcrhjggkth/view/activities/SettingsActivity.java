@@ -83,7 +83,7 @@ public class SettingsActivity extends FragmentActivity implements CompoundButton
             }
         });
 
-        vkLyrics = (LinearLayout) findViewById(R.id.settingsVkAudioBroadcast);
+        vkLyrics = (LinearLayout) findViewById(R.id.settingsVkLyrics);
         ((TextView) vkLyrics.findViewById(R.id.title)).setText("Vk lyrics");
         ((TextView) vkLyrics.findViewById(R.id.summary)).setText("Prefer to choose vk lyrics instead of musicXmatch lyrics (if you have this app)");
         vkLyricsCheckBox = (CheckBox) vkLyrics.findViewById(R.id.checkbox);
