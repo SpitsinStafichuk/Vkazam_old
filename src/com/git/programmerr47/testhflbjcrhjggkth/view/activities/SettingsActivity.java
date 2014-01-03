@@ -27,6 +27,7 @@ public class SettingsActivity extends FragmentActivity implements CompoundButton
     public LinearLayout vkConnection;
     private LinearLayout vkUrls;
     private LinearLayout vkAudioBroadcast;
+    private LinearLayout vkLyrics;
     private LinearLayout onlyWiFiConntection;
     private LinearLayout lastFmConnection;
     private LinearLayout autoRecognize;
@@ -34,6 +35,7 @@ public class SettingsActivity extends FragmentActivity implements CompoundButton
     private CheckBox vkConntectionCheckBox;
     private CheckBox vkUrlsCheckBox;
     private CheckBox vkAudioBroadcastCheckBox;
+    private CheckBox vkLyricsCheckBox;
     private CheckBox onlyWiFiConntectionCheckBox;
     private CheckBox lastFmConnectionCheckBox;
     private CheckBox autoRecognizeCheckBox;
@@ -70,7 +72,7 @@ public class SettingsActivity extends FragmentActivity implements CompoundButton
         });
 
         vkAudioBroadcast = (LinearLayout) findViewById(R.id.settingsVkAudioBroadcast);
-        ((TextView) vkAudioBroadcast.findViewById(R.id.title)).setText("Broadcast to status");
+        ((TextView) vkAudioBroadcast.findViewById(R.id.title)).setText("Vk status");
         ((TextView) vkAudioBroadcast.findViewById(R.id.summary)).setText("Broadcast current playing song to vk.com status");
         vkAudioBroadcastCheckBox = (CheckBox) vkAudioBroadcast.findViewById(R.id.checkbox);
         vkAudioBroadcastCheckBox.setOnCheckedChangeListener(this);
@@ -78,6 +80,18 @@ public class SettingsActivity extends FragmentActivity implements CompoundButton
             @Override
             public void onClick(View view) {
                 vkAudioBroadcastCheckBox.setChecked(!vkAudioBroadcastCheckBox.isChecked());
+            }
+        });
+
+        vkLyrics = (LinearLayout) findViewById(R.id.settingsVkLyrics);
+        ((TextView) vkLyrics.findViewById(R.id.title)).setText("Vk lyrics");
+        ((TextView) vkLyrics.findViewById(R.id.summary)).setText("Prefer to choose vk lyrics instead of musicXmatch lyrics (if you have this app)");
+        vkLyricsCheckBox = (CheckBox) vkLyrics.findViewById(R.id.checkbox);
+        vkLyricsCheckBox.setOnCheckedChangeListener(this);
+        vkLyrics.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                vkLyricsCheckBox.setChecked(!vkLyricsCheckBox.isChecked());
             }
         });
 
@@ -150,12 +164,14 @@ public class SettingsActivity extends FragmentActivity implements CompoundButton
         vkConntectionCheckBox.setChecked(prefs.getBoolean("settingsVkConnection", false));
         vkUrlsCheckBox.setChecked(prefs.getBoolean("settingsVkUrls", true));
         vkAudioBroadcastCheckBox.setChecked(prefs.getBoolean("settingsVkAudioBroadcast", true));
+        vkLyricsCheckBox.setChecked(prefs.getBoolean("settingsVkLyrics", false));
         onlyWiFiConntectionCheckBox.setChecked(prefs.getBoolean("settingsOnlyWiFiConntection", true));
         lastFmConnectionCheckBox.setChecked(prefs.getBoolean("settingsLastFmConnection", true));
         autoRecognizeCheckBox.setChecked(prefs.getBoolean("settingsAutoRecognize", false));
 
         AndroidUtils.setViewEnabled(vkUrls, vkConntectionCheckBox.isChecked());
         AndroidUtils.setViewEnabled(vkAudioBroadcast, vkConntectionCheckBox.isChecked());
+        AndroidUtils.setViewEnabled(vkLyrics, vkConntectionCheckBox.isChecked());
     }
 
     public void changeVkButton() {
@@ -178,12 +194,16 @@ public class SettingsActivity extends FragmentActivity implements CompoundButton
             editor.putBoolean("settingsVkConnection", b);
             AndroidUtils.setViewEnabled(vkUrls, b);
             AndroidUtils.setViewEnabled(vkAudioBroadcast, b);
+            AndroidUtils.setViewEnabled(vkLyrics, b);
         } else if (compoundButton == vkUrlsCheckBox) {
             Log.v("Settings", "onCheckedChanged compoundButton = vkUrlsCheckBox");
             editor.putBoolean("settingsVkUrls", b);
         } else if (compoundButton == vkAudioBroadcastCheckBox) {
             Log.v("Settings", "onCheckedChanged compoundButton = vkAudioBroadcastCheckBox");
             editor.putBoolean("settingsVkAudioBroadcast", b);
+        } else if (compoundButton == vkLyricsCheckBox) {
+            Log.v("Settings", "onCheckedChanged compoundButton = vkLyricsCheckBox");
+            editor.putBoolean("settingsVkLyrics", b);
         } else if (compoundButton == onlyWiFiConntectionCheckBox) {
             Log.v("Settings", "onCheckedChanged compoundButton = onlyWiFiConntectionCheckBox");
             editor.putBoolean("settingsOnlyWiFiConntection", b);
