@@ -22,7 +22,7 @@ public class SongData {
 	protected String trackId;
 	protected String pleercomUrl;
 	protected String coverArtUrl;
-	protected long lyricsId;
+	protected long lyricsId = -1;
 	protected Date date;
 	protected String contributorImageUrl;
 	protected String artistBiographyURL;
@@ -180,11 +180,27 @@ public class SongData {
             Audio audio = audioList.get(0);
             vkAudioId = audio.owner_id + "_" + audio.aid;
             Log.v("Lyrics", "" + audio + " --- " + audio.lyrics_id);
-            lyricsId = audio.lyrics_id;
+            if (audio.lyrics_id != null) {
+                lyricsId = audio.lyrics_id;
+            } else {
+            	lyricsId = -1;
+            }
             return audio.url;
         } else {
             return null;
         }
+	}
+	
+	public String getLyrics(Api vkApi) throws MalformedURLException, IOException, JSONException, KException, SongNotFoundException {
+		if (lyricsId != -1) {
+			return vkApi.getLyrics(lyricsId);
+		} else {
+			findVkAudio(vkApi);
+			if (lyricsId != -1) {
+				return vkApi.getLyrics(lyricsId);
+			}
+		}
+		return null;
 	}
 	
 	public void findPPAudio() throws MalformedURLException, IOException, JSONException, com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.KException, SongNotFoundException {

@@ -39,41 +39,33 @@ public class SongInfoController extends SongController{
             public void run() {
             	if (api != null) {
             		try {
-            			if (data.getVkAudioId() == null) {
-            				try {
-								data.findVkAudio(api);
-							} catch (SongNotFoundException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-            			}
-						Log.v("Lyrics", "" + api.getLyrics(data.getLirycsId()));
-						view.runOnUiThread(new Runnable() {
-							
-							@Override
-							public void run() {
-								Intent intent = new Intent(view, VkLyricsActivity.class);
-								view.startActivity(intent);
-							}
-						});
-					} catch (NumberFormatException e) {
-						Log.v("Lyrics", "NumberFormatException");
-						Log.v("Lyrics", "" + data.getVkAudioId());
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						String lyrics = data.getLyrics(api);
+						if (lyrics != null) {
+							Intent intent = new Intent(view, VkLyricsActivity.class);
+							intent.putExtra(VkLyricsActivity.LYRICS_KEY, lyrics);
+							view.startActivity(intent);
+						} else {
+							showToast("Vk lyrics for this song is not found. Try to change url");
+						}
 					} catch (MalformedURLException e) {
-						Log.v("Lyrics", "MalformedURLException");
+						showToast("Seems you haven't internet connection");
 						e.printStackTrace();
 					} catch (IOException e) {
-						Log.v("Lyrics", "IOException");
+						showToast("Seems you haven't internet connection");
 						e.printStackTrace();
 					} catch (JSONException e) {
-						Log.v("Lyrics", "JSONException");
+						showToast(e.getLocalizedMessage());
 						e.printStackTrace();
 					} catch (KException e) {
-						Log.v("Lyrics", "KException");
+						showToast(e.getLocalizedMessage());
+						e.printStackTrace();
+					} catch (SongNotFoundException e) {
+						showToast("Song is not found");
 						e.printStackTrace();
 					}
+            		
+            	} else {
+            		showToast("Vk is not available");
             	}
 //                Looper.prepare();
 //                long millis = System.currentTimeMillis();
