@@ -22,6 +22,7 @@ public class SongData {
 	protected String trackId;
 	protected String pleercomUrl;
 	protected String coverArtUrl;
+	protected long lyricsId;
 	protected Date date;
 	protected String contributorImageUrl;
 	protected String artistBiographyURL;
@@ -147,6 +148,10 @@ public class SongData {
 		this.vkAudioId = vkAudioId;
 	}
 	
+	public long getLirycsId() {
+		return lyricsId;
+	}
+	
 	public String getVkAudioId() {
 		return vkAudioId;
 	}
@@ -174,6 +179,8 @@ public class SongData {
             }
             Audio audio = audioList.get(0);
             vkAudioId = audio.owner_id + "_" + audio.aid;
+            Log.v("Lyrics", "" + audio + " --- " + audio.lyrics_id);
+            lyricsId = audio.lyrics_id;
             return audio.url;
         } else {
             return null;
