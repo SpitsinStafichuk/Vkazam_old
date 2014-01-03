@@ -20,9 +20,9 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.KException;
 
 public class SongController {
 	
-	MicroScrobblerModel model;
-	Activity view;
-	Thread preparingThread;
+	protected MicroScrobblerModel model;
+	protected Activity view;
+	private Thread preparingThread;
 	
 	public SongController(Activity view) {
 		this.view = view;
