@@ -48,7 +48,7 @@ public class SongInfoController extends SongController{
 		super(view);
 	}
 	
-	private void getVkLyrics(final SongData data) {
+	public void getVkLyrics(final SongData data) {
         final ProgressDialog dialog = new ProgressDialog(view);
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         dialog.setTitle("Waiting for answer");
@@ -71,7 +71,7 @@ public class SongInfoController extends SongController{
 							
 			        		AlertDialog.Builder appDialogBuilder = new AlertDialog.Builder(view);
 			        		appDialogBuilder.setIcon(R.drawable.ic_alert_dialog);
-			        		appDialogBuilder.setMessage("Vk lyrics is not available for this song. You can choose another url or put lyrics from musicXmatch");
+			        		appDialogBuilder.setMessage("Vk lyrics is not available for this song. You can choose another url or get lyrics from musicXmatch");
 			        		appDialogBuilder.setTitle("No lyrics for song");
 			        		appDialogBuilder.setPositiveButton("Choose url", new DialogInterface.OnClickListener() {
 			        			@Override
