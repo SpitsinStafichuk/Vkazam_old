@@ -31,7 +31,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
                 android:scaleType="centerCrop"
-                android:background="@android:color/transparent"
+                android:background="@drawable/action_button_selector"
                 android:src="@drawable/ic_action_overflow" />
 
     </RelativeLayout>
