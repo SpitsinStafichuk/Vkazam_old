@@ -14,7 +14,32 @@
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:orientation="vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1">
+
+            <TextView
+                    android:id="@+id/artistTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Artist"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:gravity="center_vertical"/>
+
+            <TextView
+                    android:id="@+id/titleTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Title"
+                    android:textSize="18sp"
+                    android:textColor="@color/white"
+                    android:gravity="center_vertical"/>
+
+        </LinearLayout>
 
         <ImageButton
                 android:id="@+id/shareButton"
@@ -46,10 +71,15 @@
         	android:id="@+id/vkLyrics"
         	android:layout_width="match_parent"
         	android:layout_height="wrap_content"
-        	android:text="Lyrics\nand coo"
+        	android:text="Lyrics we found love in a hopeless place and so on and so on\nand coo"
         	android:textColor="#eeeeee"
-        	android:textSize="20sp"
-        	android:gravity="center"/>
+        	android:textSize="18sp"
+        	android:gravity="center"
+        	android:paddingTop="50dp"
+        	android:paddingBottom="50dp"
+        	android:paddingLeft="10dp"
+        	android:paddingRight="10dp"
+        	android:lineSpacingMultiplier="1.2"/>
     
     </ScrollView>
     

@@ -65,6 +65,12 @@ public class VkLyricsActivity extends Activity{
                 openOptionsMenu();
             }
         });
+
+        TextView artist = (TextView) findViewById(R.id.artistTitle);
+        artist.setText(data.getArtist());
+
+        TextView title = (TextView) findViewById(R.id.titleTitle);
+        title.setText(data.getTitle());
 	}
 	
 	@Override
