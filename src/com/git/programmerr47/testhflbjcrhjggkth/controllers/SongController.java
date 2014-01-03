@@ -116,7 +116,7 @@ public class SongController {
 		}
 	}
 	
-	private void showToast(final String message) {
+	protected void showToast(final String message) {
 		view.runOnUiThread(new Runnable() {
 			
 			@Override
