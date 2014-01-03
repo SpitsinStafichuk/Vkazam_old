@@ -101,8 +101,13 @@ public class VkListAdapter extends BaseAdapter {
                 public void onClick(View view) {
                 	Audio audio = audios.get(position);
                 	String audioId = audio.owner_id + "_" + audio.aid;
+                	long lyricsId = -1;
+                	if (audio.lyrics_id != null) {
+                		lyricsId = audio.lyrics_id;
+                	}
                     if (currentSongData.getVkAudioId() == null || !currentSongData.getVkAudioId().equals(audioId)) {
                         currentSongData.setVkAudioId(audioId);
+                        currentSongData.setLyricsId(lyricsId);
                         VkListAdapter.this.notifyDataSetChanged();
                     }
                 }

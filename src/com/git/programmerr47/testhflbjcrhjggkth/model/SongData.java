@@ -195,12 +195,18 @@ public class SongData {
 		if (lyricsId != -1) {
 			return vkApi.getLyrics(lyricsId);
 		} else {
-			findVkAudio(vkApi);
-			if (lyricsId != -1) {
-				return vkApi.getLyrics(lyricsId);
+			if (vkAudioId == null) {
+				findVkAudio(vkApi);
+				if (lyricsId != -1) {
+					return vkApi.getLyrics(lyricsId);
+				}
 			}
 		}
 		return null;
+	}
+	
+	public void setLyricsId(long lyricsId) {
+		this.lyricsId = lyricsId;
 	}
 	
 	public void findPPAudio() throws MalformedURLException, IOException, JSONException, com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.KException, SongNotFoundException {
