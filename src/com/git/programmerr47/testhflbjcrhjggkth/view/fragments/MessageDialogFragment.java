@@ -18,13 +18,21 @@ import com.git.programmerr47.testhflbjcrhjggkth.view.activities.interfaces.IConn
 public class MessageDialogFragment extends DialogFragment{
     public static final String TAG = "MessageDialog";
 
-	private int icon;
-	private String title;
-	private String message;
-	private String positiveButtonTitle;
-	private String negativeButtonTitle;
-	private onDialogClickListener positiveListener;
-	private onDialogClickListener negativeListener;
+    protected int icon;
+    protected String title;
+    protected String message;
+    protected String positiveButtonTitle;
+    protected String negativeButtonTitle;
+    protected onDialogClickListener positiveListener;
+    protected onDialogClickListener negativeListener;
+    
+    protected ImageView iconView;
+    protected TextView titleView;
+    protected TextView messageView;
+    protected TextView positiveButtonTitleView;
+    protected TextView negativeButtonTitleView;
+    protected View positiveButton;
+    protected View negativeButton;
 
     private IConnectedDialogFragmentDissmised mListener;
 
@@ -61,32 +69,32 @@ public class MessageDialogFragment extends DialogFragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.message_dialog, container, false);
         
-        ImageView iconView = (ImageView) view.findViewById(R.id.icon);
+        iconView = (ImageView) view.findViewById(R.id.icon);
         if (icon != -1) {
         	iconView.setImageResource(icon);
         }
         
-        TextView titleView = (TextView) view.findViewById(R.id.title);
+        titleView = (TextView) view.findViewById(R.id.title);
         if (title != null) {
         	titleView.setText(title);
         }
         
-        TextView messageView = (TextView) view.findViewById(R.id.message);
+        messageView = (TextView) view.findViewById(R.id.message);
         if (message != null) {
         	messageView.setText(message);
         }
         
-        TextView positiveButtonTitleView = (TextView) view.findViewById(R.id.positiveButtonTitle);
+        positiveButtonTitleView = (TextView) view.findViewById(R.id.positiveButtonTitle);
         if (positiveButtonTitle != null) {
         	positiveButtonTitleView.setText(positiveButtonTitle);
         }
         
-        TextView negativeButtonTitleView = (TextView) view.findViewById(R.id.negativeButtonTitle);
+        negativeButtonTitleView = (TextView) view.findViewById(R.id.negativeButtonTitle);
         if (negativeButtonTitle != null) {
         	negativeButtonTitleView.setText(negativeButtonTitle);
         }
 
-        View negativeButton = view.findViewById(R.id.negativeButton);
+        negativeButton = view.findViewById(R.id.negativeButton);
         negativeButton.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -97,7 +105,7 @@ public class MessageDialogFragment extends DialogFragment{
 			}
 		});
 
-        View positiveButton = view.findViewById(R.id.positiveButton);
+        positiveButton = view.findViewById(R.id.positiveButton);
         positiveButton.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -124,13 +132,13 @@ public class MessageDialogFragment extends DialogFragment{
     }
     
     public static class Builder {
-    	private int icon = -1;
-    	private String title;
-    	private String message;
-    	private String positiveButtonTitle;
-    	private String negativeButtonTitle;
-    	private onDialogClickListener positiveListener;
-    	private onDialogClickListener negativeListener;
+    	protected int icon = -1;
+    	protected String title;
+    	protected String message;
+    	protected String positiveButtonTitle;
+    	protected String negativeButtonTitle;
+    	protected onDialogClickListener positiveListener;
+    	protected onDialogClickListener negativeListener;
     	
         public Builder() {
         }
