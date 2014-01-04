@@ -29,6 +29,10 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObse
 import com.git.programmerr47.testhflbjcrhjggkth.utils.FileSystemUtils;
 import com.git.programmerr47.testhflbjcrhjggkth.view.DynamicImageView;
 import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.HistoryPageFragment;
+import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.MessageDialogFragment;
+import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.ProgressDialogFragment;
+import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.ProgressDialogFragment.Builder;
+import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.ProgressDialogFragment.OnCancelListener;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.perm.kate.api.Api;
 import com.perm.kate.api.KException;
@@ -43,15 +47,20 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.PowerManager;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-public class SongInfoActivity extends Activity implements IPlayerStateObserver, ISongProgressObserver {
+public class SongInfoActivity extends FragmentActivity implements IPlayerStateObserver, ISongProgressObserver {
 	public static final String TAG = "SongInfoActivity";
 	public static final String ARGUMENT_SONGLIST_POSITION = "SongDataPosition";
+    private static final String SHOW_DIALOG_TAG = "dialog";
 
     public static final int ANY_SONG = 0;
     public static final int VK_SONG = 1;
@@ -69,7 +78,7 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver, 
 	private ImageButton addVkButton;
 	private ImageButton downloadPPButton;
     private ImageButton downloadVKButton;
-	private ProgressDialog downloadPPProgressDialog;
+    private ProgressDialogFragment.Builder appProgressDialogBuilder;
 	private ImageButton deleteButton;
     private ImageButton settingsButton;
     private ImageButton lyricsButton;
@@ -209,11 +218,11 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver, 
 			}
 		});
 		
-		downloadPPProgressDialog = new ProgressDialog(this);
-		downloadPPProgressDialog.setMessage(data.getFullTitle() + " is downloading");
-		downloadPPProgressDialog.setIndeterminate(true);
-		downloadPPProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-		downloadPPProgressDialog.setCancelable(true);
+		appProgressDialogBuilder = new ProgressDialogFragment.Builder();
+		appProgressDialogBuilder.setIcon(R.drawable.ic_progress_dialog);
+		appProgressDialogBuilder.setMessage(data.getFullTitle() + " is downloading");
+		appProgressDialogBuilder.setTitle("Loading");
+		appProgressDialogBuilder.setProgressStyle(ProgressDialogFragment.Builder.STYLE_HORIZONTAL);
 		
 		downloadPPButton = (ImageButton) findViewById(R.id.downloadPPButton);
 		downloadPPButton.setOnClickListener(new OnClickListener() {
@@ -223,11 +232,12 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver, 
 				if(FileSystemUtils.isExternalStorageWritable()) {
 					final DownloadTask downloadTask = new DownloadTask(SongInfoActivity.this, DownloadTask.PP_TASK);
 					downloadTask.execute(data);
-					downloadPPProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-					    @Override
-					    public void onCancel(DialogInterface dialog) {
+					appProgressDialogBuilder.setOnCancelListener(new OnCancelListener() {
+						
+						@Override
+						public void onCancel(ProgressDialogFragment fragment) {
 					        downloadTask.cancel(true);
-					    }
+						}
 					});
 				} else {
 					Toast.makeText(SongInfoActivity.this, "External storage is not available", Toast.LENGTH_SHORT).show();
@@ -242,12 +252,13 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver, 
                 if(FileSystemUtils.isExternalStorageWritable()) {
                     final DownloadTask downloadTask = new DownloadTask(SongInfoActivity.this, DownloadTask.VK_TASK);
                     downloadTask.execute(data);
-                    downloadPPProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                        @Override
-                        public void onCancel(DialogInterface dialog) {
-                            downloadTask.cancel(true);
-                        }
-                    });
+					appProgressDialogBuilder.setOnCancelListener(new OnCancelListener() {
+						
+						@Override
+						public void onCancel(ProgressDialogFragment fragment) {
+					        downloadTask.cancel(true);
+						}
+					});
                 } else {
                     Toast.makeText(SongInfoActivity.this, "External storage is not available", Toast.LENGTH_SHORT).show();
                 }
@@ -313,6 +324,7 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver, 
 
 	    private Context context;
         private int task;
+        private ProgressDialogFragment dialogFragment;
 
 	    public DownloadTask(Context context, int task) {
 	        this.context = context;
@@ -322,21 +334,28 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver, 
 	    @Override
 	    protected void onPreExecute() {
 	        super.onPreExecute();
-	        downloadPPProgressDialog.show();
+//	        downloadPPProgressDialog.show();
+
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            Fragment prev = getSupportFragmentManager().findFragmentByTag(SHOW_DIALOG_TAG);
+            if (prev != null) {
+                fragmentTransaction.remove(prev);
+            }
+
+            dialogFragment = ProgressDialogFragment.newInstance(appProgressDialogBuilder);
+            dialogFragment.show(fragmentTransaction, SHOW_DIALOG_TAG);
 	    }
 
 	    @Override
 	    protected void onProgressUpdate(Integer... progress) {
 	        super.onProgressUpdate(progress);
 	        // if we get here, length is known, now set indeterminate to false
-	        downloadPPProgressDialog.setIndeterminate(false);
-	        downloadPPProgressDialog.setMax(100);
-	        downloadPPProgressDialog.setProgress(progress[0]);
+	        dialogFragment.setProgress(progress[0]);
 	    }
 	    
 	    @Override
 	    protected void onPostExecute(String result) {
-	    	downloadPPProgressDialog.dismiss();
+	    	dialogFragment.dismiss();
 	        if (result != null) {
 	            Toast.makeText(context, "Download error: " + result, Toast.LENGTH_LONG).show();
 	        } else {

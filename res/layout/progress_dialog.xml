@@ -16,18 +16,20 @@
 
         <ImageView
                 android:id="@+id/icon"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:layout_marginRight="6dip"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_settings_timer"
+                android:src="@drawable/ic_alert_dialog"
                 android:background="@android:color/transparent"/>
 
         <TextView
+            	android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="6dip"
-                android:text="Timer delay"
+                android:text="Title"
+                android:singleLine="true"
                 android:textStyle="bold"
                 android:textSize="20sp"
                 android:textColor="@color/light_cyan"
@@ -42,72 +44,84 @@
             android:background="@color/light_cyan">
     </LinearLayout>
 
-    <TextView
-            android:layout_width="match_parent"
+    <LinearLayout
+        	android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:text="Move the slider to set custom timer delay. Then click accept button to save changes or push cancel button to discard them"
-            android:textColor="@color/black"
-            android:textSize="16sp"/>
-
-    <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:orientation="horizontal">
 
-        <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:text="2 sec"
-                android:textColor="@color/black"/>
+        <ProgressBar
+            android:id="@+id/progressBarDefault"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="20dp"
+            android:minHeight="32dp"
+            android:minWidth="32dp" />
 
-        <EditText
-                android:id="@+id/timerDelayResultValue"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:inputType="numberSigned"
-                android:textColor="@color/black"
-                style="@style/EditTextAppTheme"/>
-
-        <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="right|center_vertical"
-                android:text="300 sec"
-                android:textColor="@color/black"/>
+    	<TextView
+            	android:id="@+id/message"
+            	android:layout_width="match_parent"
+            	android:layout_height="wrap_content"
+            	android:layout_gravity="center_vertical"
+            	android:text="Message"
+            	android:textColor="@color/black"
+            	android:textSize="16sp"/>
 
     </LinearLayout>
 
-    <SeekBar
-            android:id="@+id/timerDelayChooseBar"
+    <LinearLayout
+        	android:id="@+id/horizontalStyle"
+        	android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+
+        <ProgressBar
+            android:id="@+id/progressBarHorizontal"
+            style="@style/ProgressBarAppTheme"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:max="298"
-            style="@style/SeekBarAppTheme"/>
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:layout_marginLeft="6dp"
+            android:minHeight="32dp"
+            android:minWidth="32dp" />
+
+    	<TextView
+            	android:id="@+id/progress"
+            	android:layout_width="wrap_content"
+            	android:layout_height="wrap_content"
+            	android:layout_gravity="center_vertical"
+            	android:layout_marginLeft="20dp"
+            	android:text="100%"
+            	android:textColor="@color/black"
+            	android:textSize="16sp"/>
+
+    </LinearLayout>
 
     <LinearLayout
+        	android:id="@+id/buttons"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:orientation="horizontal">
         
         <LinearLayout 
-                android:id="@+id/acceptButton"
+                android:id="@+id/positiveButton"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/dialog_button_left">
             
             <TextView 
+                android:id="@+id/positiveButtonTitle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Accept"
+                android:text="Yes"
                 android:textColor="@color/black"
                 android:gravity="center"
                 android:background="@android:color/transparent"/>
@@ -115,16 +129,17 @@
         </LinearLayout>
         
         <LinearLayout 
-                android:id="@+id/cancelButton"
+                android:id="@+id/negativeButton"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/dialog_button_right">
             
             <TextView 
+                android:id="@+id/negativeButtonTitle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Cancel"
+                android:text="No"
                 android:textColor="@color/black"
                 android:gravity="center"
                 android:background="@android:color/transparent"/>

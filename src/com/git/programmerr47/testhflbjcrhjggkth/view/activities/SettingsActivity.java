@@ -157,6 +157,10 @@ public class SettingsActivity extends FragmentActivity implements CompoundButton
     protected void onResume() {
         super.onResume();
 
+        resume();
+    }
+    
+    private void resume() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         ((TextView) timerDelay.findViewById(R.id.additional_info)).setText(prefs.getInt("settingsTimerDelay", 5) + "");
@@ -219,6 +223,6 @@ public class SettingsActivity extends FragmentActivity implements CompoundButton
 
     @Override
     public void onComplete() {
-        onResume();
+        resume();
     }
 }
