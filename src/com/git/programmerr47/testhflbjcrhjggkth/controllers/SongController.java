@@ -8,6 +8,7 @@ import com.git.programmerr47.testhflbjcrhjggkth.view.activities.SongInfoActivity
 import org.json.JSONException;
 
 import android.app.Activity;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -21,10 +22,10 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.KException;
 public class SongController {
 	
 	protected MicroScrobblerModel model;
-	protected Activity view;
+	protected FragmentActivity view;
 	private Thread preparingThread;
 	
-	public SongController(Activity view) {
+	public SongController(FragmentActivity view) {
 		this.view = view;
 		this.model = RecognizeServiceConnection.getModel();
 	}
