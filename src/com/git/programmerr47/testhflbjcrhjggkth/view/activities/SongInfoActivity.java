@@ -79,7 +79,6 @@ public class SongInfoActivity extends FragmentActivity implements IPlayerStateOb
 	private ImageButton downloadPPButton;
     private ImageButton downloadVKButton;
     private ProgressDialogFragment.Builder appProgressDialogBuilder;
-	private ProgressDialog downloadPPProgressDialog;
 	private ImageButton deleteButton;
     private ImageButton settingsButton;
     private ImageButton lyricsButton;
@@ -219,12 +218,6 @@ public class SongInfoActivity extends FragmentActivity implements IPlayerStateOb
 			}
 		});
 		
-//		downloadPPProgressDialog = new ProgressDialog(this);
-//		downloadPPProgressDialog.setMessage(data.getFullTitle() + " is downloading");
-//		downloadPPProgressDialog.setIndeterminate(true);
-//		downloadPPProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-//		downloadPPProgressDialog.setCancelable(true);
-		
 		appProgressDialogBuilder = new ProgressDialogFragment.Builder();
 		appProgressDialogBuilder.setIcon(R.drawable.ic_progress_dialog);
 		appProgressDialogBuilder.setMessage(data.getFullTitle() + " is downloading");
@@ -239,12 +232,6 @@ public class SongInfoActivity extends FragmentActivity implements IPlayerStateOb
 				if(FileSystemUtils.isExternalStorageWritable()) {
 					final DownloadTask downloadTask = new DownloadTask(SongInfoActivity.this, DownloadTask.PP_TASK);
 					downloadTask.execute(data);
-//					downloadPPProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-//					    @Override
-//					    public void onCancel(DialogInterface dialog) {
-//					        downloadTask.cancel(true);
-//					    }
-//					});
 					appProgressDialogBuilder.setOnCancelListener(new OnCancelListener() {
 						
 						@Override

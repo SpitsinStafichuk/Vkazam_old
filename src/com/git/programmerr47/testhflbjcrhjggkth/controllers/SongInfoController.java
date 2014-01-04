@@ -39,6 +39,7 @@ import com.git.programmerr47.testhflbjcrhjggkth.view.activities.SongInfoActivity
 import com.git.programmerr47.testhflbjcrhjggkth.view.activities.VkLyricsActivity;
 import com.git.programmerr47.testhflbjcrhjggkth.view.adapters.SongReplacePagerAdapter;
 import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.MessageDialogFragment;
+import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.ProgressDialogFragment;
 import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.MessageDialogFragment.onDialogClickListener;
 import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.TimerDelayDialogFragment;
 import com.musixmatch.lyrics.musiXmatchLyricsConnector;
@@ -58,11 +59,21 @@ public class SongInfoController extends SongController{
 	}
 	
 	public void getVkLyrics(final SongData data) {
-        final ProgressDialog dialog = new ProgressDialog(view);
-        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        dialog.setTitle("Waiting for answer");
-        dialog.setMessage("Please wait for answer from vk");
-        dialog.show();
+
+		ProgressDialogFragment.Builder appProgressDialogBuilder = new ProgressDialogFragment.Builder();
+		appProgressDialogBuilder.setIcon(R.drawable.ic_progress_dialog);
+		appProgressDialogBuilder.setMessage("Please wait for answer from vk");
+		appProgressDialogBuilder.setTitle("Waiting for answer");
+		appProgressDialogBuilder.setProgressStyle(ProgressDialogFragment.Builder.STYLE_SPINNER);
+
+        FragmentTransaction fragmentTransaction = view.getSupportFragmentManager().beginTransaction();
+        Fragment prev = view.getSupportFragmentManager().findFragmentByTag(SHOW_DIALOG_TAG);
+        if (prev != null) {
+            fragmentTransaction.remove(prev);
+        }
+
+        final DialogFragment dialogFragment = ProgressDialogFragment.newInstance(appProgressDialogBuilder);
+        dialogFragment.show(fragmentTransaction, SHOW_DIALOG_TAG);
         
 		new Thread(new Runnable() {
 			Api api = model.getVkApi();
@@ -129,7 +140,7 @@ public class SongInfoController extends SongController{
 	        	} else {
 	        		showToast("Vk is not available. Did you connected to vkontakte?");
 	        	}
-	        	dialog.dismiss();
+	        	dialogFragment.dismiss();
                 Looper.loop();
 	        }
 		}).start();
@@ -210,11 +221,21 @@ public class SongInfoController extends SongController{
     }
 
     public void showYoutubePage(final SongData data) {
-        final ProgressDialog dialog = new ProgressDialog(view);
-        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        dialog.setTitle("Waiting for answer");
-        dialog.setMessage("Please wait for answer from youtube app");
-        dialog.show();
+
+		ProgressDialogFragment.Builder appProgressDialogBuilder = new ProgressDialogFragment.Builder();
+		appProgressDialogBuilder.setIcon(R.drawable.ic_progress_dialog);
+		appProgressDialogBuilder.setMessage("Please wait for answer from youtube app");
+		appProgressDialogBuilder.setTitle("Waiting for answer");
+		appProgressDialogBuilder.setProgressStyle(ProgressDialogFragment.Builder.STYLE_SPINNER);
+
+        FragmentTransaction fragmentTransaction = view.getSupportFragmentManager().beginTransaction();
+        Fragment prev = view.getSupportFragmentManager().findFragmentByTag(SHOW_DIALOG_TAG);
+        if (prev != null) {
+            fragmentTransaction.remove(prev);
+        }
+
+        final DialogFragment dialogFragment = ProgressDialogFragment.newInstance(appProgressDialogBuilder);
+        dialogFragment.show(fragmentTransaction, SHOW_DIALOG_TAG);
 
         new Thread(new Runnable() {
             @Override
@@ -227,7 +248,7 @@ public class SongInfoController extends SongController{
                     } else {
                         view.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(youtubeUrl)));
                     }
-                    dialog.dismiss();
+                    dialogFragment.dismiss();
                 } catch (IOException e) {
                     e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.  \
                 }
