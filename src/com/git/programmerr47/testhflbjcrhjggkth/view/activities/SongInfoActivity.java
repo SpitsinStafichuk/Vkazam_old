@@ -43,13 +43,14 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.PowerManager;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-public class SongInfoActivity extends Activity implements IPlayerStateObserver, ISongProgressObserver {
+public class SongInfoActivity extends FragmentActivity implements IPlayerStateObserver, ISongProgressObserver {
 	public static final String TAG = "SongInfoActivity";
 	public static final String ARGUMENT_SONGLIST_POSITION = "SongDataPosition";
 

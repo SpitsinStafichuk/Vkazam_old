@@ -16,7 +16,12 @@ import android.net.Uri;
 import android.os.Looper;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import android.app.AlertDialog;
@@ -33,6 +38,9 @@ import com.git.programmerr47.testhflbjcrhjggkth.view.activities.RefreshPagerActi
 import com.git.programmerr47.testhflbjcrhjggkth.view.activities.SongInfoActivity;
 import com.git.programmerr47.testhflbjcrhjggkth.view.activities.VkLyricsActivity;
 import com.git.programmerr47.testhflbjcrhjggkth.view.adapters.SongReplacePagerAdapter;
+import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.MessageDialogFragment;
+import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.MessageDialogFragment.onDialogClickListener;
+import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.TimerDelayDialogFragment;
 import com.musixmatch.lyrics.musiXmatchLyricsConnector;
 import com.perm.kate.api.Api;
 import com.perm.kate.api.KException;
@@ -43,8 +51,9 @@ import org.json.JSONException;
 import java.io.IOException;
 
 public class SongInfoController extends SongController{
+    private static final String SHOW_DIALOG_TAG = "dialog";
 	
-	public SongInfoController(Activity view) {
+	public SongInfoController(FragmentActivity view) {
 		super(view);
 	}
 	
@@ -68,29 +77,37 @@ public class SongInfoController extends SongController{
 							intent.putExtra(VkLyricsActivity.LYRICS_KEY, lyrics);
 							view.startActivity(intent);
 						} else {
-							
-			        		AlertDialog.Builder appDialogBuilder = new AlertDialog.Builder(view);
+			                FragmentTransaction fragmentTransaction = view.getSupportFragmentManager().beginTransaction();
+			                Fragment prev = view.getSupportFragmentManager().findFragmentByTag(SHOW_DIALOG_TAG);
+			                if (prev != null) {
+			                    fragmentTransaction.remove(prev);
+			                }
+			                
+			                MessageDialogFragment.Builder appDialogBuilder = new MessageDialogFragment.Builder();
 			        		appDialogBuilder.setIcon(R.drawable.ic_alert_dialog);
 			        		appDialogBuilder.setMessage("Vk lyrics is not available for this song. You can choose another url or get lyrics from musicXmatch");
 			        		appDialogBuilder.setTitle("No lyrics for song");
-			        		appDialogBuilder.setPositiveButton("Choose url", new DialogInterface.OnClickListener() {
-			        			@Override
-			        			public void onClick(DialogInterface dialogInterface, int i) {
+			        		appDialogBuilder.setPositiveButton("Choose url", new onDialogClickListener() {
+								
+								@Override
+								public void onDialogClick(DialogFragment fragment, View v) {
 			        				Intent intent = new Intent(view, RefreshPagerActivity.class);
 			        				intent.putExtra(RefreshPagerActivity.VK_KEY, SongReplacePagerAdapter.VK_PAGE_NUMBER);
 			        				view.startActivity(intent);
-			        				dialogInterface.dismiss();
-			        			}
-			        		});
-			        		appDialogBuilder.setNegativeButton("Get MM lyrics", new DialogInterface.OnClickListener() {
-			        			@Override
-			        			public void onClick(DialogInterface dialogInterface, int i) {
+			        				fragment.dismiss();
+								}
+							});
+			        		appDialogBuilder.setNegativeButton("Get MM lyrics", new onDialogClickListener() {
+								
+								@Override
+								public void onDialogClick(DialogFragment fragment, View v) {
 			        				getMMLyrics(data);
-			        				dialogInterface.dismiss();
-			        			}
-			        		});
+			        				fragment.dismiss();
+								}
+							});
 
-			        		appDialogBuilder.show();
+			                DialogFragment dialogFragment = MessageDialogFragment.newInstance(appDialogBuilder);
+			                dialogFragment.show(fragmentTransaction, SHOW_DIALOG_TAG);
 						}
 					} catch (MalformedURLException e) {
 						showToast("Seems you haven't internet connection");
@@ -144,27 +161,37 @@ public class SongInfoController extends SongController{
                         }
                     });
                 } else { 
-                    AlertDialog.Builder appDialogBuilder = new AlertDialog.Builder(view);
+                    FragmentTransaction fragmentTransaction = view.getSupportFragmentManager().beginTransaction();
+                    Fragment prev = view.getSupportFragmentManager().findFragmentByTag(SHOW_DIALOG_TAG);
+                    if (prev != null) {
+                        fragmentTransaction.remove(prev);
+                    }
+                    
+                    MessageDialogFragment.Builder appDialogBuilder = new MessageDialogFragment.Builder();
+                    
 	        		appDialogBuilder.setIcon(R.drawable.ic_alert_dialog);
                     appDialogBuilder.setMessage("You need to install Musixmatch\\'s app and launch it at least one time to see lyrics");
                     appDialogBuilder.setTitle("No musiXmatch application");
-                    appDialogBuilder.setPositiveButton("Get MusiXmatch", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
+                    appDialogBuilder.setPositiveButton("Get MusiXmatch", new onDialogClickListener() {
+						
+						@Override
+						public void onDialogClick(DialogFragment fragment, View v) {
                             Intent intent = new Intent(Intent.ACTION_VIEW);
                             intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=com.musixmatch.android.lyrify"));
                             view.startActivity(intent);
-                            dialogInterface.dismiss();
-                        }
-                    });
-                    appDialogBuilder.setNegativeButton("No, thanks", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
-                        }
-                    });
+                            fragment.dismiss();
+						}
+					});
+                    appDialogBuilder.setNegativeButton("No, thanks", new onDialogClickListener() {
+						
+						@Override
+						public void onDialogClick(DialogFragment fragment, View v) {
+							fragment.dismiss();
+						}
+					});
 
-                    appDialogBuilder.show();
+                    DialogFragment dialogFragment = MessageDialogFragment.newInstance(appDialogBuilder);
+                    dialogFragment.show(fragmentTransaction, SHOW_DIALOG_TAG);
                 }
                 Looper.loop();
             }
