@@ -24,14 +24,22 @@
                 android:background="@android:color/transparent"/>
 
         <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="6dip"
                 android:text="Timer delay"
                 android:textStyle="bold"
                 android:textSize="20sp"
-                android:textColor="@color/black"
+                android:textColor="@color/light_cyan"
                 android:gravity="center"/>
 
+    </LinearLayout>
+    
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:orientation="horizontal"
+            android:background="@color/light_cyan">
     </LinearLayout>
 
     <TextView
@@ -39,6 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:text="Move the slider to set custom timer delay. Then click accept button to save changes or push cancel button to discard them"
+            android:textColor="@color/black"
             android:textSize="16sp"/>
 
     <LinearLayout
@@ -85,31 +94,42 @@
 
     <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_height="50dp"
             android:orientation="horizontal">
-
-        <Button
+        
+        <LinearLayout 
                 android:id="@+id/acceptButton"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:background="@drawable/dialog_button_left">
+            
+            <TextView 
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:text="Accept"
                 android:textColor="@color/black"
-                style="@style/ButtonAppTheme"/>
-
-        <Button
+                android:gravity="center"
+                android:background="@android:color/transparent"/>
+            
+        </LinearLayout>
+        
+        <LinearLayout 
                 android:id="@+id/cancelButton"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:background="@drawable/dialog_button_right">
+            
+            <TextView 
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:text="Cancel"
                 android:textColor="@color/black"
-                style="@style/ButtonAppTheme"/>
+                android:gravity="center"
+                android:background="@android:color/transparent"/>
+            
+        </LinearLayout>
 
     </LinearLayout>
 

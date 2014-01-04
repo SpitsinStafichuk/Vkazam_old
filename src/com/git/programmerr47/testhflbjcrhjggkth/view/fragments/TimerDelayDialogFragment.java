@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Toast;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
@@ -23,8 +24,8 @@ public class TimerDelayDialogFragment extends DialogFragment{
     public static final String TAG = "timerDelay";
 
     private int result;
-    private Button acceptButton;
-    private Button cancelButton;
+    private LinearLayout acceptButton;
+    private LinearLayout cancelButton;
     private EditText resultValue;
     private SeekBar chooseBar;
 
@@ -95,7 +96,7 @@ public class TimerDelayDialogFragment extends DialogFragment{
             public void afterTextChanged(Editable editable) {}
         });
 
-        cancelButton = (Button) view.findViewById(R.id.cancelButton);
+        cancelButton = (LinearLayout) view.findViewById(R.id.cancelButton);
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -103,7 +104,7 @@ public class TimerDelayDialogFragment extends DialogFragment{
             }
         });
 
-        acceptButton = (Button) view.findViewById(R.id.acceptButton);
+        acceptButton = (LinearLayout) view.findViewById(R.id.acceptButton);
         acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
