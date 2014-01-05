@@ -13,6 +13,8 @@ import java.util.List;
 import android.media.MediaPlayer;
 import android.view.MenuInflater;
 import android.widget.*;
+
+import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SongManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISongProgressObserver;
 import com.git.programmerr47.testhflbjcrhjggkth.utils.AndroidUtils;
 import com.perm.kate.api.Audio;
@@ -62,10 +64,6 @@ public class SongInfoActivity extends FragmentActivity implements IPlayerStateOb
 	public static final String ARGUMENT_SONGLIST_POSITION = "SongDataPosition";
     private static final String SHOW_DIALOG_TAG = "dialog";
 
-    public static final int ANY_SONG = 0;
-    public static final int VK_SONG = 1;
-    public static final int PP_SONG = 2;
-
 	private MicroScrobblerModel model;
 	private SongInfoController controller;
 	private DatabaseSongData data;
@@ -85,8 +83,6 @@ public class SongInfoActivity extends FragmentActivity implements IPlayerStateOb
     private ImageButton youtubeButton;
     private SeekBar ppSongProgress;
     private SeekBar vkSongProgress;
-
-    private int songType = PP_SONG;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +104,7 @@ public class SongInfoActivity extends FragmentActivity implements IPlayerStateOb
             public void onBufferingUpdate(MediaPlayer mediaPlayer, int percent) {
                 Log.v("MiniPlayer", "Song downloading is updated " + percent);
                 SeekBar songProgress = vkSongProgress;
-                if (songType == PP_SONG) {
+                if (model.getSongManager().getType() == SongManager.PP_SONG) {
                     songProgress = ppSongProgress;
                 }
 
@@ -124,7 +120,7 @@ public class SongInfoActivity extends FragmentActivity implements IPlayerStateOb
         ppSongProgress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if ((fromUser) && (songType == PP_SONG)) {
+                if ((fromUser) && (model.getSongManager().getType() == SongManager.PP_SONG)) {
                     controller.seekTo(progress);
                 }
             }
@@ -144,7 +140,7 @@ public class SongInfoActivity extends FragmentActivity implements IPlayerStateOb
         vkSongProgress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if ((fromUser) && (songType == VK_SONG)) {
+                if ((fromUser) && (model.getSongManager().getType() == SongManager.VK_SONG)) {
                     controller.seekTo(progress);
                 }
             }
@@ -173,8 +169,7 @@ public class SongInfoActivity extends FragmentActivity implements IPlayerStateOb
                         }
                     });
                 }
-                songType = PP_SONG;
-                controller.playPauseSong(data, model.getCurrentOpenSongPosition(), PP_SONG);
+                controller.playPauseSong(data, model.getCurrentOpenSongPosition(), SongManager.PP_SONG);
             }
         });
 
@@ -191,8 +186,7 @@ public class SongInfoActivity extends FragmentActivity implements IPlayerStateOb
                         }
                     });
                 }
-                songType = VK_SONG;
-                controller.playPauseSong(data, model.getCurrentOpenSongPosition(), VK_SONG);
+                controller.playPauseSong(data, model.getCurrentOpenSongPosition(), SongManager.VK_SONG);
             }
         });
 
@@ -571,13 +565,14 @@ public class SongInfoActivity extends FragmentActivity implements IPlayerStateOb
 	public void updatePlayerState() {
 		ProgressBar progressBar;
         ImageButton playPauseButton;
-        if (songType == PP_SONG) {
+        if (model.getSongManager().getType() == SongManager.PP_SONG) {
             progressBar = (ProgressBar) findViewById(R.id.songInfoLoadingForPP);
             playPauseButton = ppPlayPauseButton;
 
             ProgressBar secPB = (ProgressBar) findViewById(R.id.songInfoLoadingForVk);
             secPB.setVisibility(View.GONE);
             vkPlayPauseButton.setImageResource(android.R.drawable.ic_media_play);
+            vkPlayPauseButton.setVisibility(View.VISIBLE);
             vkSongProgress.setProgress(0);
             vkSongProgress.setSecondaryProgress(0);
         } else {
@@ -587,6 +582,7 @@ public class SongInfoActivity extends FragmentActivity implements IPlayerStateOb
             ProgressBar secPB = (ProgressBar) findViewById(R.id.songInfoLoadingForPP);
             secPB.setVisibility(View.GONE);
             ppPlayPauseButton.setImageResource(android.R.drawable.ic_media_play);
+            ppPlayPauseButton.setVisibility(View.VISIBLE);
             ppSongProgress.setProgress(0);
             ppSongProgress.setSecondaryProgress(0);
         }
@@ -623,7 +619,7 @@ public class SongInfoActivity extends FragmentActivity implements IPlayerStateOb
     @Override
     public void updateProgress(int progress, int duration) {
         SeekBar songProgress = vkSongProgress;
-        if (songType == PP_SONG) {
+        if (model.getSongManager().getType() == SongManager.PP_SONG) {
             songProgress = ppSongProgress;
         }
 
