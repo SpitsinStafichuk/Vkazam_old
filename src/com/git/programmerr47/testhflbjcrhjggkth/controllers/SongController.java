@@ -47,7 +47,7 @@ public class SongController {
     }
 
     public synchronized void playPauseSong(final DatabaseSongData songData, final int positionInList) {
-        this.playPauseSong(songData, positionInList, SongInfoActivity.ANY_SONG);
+        this.playPauseSong(songData, positionInList, SongManager.ANY_SONG);
     }
 
     public synchronized void playPauseSong(int positionInList) {
@@ -65,7 +65,7 @@ public class SongController {
 	
 	private void _playPauseSong(DatabaseSongData songData, int positionInList, int type) {
 		SongManager songManager = model.getSongManager();
-		if(songData.equals(songManager.getSongData())) {
+		if(songData.equals(songManager.getSongData()) && (songManager.getType() == type)) {
 			Log.v("SongListController", "songManager.getSongData() == songData == " + songData);
 			if(songManager.isPrepared())
 				if(songManager.isPlaying()) {

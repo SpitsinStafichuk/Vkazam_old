@@ -28,6 +28,10 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.KException;
 
 public class SongManager implements ISongInfoObserverable, ISongProgressObservable {
 	private final static String TAG = "SongManager";
+	
+    public static final int ANY_SONG = 0;
+    public static final int VK_SONG = 1;
+    public static final int PP_SONG = 2;
 
     private Set<ISongInfoObserver> songInfoObservers;
     private Set<ISongProgressObserver> songProgressObservers;
@@ -38,6 +42,7 @@ public class SongManager implements ISongInfoObserverable, ISongProgressObservab
 	
 	private DatabaseSongData songData;
     private int positionInList;
+    private int type = ANY_SONG;
 	
 	private Handler handler;
 	
@@ -151,15 +156,16 @@ public class SongManager implements ISongInfoObserverable, ISongProgressObservab
 	//есть сомнения по поводу корректности проверки рабочий ли url для песни перед попыткой его обновить: возможно, помимо setDataSource, стоит также вызывать prepare
     public void prepare(int type) throws IOException, JSONException, SongNotFoundException, KException, com.perm.kate.api.KException, VkAccountNotFoundException {
 		Log.v(TAG, "Player is loading");
+        this.type = type;
         songPlayer = MicroScrobblerMediaPlayer.getInstance();
         songPlayer.setLoadingState();
         songPlayer.setOnCompletionListener(onCompletionListener);
         songPlayer.setOnBufferingUpdateListener(onBufferingUpdateListener);
 		Log.v(TAG, "Player is reconstructed");
 		boolean found = false;
-        if (type == SongInfoActivity.PP_SONG) {
+        if (type == PP_SONG) {
             found = findPPAudio();
-        } else if (type == SongInfoActivity.VK_SONG) {
+        } else if (type == VK_SONG) {
             if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean("settingsVkConnection", false)) {
                 found = findVkAudio();
             } else {
@@ -169,15 +175,19 @@ public class SongManager implements ISongInfoObserverable, ISongProgressObservab
             if(!PreferenceManager.getDefaultSharedPreferences(context).getBoolean("settingsVkConnection", false) ||
                !PreferenceManager.getDefaultSharedPreferences(context).getBoolean("settingsVkUrls", false)) {
                 found = findPPAudio();
+                this.type = PP_SONG;
                 if(!found) {
                     if(PreferenceManager.getDefaultSharedPreferences(context).getBoolean("settingsVkConnection", false)) {
                         found = findVkAudio();
+                        this.type = VK_SONG;
                     }
                 }
             } else {
                 found = findVkAudio();
+                this.type = VK_SONG;
                 if(!found) {
                     found = findPPAudio();
+                    this.type = PP_SONG;
                 }
             }
         }
@@ -187,6 +197,10 @@ public class SongManager implements ISongInfoObserverable, ISongProgressObservab
 		}
 		songPlayer.prepare();
 	}
+    
+    public int getType() {
+    	return type;
+    }
 	
 	public void play() {
 		Log.v("SongListController", "Song" + songData.getArtist() + "-" + songData.getTitle() + "was started");
