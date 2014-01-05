@@ -29,6 +29,8 @@
     <string name="settings_vk_urls_summary">Prefer to choose vk urls istead of prostopleer urls</string>
     <string name="settings_vk_status_title">Broadcast to status</string>
     <string name="settings_vk_status_summary">Broadcast current playing song to vk.com status</string>
+    <string name="settings_vk_lyrics_title">Lyrics</string>
+    <string name="settings_vk_lyrics_summary">Prefer to choose vk lyrics instead of musixmatch lyrics</string>
     <string name="settings_wifi_title">Only Wi-Fi</string>
     <string name="settings_wifi_summary">Enable syncronization with internet only if there is wi-fi connection</string>
     <string name="settings_scrobbling_title">Scrobbling</string>

@@ -29,6 +29,8 @@
     <string name="settings_vk_urls_summary">Выбирать вк ссылки про проигрывании песни вместо ссылко просто плеера</string>
     <string name="settings_vk_status_title">Отображать в статусе</string>
     <string name="settings_vk_status_summary">Транслировать текущую прослушиваемую песню в статус в vk.com</string>
+    <string name="settings_vk_lyrics_title">Тексты песен</string>
+    <string name="settings_vk_lyrics_summary">Показывать тексты песен из вк вместо текстов из musixmatch, если они есть</string>
     <string name="settings_wifi_title">Только Wi-Fi</string>
     <string name="settings_wifi_summary">Позволять приложению пользоваться интернет-ресурсами только при включенном wi-fi</string>
     <string name="settings_scrobbling_title">Скробблинг</string>
