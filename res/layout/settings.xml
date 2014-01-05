@@ -47,6 +47,9 @@
                      android:id="@+id/settingsVkAudioBroadcast"/>
 
             <include layout="@layout/icon_checkbox_preference"
+                     android:id="@+id/settingsVkLyrics"/>
+
+            <include layout="@layout/icon_checkbox_preference"
                      android:id="@+id/settingsOnlyWiFiConntection"/>
 
             <include layout="@layout/icon_checkbox_preference"
@@ -61,5 +64,5 @@
         </LinearLayout>
 
     </ScrollView>
-
+    
 </LinearLayout>
