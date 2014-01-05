@@ -81,6 +81,18 @@ public class SettingsActivity extends FragmentActivity implements CompoundButton
             }
         });
 
+        vkLyrics = (LinearLayout) findViewById(R.id.settingsVkLyrics);
+        ((TextView) vkLyrics.findViewById(R.id.title)).setText(getString(R.string.settings_vk_lyrics_title));
+        ((TextView) vkLyrics.findViewById(R.id.summary)).setText(getString(R.string.settings_vk_lyrics_summary));
+        vkLyricsCheckBox = (CheckBox) vkLyrics.findViewById(R.id.checkbox);
+        vkLyricsCheckBox.setOnCheckedChangeListener(this);
+        vkLyrics.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            	vkLyricsCheckBox.setChecked(!vkLyricsCheckBox.isChecked());
+            }
+        });
+
         onlyWiFiConntection = (LinearLayout) findViewById(R.id.settingsOnlyWiFiConntection);
         ((ImageView) onlyWiFiConntection.findViewById(R.id.icon)).setImageResource(R.drawable.ic_settings_wifi);
         ((TextView) onlyWiFiConntection.findViewById(R.id.title)).setText(getString(R.string.settings_wifi_title));
