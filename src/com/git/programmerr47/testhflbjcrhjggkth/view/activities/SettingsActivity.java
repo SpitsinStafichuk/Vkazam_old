@@ -1,7 +1,5 @@
 package com.git.programmerr47.testhflbjcrhjggkth.view.activities;
 
-
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -27,6 +25,7 @@ public class SettingsActivity extends FragmentActivity implements CompoundButton
     public LinearLayout vkConnection;
     private LinearLayout vkUrls;
     private LinearLayout vkAudioBroadcast;
+    private LinearLayout vkLyrics;
     private LinearLayout onlyWiFiConntection;
     private LinearLayout lastFmConnection;
     private LinearLayout autoRecognize;
@@ -34,6 +33,7 @@ public class SettingsActivity extends FragmentActivity implements CompoundButton
     private CheckBox vkConntectionCheckBox;
     private CheckBox vkUrlsCheckBox;
     private CheckBox vkAudioBroadcastCheckBox;
+    private CheckBox vkLyricsCheckBox;
     private CheckBox onlyWiFiConntectionCheckBox;
     private CheckBox lastFmConnectionCheckBox;
     private CheckBox autoRecognizeCheckBox;
@@ -143,6 +143,11 @@ public class SettingsActivity extends FragmentActivity implements CompoundButton
     protected void onResume() {
         super.onResume();
 
+        resume();
+    }
+    
+    private void resume() {
+
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         ((TextView) timerDelay.findViewById(R.id.additional_info)).setText(prefs.getInt("settingsTimerDelay", 5) + " " + getString(R.string.settings_secs));
@@ -150,12 +155,14 @@ public class SettingsActivity extends FragmentActivity implements CompoundButton
         vkConntectionCheckBox.setChecked(prefs.getBoolean("settingsVkConnection", false));
         vkUrlsCheckBox.setChecked(prefs.getBoolean("settingsVkUrls", true));
         vkAudioBroadcastCheckBox.setChecked(prefs.getBoolean("settingsVkAudioBroadcast", true));
+        vkLyricsCheckBox.setChecked(prefs.getBoolean("settingsVkLyrics", false));
         onlyWiFiConntectionCheckBox.setChecked(prefs.getBoolean("settingsOnlyWiFiConntection", true));
         lastFmConnectionCheckBox.setChecked(prefs.getBoolean("settingsLastFmConnection", true));
         autoRecognizeCheckBox.setChecked(prefs.getBoolean("settingsAutoRecognize", false));
 
         AndroidUtils.setViewEnabled(vkUrls, vkConntectionCheckBox.isChecked());
         AndroidUtils.setViewEnabled(vkAudioBroadcast, vkConntectionCheckBox.isChecked());
+        AndroidUtils.setViewEnabled(vkLyrics, vkConntectionCheckBox.isChecked());
     }
 
     public void changeVkButton() {
@@ -178,12 +185,16 @@ public class SettingsActivity extends FragmentActivity implements CompoundButton
             editor.putBoolean("settingsVkConnection", b);
             AndroidUtils.setViewEnabled(vkUrls, b);
             AndroidUtils.setViewEnabled(vkAudioBroadcast, b);
+            AndroidUtils.setViewEnabled(vkLyrics, b);
         } else if (compoundButton == vkUrlsCheckBox) {
             Log.v("Settings", "onCheckedChanged compoundButton = vkUrlsCheckBox");
             editor.putBoolean("settingsVkUrls", b);
         } else if (compoundButton == vkAudioBroadcastCheckBox) {
             Log.v("Settings", "onCheckedChanged compoundButton = vkAudioBroadcastCheckBox");
             editor.putBoolean("settingsVkAudioBroadcast", b);
+        } else if (compoundButton == vkLyricsCheckBox) {
+            Log.v("Settings", "onCheckedChanged compoundButton = vkLyricsCheckBox");
+            editor.putBoolean("settingsVkLyrics", b);
         } else if (compoundButton == onlyWiFiConntectionCheckBox) {
             Log.v("Settings", "onCheckedChanged compoundButton = onlyWiFiConntectionCheckBox");
             editor.putBoolean("settingsOnlyWiFiConntection", b);
@@ -199,6 +210,6 @@ public class SettingsActivity extends FragmentActivity implements CompoundButton
 
     @Override
     public void onComplete() {
-        onResume();
+        resume();
     }
 }
