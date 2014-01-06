@@ -2,6 +2,7 @@ package com.git.programmerr47.testhflbjcrhjggkth.view.adapters;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ResourceBundle.Control;
 
 import android.content.SharedPreferences;
 import android.graphics.drawable.BitmapDrawable;
@@ -150,76 +151,58 @@ public class FingerprintListAdapter extends BaseAdapter {
         final FingerprintData data = (FingerprintData) model.getFingerprintList().get(position);
         if (!data.isInQueueForRecognizing()) {
             final Animation addToDequeue = AnimationUtils.loadAnimation(activity, R.anim.add_to_recognize_queue);
-            addToDequeue.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-                }
-
-                @Override
-                public void onAnimationEnd(Animation animation) {
+            
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+    			
+    			@Override
+    			public void run() {
                     //try to recognize
-                    model.getFingerprintsDeque().addLast(data);
-                    
                     ViewHelper.setAlpha(view, 0.5f);
                     ViewHelper.setScaleX(view, 0.85f);
                     ViewHelper.setScaleY(view, 0.85f);
                     ViewHelper.setPivotX(view, view.getWidth() * 0.5f);
                     ViewHelper.setPivotY(view, view.getHeight() * 0.5f);
-                }
-
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-                }
-            });
+                    
+    	            model.getFingerprintsDeque().addLast(data);
+    			}
+    		}, addToDequeue.getDuration());
+            
             data.setInQueueForRecognizing(true);
             view.startAnimation(addToDequeue);
         } else {
             data.setInQueueForRecognizing(false);
             final Animation removeFromDequeue = AnimationUtils.loadAnimation(activity, R.anim.remove_from_recognize_queue);
-            removeFromDequeue.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-                    ViewHelper.setAlpha(view, 1.0f);
-                    ViewHelper.setScaleX(view, 1.0f);
-                    ViewHelper.setScaleY(view, 1.0f);
-                    ViewHelper.setPivotX(view, 0);
-                    ViewHelper.setPivotY(view, 0);
-                    if (!model.getFingerprintsDeque().contains(data)) {
-                    	model.getStorageRecognizeManager().recognizeFingerprintCancel();
-                    	model.getFingerprintsDeque().remove(data);
-                    }
-                }
-
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                }
-
-                @Override
-                public void onAnimationRepeat(Animation animation) {}
-            });
             view.startAnimation(removeFromDequeue);
+            ViewHelper.setAlpha(view, 1.0f);
+            ViewHelper.setScaleX(view, 1.0f);
+            ViewHelper.setScaleY(view, 1.0f);
+            ViewHelper.setPivotX(view, 0);
+            ViewHelper.setPivotY(view, 0);
+            if (!model.getFingerprintsDeque().contains(data)) {
+            	model.getStorageRecognizeManager().recognizeFingerprintCancel();
+            	model.getFingerprintsDeque().remove(data);
+            	data.setRecognizeStatus(null);
+            	notifyDataSetChanged();
+            }
         }
     }
     
     public void deletionFromList(final FingerprintData data, final View view) {
     	Log.v("Fingers", "Deletion from fingerList " + data.getFingerprint().substring(data.getFingerprint().indexOf("<FP_BLOCK"), data.getFingerprint().indexOf("</FP_BLOCK>") + 11).hashCode());
         final Animation deletionAnimation = AnimationUtils.loadAnimation(activity, R.anim.complete_recognize);
-        deletionAnimation.setAnimationListener(new AnimationListener() {
+        
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
 			
 			@Override
-			public void onAnimationStart(Animation animation) {}
-			
-			@Override
-			public void onAnimationRepeat(Animation animation) {}
-			
-			@Override
-			public void onAnimationEnd(Animation animation) {
+			public void run() {
         		deque.pollFirst();
         		Log.v("Fingers", "after deletion deque.size() = " + deque.size());
 				model.getFingerprintList().remove(data);
                 notifyDataSetChanged();
 			}
-		});
+		}, deletionAnimation.getDuration());
         view.startAnimation(deletionAnimation);
     }
 }
