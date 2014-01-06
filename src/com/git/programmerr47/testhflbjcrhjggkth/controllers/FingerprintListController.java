@@ -61,31 +61,37 @@ public class FingerprintListController implements FingerprintsDeque.OnDequeState
 		}
 		
 		if (songData != null) {
-			adapter.updateFingerStatus(currentFinger, songData.getArtist() + " - " + songData.getTitle());
+			onRecognizeStatusChanged(songData.getArtist() + " - " + songData.getTitle());
 		} else {
-			adapter.updateFingerStatus(currentFinger, "Music not identified");
+			onRecognizeStatusChanged("Music not identified");
 		}
+		fingerprintsDeque.pollFirst();
+		Log.v("Fingers", "after fingerprintsDeque.size() = " + fingerprintsDeque.size());
+        if (fingerprintsDeque.size() > 0) {
+        	onNonEmpty();
+        }
         
-		Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-            	adapter.deletionFromList(currentFinger);
-        		Log.v("Fingers", "before fingerprintsDeque.size() = " + fingerprintsDeque.size());
-        		fingerprintsDeque.pollFirst();
-        		Log.v("Fingers", "after fingerprintsDeque.size() = " + fingerprintsDeque.size());
-                if (fingerprintsDeque.size() > 0) {
-                	onNonEmpty();
-                }
-            }
-        }, 1000);
+//		Handler handler = new Handler();
+//        handler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//            	adapter.deletionFromList(currentFinger);
+//        		Log.v("Fingers", "before fingerprintsDeque.size() = " + fingerprintsDeque.size());
+//        		fingerprintsDeque.pollFirst();
+//        		Log.v("Fingers", "after fingerprintsDeque.size() = " + fingerprintsDeque.size());
+//                if (fingerprintsDeque.size() > 0) {
+//                	onNonEmpty();
+//                }
+//            }
+//        }, 1000);
 	}
 
 	@Override
 	public void onRecognizeStatusChanged(String status) {
 		// TODO Auto-generated method stub
 		Log.v("Fingers", "onRecognizeStatusChanged " + status);
-		adapter.updateFingerStatus(currentFinger, status);
+		currentFinger.setRecognizeStatus(status);
+		adapter.notifyDataSetChanged();
 	}
 
 }
