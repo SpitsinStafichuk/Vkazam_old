@@ -50,6 +50,7 @@ public class FingerprintPageFragment extends FragmentWithName implements IFinger
             super.onCreate(savedInstanceState);
             
             adapter = new FingerprintListAdapter(this.getActivity(), R.layout.finger_list_item);
+            controller = new FingerprintListController(this, adapter);
             fingerprintList = RecognizeServiceConnection.getModel().getFingerprintList();
             fingerprintList.addObserver(this);
     }
@@ -60,7 +61,7 @@ public class FingerprintPageFragment extends FragmentWithName implements IFinger
 
         fingerprintHLV = (ListView) view.findViewById(R.id.listView);
         fingerprintHLV.setAdapter(adapter);
-        controller = new FingerprintListController(this, adapter, fingerprintHLV);
+        controller.setListView(fingerprintHLV);
         fingerprintHLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
