@@ -18,6 +18,7 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
 import com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeServiceConnection;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.Data;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseFingerprintData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.FingerprintsDeque;
 import com.git.programmerr47.testhflbjcrhjggkth.utils.AndroidUtils;
 import com.git.programmerr47.testhflbjcrhjggkth.utils.ImageUtils;
 
@@ -36,16 +37,16 @@ public class FingerprintListAdapter extends BaseAdapter {
 	private Activity activity;
 	private LayoutInflater inflater;
 	private MicroScrobblerModel model;
+	private FingerprintsDeque deque;
     private boolean isScrolling = false;
     private int lastPosition;
-    private Map<FingerprintData, View> fingersQueue; 
 	
 	public FingerprintListAdapter(Activity activity, int idItem) {
 		this.activity = activity;
 		this.idItem = idItem;
 		model = RecognizeServiceConnection.getModel();
+		deque = model.getFingerprintsDeque();
 		inflater = (LayoutInflater) this.activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		fingersQueue = new HashMap<FingerprintData, View>();
 	}
 
 	@Override
@@ -111,10 +112,6 @@ public class FingerprintListAdapter extends BaseAdapter {
 
 		ImageView fingerCoverArt = (ImageView) view.findViewById(R.id.fingerprintImage);
         fingerCoverArt.setImageDrawable(coverArt);
-        if (fingersQueue.containsKey(data)) {
-        	fingersQueue.remove(data);
-        	fingersQueue.put(data, view);
-        }
 
         if (data.isInQueueForRecognizing()) {
             ViewHelper.setAlpha(view, 0.5f);
@@ -139,6 +136,11 @@ public class FingerprintListAdapter extends BaseAdapter {
                 view.startAnimation(AnimationUtils.loadAnimation(activity, R.anim.list_view_down_up));
             }
         }
+        
+        if (data.isDeleting()) {
+        	deletionFromList(data, view);
+        }
+        
         lastPosition = position;
 		
 		return view;
@@ -157,9 +159,6 @@ public class FingerprintListAdapter extends BaseAdapter {
                 public void onAnimationEnd(Animation animation) {
                     //try to recognize
                     model.getFingerprintsDeque().addLast(data);
-                	Log.v("Fingers", "adding " + view);
-                	Log.v("Fingers", "adding " + data);
-                    fingersQueue.put(data, view);
                     
                     ViewHelper.setAlpha(view, 0.5f);
                     ViewHelper.setScaleX(view, 0.85f);
@@ -187,9 +186,8 @@ public class FingerprintListAdapter extends BaseAdapter {
                     ViewHelper.setPivotY(view, 0);
                     if (!model.getFingerprintsDeque().contains(data)) {
                     	model.getStorageRecognizeManager().recognizeFingerprintCancel();
-                    	model.getFingerprintsDeque().addLast(data);
+                    	model.getFingerprintsDeque().remove(data);
                     }
-                    fingersQueue.remove(data);
                 }
 
                 @Override
@@ -203,16 +201,8 @@ public class FingerprintListAdapter extends BaseAdapter {
         }
     }
     
-    public void updateFingerStatus(FingerprintData data, String status) {
-    	View view = fingersQueue.get(data);
-    	TextView statusTextView = (TextView) view.findViewById(R.id.fingerprintText);
-    	statusTextView.setText(status);
-    }
-    
-    public void deletionFromList(final FingerprintData data) {
-    	View view = fingersQueue.get(data);
-    	Log.v("Fingers", "deleting " + view);
-    	Log.v("Fingers", "deleting " + data);
+    public void deletionFromList(final FingerprintData data, final View view) {
+    	Log.v("Fingers", "Deletion from fingerList " + data.getFingerprint().substring(data.getFingerprint().indexOf("<FP_BLOCK"), data.getFingerprint().indexOf("</FP_BLOCK>") + 11).hashCode());
         final Animation deletionAnimation = AnimationUtils.loadAnimation(activity, R.anim.complete_recognize);
         deletionAnimation.setAnimationListener(new AnimationListener() {
 			
@@ -224,9 +214,10 @@ public class FingerprintListAdapter extends BaseAdapter {
 			
 			@Override
 			public void onAnimationEnd(Animation animation) {
+        		deque.pollFirst();
+        		Log.v("Fingers", "after deletion deque.size() = " + deque.size());
 				model.getFingerprintList().remove(data);
                 notifyDataSetChanged();
-                deletionAnimation.cancel();
 			}
 		});
         view.startAnimation(deletionAnimation);
