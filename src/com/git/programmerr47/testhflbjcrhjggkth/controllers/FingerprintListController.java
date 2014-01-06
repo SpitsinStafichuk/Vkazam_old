@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.widget.ListView;
 
 import com.git.programmerr47.testhflbjcrhjggkth.model.FingerprintData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
@@ -24,10 +25,12 @@ public class FingerprintListController implements FingerprintsDeque.OnDequeState
 	FingerprintsDeque fingerprintsDeque;
 	FingerprintData currentFinger;
 	FingerprintListAdapter adapter;
+	ListView listView;
 	Activity view;
 	
-	public FingerprintListController(Fragment fragment, FingerprintListAdapter adapter) {
+	public FingerprintListController(Fragment fragment, FingerprintListAdapter adapter, ListView listView) {
 		this.adapter = adapter;
+		this.listView = listView;
 		view = fragment.getActivity();
 		model = RecognizeServiceConnection.getModel();
 		storageRacognizeManager = model.getStorageRecognizeManager();
@@ -64,7 +67,14 @@ public class FingerprintListController implements FingerprintsDeque.OnDequeState
 			currentFinger.setRecognizeStatus("Music not identified");
 		}
 		
-		currentFinger.setDeleting(true);
+		int listPosition = model.getFingerprintList().indexOf(currentFinger);
+		if ((listView != null) && (listView.getFirstVisiblePosition() <= listPosition) && (listView.getLastVisiblePosition() >= listPosition)) {
+			currentFinger.setDeleting(true);
+		} else {
+			fingerprintsDeque.pollFirst();
+    		Log.v("Fingers", "after deletion deque.size() = " + fingerprintsDeque.size());
+			model.getFingerprintList().remove(currentFinger);
+		}
 		adapter.notifyDataSetChanged();
 	}
 
@@ -74,6 +84,10 @@ public class FingerprintListController implements FingerprintsDeque.OnDequeState
 		Log.v("Fingers", "onRecognizeStatusChanged " + status);
 		currentFinger.setRecognizeStatus(status);
 		adapter.notifyDataSetChanged();
+	}
+	
+	public void setListView(ListView listView) {
+		this.listView = listView;
 	}
 
 }
