@@ -89,7 +89,11 @@ public class FingerprintListAdapter extends BaseAdapter {
 		String finger = fingerXML.substring(fingerXML.indexOf("<FP_BLOCK"), fingerXML.indexOf("</FP_BLOCK>") + 11);
 		
 		TextView fingerprintText = (TextView) view.findViewById(R.id.fingerprintText);
-		fingerprintText.setText(finger.hashCode() + "");
+		if (data.getRecognizeStatus() != null) {
+			fingerprintText.setText(data.getRecognizeStatus());
+		} else {
+			fingerprintText.setText(finger.hashCode() + "");
+		}
 		TextView fingerprintDate = (TextView) view.findViewById(R.id.fingerprintDate);
 		fingerprintDate.setText(data.getDate().toString());
 		
