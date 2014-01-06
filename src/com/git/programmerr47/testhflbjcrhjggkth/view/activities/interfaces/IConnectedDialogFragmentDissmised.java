@@ -1,6 +1,6 @@
 package com.git.programmerr47.testhflbjcrhjggkth.view.activities.interfaces;
 
-public interface IConnectionWithDialogFragment {
+public interface IConnectedDialogFragmentDissmised {
 
-    public void onConnect();
+    public void onComplete();
 }

@@ -4,9 +4,7 @@ package com.git.programmerr47.testhflbjcrhjggkth.view;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
-import android.preference.Preference;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -32,7 +30,7 @@ public class IconPreference extends EditTextPreference {
 
     public IconPreference(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        setLayoutResource(R.layout.icon_preference);
+        setLayoutResource(R.layout.icon_preference_with_additional_info);
         TypedArray a = context.obtainStyledAttributes(attrs,
                 R.styleable.IconPreference, defStyle, 0);
         mIcon = a.getDrawable(R.styleable.IconPreference_icon);

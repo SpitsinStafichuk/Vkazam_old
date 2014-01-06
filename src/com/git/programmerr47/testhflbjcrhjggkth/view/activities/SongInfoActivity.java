@@ -13,6 +13,8 @@ import java.util.List;
 import android.media.MediaPlayer;
 import android.view.MenuInflater;
 import android.widget.*;
+
+import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SongManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISongProgressObserver;
 import com.git.programmerr47.testhflbjcrhjggkth.utils.AndroidUtils;
 import com.perm.kate.api.Audio;
@@ -29,6 +31,10 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObse
 import com.git.programmerr47.testhflbjcrhjggkth.utils.FileSystemUtils;
 import com.git.programmerr47.testhflbjcrhjggkth.view.DynamicImageView;
 import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.HistoryPageFragment;
+import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.MessageDialogFragment;
+import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.ProgressDialogFragment;
+import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.ProgressDialogFragment.Builder;
+import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.ProgressDialogFragment.OnCancelListener;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.perm.kate.api.Api;
 import com.perm.kate.api.KException;
@@ -43,19 +49,20 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.PowerManager;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-public class SongInfoActivity extends Activity implements IPlayerStateObserver, ISongProgressObserver {
+public class SongInfoActivity extends FragmentActivity implements IPlayerStateObserver, ISongProgressObserver {
 	public static final String TAG = "SongInfoActivity";
 	public static final String ARGUMENT_SONGLIST_POSITION = "SongDataPosition";
-
-    public static final int ANY_SONG = 0;
-    public static final int VK_SONG = 1;
-    public static final int PP_SONG = 2;
+    private static final String SHOW_DIALOG_TAG = "dialog";
 
 	private MicroScrobblerModel model;
 	private SongInfoController controller;
@@ -69,13 +76,13 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver, 
 	private ImageButton addVkButton;
 	private ImageButton downloadPPButton;
     private ImageButton downloadVKButton;
-	private ProgressDialog downloadPPProgressDialog;
+    private ProgressDialogFragment.Builder appProgressDialogBuilder;
 	private ImageButton deleteButton;
     private ImageButton settingsButton;
+    private ImageButton lyricsButton;
+    private ImageButton youtubeButton;
     private SeekBar ppSongProgress;
     private SeekBar vkSongProgress;
-
-    private int songType = PP_SONG;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +104,7 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver, 
             public void onBufferingUpdate(MediaPlayer mediaPlayer, int percent) {
                 Log.v("MiniPlayer", "Song downloading is updated " + percent);
                 SeekBar songProgress = vkSongProgress;
-                if (songType == PP_SONG) {
+                if (model.getSongManager().getType() == SongManager.PP_SONG) {
                     songProgress = ppSongProgress;
                 }
 
@@ -113,7 +120,7 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver, 
         ppSongProgress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if ((fromUser) && (songType == PP_SONG)) {
+                if ((fromUser) && (model.getSongManager().getType() == SongManager.PP_SONG)) {
                     controller.seekTo(progress);
                 }
             }
@@ -133,7 +140,7 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver, 
         vkSongProgress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if ((fromUser) && (songType == VK_SONG)) {
+                if ((fromUser) && (model.getSongManager().getType() == SongManager.VK_SONG)) {
                     controller.seekTo(progress);
                 }
             }
@@ -162,8 +169,7 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver, 
                         }
                     });
                 }
-                songType = PP_SONG;
-                controller.playPauseSong(data, model.getCurrentOpenSongPosition(), PP_SONG);
+                controller.playPauseSong(data, model.getCurrentOpenSongPosition(), SongManager.PP_SONG);
             }
         });
 
@@ -180,8 +186,7 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver, 
                         }
                     });
                 }
-                songType = VK_SONG;
-                controller.playPauseSong(data, model.getCurrentOpenSongPosition(), VK_SONG);
+                controller.playPauseSong(data, model.getCurrentOpenSongPosition(), SongManager.VK_SONG);
             }
         });
 
@@ -192,8 +197,8 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver, 
 			public void onClick(View v) {
 				Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
 				sharingIntent.setType("text/plain");
-				sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Like song");
-				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, "I just listened a nice song on MicroScrobbler");
+				sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "VKAZAM - new song");
+				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, "I recognized a nice song on VKAZAM: " + data.getArtist() + " - " + data.getTitle() + " ("+ data.getAlbum() +")");
 				startActivity(Intent.createChooser(sharingIntent, "Share song"));
 			}
 		});
@@ -207,11 +212,11 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver, 
 			}
 		});
 		
-		downloadPPProgressDialog = new ProgressDialog(this);
-		downloadPPProgressDialog.setMessage(data.getFullTitle() + " is downloading");
-		downloadPPProgressDialog.setIndeterminate(true);
-		downloadPPProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-		downloadPPProgressDialog.setCancelable(true);
+		appProgressDialogBuilder = new ProgressDialogFragment.Builder();
+		appProgressDialogBuilder.setIcon(R.drawable.ic_progress_dialog);
+		appProgressDialogBuilder.setMessage(data.getFullTitle() + " is downloading");
+		appProgressDialogBuilder.setTitle("Loading");
+		appProgressDialogBuilder.setProgressStyle(ProgressDialogFragment.Builder.STYLE_HORIZONTAL);
 		
 		downloadPPButton = (ImageButton) findViewById(R.id.downloadPPButton);
 		downloadPPButton.setOnClickListener(new OnClickListener() {
@@ -221,11 +226,12 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver, 
 				if(FileSystemUtils.isExternalStorageWritable()) {
 					final DownloadTask downloadTask = new DownloadTask(SongInfoActivity.this, DownloadTask.PP_TASK);
 					downloadTask.execute(data);
-					downloadPPProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-					    @Override
-					    public void onCancel(DialogInterface dialog) {
+					appProgressDialogBuilder.setOnCancelListener(new OnCancelListener() {
+						
+						@Override
+						public void onCancel(ProgressDialogFragment fragment) {
 					        downloadTask.cancel(true);
-					    }
+						}
 					});
 				} else {
 					Toast.makeText(SongInfoActivity.this, "External storage is not available", Toast.LENGTH_SHORT).show();
@@ -240,12 +246,13 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver, 
                 if(FileSystemUtils.isExternalStorageWritable()) {
                     final DownloadTask downloadTask = new DownloadTask(SongInfoActivity.this, DownloadTask.VK_TASK);
                     downloadTask.execute(data);
-                    downloadPPProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                        @Override
-                        public void onCancel(DialogInterface dialog) {
-                            downloadTask.cancel(true);
-                        }
-                    });
+					appProgressDialogBuilder.setOnCancelListener(new OnCancelListener() {
+						
+						@Override
+						public void onCancel(ProgressDialogFragment fragment) {
+					        downloadTask.cancel(true);
+						}
+					});
                 } else {
                     Toast.makeText(SongInfoActivity.this, "External storage is not available", Toast.LENGTH_SHORT).show();
                 }
@@ -275,11 +282,33 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver, 
             }
         });
 
+        lyricsButton = (ImageButton) findViewById(R.id.lyricsButton);
+        lyricsButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                controller.getLyrics(data);
+            }
+        });
+
+        youtubeButton = (ImageButton) findViewById(R.id.youtubeButton);
+        youtubeButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                controller.showYoutubePage(data);
+            }
+        });
+
         TextView ppSong = (TextView) findViewById(R.id.SongInfoRealArtistTitleForPP);
         ppSong.setSelected(true);
 
         TextView vkSong = (TextView) findViewById(R.id.SongInfoRealArtistTitleForVk);
         vkSong.setSelected(true);
+
+        TextView artist = (TextView) findViewById(R.id.artistTitle);
+        artist.setText(data.getArtist());
+
+        TextView title = (TextView) findViewById(R.id.titleTitle);
+        title.setText(data.getTitle());
 	}
 
     private class DownloadTask extends AsyncTask<DatabaseSongData, Integer, String> {
@@ -289,6 +318,7 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver, 
 
 	    private Context context;
         private int task;
+        private ProgressDialogFragment dialogFragment;
 
 	    public DownloadTask(Context context, int task) {
 	        this.context = context;
@@ -298,21 +328,28 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver, 
 	    @Override
 	    protected void onPreExecute() {
 	        super.onPreExecute();
-	        downloadPPProgressDialog.show();
+//	        downloadPPProgressDialog.show();
+
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            Fragment prev = getSupportFragmentManager().findFragmentByTag(SHOW_DIALOG_TAG);
+            if (prev != null) {
+                fragmentTransaction.remove(prev);
+            }
+
+            dialogFragment = ProgressDialogFragment.newInstance(appProgressDialogBuilder);
+            dialogFragment.show(fragmentTransaction, SHOW_DIALOG_TAG);
 	    }
 
 	    @Override
 	    protected void onProgressUpdate(Integer... progress) {
 	        super.onProgressUpdate(progress);
 	        // if we get here, length is known, now set indeterminate to false
-	        downloadPPProgressDialog.setIndeterminate(false);
-	        downloadPPProgressDialog.setMax(100);
-	        downloadPPProgressDialog.setProgress(progress[0]);
+	        dialogFragment.setProgress(progress[0]);
 	    }
 	    
 	    @Override
 	    protected void onPostExecute(String result) {
-	    	downloadPPProgressDialog.dismiss();
+	    	dialogFragment.dismiss();
 	        if (result != null) {
 	            Toast.makeText(context, "Download error: " + result, Toast.LENGTH_LONG).show();
 	        } else {
@@ -528,13 +565,14 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver, 
 	public void updatePlayerState() {
 		ProgressBar progressBar;
         ImageButton playPauseButton;
-        if (songType == PP_SONG) {
+        if (model.getSongManager().getType() == SongManager.PP_SONG) {
             progressBar = (ProgressBar) findViewById(R.id.songInfoLoadingForPP);
             playPauseButton = ppPlayPauseButton;
 
             ProgressBar secPB = (ProgressBar) findViewById(R.id.songInfoLoadingForVk);
             secPB.setVisibility(View.GONE);
             vkPlayPauseButton.setImageResource(android.R.drawable.ic_media_play);
+            vkPlayPauseButton.setVisibility(View.VISIBLE);
             vkSongProgress.setProgress(0);
             vkSongProgress.setSecondaryProgress(0);
         } else {
@@ -544,6 +582,7 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver, 
             ProgressBar secPB = (ProgressBar) findViewById(R.id.songInfoLoadingForPP);
             secPB.setVisibility(View.GONE);
             ppPlayPauseButton.setImageResource(android.R.drawable.ic_media_play);
+            ppPlayPauseButton.setVisibility(View.VISIBLE);
             ppSongProgress.setProgress(0);
             ppSongProgress.setSecondaryProgress(0);
         }
@@ -580,7 +619,7 @@ public class SongInfoActivity extends Activity implements IPlayerStateObserver, 
     @Override
     public void updateProgress(int progress, int duration) {
         SeekBar songProgress = vkSongProgress;
-        if (songType == PP_SONG) {
+        if (model.getSongManager().getType() == SongManager.PP_SONG) {
             songProgress = ppSongProgress;
         }
 

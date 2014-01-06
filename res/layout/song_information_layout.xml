@@ -15,7 +15,32 @@
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:orientation="vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1">
+
+            <TextView
+                    android:id="@+id/artistTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Artist"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:gravity="center_vertical"/>
+
+            <TextView
+                    android:id="@+id/titleTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Title"
+                    android:textSize="18sp"
+                    android:textColor="@color/white"
+                    android:gravity="center_vertical"/>
+
+        </LinearLayout>
 
         <ImageButton
                 android:id="@+id/shareButton"
@@ -23,7 +48,7 @@
                 android:layout_height="match_parent"
                 android:layout_margin="5dp"
                 android:scaleType="fitCenter"
-                android:background="@android:color/transparent"
+                android:background="@drawable/action_button_selector"
                 android:src="@drawable/ic_action_share" />
 
         <ImageButton
@@ -32,7 +57,7 @@
                 android:layout_height="match_parent"
                 android:layout_margin="5dp"
                 android:scaleType="fitCenter"
-                android:background="@android:color/transparent"
+                android:background="@drawable/action_button_selector"
                 android:src="@drawable/ic_action_remove" />
 
         <ImageButton
@@ -41,7 +66,7 @@
                 android:layout_height="match_parent"
                 android:layout_margin="5dp"
                 android:scaleType="fitCenter"
-                android:background="@android:color/transparent"
+                android:background="@drawable/action_button_selector"
                 android:src="@drawable/ic_action_overflow" />
     </LinearLayout>
     
@@ -108,7 +133,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
-                        android:background="@drawable/standart_block_background">
+                        android:background="@drawable/standart_block_background_selector">
 
                     <ImageButton
                             android:id="@+id/songInfoPlayPauseButtonForPP"
@@ -166,8 +191,8 @@
                                 android:layout_width="40dp"
                                 android:layout_height="match_parent"
                                 android:scaleType="fitCenter"
-                                android:background="@drawable/standart_block_background"
-                                android:src="@drawable/ic_action_download" />
+                                android:background="@drawable/standart_block_background_selector"
+                                android:src="@drawable/ic_action_download"/>
 
                     </LinearLayout>
 
@@ -226,7 +251,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
-                        android:background="@drawable/standart_block_background">
+                        android:background="@drawable/standart_block_background_selector">
 
                     <ImageButton
                             android:id="@+id/songInfoPlayPauseButtonForVk"
@@ -285,7 +310,7 @@
                                 android:layout_height="match_parent"
                                 android:scaleType="fitCenter"
                                 android:src="@drawable/ic_action_new"
-                                android:background="@drawable/standart_block_background"/>
+                                android:background="@drawable/standart_block_background_selector"/>
 
                     </LinearLayout>
 
@@ -318,7 +343,7 @@
                                 android:layout_height="match_parent"
                                 android:scaleType="fitCenter"
                                 android:src="@drawable/ic_action_download"
-                                android:background="@drawable/standart_block_background"/>
+                                android:background="@drawable/standart_block_background_selector"/>
 
                     </LinearLayout>
 
@@ -341,7 +366,7 @@
                         android:padding="5dp"
                         android:scaleType="fitCenter"
                         android:src="@drawable/ic_action_lyrics"
-                        android:background="@drawable/standart_block_background"/>
+                        android:background="@drawable/standart_block_background_selector"/>
 
                 <TextView
                         android:layout_width="match_parent"
@@ -370,14 +395,14 @@
                         android:padding="5dp"
                         android:scaleType="fitCenter"
                         android:src="@drawable/ic_action_youtube"
-                        android:background="@drawable/standart_block_background"/>
+                        android:background="@drawable/standart_block_background_selector"/>
 
                 <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="5dp"
-                        android:text="Watch on YouTube"
+                        android:text="Watch on YouTube app"
                         android:textSize="20sp"
                         android:gravity="center"
                         android:background="@drawable/standart_block_background"/>
@@ -389,7 +414,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="10dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
 
                 <ImageButton
@@ -399,7 +425,7 @@
                         android:layout_margin="5dp"
                         android:scaleType="fitCenter"
                         android:src="@drawable/ic_action_favorite"
-                        android:background="@drawable/standart_block_background"/>
+                        android:background="@drawable/standart_block_background_selector"/>
 
                 <TextView
                         android:layout_width="match_parent"

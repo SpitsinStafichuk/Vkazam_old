@@ -8,6 +8,7 @@ import com.git.programmerr47.testhflbjcrhjggkth.view.activities.SongInfoActivity
 import org.json.JSONException;
 
 import android.app.Activity;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -20,11 +21,11 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.KException;
 
 public class SongController {
 	
-	MicroScrobblerModel model;
-	Activity view;
-	Thread preparingThread;
+	protected MicroScrobblerModel model;
+	protected FragmentActivity view;
+	private Thread preparingThread;
 	
-	public SongController(Activity view) {
+	public SongController(FragmentActivity view) {
 		this.view = view;
 		this.model = RecognizeServiceConnection.getModel();
 	}
@@ -46,7 +47,7 @@ public class SongController {
     }
 
     public synchronized void playPauseSong(final DatabaseSongData songData, final int positionInList) {
-        this.playPauseSong(songData, positionInList, SongInfoActivity.ANY_SONG);
+        this.playPauseSong(songData, positionInList, SongManager.ANY_SONG);
     }
 
     public synchronized void playPauseSong(int positionInList) {
@@ -67,7 +68,7 @@ public class SongController {
 	
 	private void _playPauseSong(DatabaseSongData songData, int positionInList, int type) {
 		SongManager songManager = model.getSongManager();
-		if(songData.equals(songManager.getSongData())) {
+		if(songData.equals(songManager.getSongData()) && (songManager.getType() == type)) {
 			Log.v("SongListController", "songManager.getSongData() == songData == " + songData);
 			if(songManager.isPrepared())
 				if(songManager.isPlaying()) {
@@ -118,8 +119,7 @@ public class SongController {
             }
 		}
 	}
-	
-	private void showToast(final String message) {
+	protected void showToast(final String message) {
 		view.runOnUiThread(new Runnable() {
 			
 			@Override
