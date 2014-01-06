@@ -18,13 +18,16 @@ public class FingerprintsDeque<FingerprintData> extends LinkedBlockingDeque<Fing
 		super.addFirst(data);
         if (size() == 1) {
             Log.v("FingersQueue", "Now queue is not empty");
-            listener.onNonEmpty();
+            if (listener != null) {
+                listener.onNonEmpty();
+            }
         }
 	}
 	
 	@Override
 	public synchronized void addLast(FingerprintData data) {
 		super.addLast(data);
+        Log.v("Fingers", "deque.size = " + size());
 		if (size() == 1) {
             Log.v("FingersQueue", "Now queue is not empty");
             if (listener != null) {
@@ -39,5 +42,16 @@ public class FingerprintsDeque<FingerprintData> extends LinkedBlockingDeque<Fing
 	
 	public interface OnDequeStateListener {
 		void onNonEmpty();
+	}
+	
+	@Override
+	public synchronized FingerprintData pollFirst() {
+		FingerprintData result = super.pollFirst();
+		if (size() > 0) {
+            if (listener != null) {
+                listener.onNonEmpty();
+            }
+		}
+		return result;
 	}
 }

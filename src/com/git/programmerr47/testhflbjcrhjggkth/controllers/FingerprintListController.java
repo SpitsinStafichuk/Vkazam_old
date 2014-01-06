@@ -45,10 +45,8 @@ public class FingerprintListController implements FingerprintsDeque.OnDequeState
 	@Override
 	public void onNonEmpty() {
 		// TODO Auto-generated method stub
-		Log.v("Fingers", "Now queue is not empty");
-		Log.v("Fingers", "before fingerprintsDeque.size() = " + fingerprintsDeque.size());
+		Log.v("Fingers", "Now queue is not empty: size = " + fingerprintsDeque.size());
 		currentFinger = (FingerprintData)fingerprintsDeque.peekFirst();
-		Log.v("Fingers", "after fingerprintsDeque.size() = " + fingerprintsDeque.size());
 		storageRacognizeManager.recognizeFingerprint(currentFinger, false);
 	}
 
@@ -61,29 +59,13 @@ public class FingerprintListController implements FingerprintsDeque.OnDequeState
 		}
 		
 		if (songData != null) {
-			onRecognizeStatusChanged(songData.getArtist() + " - " + songData.getTitle());
+			currentFinger.setRecognizeStatus(songData.getArtist() + " - " + songData.getTitle());
 		} else {
-			onRecognizeStatusChanged("Music not identified");
+			currentFinger.setRecognizeStatus("Music not identified");
 		}
-		fingerprintsDeque.pollFirst();
-		Log.v("Fingers", "after fingerprintsDeque.size() = " + fingerprintsDeque.size());
-        if (fingerprintsDeque.size() > 0) {
-        	onNonEmpty();
-        }
-        
-//		Handler handler = new Handler();
-//        handler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//            	adapter.deletionFromList(currentFinger);
-//        		Log.v("Fingers", "before fingerprintsDeque.size() = " + fingerprintsDeque.size());
-//        		fingerprintsDeque.pollFirst();
-//        		Log.v("Fingers", "after fingerprintsDeque.size() = " + fingerprintsDeque.size());
-//                if (fingerprintsDeque.size() > 0) {
-//                	onNonEmpty();
-//                }
-//            }
-//        }, 1000);
+		
+		currentFinger.setDeleting(true);
+		adapter.notifyDataSetChanged();
 	}
 
 	@Override
