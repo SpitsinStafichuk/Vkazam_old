@@ -28,9 +28,8 @@ public class FingerprintListController implements FingerprintsDeque.OnDequeState
 	ListView listView;
 	Activity view;
 	
-	public FingerprintListController(Fragment fragment, FingerprintListAdapter adapter, ListView listView) {
+	public FingerprintListController(Fragment fragment, FingerprintListAdapter adapter) {
 		this.adapter = adapter;
-		this.listView = listView;
 		view = fragment.getActivity();
 		model = RecognizeServiceConnection.getModel();
 		storageRacognizeManager = model.getStorageRecognizeManager();

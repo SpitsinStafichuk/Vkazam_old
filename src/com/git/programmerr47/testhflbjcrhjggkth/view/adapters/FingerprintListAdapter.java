@@ -166,7 +166,7 @@ public class FingerprintListAdapter extends BaseAdapter {
                     
     	            model.getFingerprintsDeque().addLast(data);
     			}
-    		}, addToDequeue.getDuration());
+    		}, addToDequeue.getDuration() + addToDequeue.getStartOffset());
             
             data.setInQueueForRecognizing(true);
             view.startAnimation(addToDequeue);
@@ -191,7 +191,10 @@ public class FingerprintListAdapter extends BaseAdapter {
     public void deletionFromList(final FingerprintData data, final View view) {
     	Log.v("Fingers", "Deletion from fingerList " + data.getFingerprint().substring(data.getFingerprint().indexOf("<FP_BLOCK"), data.getFingerprint().indexOf("</FP_BLOCK>") + 11).hashCode());
         final Animation deletionAnimation = AnimationUtils.loadAnimation(activity, R.anim.complete_recognize);
-        
+        Log.v("Animation", "Deletion animation duration is " + deletionAnimation.getDuration());
+        Log.v("Animation", "Deletion animation offset is " + deletionAnimation.getStartOffset());
+
+        view.startAnimation(deletionAnimation);
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
 			
@@ -202,7 +205,6 @@ public class FingerprintListAdapter extends BaseAdapter {
 				model.getFingerprintList().remove(data);
                 notifyDataSetChanged();
 			}
-		}, deletionAnimation.getDuration());
-        view.startAnimation(deletionAnimation);
+		}, deletionAnimation.getDuration() + deletionAnimation.getStartOffset());
     }
 }
