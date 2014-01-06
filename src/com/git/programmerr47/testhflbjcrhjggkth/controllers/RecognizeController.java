@@ -5,6 +5,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.git.programmerr47.testhflbjcrhjggkth.model.FingerprintData;
@@ -91,10 +93,10 @@ public class RecognizeController implements IFingerprintResultObserver, IRecogni
 		FingerprintData fingerprintData = new FingerprintData(fingerprint, new Date());
 		Log.i(TAG, "fingerprint = " + fingerprint);
 		if (NetworkUtils.isNetworkAvailable(context)) {
-            recognizeManager.recognizeFingerprint(fingerprintData, false);
+	        recognizeManager.recognizeFingerprint(fingerprintData, false);
 		} else {
 			Log.v("testik", "adding offline finger");
-	        model.getFingerprintList().add(fingerprintData);
+			model.getFingerprintList().add(fingerprintData);
             runTimerDelay();
 		}
 	}
@@ -110,7 +112,8 @@ public class RecognizeController implements IFingerprintResultObserver, IRecogni
 
     private void runTimerDelay() {
         if (fingerprintManager.isFingerprintingByTimer()) {
-            int period = FingerprintManager.DEFAULT_FINGERPRINT_TIMER_PERIOD / 360;
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+            int period = prefs.getInt("settingsTimerDelay", 5) * 1000 / 360;
             TimerTask task = new TimerTask() {
                 @Override
                 public void run() {
