@@ -4,12 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle.Control;
 
-import android.content.SharedPreferences;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.widget.*;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
@@ -165,10 +162,10 @@ public class FingerprintListAdapter extends BaseAdapter {
                     ViewHelper.setPivotY(view, view.getHeight() * 0.5f);
                     
     	            model.getFingerprintsDeque().addLast(data);
+                    data.setInQueueForRecognizing(true);
     			}
     		}, addToDequeue.getDuration() + addToDequeue.getStartOffset());
-            
-            data.setInQueueForRecognizing(true);
+
             view.startAnimation(addToDequeue);
         } else {
             final Animation removeFromDequeue = AnimationUtils.loadAnimation(activity, R.anim.remove_from_recognize_queue);

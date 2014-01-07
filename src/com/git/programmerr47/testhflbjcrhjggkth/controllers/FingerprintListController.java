@@ -1,11 +1,14 @@
 package com.git.programmerr47.testhflbjcrhjggkth.controllers;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.widget.ListView;
 
+import android.widget.Toast;
 import com.git.programmerr47.testhflbjcrhjggkth.model.FingerprintData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
 import com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeServiceConnection;
@@ -14,6 +17,7 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.database.FingerprintsDeque
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.RecognizeManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeResultObserver;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeStatusObserver;
+import com.git.programmerr47.testhflbjcrhjggkth.utils.NetworkUtils;
 import com.git.programmerr47.testhflbjcrhjggkth.view.adapters.FingerprintListAdapter;
 
 public class FingerprintListController implements FingerprintsDeque.OnDequeStateListener,
@@ -52,7 +56,36 @@ public class FingerprintListController implements FingerprintsDeque.OnDequeState
 		storageRacognizeManager.recognizeFingerprint(currentFinger, false);
 	}
 
-	@Override
+    @Override
+    public void onEmpty() {
+        Log.v("Fingers", "Now queue is empty");
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(view);
+        if (prefs.getBoolean("settingsAutoRecognize", false)) {
+            if (NetworkUtils.isNetworkAvailable(view)) {
+                if (model.getFingerprintList().size() != 0) {
+                    if (listView != null) {
+                        listView.performItemClick(adapter.getView(0, null, null), 0, adapter.getItemId(0));
+                    } else {
+                        FingerprintData data = (FingerprintData) model.getFingerprintList().get(0);
+                        data.setInQueueForRecognizing(true);
+                        model.getFingerprintsDeque().addLast(data);
+                    }
+                } else {
+                    Toast.makeText(view, "List of fingers is empty", Toast.LENGTH_SHORT);
+                }
+            } else {
+                Toast.makeText(view, "Network is not available at this moment", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    public void startRecognizingIfDequeIsEmpty() {
+        if (fingerprintsDeque.isEmpty()) {
+            onEmpty();
+        }
+    }
+
+    @Override
 	public void onRecognizeResult(SongData songData) {
 		Log.v("Fingers", "onRecognizeResult " + songData);
 		if (songData != null) {
