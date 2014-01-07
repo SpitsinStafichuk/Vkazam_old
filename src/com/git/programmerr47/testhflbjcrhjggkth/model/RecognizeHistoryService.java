@@ -59,6 +59,7 @@ public class RecognizeHistoryService extends Service implements IRecognizeStatus
 	
 	@Override 
     public void onDestroy() {
+        Toast.makeText(this, "RecognizeHistoryService onDestroy", Toast.LENGTH_LONG).show();
 		isStarted = false;
 	}
 
