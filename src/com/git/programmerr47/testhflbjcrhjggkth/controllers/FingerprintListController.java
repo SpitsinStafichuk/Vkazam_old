@@ -70,10 +70,15 @@ public class FingerprintListController implements FingerprintsDeque.OnDequeState
 		if ((listView != null) && (listView.getFirstVisiblePosition() <= listPosition) && (listView.getLastVisiblePosition() >= listPosition)) {
 			currentFinger.setDeleting(true);
 		} else {
-			fingerprintsDeque.pollFirst();
-    		Log.v("Fingers", "after deletion deque.size() = " + fingerprintsDeque.size());
+            int beforeSize = model.getFingerprintList().size();
 			model.getFingerprintList().remove(currentFinger);
-		}
+            Log.v("Fingers", "Listsize(controller) after deletion is " + model.getFingerprintList().size());
+            int afterSize = model.getFingerprintList().size();
+            if (beforeSize > afterSize) {
+                fingerprintsDeque.pollFirst();
+                Log.v("Fingers", "(controller) after deletion deque.size() = " + fingerprintsDeque.size());
+            }
+        }
 		adapter.notifyDataSetChanged();
 	}
 
