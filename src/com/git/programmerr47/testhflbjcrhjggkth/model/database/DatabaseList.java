@@ -20,7 +20,6 @@ public abstract class DatabaseList extends LinkedList<Data>{
 		super();
 		this.dao = dao;
 		super.addAll(dao.getHistory());
-		Log.v("testike", "List size " + size());
 	}
 	
 	@Override
@@ -32,7 +31,6 @@ public abstract class DatabaseList extends LinkedList<Data>{
 				super.remove(element);
 			}
 		}
-		Log.v("testike", "List size " + size());
 		return result;
 	}
 	

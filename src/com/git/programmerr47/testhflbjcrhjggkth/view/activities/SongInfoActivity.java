@@ -89,8 +89,7 @@ public class SongInfoActivity extends FragmentActivity implements IPlayerStateOb
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.song_information_layout);
 		Log.i(TAG, "Creating song info activity");
-		
-		Log.v("testik", "findViewById(R.id.songInfoCoverArt): " + findViewById(R.id.songInfoCoverArt));
+
 		coverArt = ((DynamicImageView) findViewById(R.id.songInfoCoverArt));
 		coverArt.setMaxRatioKoef(1.0);
 		

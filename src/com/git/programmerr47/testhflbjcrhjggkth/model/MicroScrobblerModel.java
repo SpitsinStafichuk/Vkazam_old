@@ -4,10 +4,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
 
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.Data;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseSongData;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.FingerprintList;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongList;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.*;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.FingerprintManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.RecognizeManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.Scrobbler;
@@ -28,13 +25,15 @@ public class MicroScrobblerModel {
 	private GNConfig config;
 	
 	private FingerprintManager fingerprintManager;
-	private RecognizeManager recognizeManager;
+	private RecognizeManager mainRecognizeManager;
+	private RecognizeManager storageRecognizeManager;
 	private SongManager songManager;
 	private SearchManager searchManager;
 	private Handler handler;
 	
 	private SongList songList;
 	private FingerprintList fingerprintList;
+    private FingerprintsDeque fingerprintsDeque;
 
     private DatabaseSongData currentOpenSong = null;
     private int currentOpenSongPosition = -1;
@@ -88,10 +87,12 @@ public class MicroScrobblerModel {
 		imageLoader.init(ImageLoaderConfiguration.createDefault(context));
 		songList = new SongList(context);
 		fingerprintList = new FingerprintList(context);
+        fingerprintsDeque = new FingerprintsDeque();
 		scrobbler = new Scrobbler(context);
 		songManager = new SongManager(handler, context, scrobbler);
 		searchManager = new SearchManager(config);
-        recognizeManager = new RecognizeManager(config, context);
+        mainRecognizeManager = new RecognizeManager(config, fingerprintsDeque);
+        storageRecognizeManager = new RecognizeManager(config, fingerprintsDeque);
         fingerprintManager = new FingerprintManager(config, context, handler);
         
         vkAccount = new Account();
@@ -106,10 +107,14 @@ public class MicroScrobblerModel {
 	public Scrobbler getScrobbler() {
 		return scrobbler;
 	}
-	
-	public FingerprintList getFingerprintList() {
-		return fingerprintList;
-	}
+
+    public FingerprintList getFingerprintList() {
+        return fingerprintList;
+    }
+
+    public FingerprintsDeque getFingerprintsDeque() {
+        return fingerprintsDeque;
+    }
 	
 	public SongList getSongList() {
 		return songList;
@@ -127,8 +132,12 @@ public class MicroScrobblerModel {
 		return fingerprintManager;
 	}
 	
-	public RecognizeManager getRecognizeManager() {
-		return recognizeManager;
+	public RecognizeManager getMainRecognizeManager() {
+		return mainRecognizeManager;
+	}
+	
+	public RecognizeManager getStorageRecognizeManager() {
+		return storageRecognizeManager;
 	}
 	
 	public Data getHistoryItem(int position) {

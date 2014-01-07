@@ -48,6 +48,7 @@ public class RecognizeService extends Service {
 	
 	@Override 
     public void onDestroy() {
+        Toast.makeText(this, "RecognizeService onDestroy", Toast.LENGTH_LONG).show();
         notificationHandler.finish();
 	}
 
