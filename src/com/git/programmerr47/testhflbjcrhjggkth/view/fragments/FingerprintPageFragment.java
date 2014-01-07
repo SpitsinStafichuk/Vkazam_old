@@ -5,25 +5,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import android.widget.*;
 
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.FingerprintListController;
-import com.git.programmerr47.testhflbjcrhjggkth.controllers.SongListController;
 import com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeServiceConnection;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseSongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.FingerprintList;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongList;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IFingerprintDAOObserver;
-import com.git.programmerr47.testhflbjcrhjggkth.utils.AndroidUtils;
-import com.git.programmerr47.testhflbjcrhjggkth.view.activities.SongInfoActivity;
+import com.git.programmerr47.testhflbjcrhjggkth.utils.NetworkUtils;
 import com.git.programmerr47.testhflbjcrhjggkth.view.adapters.FingerprintListAdapter;
-import com.git.programmerr47.testhflbjcrhjggkth.view.adapters.SongListAdapter;
 
 public class FingerprintPageFragment extends FragmentWithName implements IFingerprintDAOObserver, CompoundButton.OnCheckedChangeListener {
 	private FingerprintListAdapter adapter;
@@ -67,8 +64,12 @@ public class FingerprintPageFragment extends FragmentWithName implements IFinger
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.v("Deleting", "Delete fingerprint");
-                adapter.recognizeFingerprint(view, position);
+                if (NetworkUtils.isNetworkAvailable(FingerprintPageFragment.this.getActivity())) {
+                    Log.v("Figers", "Perform click: " + view + "; " + position);
+                    adapter.recognizeFingerprint(view, position);
+                }  else {
+                    Toast.makeText(FingerprintPageFragment.this.getActivity(), "Network is not available at this moment", Toast.LENGTH_LONG).show();
+                }
             }
         });
         fingerprintHLV.setOnScrollListener(new AbsListView.OnScrollListener() {
@@ -89,6 +90,9 @@ public class FingerprintPageFragment extends FragmentWithName implements IFinger
             @Override
             public void onClick(View view) {
                 autoRecognizeCheckBox.setChecked(!autoRecognizeCheckBox.isChecked());
+                if (autoRecognizeCheckBox.isChecked()) {
+                    controller.startRecognizingIfDequeIsEmpty();
+                }
             }
         });
 
