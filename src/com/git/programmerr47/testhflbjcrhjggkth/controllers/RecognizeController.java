@@ -13,6 +13,7 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.FingerprintData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
 import com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeServiceConnection;
 import com.git.programmerr47.testhflbjcrhjggkth.model.SongData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.FingerprintsDeque;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.FingerprintManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.RecognizeManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.Scrobbler;
@@ -25,6 +26,7 @@ public class RecognizeController implements IFingerprintResultObserver, IRecogni
 	private static final String TAG = "RecognizeController";
 	
 	private MicroScrobblerModel model;
+    private FingerprintsDeque fingerprintsDeque;
     private FingerprintManager fingerprintManager;
     private RecognizeManager recognizeManager;
     private Context context;
@@ -34,9 +36,10 @@ public class RecognizeController implements IFingerprintResultObserver, IRecogni
     public RecognizeController(Context context) {
         model = RecognizeServiceConnection.getModel();
         this.context = context;
+        fingerprintsDeque = model.getFingerprintsDeque();
         fingerprintManager = model.getFingerprintManager();
         fingerprintManager.addFingerprintResultObserver(this);
-        recognizeManager = model.getRecognizeManager();
+        recognizeManager = model.getMainRecognizeManager();
         recognizeManager.addRecognizeResultObserver(this);
         timerDelay = new Timer();
     }
@@ -92,7 +95,7 @@ public class RecognizeController implements IFingerprintResultObserver, IRecogni
 		if (NetworkUtils.isNetworkAvailable(context)) {
 	        recognizeManager.recognizeFingerprint(fingerprintData, false);
 		} else {
-			Log.v("testik", "adding offline finger");
+			Log.v("RecognizeController", "adding offline finger");
 			model.getFingerprintList().add(fingerprintData);
             runTimerDelay();
 		}
@@ -109,7 +112,6 @@ public class RecognizeController implements IFingerprintResultObserver, IRecogni
 
     private void runTimerDelay() {
         if (fingerprintManager.isFingerprintingByTimer()) {
-
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
             int period = prefs.getInt("settingsTimerDelay", 5) * 1000 / 360;
             TimerTask task = new TimerTask() {
