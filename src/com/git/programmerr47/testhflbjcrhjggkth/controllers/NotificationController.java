@@ -95,6 +95,8 @@ public class NotificationController implements ISongInfoObserver, IPlayerStateOb
         model.getMainRecognizeManager().removeRecognizeResultObserver(this);
         model.getMainRecognizeManager().removeRecognizeStatusObserver(this);
         model.getPlayer().removePlayerStateObserver(this);
+
+        hideNotification();
     }
 
     @Override

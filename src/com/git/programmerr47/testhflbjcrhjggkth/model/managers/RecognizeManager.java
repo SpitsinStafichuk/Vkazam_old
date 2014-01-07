@@ -117,11 +117,13 @@ public class RecognizeManager implements GNSearchResultReady, GNOperationStatusC
 	@Override
 	public void addRecognizeResultObserver(IRecognizeResultObserver o) {
 		recognizeResultObservers.add(o);
+        Log.v("RecognizeManager", "after adding, observers = " + recognizeResultObservers.size());
 	}
 
 	@Override
 	public void removeRecognizeResultObserver(IRecognizeResultObserver o) {
 		recognizeResultObservers.remove(o);
+        Log.v("RecognizeManager", "after removing, observers = " + recognizeResultObservers.size());
 	}
 
 	@Override

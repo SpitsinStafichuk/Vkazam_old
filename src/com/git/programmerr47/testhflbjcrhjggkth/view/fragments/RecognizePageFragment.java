@@ -155,7 +155,7 @@ public class RecognizePageFragment
         recognizeManager.removeRecognizeStatusObserver(this);
         recognizeManager.removeRecognizeResultObserver(this);
         controller.finish();
-        Log.v("SongPlayer", "HistoryPageFragment onDestroy()");
+        Log.v("Fragments", "HistoryPageFragment onDestroy()");
     }
     
     @Override

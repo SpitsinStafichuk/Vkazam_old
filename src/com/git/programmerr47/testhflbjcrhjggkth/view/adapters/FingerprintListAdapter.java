@@ -171,7 +171,6 @@ public class FingerprintListAdapter extends BaseAdapter {
             data.setInQueueForRecognizing(true);
             view.startAnimation(addToDequeue);
         } else {
-            data.setInQueueForRecognizing(false);
             final Animation removeFromDequeue = AnimationUtils.loadAnimation(activity, R.anim.remove_from_recognize_queue);
             view.startAnimation(removeFromDequeue);
             ViewHelper.setAlpha(view, 1.0f);
@@ -183,6 +182,7 @@ public class FingerprintListAdapter extends BaseAdapter {
             	model.getStorageRecognizeManager().recognizeFingerprintCancel();
             	model.getFingerprintsDeque().remove(data);
             	data.setRecognizeStatus(null);
+                data.setInQueueForRecognizing(false);
             	notifyDataSetChanged();
             }
         }
@@ -200,9 +200,14 @@ public class FingerprintListAdapter extends BaseAdapter {
 			
 			@Override
 			public void run() {
-        		deque.pollFirst();
-        		Log.v("Fingers", "after deletion deque.size() = " + deque.size());
+                int beforeSize = model.getFingerprintList().size();
 				model.getFingerprintList().remove(data);
+                Log.v("Fingers", "Listsize(adapter) after deletion is " + model.getFingerprintList().size());
+                int afterSize = model.getFingerprintList().size();
+                if (beforeSize > afterSize) {
+                    deque.pollFirst();
+                    Log.v("Fingers", "(adapter) after deletion deque.size() = " + deque.size());
+                }
                 notifyDataSetChanged();
 			}
 		}, deletionAnimation.getDuration() + deletionAnimation.getStartOffset());

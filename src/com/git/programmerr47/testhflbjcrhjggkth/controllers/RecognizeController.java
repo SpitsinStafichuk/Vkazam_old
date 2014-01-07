@@ -95,7 +95,7 @@ public class RecognizeController implements IFingerprintResultObserver, IRecogni
 		if (NetworkUtils.isNetworkAvailable(context)) {
 	        recognizeManager.recognizeFingerprint(fingerprintData, false);
 		} else {
-			Log.v("testik", "adding offline finger");
+			Log.v("RecognizeController", "adding offline finger");
 			model.getFingerprintList().add(fingerprintData);
             runTimerDelay();
 		}

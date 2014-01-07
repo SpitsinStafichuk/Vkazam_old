@@ -57,6 +57,7 @@ public class FingerprintPageFragment extends FragmentWithName implements IFinger
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.v("Fragments", "FingerprintPageFragment: onCreateView");
         View view = inflater.inflate(R.layout.fingerprints_fragment, null);
 
         fingerprintHLV = (ListView) view.findViewById(R.id.listView);
@@ -93,6 +94,13 @@ public class FingerprintPageFragment extends FragmentWithName implements IFinger
 
         return view;
 	}
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.v("Fragments", "FingerprintPageFragment: onDestroyView");
+        controller.setListView(null);
+    }
 
     @Override
     public void onResume() {
