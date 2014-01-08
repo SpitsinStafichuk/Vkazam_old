@@ -62,8 +62,8 @@ public class SongInfoController extends SongController{
 
 		ProgressDialogFragment.Builder appProgressDialogBuilder = new ProgressDialogFragment.Builder();
 		appProgressDialogBuilder.setIcon(R.drawable.ic_progress_dialog);
-		appProgressDialogBuilder.setMessage("Please wait for answer from vk");
-		appProgressDialogBuilder.setTitle("Waiting for answer");
+		appProgressDialogBuilder.setMessage(view.getString(R.string.awaiting_vk_lyrics_message));
+		appProgressDialogBuilder.setTitle(view.getString(R.string.awaiting_title));
 		appProgressDialogBuilder.setProgressStyle(ProgressDialogFragment.Builder.STYLE_SPINNER);
 
         FragmentTransaction fragmentTransaction = view.getSupportFragmentManager().beginTransaction();
@@ -96,9 +96,9 @@ public class SongInfoController extends SongController{
 			                
 			                MessageDialogFragment.Builder appDialogBuilder = new MessageDialogFragment.Builder();
 			        		appDialogBuilder.setIcon(R.drawable.ic_alert_dialog);
-			        		appDialogBuilder.setMessage("Vk lyrics is not available for this song. You can choose another url or get lyrics from musicXmatch");
-			        		appDialogBuilder.setTitle("No lyrics for song");
-			        		appDialogBuilder.setPositiveButton("Choose url", new onDialogClickListener() {
+			        		appDialogBuilder.setMessage(view.getString(R.string.no_vk_lyrics_message));
+			        		appDialogBuilder.setTitle(view.getString(R.string.no_vk_lyrics_title));
+			        		appDialogBuilder.setPositiveButton(view.getString(R.string.action_refresh), new onDialogClickListener() {
 								
 								@Override
 								public void onDialogClick(DialogFragment fragment, View v) {
@@ -108,7 +108,7 @@ public class SongInfoController extends SongController{
 			        				fragment.dismiss();
 								}
 							});
-			        		appDialogBuilder.setNegativeButton("Get MM lyrics", new onDialogClickListener() {
+			        		appDialogBuilder.setNegativeButton(view.getString(R.string.get_musixmatch_lyrics), new onDialogClickListener() {
 								
 								@Override
 								public void onDialogClick(DialogFragment fragment, View v) {
@@ -181,9 +181,9 @@ public class SongInfoController extends SongController{
                     MessageDialogFragment.Builder appDialogBuilder = new MessageDialogFragment.Builder();
                     
 	        		appDialogBuilder.setIcon(R.drawable.ic_alert_dialog);
-                    appDialogBuilder.setMessage("You need to install Musixmatch\\'s app and launch it at least one time to see lyrics");
-                    appDialogBuilder.setTitle("No musiXmatch application");
-                    appDialogBuilder.setPositiveButton("Get MusiXmatch", new onDialogClickListener() {
+                    appDialogBuilder.setMessage(view.getString(R.string.no_musixmatch_app_message));
+                    appDialogBuilder.setTitle(view.getString(R.string.no_musixmatch_app_title));
+                    appDialogBuilder.setPositiveButton(view.getString(R.string.get_musixmatch), new onDialogClickListener() {
 						
 						@Override
 						public void onDialogClick(DialogFragment fragment, View v) {
@@ -193,7 +193,7 @@ public class SongInfoController extends SongController{
                             fragment.dismiss();
 						}
 					});
-                    appDialogBuilder.setNegativeButton("No, thanks", new onDialogClickListener() {
+                    appDialogBuilder.setNegativeButton(view.getString(R.string.no_thanks), new onDialogClickListener() {
 						
 						@Override
 						public void onDialogClick(DialogFragment fragment, View v) {
@@ -224,8 +224,8 @@ public class SongInfoController extends SongController{
 
 		ProgressDialogFragment.Builder appProgressDialogBuilder = new ProgressDialogFragment.Builder();
 		appProgressDialogBuilder.setIcon(R.drawable.ic_progress_dialog);
-		appProgressDialogBuilder.setMessage("Please wait for answer from youtube app");
-		appProgressDialogBuilder.setTitle("Waiting for answer");
+		appProgressDialogBuilder.setMessage(view.getString(R.string.awaiting_youtube_message));
+		appProgressDialogBuilder.setTitle(view.getString(R.string.awaiting_title));
 		appProgressDialogBuilder.setProgressStyle(ProgressDialogFragment.Builder.STYLE_SPINNER);
 
         FragmentTransaction fragmentTransaction = view.getSupportFragmentManager().beginTransaction();
