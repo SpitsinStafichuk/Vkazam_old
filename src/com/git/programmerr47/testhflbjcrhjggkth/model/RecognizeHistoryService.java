@@ -2,14 +2,18 @@ package com.git.programmerr47.testhflbjcrhjggkth.model;
 
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.RecognizeManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeStatusObserver;
+import com.git.programmerr47.testhflbjcrhjggkth.view.activities.MicrophonePagerActivity;
 
 import android.app.Service;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
-public class RecognizeHistoryService extends Service implements IRecognizeStatusObserver {
+public class RecognizeHistoryService extends Service implements IRecognizeStatusObserver, ServiceConnection {
 	
 	private static final String TAG = "RecognizeService";
 	private RecognizeManager recognizeManager;
@@ -30,7 +34,7 @@ public class RecognizeHistoryService extends Service implements IRecognizeStatus
 		if(!MicroScrobblerModel.hasContext()) {
 			MicroScrobblerModel.setContext(this);
 		}
-		recognizeManager = RecognizeServiceConnection.getModel().getRecognizeManager();
+		bindService(new Intent(RecognizeHistoryService.this, RecognizeService.class), this, Context.BIND_AUTO_CREATE);
 	}
 	
 	@Override 
@@ -55,6 +59,7 @@ public class RecognizeHistoryService extends Service implements IRecognizeStatus
 	
 	@Override 
     public void onDestroy() {
+        Toast.makeText(this, "RecognizeHistoryService onDestroy", Toast.LENGTH_LONG).show();
 		isStarted = false;
 	}
 
@@ -74,6 +79,18 @@ public class RecognizeHistoryService extends Service implements IRecognizeStatus
 	public void onRecognizeStatusChanged(String status) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void onServiceConnected(ComponentName className, IBinder service) {
+		Log.i(TAG, "onServiceConnected");
+		RecognizeServiceConnection.setModel(((RecognizeService.RecognizeBinder) service).getService().getModel());
+	}
+
+	@Override
+	public void onServiceDisconnected(ComponentName className) {
+		Log.i(TAG, "onServiceDisconnectedFromService");
+		RecognizeServiceConnection.setModel(null);
 	}
 
 }

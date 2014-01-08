@@ -81,7 +81,7 @@ public class RecognizePageFragment
         fingerprintManager = model.getFingerprintManager();
         fingerprintManager.addFingerprintStatusObserver(this);
         fingerprintManager.addFingerprintTimerObserver(this);
-        recognizeManager = model.getRecognizeManager();
+        recognizeManager = model.getMainRecognizeManager();
         recognizeManager.addRecognizeStatusObserver(this);
         recognizeManager.addRecognizeResultObserver(this);
         firstTimeApearing = true;
@@ -155,7 +155,7 @@ public class RecognizePageFragment
         recognizeManager.removeRecognizeStatusObserver(this);
         recognizeManager.removeRecognizeResultObserver(this);
         controller.finish();
-        Log.v("SongPlayer", "HistoryPageFragment onDestroy()");
+        Log.v("Fragments", "HistoryPageFragment onDestroy()");
     }
     
     @Override

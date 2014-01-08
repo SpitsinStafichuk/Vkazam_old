@@ -28,7 +28,7 @@
         <RelativeLayout
                 android:layout_width="130dp"
                 android:layout_height="130dp"
-                android:layout_alignLeft="@+id/microTimerListenButton">
+                android:layout_alignLeft="@+id/microNowListenButton">
 
             <ImageButton
                     android:id="@+id/microTimerListenButton"
