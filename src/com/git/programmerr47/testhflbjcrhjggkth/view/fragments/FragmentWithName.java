@@ -20,7 +20,6 @@ public class FragmentWithName extends Fragment{
 	}
 	
 	public Drawable getIcon() {
-		Log.v("testik", "context = " + context);
 		return context.getResources().getDrawable(icon);
 	}
 	
@@ -34,6 +33,5 @@ public class FragmentWithName extends Fragment{
 	
 	protected void setContext(Context context) {
 		this.context = context;
-		Log.v("testik", "setted context = " + context);
 	}
 }

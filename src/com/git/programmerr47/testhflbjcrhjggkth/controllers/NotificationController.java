@@ -47,8 +47,8 @@ public class NotificationController implements ISongInfoObserver, IPlayerStateOb
         //adding observers
         model.getSongManager().addSongIngoObserver(this);
         model.getFingerprintManager().addFingerprintStatusObserver(this);
-        model.getRecognizeManager().addRecognizeResultObserver(this);
-        model.getRecognizeManager().addRecognizeStatusObserver(this);
+        model.getMainRecognizeManager().addRecognizeResultObserver(this);
+        model.getMainRecognizeManager().addRecognizeStatusObserver(this);
         model.getPlayer().addPlayerStateObserver(this);
 
         //init notification
@@ -92,9 +92,11 @@ public class NotificationController implements ISongInfoObserver, IPlayerStateOb
 
         model.getSongManager().removeSongIngoObserver(this);
         model.getFingerprintManager().removeFingerprintStatusObserver(this);
-        model.getRecognizeManager().removeRecognizeResultObserver(this);
-        model.getRecognizeManager().removeRecognizeStatusObserver(this);
+        model.getMainRecognizeManager().removeRecognizeResultObserver(this);
+        model.getMainRecognizeManager().removeRecognizeStatusObserver(this);
         model.getPlayer().removePlayerStateObserver(this);
+
+        hideNotification();
     }
 
     @Override

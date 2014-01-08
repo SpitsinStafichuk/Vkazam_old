@@ -6,6 +6,9 @@ public class FingerprintData {
 	
 	protected String fingerprint;
 	protected Date date;
+    private boolean isInQueueForRecognizing;
+    private boolean isDeleting;
+    private String recognizeStatus;
 	
 	public FingerprintData(String fingerprint, Date date) {
 		this.fingerprint = fingerprint;
@@ -27,4 +30,28 @@ public class FingerprintData {
 	public void setDate(Date date) {
 		this.date = date;
 	}
+
+    public boolean isInQueueForRecognizing() {
+        return isInQueueForRecognizing;
+    }
+
+    public void setInQueueForRecognizing(boolean b) {
+        isInQueueForRecognizing = b;
+    }
+    
+    public boolean isDeleting() {
+    	return isDeleting;
+    }
+    
+    public void setDeleting(boolean isDeleting) {
+    	this.isDeleting = isDeleting;
+    }
+    
+    public String getRecognizeStatus() {
+    	return recognizeStatus;
+    }
+    
+    public void setRecognizeStatus(String status) {
+    	recognizeStatus = status;
+    }
 }
