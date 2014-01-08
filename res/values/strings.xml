@@ -45,5 +45,28 @@
     <string name="timer_delay_dialog_summary">Move the slider to set custom timer delay. Then click accept button to save changes or push cancel button to discard them</string>
     <string name="accept_button">Accept</string>
     <string name="cancel_button">Cancel</string>
+
+    <string name="pp_player_label">Audio player for ProstoPleer urls</string>
+    <string name="vk_player_label">Audio player for Vkontakte urls</string>
+    <string name="get_lyrics">Get lyrics</string>
+    <string name="get_youtube_video">Watch YouTube video</string>
+    <string name="track_id_label">Track Id:</string>
+    <string name="artist_label">Artist:</string>
+    <string name="title_label">Title:</string>
+    <string name="album_label">Album:</string>
+    <string name="date_label">Date of recognizing:</string>
+
+    <string name="awaiting_vk_lyrics_message">Please wait for answer from VK</string>
+    <string name="awaiting_youtube_message">Please wait for answer from youtube app</string>
+    <string name="awaiting_title">Waiting for answer</string>
+    <string name="no_musixmatch_app_message">You need to install Musixmatch\'s app and launch it at least one time to see lyrics</string>
+    <string name="no_musixmatch_app_title">No musiXmatch application</string>
+    <string name="get_musixmatch">Get Musixmatch</string>
+    <string name="no_thanks">No, thanks</string>
+    <string name="no_vk_lyrics_message">Vk lyrics is not available for this song. You can choose another url or get lyrics from Musicxmatch</string>
+    <string name="no_vk_lyrics_title">No lyrics for song</string>
+    <string name="get_musixmatch_lyrics">Get MM lyrics</string>
+    <string name="bad_lyrics_message">Don\'t like this lyrics? You can choose another url or get lyrics from musicXmatch</string>
+    <string name="bad_lyrics_title">Bad lyrics</string>
     
 </resources>

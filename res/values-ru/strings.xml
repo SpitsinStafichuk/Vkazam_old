@@ -45,5 +45,28 @@
     <string name="timer_delay_dialog_summary">Переместите ползунок для изменения задержки. Затем кликните по кнопке \"Принять\" для сохранения изменений или нажмите на кнопку \"Отменить\" для сброса</string>
     <string name="accept_button">Принять</string>
     <string name="cancel_button">Отменить</string>
+
+    <string name="pp_player_label">Плеер для ссылок из ProstoPleer</string>
+    <string name="vk_player_label">Плеер для ссылок из Вконтакте</string>
+    <string name="get_lyrics">Просмотреть текст</string>
+    <string name="get_youtube_video">Посмотреть видео из YouTube</string>
+    <string name="track_id_label">Id Трека:</string>
+    <string name="artist_label">Исполнитель:</string>
+    <string name="title_label">Название:</string>
+    <string name="album_label">Альбом:</string>
+    <string name="date_label">Дата распознания:</string>
+
+    <string name="awaiting_vk_lyrics_message">Пожалуйста, дождитесь ответа ВК</string>
+    <string name="awaiting_youtube_message">Пожалуйста, дождитесь ответа YouTube</string>
+    <string name="awaiting_title">Ожидание ответа</string>
+    <string name="no_musixmatch_app_message">Вам нужно установить приложение Musixmatch и запустить его хотя бы один раз, чтобы увидеть текст песни</string>
+    <string name="no_musixmatch_app_title">Отсутсвие Musixmatch</string>
+    <string name="get_musixmatch">Получить Musixmatch</string>
+    <string name="no_thanks">Нет, спасибо</string>
+    <string name="no_vk_lyrics_message">Текст песни из ВК недоступен для данной песни. Вы можете выбрать другую ссылку или получить текст песни из Musixmatch</string>
+    <string name="no_vk_lyrics_title">Отсутствует текст для песни</string>
+    <string name="get_musixmatch_lyrics">Получить текст из MM</string>
+    <string name="bad_lyrics_message">Не нравится текст песни? Вы можете выбрать другую ссылку или получить текст песни из Musixmatch</string>
+    <string name="bad_lyrics_title">Плохой текст песни</string>
     
 </resources>

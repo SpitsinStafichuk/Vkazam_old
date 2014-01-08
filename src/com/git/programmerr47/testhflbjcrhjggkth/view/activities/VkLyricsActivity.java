@@ -84,9 +84,9 @@ public class VkLyricsActivity extends FragmentActivity{
 				
                 MessageDialogFragment.Builder appDialogBuilder = new MessageDialogFragment.Builder();
         		appDialogBuilder.setIcon(R.drawable.ic_alert_dialog);
-        		appDialogBuilder.setMessage("Don't like this lyrics. You can choose another url or get lyrics from musicXmatch");
-        		appDialogBuilder.setTitle("Bad lyrics");
-        		appDialogBuilder.setPositiveButton("Choose url", new onDialogClickListener() {
+        		appDialogBuilder.setMessage(getString(R.string.bad_lyrics_message));
+        		appDialogBuilder.setTitle(getString(R.string.bad_lyrics_title));
+        		appDialogBuilder.setPositiveButton(getString(R.string.action_refresh), new onDialogClickListener() {
 					
 					@Override
 					public void onDialogClick(DialogFragment fragment, View v) {
@@ -97,7 +97,7 @@ public class VkLyricsActivity extends FragmentActivity{
         				fragment.dismiss();
 					}
 				});
-        		appDialogBuilder.setNegativeButton("Get MM lyrics", new onDialogClickListener() {
+        		appDialogBuilder.setNegativeButton(getString(R.string.get_musixmatch_lyrics), new onDialogClickListener() {
 					
 					@Override
 					public void onDialogClick(DialogFragment fragment, View v) {
