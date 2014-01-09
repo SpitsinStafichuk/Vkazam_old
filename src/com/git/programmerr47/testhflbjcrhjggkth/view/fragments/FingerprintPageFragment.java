@@ -68,7 +68,7 @@ public class FingerprintPageFragment extends FragmentWithName implements IFinger
                     Log.v("Figers", "Perform click: " + view + "; " + position);
                     adapter.recognizeFingerprint(view, position);
                 }  else {
-                    Toast.makeText(FingerprintPageFragment.this.getActivity(), "Network is not available at this moment", Toast.LENGTH_LONG).show();
+                    Toast.makeText(FingerprintPageFragment.this.getActivity(), getString(R.string.network_not_available), Toast.LENGTH_LONG).show();
                 }
             }
         });

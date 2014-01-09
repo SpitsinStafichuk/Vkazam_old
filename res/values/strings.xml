@@ -1,27 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Application strings -->
     <string name="app_name">Vkazam</string>
 
+    <!-- Context menu strings -->
     <string name="action_settings">Settings</string>
     <string name="action_refresh">Choose URL</string>
 
+    <!-- Main pager strings -->
     <string name="tagging_page_fragment_caption">Tagging</string>
     <string name="history_page_fragment_caption">History</string>
     <string name="fingerprints_page_fragment_caption">Fingerprints</string>
     <string name="search_page_fragment_caption">Search</string>
 
+    <!-- Search page strings -->
     <string name="status">Status</string>
     <string name="artist">Artist</string>
     <string name="title">Title</string>
     <string name="album">Album</string>
     <string name="search">Search</string>
 
+    <!-- Recognize page strings -->
     <string name="recognize_button">Click on Button\nto start or stop\nrecognizing</string>
     <string name="recognize_status">Status</string>
     <string name="recognize_status_listening">Listening</string>
     <string name="recognize_status_recognizing">Recognizing</string>
 
+    <!-- Settings strings -->
     <string name="settings_title">SETTINGS</string>
     <string name="settings_vk_title">Vkontakte</string>
     <string name="settings_vk_summary">Sync with vkontakte</string>
@@ -41,11 +47,13 @@
     <string name="settings_timer_delay_summary">Setting fingerprint timer delay</string>
     <string name="settings_secs">sec</string>
 
+    <!-- Timer delay dialog strings -->
     <string name="timer_delay_dialog_title">Timer delay</string>
     <string name="timer_delay_dialog_summary">Move the slider to set custom timer delay. Then click accept button to save changes or push cancel button to discard them</string>
     <string name="accept_button">Accept</string>
     <string name="cancel_button">Cancel</string>
 
+    <!-- Song info strings -->
     <string name="pp_player_label">Audio player for ProstoPleer urls</string>
     <string name="vk_player_label">Audio player for Vkontakte urls</string>
     <string name="get_lyrics">Get lyrics</string>
@@ -56,6 +64,7 @@
     <string name="album_label">Album:</string>
     <string name="date_label">Date of recognizing:</string>
 
+    <!-- Dialogs strings -->
     <string name="awaiting_vk_lyrics_message">Please wait for answer from VK</string>
     <string name="awaiting_youtube_message">Please wait for answer from youtube app</string>
     <string name="awaiting_title">Waiting for answer</string>
@@ -68,5 +77,32 @@
     <string name="get_musixmatch_lyrics">Get MM lyrics</string>
     <string name="bad_lyrics_message">Don\'t like this lyrics? You can choose another url or get lyrics from musicXmatch</string>
     <string name="bad_lyrics_title">Bad lyrics</string>
+    <string name="loading_title">Loading</string>
+    <string name="loading_message">is saving for offline listening</string>
+
+    <!-- Choose url pager strings -->
+    <string name="more_elements">More songs</string>
+
+    <!-- Toasts strings -->
+    <string name="empty_fingerlist">List of fingers is empty</string>
+    <string name="network_not_available">Network is not available at this moment</string>
+    <string name="musixmatch_not_available">Can not connect to Musixmatch, try again later</string>
+    <string name="video_not_found">Video is not found</string>
+    <string name="ext_storage_not_available">External storage is not available</string>
+    <string name="added_in_vk_music">Song was added in your VK music</string>
+    <string name="download_error">Backup error:</string>
+    <string name="download_cancel">Saving is cancel</string>
+    <string name="download_success">File is saved for offline listening</string>
+    <string name="no_more_songs">No more songs</string>
+    <string name="song_not_found">Song is not found</string>
+    <string name="internet_connection_not_available">Seems you haven\'t internet connection</string>
+    <string name="vk_not_available">Seems you haven\'t VK connection. Use settings to log in</string>
+
+    <!-- Sharing strings -->
+    <string name="share_song">Share song</string>
+    <string name="new_song_title">Vkazam - new song</string>
+    <string name="new_song_lyrics_title">Vkazam - new song (lyrics)</string>
+    <string name="new_song_message">I recognized a nice song on Vkazam:</string>
+    <string name="new_song_lyrics_message">I just read lyrics from song</string>
     
 </resources>

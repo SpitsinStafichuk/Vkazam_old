@@ -121,10 +121,10 @@ public class SongInfoController extends SongController{
 			                dialogFragment.show(fragmentTransaction, SHOW_DIALOG_TAG);
 						}
 					} catch (MalformedURLException e) {
-						showToast("Seems you haven't internet connection");
+						showToast(view.getString(R.string.internet_connection_not_available));
 						e.printStackTrace();
 					} catch (IOException e) {
-						showToast("Seems you haven't internet connection");
+                        showToast(view.getString(R.string.internet_connection_not_available));
 						e.printStackTrace();
 					} catch (JSONException e) {
 						showToast(e.getLocalizedMessage());
@@ -133,12 +133,12 @@ public class SongInfoController extends SongController{
 						showToast(e.getLocalizedMessage());
 						e.printStackTrace();
 					} catch (SongNotFoundException e) {
-						showToast("Song is not found");
+						showToast(view.getString(R.string.song_not_found));
 						e.printStackTrace();
 					}
 	        		
 	        	} else {
-	        		showToast("Vk is not available. Did you connected to vkontakte?");
+	        		showToast(view.getString(R.string.vk_not_available));
 	        	}
 	        	dialogFragment.dismiss();
                 Looper.loop();
@@ -167,7 +167,7 @@ public class SongInfoController extends SongController{
                             try {
                                 lyricsPlugin.startLyricsActivity(artist,title);
                             } catch (RemoteException e) {
-                                Toast.makeText(view, "Can not connect to MusiXmatch, try again later", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(view, view.getString(R.string.musixmatch_not_available), Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -244,7 +244,7 @@ public class SongInfoController extends SongController{
                 try {
                     youtubeUrl = YoutubeUtils.sendRequest(data.getArtist() + " " + data.getTitle());
                     if (youtubeUrl == null) {
-                        Toast.makeText(view, "Can not find video", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(view, view.getString(R.string.video_not_found), Toast.LENGTH_SHORT).show();
                     } else {
                         view.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(youtubeUrl)));
                     }

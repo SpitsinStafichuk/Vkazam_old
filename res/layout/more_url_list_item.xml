@@ -24,14 +24,14 @@
                 android:layout_height="wrap_content"
                 android:minHeight="20dp"
                 android:minWidth="20dp"
-                android:visibility="visible"/>
+                android:visibility="gone"/>
 
 
         <TextView
                 android:id="@+id/moreListItemLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="More elements"
+                android:text="@string/more_elements"
                 android:textSize="20sp"/>
 
     </LinearLayout>

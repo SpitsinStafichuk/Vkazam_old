@@ -165,7 +165,7 @@ public class PleerListAdapter extends BaseAdapter {
                             Log.v("PleerListAdapter", "" + listUpdateFinal);
                             if (listUpdateFinal <= 0) {
                                 isFullList = true;
-                                Toast.makeText(activity, "No more songs", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(activity, activity.getString(R.string.no_more_songs), Toast.LENGTH_SHORT).show();
                                 Log.v("PleerListAdapter", "No more songs");
                             }
                             PleerListAdapter.this.notifyDataSetChanged();
