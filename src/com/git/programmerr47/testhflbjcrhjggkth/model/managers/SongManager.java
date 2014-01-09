@@ -270,8 +270,10 @@ public class SongManager implements ISongInfoObserverable, ISongProgressObservab
 	}
 
     public synchronized void seekTo(int percent) {
-        if (songPlayer.getDuration() != -1) {
-            songPlayer.seekTo(songPlayer.getDuration() * percent / 100);
+        if (songPlayer.isPrepared()) {
+            if (songPlayer.getDuration() != -1) {
+                songPlayer.seekTo(songPlayer.getDuration() * percent / 100);
+            }
         }
     }
 
