@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.view.activities.interfaces.IConnectedDialogFragmentDissmised;
@@ -58,6 +59,13 @@ public class TimerDelayDialogFragment extends DialogFragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.timer_delay, container, false);
+
+        TextView min = (TextView) view.findViewById(R.id.minDelay);
+        min.setText("2 " + getString(R.string.settings_secs));
+
+        TextView max = (TextView) view.findViewById(R.id.maxDelay);
+        max.setText("300 " + getString(R.string.settings_secs));
+
         chooseBar = (SeekBar) view.findViewById(R.id.timerDelayChooseBar);
         chooseBar.setProgress(result - 2);
         chooseBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {

@@ -3,6 +3,7 @@ package com.git.programmerr47.testhflbjcrhjggkth.controllers;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
+import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.model.exceptions.VkAccountNotFoundException;
 import com.git.programmerr47.testhflbjcrhjggkth.view.activities.SongInfoActivity;
 import org.json.JSONException;
@@ -89,15 +90,15 @@ public class SongController {
                 Log.v("SongListController", "song was prepared ");
 				songManager.play();
 			} catch (SongNotFoundException e) {
-				showToast("Song is not found");
+				showToast(view.getString(R.string.song_not_found));
 				songManager.release();
 				songManager.set(null, -1, model.getVkApi());
 			} catch (MalformedURLException e) {
-				showToast("Seems you haven't internet connection");
+				showToast(view.getString(R.string.internet_connection_not_available));
 				songManager.release();
 				songManager.set(null, -1, model.getVkApi());
 			} catch (IOException e) {
-				showToast("Seems you haven't internet connection");
+                showToast(view.getString(R.string.internet_connection_not_available));
 				songManager.release();
 				songManager.set(null, -1, model.getVkApi());
 			} catch (JSONException e) {
@@ -113,7 +114,7 @@ public class SongController {
 				songManager.release();
 				songManager.set(null, -1, model.getVkApi());
 			} catch (VkAccountNotFoundException e) {
-                showToast("Seems you haven't vk account. Use settings to log in");
+                showToast(view.getString(R.string.vk_not_available));
                 songManager.release();
                 songManager.set(null, -1, model.getVkApi());
             }

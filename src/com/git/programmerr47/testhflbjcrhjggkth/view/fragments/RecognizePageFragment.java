@@ -68,7 +68,7 @@ public class RecognizePageFragment
         RecognizePageFragment pageFragment = new RecognizePageFragment();
         Bundle arguments = new Bundle();
         pageFragment.setArguments(arguments);
-        pageFragment.setFragmentName("Tagging");
+        pageFragment.setFragmentName(context.getString(R.string.tagging_page_fragment_caption));
         pageFragment.setContext(context);
         return pageFragment;
     }
@@ -134,7 +134,7 @@ public class RecognizePageFragment
         });
         
         Button microNowListenButton = (Button) view.findViewById(R.id.microNowListenButton);
-        microNowListenButton.setText("Click on Button\n to start or stop\n recognizing");
+        microNowListenButton.setText(getString(R.string.recognize_button));
         microNowListenButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -253,9 +253,9 @@ public class RecognizePageFragment
         statusProgress.setProgress(progress);
 
         if (status.contains(patternListening)) {
-            this.status.setText(patternListening);
+            this.status.setText(getString(R.string.recognize_status_listening));
         } else if (status.contains(patternRecognizing)) {
-            this.status.setText(patternRecognizing);
+            this.status.setText(getString(R.string.recognize_status_recognizing));
         } else {
             this.status.setText(status);
         }

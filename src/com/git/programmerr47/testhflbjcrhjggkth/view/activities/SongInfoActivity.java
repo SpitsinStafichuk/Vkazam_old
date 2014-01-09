@@ -196,9 +196,13 @@ public class SongInfoActivity extends FragmentActivity implements IPlayerStateOb
 			public void onClick(View v) {
 				Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
 				sharingIntent.setType("text/plain");
-				sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "VKAZAM - new song");
-				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, "I recognized a nice song on VKAZAM: " + data.getArtist() + " - " + data.getTitle() + " ("+ data.getAlbum() +")");
-				startActivity(Intent.createChooser(sharingIntent, "Share song"));
+				sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getString(R.string.new_song_title));
+                if (data.getAlbum() != null) {
+                    sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.new_song_message) + " " + data.getArtist() + " - " + data.getTitle() + " ("+ data.getAlbum() +")");
+                } else {
+                    sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.new_song_message) + " " + data.getArtist() + " - " + data.getTitle());
+                }
+				startActivity(Intent.createChooser(sharingIntent, getString(R.string.share_song)));
 			}
 		});
 		
@@ -207,14 +211,14 @@ public class SongInfoActivity extends FragmentActivity implements IPlayerStateOb
 			
 			@Override
 			public void onClick(View v) {
-				new AddToVkTask().execute(data);
+				new AddToVkTask(SongInfoActivity.this).execute(data);
 			}
 		});
 		
 		appProgressDialogBuilder = new ProgressDialogFragment.Builder();
 		appProgressDialogBuilder.setIcon(R.drawable.ic_progress_dialog);
-		appProgressDialogBuilder.setMessage(data.getFullTitle() + " is downloading");
-		appProgressDialogBuilder.setTitle("Loading");
+		appProgressDialogBuilder.setMessage(data.getFullTitle() + " " + getString(R.string.loading_message));
+		appProgressDialogBuilder.setTitle(getString(R.string.loading_title));
 		appProgressDialogBuilder.setProgressStyle(ProgressDialogFragment.Builder.STYLE_HORIZONTAL);
 		
 		downloadPPButton = (ImageButton) findViewById(R.id.downloadPPButton);
@@ -224,16 +228,16 @@ public class SongInfoActivity extends FragmentActivity implements IPlayerStateOb
 			public void onClick(View v) {
 				if(FileSystemUtils.isExternalStorageWritable()) {
 					final DownloadTask downloadTask = new DownloadTask(SongInfoActivity.this, DownloadTask.PP_TASK);
+                    appProgressDialogBuilder.setOnCancelListener(new OnCancelListener() {
+
+                        @Override
+                        public void onCancel(ProgressDialogFragment fragment) {
+                            downloadTask.cancel(true);
+                        }
+                    });
 					downloadTask.execute(data);
-					appProgressDialogBuilder.setOnCancelListener(new OnCancelListener() {
-						
-						@Override
-						public void onCancel(ProgressDialogFragment fragment) {
-					        downloadTask.cancel(true);
-						}
-					});
 				} else {
-					Toast.makeText(SongInfoActivity.this, "External storage is not available", Toast.LENGTH_SHORT).show();
+					Toast.makeText(SongInfoActivity.this, getString(R.string.ext_storage_not_available), Toast.LENGTH_SHORT).show();
 				}
 			}
 		});
@@ -244,16 +248,16 @@ public class SongInfoActivity extends FragmentActivity implements IPlayerStateOb
             public void onClick(View view) {
                 if(FileSystemUtils.isExternalStorageWritable()) {
                     final DownloadTask downloadTask = new DownloadTask(SongInfoActivity.this, DownloadTask.VK_TASK);
+                    appProgressDialogBuilder.setOnCancelListener(new OnCancelListener() {
+
+                        @Override
+                        public void onCancel(ProgressDialogFragment fragment) {
+                            downloadTask.cancel(true);
+                        }
+                    });
                     downloadTask.execute(data);
-					appProgressDialogBuilder.setOnCancelListener(new OnCancelListener() {
-						
-						@Override
-						public void onCancel(ProgressDialogFragment fragment) {
-					        downloadTask.cancel(true);
-						}
-					});
                 } else {
-                    Toast.makeText(SongInfoActivity.this, "External storage is not available", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SongInfoActivity.this, getString(R.string.ext_storage_not_available), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -348,13 +352,20 @@ public class SongInfoActivity extends FragmentActivity implements IPlayerStateOb
 	    
 	    @Override
 	    protected void onPostExecute(String result) {
+            Log.v("ProgressDialog", "onPostDownLoad: " + result);
 	    	dialogFragment.dismiss();
 	        if (result != null) {
-	            Toast.makeText(context, "Download error: " + result, Toast.LENGTH_LONG).show();
+	            Toast.makeText(context, context.getString(R.string.download_error) + " " + result, Toast.LENGTH_LONG).show();
 	        } else {
-	            Toast.makeText(context, "File downloaded", Toast.LENGTH_SHORT).show();
+	            Toast.makeText(context, context.getString(R.string.download_success), Toast.LENGTH_SHORT).show();
 	        }
 	    }
+
+        @Override
+        protected void onCancelled(String result) {
+            Log.v("ProgressDialog", "onCancel: " + result);
+            Toast.makeText(context, context.getString(R.string.download_cancel), Toast.LENGTH_SHORT).show();
+        }
 
 	    @Override
 	    protected String doInBackground(DatabaseSongData... databaseSongData) {
@@ -387,7 +398,7 @@ public class SongInfoActivity extends FragmentActivity implements IPlayerStateOb
                             String vkUrl = audioList.get(0).url;
                             url = new URL(vkUrl);
                         } else {
-                            throw new JSONException("No vk api. Try to set it in settings");
+                            throw new JSONException(context.getString(R.string.vk_not_available));
                         }
                     }
 	                connection = (HttpURLConnection) url.openConnection();
@@ -414,8 +425,10 @@ public class SongInfoActivity extends FragmentActivity implements IPlayerStateOb
 	                int count;
 	                while ((count = input.read(data)) != -1) {
 	                    // allow canceling with back button
-	                    if (isCancelled())
-	                        return null;
+	                    if (isCancelled()) {
+                            Log.v("ProgressDialog", "Download is canceled");
+                            return context.getString(R.string.download_cancel);
+                        }
 	                    total += count;
 	                    // publishing the progress....
 	                    if (fileLength > 0) // only if total length is known
@@ -423,7 +436,7 @@ public class SongInfoActivity extends FragmentActivity implements IPlayerStateOb
 	                    output.write(data, 0, count);
 	                }
 	            } catch (Exception e) {
-	                return e.toString();
+	                return e.getLocalizedMessage();
 	            } finally {
 	                try {
 	                    if (output != null)
@@ -444,58 +457,64 @@ public class SongInfoActivity extends FragmentActivity implements IPlayerStateOb
 	}
 	
 	private class AddToVkTask extends AsyncTask<DatabaseSongData, Void, String> {
-		
-	     protected String doInBackground(DatabaseSongData... databaseSongDatas) {
-	    	 String result = null;
-	    	 String audioId = databaseSongDatas[0].getVkAudioId();
-	    	 if(audioId == null) {
-	    		 try {
-					databaseSongDatas[0].findVkAudio(vkApi);
-				} catch (MalformedURLException e) {
-					e.printStackTrace();
-					result = e.getMessage();
-				} catch (IOException e) {
-					e.printStackTrace();
-					result = e.getMessage();
-				} catch (JSONException e) {
-					e.printStackTrace();
-					result = e.getMessage();
-				} catch (KException e) {
-					e.printStackTrace();
-					result = e.getMessage();
-				} catch (SongNotFoundException e) {
-					e.printStackTrace();
-					result = e.getMessage();
-				}
-	    		 audioId = databaseSongDatas[0].getVkAudioId();
-	    	 }
-             if (audioId != null) {
-                 String[] ids = audioId.split("_");
-                 long oid = Long.parseLong(ids[0]);
-                 long aid = Long.parseLong(ids[1]);
-                 try {
-                     result = "Song was added with id " +
-                             vkApi.addAudio(aid, oid, null, null, null);
-                 } catch (MalformedURLException e) {
-                     e.printStackTrace();
-                     result = e.getMessage();
-                 } catch (IOException e) {
-                     result = e.getMessage();
-                     e.printStackTrace();
-                 } catch (JSONException e) {
-                     result = e.getMessage();
-                     e.printStackTrace();
-                 } catch (KException e) {
-                     result = e.getMessage();
-                     e.printStackTrace();
-                 }
-             }
-	         return result;
-	     }
 
-	     protected void onPostExecute(String result) {
-	    	 Toast.makeText(SongInfoActivity.this, result, Toast.LENGTH_SHORT).show();
-	     }
+        private Context context;
+
+        public AddToVkTask(Context context) {
+            this.context = context;
+        }
+
+        protected String doInBackground(DatabaseSongData... databaseSongData) {
+            String result = null;
+            String audioId = databaseSongData[0].getVkAudioId();
+            if(audioId == null) {
+                try {
+                    databaseSongData[0].findVkAudio(vkApi);
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                    result = e.getLocalizedMessage();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    result = e.getLocalizedMessage();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    result = e.getLocalizedMessage();
+                } catch (KException e) {
+                    e.printStackTrace();
+                    result = e.getLocalizedMessage();
+                } catch (SongNotFoundException e) {
+                    e.printStackTrace();
+                    result = e.getLocalizedMessage();
+                }
+                audioId = databaseSongData[0].getVkAudioId();
+            }
+            if (audioId != null) {
+                String[] ids = audioId.split("_");
+                long oid = Long.parseLong(ids[0]);
+                long aid = Long.parseLong(ids[1]);
+                try {
+                    vkApi.addAudio(aid, oid, null, null, null);
+                    result = context.getString(R.string.added_in_vk_music);
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                    result = e.getLocalizedMessage();
+                } catch (IOException e) {
+                    result = e.getLocalizedMessage();
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    result = e.getLocalizedMessage();
+                    e.printStackTrace();
+                } catch (KException e) {
+                    result = e.getLocalizedMessage();
+                    e.printStackTrace();
+                }
+            }
+            return result;
+        }
+
+        protected void onPostExecute(String result) {
+            Toast.makeText(SongInfoActivity.this, result, Toast.LENGTH_SHORT).show();
+        }
 	}
 	
 	private void fillActivity(SongData data) {
