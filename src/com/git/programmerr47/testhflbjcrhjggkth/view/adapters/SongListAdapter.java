@@ -138,7 +138,6 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 		
 		ViewHelper.setAlpha(view.findViewById(R.id.songListItemPlayPauseLayout), 0.75f);
 		DatabaseSongData songData = getSongData(position);
-		((ImageView) view.findViewById(R.id.songListItemCoverArt)).setImageResource(R.drawable.no_cover_art);
 		Log.v("SongInformation", "in trackId: " + songData.getTrackId());
 		coverArts.put(songData.getTrackId(), (ImageView) view.findViewById(R.id.songListItemCoverArt));
 		if(songData.getCoverArtUrl() == null) {

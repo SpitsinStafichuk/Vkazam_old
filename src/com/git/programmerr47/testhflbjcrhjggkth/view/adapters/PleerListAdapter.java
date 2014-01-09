@@ -97,6 +97,8 @@ public class PleerListAdapter extends BaseAdapter {
                 public void onClick(View view) {
                     if ((currentSongData.getPleercomUrl() == null) || (!currentSongData.getPleercomUrl().equals(urls.get(position).url))) {
                         currentSongData.setPleercomUrl(urls.get(position).url);
+                        currentSongData.setPpArtist(urls.get(position).artist);
+                        currentSongData.setPpTitle(urls.get(position).title);
                         PleerListAdapter.this.notifyDataSetChanged();
                     }
                 }

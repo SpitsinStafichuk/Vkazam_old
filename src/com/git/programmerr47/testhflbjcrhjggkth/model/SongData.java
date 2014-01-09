@@ -24,6 +24,10 @@ public class SongData {
 	protected String coverArtUrl;
 	protected long lyricsId = -1;
 	protected Date date;
+    protected String vkArtist;
+    protected String vkTitle;
+    protected String ppArtist;
+    protected String ppTitle;
 	protected String contributorImageUrl;
 	protected String artistBiographyURL;
 	protected String songPosition;
@@ -55,35 +59,29 @@ public class SongData {
 	}
 	
 	public SongData(SongData songData) {
-		this(songData.trackId, songData.artist, songData.album, songData.title, songData.pleercomUrl, songData.vkAudioId,
+		this(songData.ppArtist, songData.ppTitle, songData.trackId, songData.artist, songData.album, songData.title, songData.pleercomUrl, songData.vkAudioId,
 				songData.coverArtUrl, songData.date, songData.contributorImageUrl, songData.artistBiographyURL,
 				songData.songPosition, songData.albumReviewUrl, songData.albumReleaseYear, songData.albumArtist);
 	}
 	
-	public SongData(String trackId, String artist, String title, Date date) {
-		this(trackId, artist, null, title, null, null, null, date, null, null, null, null, null, null);
-	}
-	
-	public SongData(String trackId, String artist, String title, Date date, 
-			String pleercomUrl, String coverArtUrl) {
-		this(trackId, artist, null, title, pleercomUrl, null, coverArtUrl, date, null, null, null, null, null, null);
-	} 
-	
 	public SongData(String trackId, String artist, String title, Date date, String coverArtUrl) {
-		this(trackId, artist, null, title, null, null, coverArtUrl, date, null, null, null, null, null, null);
+		this(null, null, trackId, artist, null, title, null, null, coverArtUrl, date, null, null, null, null, null, null);
 		Log.v("SongData", "Creating data with no pleercomurl is success");
 		Log.v("SongData", "pleercomurl = " + pleercomUrl);
 		Log.v("SongData", "coverarturl = " + this.coverArtUrl);
 	} 
 	
 	public SongData(String trackId, String artist, String album, String title, Date date) {
-		this(trackId, artist, album, title, null, null, null, date, null, null, null, null, null, null);
+		this(null, null, trackId, artist, album, title, null, null, null, date, null, null, null, null, null, null);
 	}
 	
-	public SongData(String trackId, String artist, String album, 
+	public SongData(String ppArtist, String ppTitle, String trackId, String artist, String album,
 			String title, String pleercomUrl, String vkAudioId, String coverArtUrl, Date date, String contributorImageUrl, 
 			String artistBiographyURL, String songPosition, String albumReviewUrl, String albumReleaseYear,
 			String albumArtist) {
+
+        this.ppArtist = ppArtist;
+        this.ppTitle = ppTitle;
 		this.artist = artist;
 		this.setAlbum(album);
 		this.title = title;
@@ -115,6 +113,30 @@ public class SongData {
 	public String getTitle() {
 		return title;
 	}
+
+    public String getVkArtist() {
+        return vkArtist;
+    }
+
+    public String getVkTitle() {
+        return vkTitle;
+    }
+
+    public String getPpArtist() {
+        return ppArtist;
+    }
+
+    public void setPpArtist(String artist) {
+        ppArtist = artist;
+    }
+
+    public String getPpTitle() {
+        return ppTitle;
+    }
+
+    public void setPpTitle(String title) {
+        ppTitle = title;
+    }
 
 	public String getTrackId() {
 		return trackId;
@@ -180,6 +202,8 @@ public class SongData {
             Audio audio = audioList.get(0);
             vkAudioId = audio.owner_id + "_" + audio.aid;
             Log.v("Lyrics", "" + audio + " --- " + audio.lyrics_id);
+            vkArtist = audio.artist;
+            vkTitle = audio.title;
             if (audio.lyrics_id != null) {
                 lyricsId = audio.lyrics_id;
             } else {
@@ -215,6 +239,8 @@ public class SongData {
 			throw new SongNotFoundException();
 		}
 		pleercomUrl = audioList.get(0).url;
+        ppArtist = audioList.get(0).artist;
+        ppTitle = audioList.get(0).title;
 	}
 	
 	public String getContributorImageUrl() {
