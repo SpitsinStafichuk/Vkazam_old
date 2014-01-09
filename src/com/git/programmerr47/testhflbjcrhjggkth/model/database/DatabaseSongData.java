@@ -17,18 +17,11 @@ public class DatabaseSongData extends SongData implements Data {
 	private long id;
 	private AbstractDAO dao;
 	
-	public DatabaseSongData(long id, AbstractDAO dao, String trackId, String artist, String title,
-			Date date, String pleercomUrl, String coverArtUrl) {
-		super(trackId, artist, title, date, pleercomUrl, coverArtUrl);
-		this.id = id;
-		this.dao = dao;
-	}
-	
-	DatabaseSongData(long id, AbstractDAO dao, String trackId, String artist, String album, 
+	DatabaseSongData(long id, String ppArtist, String ppTitle, AbstractDAO dao, String trackId, String artist, String album,
 			String title, Date date, String pleercomUrl, String vkAudioId, String coverArtUrl, String contributorImageUrl, 
 			String artistBiographyURL, String albumReviewUrl, String albumReleaseYear,
 			String albumArtist) {
-		super(trackId, artist, album, title, pleercomUrl, vkAudioId, coverArtUrl, date, contributorImageUrl, 
+		super(ppArtist, ppTitle, trackId, artist, album, title, pleercomUrl, vkAudioId, coverArtUrl, date, contributorImageUrl,
 				artistBiographyURL, null, albumReviewUrl, albumReleaseYear, albumArtist);
 		this.id = id;
 		this.dao = dao;
@@ -47,12 +40,24 @@ public class DatabaseSongData extends SongData implements Data {
 		//TODO возможно неэффективно обновлять все поля, когда нужно обновить только одно
 		dao.update(this);
 	}
-	
-	@Override
-	public void setPleercomUrl(String pleercomUrl) {
-		super.setPleercomUrl(pleercomUrl);
-		dao.update(this);
-	}
+
+    @Override
+    public void setPleercomUrl(String pleercomUrl) {
+        super.setPleercomUrl(pleercomUrl);
+        dao.update(this);
+    }
+
+    @Override
+    public void setPpArtist(String artist) {
+        super.setPpArtist(artist);
+        dao.update(this);
+    }
+
+    @Override
+    public void setPpTitle(String title) {
+        super.setPpTitle(title);
+        dao.update(this);
+    }
 	
 	@Override
 	public void setVkAudioId(String vkAudioId) {

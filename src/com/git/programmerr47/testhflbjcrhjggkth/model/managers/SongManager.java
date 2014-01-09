@@ -28,7 +28,8 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.KException;
 
 public class SongManager implements ISongInfoObserverable, ISongProgressObservable {
 	private final static String TAG = "SongManager";
-	
+
+    public static final int NO_SONG = -1;
     public static final int ANY_SONG = 0;
     public static final int VK_SONG = 1;
     public static final int PP_SONG = 2;
@@ -191,7 +192,14 @@ public class SongManager implements ISongInfoObserverable, ISongProgressObservab
                 }
             }
         }
-		Log.v(TAG, "found: " + found);
+
+        Log.v(TAG, "found: " + found);
+        if (!found) {
+            this.type = NO_SONG;
+        }
+
+        asyncNotifySongInfoObservers();
+
 		if(!found) {
 			throw new SongNotFoundException();
 		}

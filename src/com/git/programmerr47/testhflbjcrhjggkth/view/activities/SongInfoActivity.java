@@ -384,9 +384,14 @@ public class SongInfoActivity extends FragmentActivity implements IPlayerStateOb
                     URL url;
                     if (task == PP_TASK) {
                         String urlString = databaseSongData[0].getPleercomUrl();
+                        Log.v("SongPlayerInfo", "1 " + urlString);
                         if(urlString == null) {
-                            databaseSongData[0].findPPAudio();
-                            urlString = databaseSongData[0].getPleercomUrl();
+                            try {
+                                databaseSongData[0].findPPAudio();
+                                urlString = databaseSongData[0].getPleercomUrl();
+                            } catch (SongNotFoundException e) {
+                                //return context.getString(R.string.song_not_found);
+                            }
                         }
                         url = new URL(urlString);
                     } else {

@@ -33,6 +33,8 @@ public class SongDAO extends AbstractDAO {
 		if(songData.getAlbumReviewUrl() != null) values.put(DBConstants.MUSIC_HISTORY_ALBUM_REVIEW_URL, songData.getAlbumReviewUrl());
 		if(songData.getAlbumReleaseYear() != null) values.put(DBConstants.MUSIC_HISTORY_ALBUM_RELEASE_YEAR, songData.getAlbumReleaseYear());
 		if(songData.getAlbumArtist() != null) values.put(DBConstants.MUSIC_HISTORY_ALBUM_ARTIST, songData.getAlbumArtist());
+        if(songData.getPpTitle() != null) values.put(DBConstants.MUSIC_HISTORY_PP_TITLE, songData.getPpTitle());
+        if(songData.getPpArtist() != null) values.put(DBConstants.MUSIC_HISTORY_PP_ARTIST, songData.getPpArtist());
 		long result = database.insert(DBConstants.MUSIC_HISTORY_TABLE, null, values);
 		Log.v("HistoryList", "" + result);
 		database.close();
@@ -55,6 +57,8 @@ public class SongDAO extends AbstractDAO {
 		if(songData.getAlbumReviewUrl() != null) values.put(DBConstants.MUSIC_HISTORY_ALBUM_REVIEW_URL, songData.getAlbumReviewUrl());
 		if(songData.getAlbumReleaseYear() != null) values.put(DBConstants.MUSIC_HISTORY_ALBUM_RELEASE_YEAR, songData.getAlbumReleaseYear());
 		if(songData.getAlbumArtist() != null) values.put(DBConstants.MUSIC_HISTORY_ALBUM_ARTIST, songData.getAlbumArtist());
+        if(songData.getPpTitle() != null) values.put(DBConstants.MUSIC_HISTORY_PP_TITLE, songData.getPpTitle());
+        if(songData.getPpArtist() != null) values.put(DBConstants.MUSIC_HISTORY_PP_ARTIST, songData.getPpArtist());
 		//TODO подумать над разумностью сравнения по датам
 		int result = database.update(DBConstants.MUSIC_HISTORY_TABLE, values, DBConstants.DATE + "=?", new String[] {"" + songData.getDate().getTime()});
         Log.v("Database", "" + result);
@@ -82,6 +86,8 @@ public class SongDAO extends AbstractDAO {
 		for(int i = 0; i < cursor.getCount(); i++) {
 			instance = new DatabaseSongData(
 					Long.parseLong(cursor.getString(cursor.getColumnIndex(DBConstants.ID))),
+                    cursor.getString(cursor.getColumnIndex(DBConstants.MUSIC_HISTORY_PP_ARTIST)),
+                    cursor.getString(cursor.getColumnIndex(DBConstants.MUSIC_HISTORY_PP_TITLE)),
 					this,
 					cursor.getString(cursor.getColumnIndex(DBConstants.MUSIC_HISTORY_GRACENOTE_TRACK_ID)),
 					cursor.getString(cursor.getColumnIndex(DBConstants.MUSIC_HISTORY_ARTIST)),

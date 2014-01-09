@@ -88,6 +88,7 @@ public class MiniPlayerFragment extends Fragment implements IPlayerStateObserver
         View view = inflater.inflate(R.layout.mini_player_fragment, null);
 
         songInfo = (TextView) view.findViewById(R.id.miniplayerSongInfo);
+        songInfo.setText("");
         songInfo.setSelected(true);
 
         playButton = (ImageButton) view.findViewById(R.id.miniplayerPlayButton);
@@ -167,7 +168,19 @@ public class MiniPlayerFragment extends Fragment implements IPlayerStateObserver
     public void updateSongInfo() {
         SongData data = model.getSongManager().getSongData();
         if (data != null) {
-            songInfo.setText(data.getArtist() + " - " + data.getTitle());
+            int type = model.getSongManager().getType();
+            Log.v("SongPlayerInfo", "type is " + type);
+            if (type == SongManager.ANY_SONG) {
+                songInfo.setText(data.getArtist() + " - " + data.getTitle());
+            } else if (type == SongManager.PP_SONG) {
+                songInfo.setText(data.getPpArtist() + " - " + data.getPpTitle());
+            } else if (type == SongManager.VK_SONG) {
+                songInfo.setText(data.getVkArtist() + " - " + data.getVkTitle());
+            } else if (type == SongManager.NO_SONG) {
+                songInfo.setText("");
+            }
+        } else {
+            songInfo.setText("");
         }
     }
 
