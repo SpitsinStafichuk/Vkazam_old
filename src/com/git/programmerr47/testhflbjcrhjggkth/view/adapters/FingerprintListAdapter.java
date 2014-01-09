@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle.Control;
 
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.view.animation.Animation;
@@ -97,19 +98,15 @@ public class FingerprintListAdapter extends BaseAdapter {
 		fingerprintDate.setText(data.getDate().toString());
 		
 		Bitmap coverArtBMP = Bitmap.createBitmap(8, 8, Bitmap.Config.ARGB_8888);
-		int[] colors = ImageUtils.getColors(finger);
+		int[] colors = ImageUtils.getPixel8bitColors(finger);
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
-				coverArtBMP.setPixel(i, j, colors[i * 8 + j]);
+				coverArtBMP.setPixel(i, j, Color.rgb(colors[i * 8 + j], colors[i * 8 + j], colors[i * 8 + j]));
 			}
 		}
-        BitmapDrawable coverArt = new BitmapDrawable(activity.getResources(), coverArtBMP);
-        coverArt.setAntiAlias(false);
-        coverArt.setDither(false);
-        coverArt.setFilterBitmap(false);
 
 		ImageView fingerCoverArt = (ImageView) view.findViewById(R.id.fingerprintImage);
-        fingerCoverArt.setImageDrawable(coverArt);
+        fingerCoverArt.setImageBitmap(coverArtBMP);
 
         if (data.isInQueueForRecognizing()) {
             ViewHelper.setAlpha(view, 0.5f);
