@@ -53,9 +53,9 @@ public class SongController {
 
     public synchronized void playPauseSong(int positionInList) {
         if (positionInList >= model.getSongList().size()) {
-            positionInList = model.getSongList().size() - 1;
+            return;
         } else if (positionInList < 0) {
-            positionInList = 0;
+            return;
         }
 
         if (model.getSongList().size() > 0) {
@@ -69,7 +69,7 @@ public class SongController {
 	
 	private void _playPauseSong(DatabaseSongData songData, int positionInList, int type) {
 		SongManager songManager = model.getSongManager();
-		if(songData.equals(songManager.getSongData()) && (songManager.getType() == type)) {
+		if(songData.equals(songManager.getSongData()) && ((songManager.getType() == type) || (type == SongManager.ANY_SONG))) {
 			Log.v("SongListController", "songManager.getSongData() == songData == " + songData);
 			if(songManager.isPrepared())
 				if(songManager.isPlaying()) {
