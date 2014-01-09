@@ -9,6 +9,7 @@ import android.util.Log;
 import android.widget.ListView;
 
 import android.widget.Toast;
+import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.model.FingerprintData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
 import com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeServiceConnection;
@@ -71,10 +72,10 @@ public class FingerprintListController implements FingerprintsDeque.OnDequeState
                         model.getFingerprintsDeque().addLast(data);
                     }
                 } else {
-                    Toast.makeText(view, "List of fingers is empty", Toast.LENGTH_SHORT);
+                    Toast.makeText(view, view.getString(R.string.empty_fingerlist), Toast.LENGTH_SHORT);
                 }
             } else {
-                Toast.makeText(view, "Network is not available at this moment", Toast.LENGTH_LONG).show();
+                Toast.makeText(view, view.getString(R.string.network_not_available), Toast.LENGTH_LONG).show();
             }
         }
     }
