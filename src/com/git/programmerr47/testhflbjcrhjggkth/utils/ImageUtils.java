@@ -26,7 +26,7 @@ public class ImageUtils {
 		return new byte[16];
 	}
 	
-	private static int[] getPixel8bitColors(String str) {
+	public static int[] getPixel8bitColors(String str) {
 		int[] result = new int[64];
 		int index = 0;
 		int parts = 4;
