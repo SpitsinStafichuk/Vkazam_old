@@ -36,7 +36,7 @@ public class FingerprintPageFragment extends FragmentWithName implements IFinger
 		FingerprintPageFragment pageFragment = new FingerprintPageFragment();
         Bundle arguments = new Bundle();
         pageFragment.setArguments(arguments);
-        pageFragment.setFragmentName("Fingers");
+        pageFragment.setFragmentName(context.getString(R.string.fingerprints_page_fragment_caption));
         pageFragment.setFragmentIcon(R.drawable.ic_action_fingerprint);
         pageFragment.setContext(context);
         return pageFragment;
@@ -68,7 +68,7 @@ public class FingerprintPageFragment extends FragmentWithName implements IFinger
                     Log.v("Figers", "Perform click: " + view + "; " + position);
                     adapter.recognizeFingerprint(view, position);
                 }  else {
-                    Toast.makeText(FingerprintPageFragment.this.getActivity(), "Network is not available at this moment", Toast.LENGTH_LONG).show();
+                    Toast.makeText(FingerprintPageFragment.this.getActivity(), getString(R.string.network_not_available), Toast.LENGTH_LONG).show();
                 }
             }
         });

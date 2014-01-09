@@ -1,7 +1,5 @@
 package com.git.programmerr47.testhflbjcrhjggkth.view.activities;
 
-
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -48,8 +46,8 @@ public class SettingsActivity extends FragmentActivity implements CompoundButton
         controller = new SettingsController(this);
         vkConnection = (LinearLayout) findViewById(R.id.settingsVkConnection);
         ((ImageView) vkConnection.findViewById(R.id.icon)).setImageResource(R.drawable.ic_settings_vk);
-        ((TextView) vkConnection.findViewById(R.id.title)).setText("Vkontakte");
-        ((TextView) vkConnection.findViewById(R.id.summary)).setText("Sync with vkontakte");
+        ((TextView) vkConnection.findViewById(R.id.title)).setText(getString(R.string.settings_vk_title));
+        ((TextView) vkConnection.findViewById(R.id.summary)).setText(getString(R.string.settings_vk_summary));
         vkConntectionCheckBox = (CheckBox) vkConnection.findViewById(R.id.checkbox);
         vkConntectionCheckBox.setOnCheckedChangeListener(this);
         vkConnection.setOnClickListener(new View.OnClickListener() {
@@ -60,8 +58,8 @@ public class SettingsActivity extends FragmentActivity implements CompoundButton
         });
 
         vkUrls = (LinearLayout) findViewById(R.id.settingsVkUrls);
-        ((TextView) vkUrls.findViewById(R.id.title)).setText("Vk Urls");
-        ((TextView) vkUrls.findViewById(R.id.summary)).setText("Prefer to choose vk urls istead of prostopleer urls");
+        ((TextView) vkUrls.findViewById(R.id.title)).setText(getString(R.string.settings_vk_urls_title));
+        ((TextView) vkUrls.findViewById(R.id.summary)).setText(getString(R.string.settings_vk_urls_summary));
         vkUrlsCheckBox = (CheckBox) vkUrls.findViewById(R.id.checkbox);
         vkUrlsCheckBox.setOnCheckedChangeListener(this);
         vkUrls.setOnClickListener(new View.OnClickListener() {
@@ -72,8 +70,8 @@ public class SettingsActivity extends FragmentActivity implements CompoundButton
         });
 
         vkAudioBroadcast = (LinearLayout) findViewById(R.id.settingsVkAudioBroadcast);
-        ((TextView) vkAudioBroadcast.findViewById(R.id.title)).setText("Vk status");
-        ((TextView) vkAudioBroadcast.findViewById(R.id.summary)).setText("Broadcast current playing song to vk.com status");
+        ((TextView) vkAudioBroadcast.findViewById(R.id.title)).setText(getString(R.string.settings_vk_status_title));
+        ((TextView) vkAudioBroadcast.findViewById(R.id.summary)).setText(getString(R.string.settings_vk_status_summary));
         vkAudioBroadcastCheckBox = (CheckBox) vkAudioBroadcast.findViewById(R.id.checkbox);
         vkAudioBroadcastCheckBox.setOnCheckedChangeListener(this);
         vkAudioBroadcast.setOnClickListener(new View.OnClickListener() {
@@ -84,21 +82,21 @@ public class SettingsActivity extends FragmentActivity implements CompoundButton
         });
 
         vkLyrics = (LinearLayout) findViewById(R.id.settingsVkLyrics);
-        ((TextView) vkLyrics.findViewById(R.id.title)).setText("Vk lyrics");
-        ((TextView) vkLyrics.findViewById(R.id.summary)).setText("Prefer to choose vk lyrics instead of musicXmatch lyrics (if you have this app)");
+        ((TextView) vkLyrics.findViewById(R.id.title)).setText(getString(R.string.settings_vk_lyrics_title));
+        ((TextView) vkLyrics.findViewById(R.id.summary)).setText(getString(R.string.settings_vk_lyrics_summary));
         vkLyricsCheckBox = (CheckBox) vkLyrics.findViewById(R.id.checkbox);
         vkLyricsCheckBox.setOnCheckedChangeListener(this);
         vkLyrics.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                vkLyricsCheckBox.setChecked(!vkLyricsCheckBox.isChecked());
+            	vkLyricsCheckBox.setChecked(!vkLyricsCheckBox.isChecked());
             }
         });
 
         onlyWiFiConntection = (LinearLayout) findViewById(R.id.settingsOnlyWiFiConntection);
         ((ImageView) onlyWiFiConntection.findViewById(R.id.icon)).setImageResource(R.drawable.ic_settings_wifi);
-        ((TextView) onlyWiFiConntection.findViewById(R.id.title)).setText("Only Wi-Fi");
-        ((TextView) onlyWiFiConntection.findViewById(R.id.summary)).setText("Enable syncronization with internet only if there is wi-fi connection");
+        ((TextView) onlyWiFiConntection.findViewById(R.id.title)).setText(getString(R.string.settings_wifi_title));
+        ((TextView) onlyWiFiConntection.findViewById(R.id.summary)).setText(getString(R.string.settings_wifi_summary));
         onlyWiFiConntectionCheckBox = (CheckBox) onlyWiFiConntection.findViewById(R.id.checkbox);
         onlyWiFiConntectionCheckBox.setOnCheckedChangeListener(this);
         onlyWiFiConntection.setOnClickListener(new View.OnClickListener() {
@@ -110,8 +108,8 @@ public class SettingsActivity extends FragmentActivity implements CompoundButton
 
         lastFmConnection = (LinearLayout) findViewById(R.id.settingsLastFmConnection);
         ((ImageView) lastFmConnection.findViewById(R.id.icon)).setImageResource(R.drawable.ic_settings_lastfm);
-        ((TextView) lastFmConnection.findViewById(R.id.title)).setText("Scrobbling");
-        ((TextView) lastFmConnection.findViewById(R.id.summary)).setText("Enable scrobbling from standart last.fm application");
+        ((TextView) lastFmConnection.findViewById(R.id.title)).setText(getString(R.string.settings_scrobbling_title));
+        ((TextView) lastFmConnection.findViewById(R.id.summary)).setText(getString(R.string.settings_scrobbling_summary));
         lastFmConnectionCheckBox = (CheckBox) lastFmConnection.findViewById(R.id.checkbox);
         lastFmConnectionCheckBox.setOnCheckedChangeListener(this);
         lastFmConnection.setOnClickListener(new View.OnClickListener() {
@@ -123,8 +121,8 @@ public class SettingsActivity extends FragmentActivity implements CompoundButton
 
         autoRecognize = (LinearLayout) findViewById(R.id.settingsAutoRecognize);
         ((ImageView) autoRecognize.findViewById(R.id.icon)).setImageResource(R.drawable.ic_settings_fingerprints);
-        ((TextView) autoRecognize.findViewById(R.id.title)).setText("Auto-recognizing");
-        ((TextView) autoRecognize.findViewById(R.id.summary)).setText("Automatic recognizing all fingerprints when internet is available");
+        ((TextView) autoRecognize.findViewById(R.id.title)).setText(getString(R.string.settings_auto_recognizing_title));
+        ((TextView) autoRecognize.findViewById(R.id.summary)).setText(getString(R.string.settings_auto_recognizing_summary));
         autoRecognizeCheckBox = (CheckBox) autoRecognize.findViewById(R.id.checkbox);
         autoRecognizeCheckBox.setOnCheckedChangeListener(this);
         autoRecognize.setOnClickListener(new View.OnClickListener() {
@@ -136,8 +134,8 @@ public class SettingsActivity extends FragmentActivity implements CompoundButton
 
         timerDelay = (LinearLayout) findViewById(R.id.settingsTimerDelay);
         ((ImageView) timerDelay.findViewById(R.id.icon)).setImageResource(R.drawable.ic_settings_timer);
-        ((TextView) timerDelay.findViewById(R.id.title)).setText("Timer delay");
-        ((TextView) timerDelay.findViewById(R.id.summary)).setText("Setting fingerprint timer delay");
+        ((TextView) timerDelay.findViewById(R.id.title)).setText(getString(R.string.settings_timer_delay_title));
+        ((TextView) timerDelay.findViewById(R.id.summary)).setText(getString(R.string.settings_timer_delay_summary));
         timerDelay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -161,9 +159,10 @@ public class SettingsActivity extends FragmentActivity implements CompoundButton
     }
     
     private void resume() {
+
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-        ((TextView) timerDelay.findViewById(R.id.additional_info)).setText(prefs.getInt("settingsTimerDelay", 5) + "");
+        ((TextView) timerDelay.findViewById(R.id.additional_info)).setText(prefs.getInt("settingsTimerDelay", 5) + " " + getString(R.string.settings_secs));
 
         vkConntectionCheckBox.setChecked(prefs.getBoolean("settingsVkConnection", false));
         vkUrlsCheckBox.setChecked(prefs.getBoolean("settingsVkUrls", true));

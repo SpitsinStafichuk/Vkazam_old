@@ -1,5 +1,6 @@
 package com.git.programmerr47.testhflbjcrhjggkth.view.fragments;
 
+import android.util.Log;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 
 import android.content.DialogInterface;
@@ -40,6 +41,7 @@ public class ProgressDialogFragment extends MessageDialogFragment {
     	fragment.negativeButtonVisibility = builder.negativeButtonVisibility;
     	fragment.style = builder.style;
     	fragment.cancelListener = builder.cancelListener;
+        Log.v("ProgressDialog", "Cancel listener = " + builder.cancelListener);
     	if (builder.cancelListener != null) {
     		fragment.setCancelable(true);
     	} else {
@@ -143,7 +145,10 @@ public class ProgressDialogFragment extends MessageDialogFragment {
     @Override
     public void onCancel(DialogInterface dialog) {
     	super.onCancel(dialog);
-    	cancelListener.onCancel(this);
+        Log.v("ProgressDialog", "onCancel: listener = " + cancelListener);
+        if (cancelListener != null) {
+            cancelListener.onCancel(this);
+        }
     }
 	
 	public interface OnCancelListener {
@@ -177,7 +182,9 @@ public class ProgressDialogFragment extends MessageDialogFragment {
         }
         
         public Builder setOnCancelListener(OnCancelListener listener) {
+            Log.v("ProgressDialog", "Cancel listener = " + cancelListener);
         	this.cancelListener = listener;
+            Log.v("ProgressDialog", "Cancel listener = " + cancelListener);
         	return this;
         }
 	}

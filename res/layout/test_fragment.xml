@@ -8,7 +8,7 @@
         android:id="@+id/artistCaption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Artist:" />
+        android:text="@string/artist" />
 
     <EditText
         android:id="@+id/artist"
@@ -24,7 +24,7 @@
         android:id="@+id/titleCaption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Title:" />
+        android:text="@string/title" />
 
     <EditText
         android:id="@+id/title"
@@ -37,7 +37,7 @@
         android:id="@+id/albumCaption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Album:" />
+        android:text="@string/album" />
 
     <EditText
         android:id="@+id/album"
@@ -51,14 +51,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Search" />
+        android:text="@string/search" />
     
     <TextView
         android:id="@+id/status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="Status"
+        android:text="@string/status"
         android:visibility="visible" />
     
     <RelativeLayout

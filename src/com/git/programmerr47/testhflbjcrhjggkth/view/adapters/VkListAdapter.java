@@ -177,7 +177,7 @@ public class VkListAdapter extends BaseAdapter {
                             Log.v(TAG, "" + listUpdateFinal);
                             if (listUpdateFinal <= 0) {
                                 isFullList = true;
-                                Toast.makeText(activity, "No more songs", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(activity, activity.getString(R.string.no_more_songs), Toast.LENGTH_SHORT).show();
                                 Log.v(TAG, "No more songs");
                             }
                             VkListAdapter.this.notifyDataSetChanged();

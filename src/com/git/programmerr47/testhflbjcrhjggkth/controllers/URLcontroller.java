@@ -1,6 +1,7 @@
 package com.git.programmerr47.testhflbjcrhjggkth.controllers;
 
 import android.app.Activity;
+import android.content.Context;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
@@ -96,10 +97,10 @@ public class URLcontroller implements IPlayerStateObserver{
                 Log.v("SongListController", "song was prepared ");
                 player.start();
             } catch (MalformedURLException e) {
-                showToast("Seems you haven't internet connection", activity);
+                showToast(activity.getString(R.string.internet_connection_not_available), activity);
                 player.release();
             } catch (IOException e) {
-                showToast("Seems you haven't internet connection", activity);
+                showToast(activity.getString(R.string.internet_connection_not_available), activity);
                 player.release();
             }
         }

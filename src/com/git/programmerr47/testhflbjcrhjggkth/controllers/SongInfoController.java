@@ -62,8 +62,8 @@ public class SongInfoController extends SongController{
 
 		ProgressDialogFragment.Builder appProgressDialogBuilder = new ProgressDialogFragment.Builder();
 		appProgressDialogBuilder.setIcon(R.drawable.ic_progress_dialog);
-		appProgressDialogBuilder.setMessage("Please wait for answer from vk");
-		appProgressDialogBuilder.setTitle("Waiting for answer");
+		appProgressDialogBuilder.setMessage(view.getString(R.string.awaiting_vk_lyrics_message));
+		appProgressDialogBuilder.setTitle(view.getString(R.string.awaiting_title));
 		appProgressDialogBuilder.setProgressStyle(ProgressDialogFragment.Builder.STYLE_SPINNER);
 
         FragmentTransaction fragmentTransaction = view.getSupportFragmentManager().beginTransaction();
@@ -96,9 +96,9 @@ public class SongInfoController extends SongController{
 			                
 			                MessageDialogFragment.Builder appDialogBuilder = new MessageDialogFragment.Builder();
 			        		appDialogBuilder.setIcon(R.drawable.ic_alert_dialog);
-			        		appDialogBuilder.setMessage("Vk lyrics is not available for this song. You can choose another url or get lyrics from musicXmatch");
-			        		appDialogBuilder.setTitle("No lyrics for song");
-			        		appDialogBuilder.setPositiveButton("Choose url", new onDialogClickListener() {
+			        		appDialogBuilder.setMessage(view.getString(R.string.no_vk_lyrics_message));
+			        		appDialogBuilder.setTitle(view.getString(R.string.no_vk_lyrics_title));
+			        		appDialogBuilder.setPositiveButton(view.getString(R.string.action_refresh), new onDialogClickListener() {
 								
 								@Override
 								public void onDialogClick(DialogFragment fragment, View v) {
@@ -108,7 +108,7 @@ public class SongInfoController extends SongController{
 			        				fragment.dismiss();
 								}
 							});
-			        		appDialogBuilder.setNegativeButton("Get MM lyrics", new onDialogClickListener() {
+			        		appDialogBuilder.setNegativeButton(view.getString(R.string.get_musixmatch_lyrics), new onDialogClickListener() {
 								
 								@Override
 								public void onDialogClick(DialogFragment fragment, View v) {
@@ -121,10 +121,10 @@ public class SongInfoController extends SongController{
 			                dialogFragment.show(fragmentTransaction, SHOW_DIALOG_TAG);
 						}
 					} catch (MalformedURLException e) {
-						showToast("Seems you haven't internet connection");
+						showToast(view.getString(R.string.internet_connection_not_available));
 						e.printStackTrace();
 					} catch (IOException e) {
-						showToast("Seems you haven't internet connection");
+                        showToast(view.getString(R.string.internet_connection_not_available));
 						e.printStackTrace();
 					} catch (JSONException e) {
 						showToast(e.getLocalizedMessage());
@@ -133,12 +133,12 @@ public class SongInfoController extends SongController{
 						showToast(e.getLocalizedMessage());
 						e.printStackTrace();
 					} catch (SongNotFoundException e) {
-						showToast("Song is not found");
+						showToast(view.getString(R.string.song_not_found));
 						e.printStackTrace();
 					}
 	        		
 	        	} else {
-	        		showToast("Vk is not available. Did you connected to vkontakte?");
+	        		showToast(view.getString(R.string.vk_not_available));
 	        	}
 	        	dialogFragment.dismiss();
                 Looper.loop();
@@ -167,7 +167,7 @@ public class SongInfoController extends SongController{
                             try {
                                 lyricsPlugin.startLyricsActivity(artist,title);
                             } catch (RemoteException e) {
-                                Toast.makeText(view, "Can not connect to MusiXmatch, try again later", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(view, view.getString(R.string.musixmatch_not_available), Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -181,9 +181,9 @@ public class SongInfoController extends SongController{
                     MessageDialogFragment.Builder appDialogBuilder = new MessageDialogFragment.Builder();
                     
 	        		appDialogBuilder.setIcon(R.drawable.ic_alert_dialog);
-                    appDialogBuilder.setMessage("You need to install Musixmatch\\'s app and launch it at least one time to see lyrics");
-                    appDialogBuilder.setTitle("No musiXmatch application");
-                    appDialogBuilder.setPositiveButton("Get MusiXmatch", new onDialogClickListener() {
+                    appDialogBuilder.setMessage(view.getString(R.string.no_musixmatch_app_message));
+                    appDialogBuilder.setTitle(view.getString(R.string.no_musixmatch_app_title));
+                    appDialogBuilder.setPositiveButton(view.getString(R.string.get_musixmatch), new onDialogClickListener() {
 						
 						@Override
 						public void onDialogClick(DialogFragment fragment, View v) {
@@ -193,7 +193,7 @@ public class SongInfoController extends SongController{
                             fragment.dismiss();
 						}
 					});
-                    appDialogBuilder.setNegativeButton("No, thanks", new onDialogClickListener() {
+                    appDialogBuilder.setNegativeButton(view.getString(R.string.no_thanks), new onDialogClickListener() {
 						
 						@Override
 						public void onDialogClick(DialogFragment fragment, View v) {
@@ -224,8 +224,8 @@ public class SongInfoController extends SongController{
 
 		ProgressDialogFragment.Builder appProgressDialogBuilder = new ProgressDialogFragment.Builder();
 		appProgressDialogBuilder.setIcon(R.drawable.ic_progress_dialog);
-		appProgressDialogBuilder.setMessage("Please wait for answer from youtube app");
-		appProgressDialogBuilder.setTitle("Waiting for answer");
+		appProgressDialogBuilder.setMessage(view.getString(R.string.awaiting_youtube_message));
+		appProgressDialogBuilder.setTitle(view.getString(R.string.awaiting_title));
 		appProgressDialogBuilder.setProgressStyle(ProgressDialogFragment.Builder.STYLE_SPINNER);
 
         FragmentTransaction fragmentTransaction = view.getSupportFragmentManager().beginTransaction();
@@ -244,7 +244,7 @@ public class SongInfoController extends SongController{
                 try {
                     youtubeUrl = YoutubeUtils.sendRequest(data.getArtist() + " " + data.getTitle());
                     if (youtubeUrl == null) {
-                        Toast.makeText(view, "Can not find video", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(view, view.getString(R.string.video_not_found), Toast.LENGTH_SHORT).show();
                     } else {
                         view.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(youtubeUrl)));
                     }

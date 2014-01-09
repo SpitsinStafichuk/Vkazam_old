@@ -116,7 +116,7 @@
                         android:textStyle="bold"
                         android:gravity="center"
                         android:layout_margin="5dp"
-                        android:text="Audio player for ProstoPleer urls"/>
+                        android:text="@string/pp_player_label"/>
 
             </LinearLayout>
 
@@ -233,7 +233,7 @@
                         android:textStyle="bold"
                         android:gravity="center"
                         android:layout_margin="5dp"
-                        android:text="Audio player for Vkontakte urls"/>
+                        android:text="@string/vk_player_label"/>
 
             </LinearLayout>
 
@@ -373,7 +373,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="5dp"
-                        android:text="Get lyrics"
+                        android:text="@string/get_lyrics"
                         android:textSize="20sp"
                         android:gravity="center"
                         android:background="@drawable/standart_block_background"/>
@@ -402,7 +402,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="5dp"
-                        android:text="Watch on YouTube app"
+                        android:text="@string/get_youtube_video"
                         android:textSize="20sp"
                         android:gravity="center"
                         android:background="@drawable/standart_block_background"/>
@@ -459,7 +459,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_margin="5dp"
-                            android:text="TrackId:"
+                            android:text="@string/track_id_label"
                             android:gravity="right"
                             android:textColor="@color/black"
                             android:textSize="20sp" />
@@ -486,7 +486,7 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
                             android:layout_weight="1"
-                            android:text="Artist:"
+                            android:text="@string/artist_label"
                             android:gravity="right"
                             android:textColor="@color/black"
                             android:textSize="20sp" />
@@ -513,7 +513,7 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
                             android:layout_weight="1"
-                            android:text="Album:"
+                            android:text="@string/album_label"
                             android:gravity="right"
                             android:textColor="@color/black"
                             android:textSize="20sp" />
@@ -540,7 +540,7 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
                             android:layout_weight="1"
-                            android:text="Title:"
+                            android:text="@string/title_label"
                             android:gravity="right"
                             android:textColor="@color/black"
                             android:textSize="20sp" />
@@ -567,7 +567,7 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
                             android:layout_weight="1"
-                            android:text="Date:"
+                            android:text="@string/date_label"
                             android:gravity="right"
                             android:textColor="@color/black"
                             android:textSize="20sp" />
