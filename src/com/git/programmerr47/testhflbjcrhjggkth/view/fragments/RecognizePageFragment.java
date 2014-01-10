@@ -13,6 +13,7 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IFingerprintTime
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeResultObserver;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeStatusObserver;
 import com.git.programmerr47.testhflbjcrhjggkth.view.ProgressWheel;
+import com.nineoldandroids.view.ViewHelper;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
 import android.app.Activity;
@@ -58,6 +59,7 @@ public class RecognizePageFragment
     private TextView status;
     private TextView progress;
     private ProgressBar statusProgress;
+    private LinearLayout tutorialPage;
     
     private SongData currentApearingSong;
     private boolean firstTimeApearing;
@@ -92,7 +94,10 @@ public class RecognizePageFragment
 
         View view = inflater.inflate(R.layout.recognize_fragment, null);
 
+        tutorialPage = (LinearLayout) view.findViewById(R.id.tutorialPage);
+
         fingerprintTimer = (ProgressWheel) view.findViewById(R.id.fingerprintTimer);
+        fingerprintTimer.setBarColor(0X000000);
         controller.setProgressWheel(fingerprintTimer);
         fingerprintTimer.setOnLoadingListener(new ProgressWheel.OnLoadingListener() {
             @Override
