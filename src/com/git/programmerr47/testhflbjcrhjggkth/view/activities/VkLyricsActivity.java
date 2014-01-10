@@ -91,7 +91,7 @@ public class VkLyricsActivity extends FragmentActivity{
 					@Override
 					public void onDialogClick(DialogFragment fragment, View v) {
         				Intent intent = new Intent(VkLyricsActivity.this, RefreshPagerActivity.class);
-        				intent.putExtra(RefreshPagerActivity.VK_KEY, SongReplacePagerAdapter.VK_PAGE_NUMBER);
+        				intent.putExtra(PagerActivity.PAGE_NUMBER, SongReplacePagerAdapter.VK_PAGE_NUMBER);
         				startActivity(intent);
         				finish();
         				fragment.dismiss();

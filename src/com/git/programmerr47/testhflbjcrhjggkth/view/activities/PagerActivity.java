@@ -2,6 +2,7 @@ package com.git.programmerr47.testhflbjcrhjggkth.view.activities;
 
 import java.lang.reflect.Field;
 
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
@@ -21,9 +22,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 public class PagerActivity extends FragmentActivity{
+    public static final String PAGE_NUMBER = "page_number";
 
     protected ViewPager pager;
     protected PagerAdapter pagerAdapter;
+    protected int initialPage = 0;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        Intent intent = getIntent();
+        if (intent.hasExtra(PAGE_NUMBER)) {
+            initialPage = intent.getExtras().getInt(PAGE_NUMBER, 0);
+        }
+    }
     
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

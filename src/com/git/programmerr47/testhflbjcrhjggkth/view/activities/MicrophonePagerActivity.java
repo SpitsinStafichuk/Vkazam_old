@@ -13,7 +13,6 @@ import android.os.IBinder;
 import android.util.Log;
 
 public class MicrophonePagerActivity extends PagerActivity implements ServiceConnection{
-
 	private static final String TAG = "myLogs";
 	
 	@Override
@@ -28,6 +27,7 @@ public class MicrophonePagerActivity extends PagerActivity implements ServiceCon
 		super.setupUi();
         pagerAdapter = new MicrophonePagerAdapter(getSupportFragmentManager(), getApplicationContext());
         pager.setAdapter(pagerAdapter);
+        pager.setCurrentItem(initialPage);
 	}
 	
 	@Override

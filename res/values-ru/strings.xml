@@ -79,9 +79,13 @@
     <string name="bad_lyrics_title">Плохой текст песни</string>
     <string name="loading_title">Загрузка</string>
     <string name="loading_message">сохраняется для оффлайн прослушивания</string>
+    <string name="deletion_title">Подтверждение удаления</string>
+    <string name="deletion_message">Вы действительно хотите удалить эту композицию из истории?</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
 
     <!-- Choose url pager strings -->
-    <string name="more_elements">Больше песен</string>
+    <string name="more_elements">Больше композиций</string>
 
     <!-- Toasts strings -->
     <string name="empty_fingerlist">Список отпечатков пуст</string>
