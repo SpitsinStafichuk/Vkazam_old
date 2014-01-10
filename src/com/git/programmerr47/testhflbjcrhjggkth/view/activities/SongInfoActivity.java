@@ -83,6 +83,8 @@ public class SongInfoActivity extends FragmentActivity implements IPlayerStateOb
     private ImageButton youtubeButton;
     private SeekBar ppSongProgress;
     private SeekBar vkSongProgress;
+    private TextView ppArtistTitleView;
+    private TextView vkArtistTitleView;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +116,12 @@ public class SongInfoActivity extends FragmentActivity implements IPlayerStateOb
         });
 		data = model.getCurrentOpenSong();
 		fillActivity(data);
+
+        ppArtistTitleView = (TextView) findViewById(R.id.SongInfoRealArtistTitleForPP);
+        ppArtistTitleView.setText("");
+
+        vkArtistTitleView = (TextView) findViewById(R.id.SongInfoRealArtistTitleForVk);
+        vkArtistTitleView.setText("");
 
         ppSongProgress = (SeekBar) findViewById(R.id.SongProgressForPP);
         ppSongProgress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -460,6 +468,78 @@ public class SongInfoActivity extends FragmentActivity implements IPlayerStateOb
 	        return null;
 	    }
 	}
+
+    private class ShowRealArtistTitleTask extends  AsyncTask<DatabaseSongData, Void, String> {
+
+        public static final int PP_TASK = 1;
+        public static final int VK_TASK = 2;
+        public static final String UNPLANNED_ERROR = "unplanned_error";
+
+        private Context context;
+        private TextView targetView;
+        private int taskType;
+
+        public ShowRealArtistTitleTask(Context context, TextView tv, int taskType) {
+            this.context = context;
+            targetView = tv;
+            this.taskType = taskType;
+        }
+
+        @Override
+        protected String doInBackground(DatabaseSongData... databaseSongDatas) {
+            String artist = databaseSongDatas[0].getArtist();
+            String title = databaseSongDatas[0].getTitle();
+            if (taskType == PP_TASK) {
+                String ppArtist = databaseSongDatas[0].getPpArtist();
+                String ppTitle = databaseSongDatas[0].getPpTitle();
+                String ppUrl = databaseSongDatas[0].getPleercomUrl();
+
+                if ((ppArtist == null) || (ppTitle == null)) {
+                    if (ppUrl == null) {
+                        try {
+                            databaseSongDatas[0].findPPAudio();
+                            if ((ppArtist == null) || (ppTitle == null)) {
+                                return artist + " - " + title;
+                            } else {
+                                return ppArtist + " - " + ppTitle;
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                            return UNPLANNED_ERROR;
+                        } catch (JSONException e) {
+                            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                            return context.getString(R.string.internet_connection_not_available);
+                        } catch (com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.KException e) {
+                            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                            return context.getString(R.string.pp_not_available);
+                        } catch (SongNotFoundException e) {
+                            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                            return context.getString(R.string.song_not_found);
+                        }
+                    } else {
+                        return artist + " - " + title;
+                    }
+                } else {
+                    return ppArtist + " - " + ppTitle;
+                }
+            } else if (taskType == VK_TASK) {
+                //TODO recieve artist_title;
+            }
+            return null;
+        }
+
+        protected void onPostExecute(String result) {
+            if ((result != null) && (result != UNPLANNED_ERROR)) {
+                if ((result != context.getString(R.string.internet_connection_not_available)) &&
+                    (result != context.getString(R.string.pp_not_available)) &&
+                    (result != context.getString(R.string.song_not_found))) {
+                    targetView.setText(result);
+                } else {
+                    Toast.makeText(SongInfoActivity.this, result, Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    }
 	
 	private class AddToVkTask extends AsyncTask<DatabaseSongData, Void, String> {
 
@@ -566,6 +646,9 @@ public class SongInfoActivity extends FragmentActivity implements IPlayerStateOb
             vkPlayer.setVisibility(View.VISIBLE);
             vkPlayerLabel.setVisibility(View.VISIBLE);
         }
+
+        (new ShowRealArtistTitleTask(this, ppArtistTitleView, ShowRealArtistTitleTask.PP_TASK)).execute(data);
+        //(new ShowRealArtistTitleTask(this, vkArtistTitleView, ShowRealArtistTitleTask.VK_TASK)).execute(data);
 
 		updatePlayerState();
 	}

@@ -97,6 +97,7 @@
     <string name="song_not_found">Song is not found</string>
     <string name="internet_connection_not_available">Seems you haven\'t internet connection</string>
     <string name="vk_not_available">Seems you haven\'t VK connection. Use settings to log in</string>
+    <string name="pp_not_available">Seems prostopleer was dropped. Try again later</string>
 
     <!-- Sharing strings -->
     <string name="share_song">Share song</string>

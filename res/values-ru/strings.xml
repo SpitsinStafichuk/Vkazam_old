@@ -96,7 +96,8 @@
     <string name="no_more_songs">Больше песен нет</string>
     <string name="song_not_found">Композиция не найдена</string>
     <string name="internet_connection_not_available">Кажется, вы не подключены к интернету</string>
-    <string name="vk_not_available">Кажется вы не подключены к ВК. Используйте настройки для подключения</string>
+    <string name="vk_not_available">Кажется, вы не подключены к ВК. Используйте настройки для подключения</string>
+    <string name="pp_not_available">Кажется, prostopleer упал. Попытайтесь заново позже</string>
 
     <!-- Sharing strings -->
     <string name="share_song">Поделиться композицией</string>
