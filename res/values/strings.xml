@@ -79,6 +79,10 @@
     <string name="bad_lyrics_title">Bad lyrics</string>
     <string name="loading_title">Loading</string>
     <string name="loading_message">is saving for offline listening</string>
+    <string name="deletion_title">Deletion confirmation</string>
+    <string name="deletion_message">Are you sure you want to delete this song from history?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 
     <!-- Choose url pager strings -->
     <string name="more_elements">More songs</string>

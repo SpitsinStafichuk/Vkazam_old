@@ -18,6 +18,7 @@ import android.widget.*;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SongManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISongProgressObserver;
 import com.git.programmerr47.testhflbjcrhjggkth.utils.AndroidUtils;
+import com.git.programmerr47.testhflbjcrhjggkth.view.adapters.MicrophonePagerAdapter;
 import com.perm.kate.api.Audio;
 import org.json.JSONException;
 
@@ -276,10 +277,37 @@ public class SongInfoActivity extends FragmentActivity implements IPlayerStateOb
 			
 			@Override
 			public void onClick(View v) {
-				model.getSongList().remove(data);
-				Intent intent = new Intent(SongInfoActivity.this, MicrophonePagerActivity.class);
-				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				startActivity(intent);
+
+                MessageDialogFragment.Builder builder = new MessageDialogFragment.Builder();
+                builder.setIcon(R.drawable.ic_alert_dialog)
+                       .setTitle(getString(R.string.deletion_title))
+                       .setMessage(getString(R.string.deletion_message))
+                       .setPositiveButton(getString(R.string.yes), new MessageDialogFragment.onDialogClickListener() {
+                           @Override
+                           public void onDialogClick(DialogFragment fragment, View view) {
+                               fragment.dismiss();
+                               model.getSongList().remove(data);
+                               Intent intent = new Intent(SongInfoActivity.this, MicrophonePagerActivity.class);
+                               intent.putExtra(PagerActivity.PAGE_NUMBER, MicrophonePagerAdapter.HISTORY_PAGE_NUMBER);
+                               intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                               startActivity(intent);
+                           }
+                       })
+                       .setNegativeButton(getString(R.string.no), new MessageDialogFragment.onDialogClickListener() {
+                           @Override
+                           public void onDialogClick(DialogFragment fragment, View view) {
+                               fragment.dismiss();
+                           }
+                       });
+
+                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                Fragment prev = getSupportFragmentManager().findFragmentByTag(SHOW_DIALOG_TAG);
+                if (prev != null) {
+                    fragmentTransaction.remove(prev);
+                }
+
+                MessageDialogFragment dialogFragment = ProgressDialogFragment.newInstance(builder);
+                dialogFragment.show(fragmentTransaction, SHOW_DIALOG_TAG);
 			}
 		});
 
@@ -340,7 +368,6 @@ public class SongInfoActivity extends FragmentActivity implements IPlayerStateOb
 	    @Override
 	    protected void onPreExecute() {
 	        super.onPreExecute();
-//	        downloadPPProgressDialog.show();
 
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             Fragment prev = getSupportFragmentManager().findFragmentByTag(SHOW_DIALOG_TAG);

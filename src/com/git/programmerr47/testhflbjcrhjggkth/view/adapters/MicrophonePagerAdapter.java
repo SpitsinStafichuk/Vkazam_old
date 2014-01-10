@@ -9,6 +9,7 @@ import android.content.Context;
 import android.support.v4.app.FragmentManager;
 
 public class MicrophonePagerAdapter extends PagerAdapter {
+    public static final int HISTORY_PAGE_NUMBER = 1;
    
     public MicrophonePagerAdapter(FragmentManager fm, Context context) {
             super(fm, 4);

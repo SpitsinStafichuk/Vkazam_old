@@ -3,6 +3,7 @@ package com.git.programmerr47.testhflbjcrhjggkth.controllers;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
+import com.git.programmerr47.testhflbjcrhjggkth.view.activities.PagerActivity;
 import org.json.JSONException;
 
 import android.R.bool;
@@ -103,7 +104,7 @@ public class SongInfoController extends SongController{
 								@Override
 								public void onDialogClick(DialogFragment fragment, View v) {
 			        				Intent intent = new Intent(view, RefreshPagerActivity.class);
-			        				intent.putExtra(RefreshPagerActivity.VK_KEY, SongReplacePagerAdapter.VK_PAGE_NUMBER);
+			        				intent.putExtra(PagerActivity.PAGE_NUMBER, SongReplacePagerAdapter.VK_PAGE_NUMBER);
 			        				view.startActivity(intent);
 			        				fragment.dismiss();
 								}
