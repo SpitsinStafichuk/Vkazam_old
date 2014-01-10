@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import android.media.MediaPlayer;
@@ -489,6 +490,7 @@ public class SongInfoActivity extends FragmentActivity implements IPlayerStateOb
         protected String doInBackground(DatabaseSongData... databaseSongDatas) {
             String artist = databaseSongDatas[0].getArtist();
             String title = databaseSongDatas[0].getTitle();
+
             if (taskType == PP_TASK) {
                 String ppArtist = databaseSongDatas[0].getPpArtist();
                 String ppTitle = databaseSongDatas[0].getPpTitle();
@@ -508,7 +510,7 @@ public class SongInfoActivity extends FragmentActivity implements IPlayerStateOb
                             return UNPLANNED_ERROR;
                         } catch (JSONException e) {
                             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                            return context.getString(R.string.internet_connection_not_available);
+                            return UNPLANNED_ERROR;
                         } catch (com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.KException e) {
                             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                             return context.getString(R.string.pp_not_available);
@@ -523,9 +525,68 @@ public class SongInfoActivity extends FragmentActivity implements IPlayerStateOb
                     return ppArtist + " - " + ppTitle;
                 }
             } else if (taskType == VK_TASK) {
-                //TODO recieve artist_title;
+                String audioId = databaseSongDatas[0].getVkAudioId();
+                if (audioId != null) {
+                    return getVkArtistTitleFromId(audioId, artist, title);
+                } else {
+                    try {
+                        databaseSongDatas[0].findVkAudio(vkApi);
+                    } catch (IOException e) {
+                        e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                        return UNPLANNED_ERROR;
+                    } catch (JSONException e) {
+                        e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                        return UNPLANNED_ERROR;
+                    } catch (KException e) {
+                        e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                        return context.getString(R.string.vk_not_available);
+                    } catch (SongNotFoundException e) {
+                        e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                        return context.getString(R.string.song_not_found);
+                    }
+                    audioId = databaseSongDatas[0].getVkAudioId();
+
+                    String vkArtist = databaseSongDatas[0].getVkArtist();
+                    String vkTitle = databaseSongDatas[0].getVkTitle();
+                    if ((vkArtist != null) && (vkTitle != null)) {
+                        return vkArtist + " - " + vkTitle;
+                    }
+
+                    if (audioId != null) {
+                        return getVkArtistTitleFromId(audioId, artist, title);
+                    }
+                }
             }
             return null;
+        }
+
+        private String getVkArtistTitleFromId(String audioId, String artist, String title) {
+            List<com.perm.kate.api.Audio> audioList = new ArrayList<Audio>();
+            try {
+                audioList = vkApi.getAudioById(audioId, null, null);
+            } catch (IOException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                return UNPLANNED_ERROR;
+            } catch (JSONException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                return UNPLANNED_ERROR;
+            } catch (KException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                return context.getString(R.string.vk_not_available);
+            }
+
+            if (audioList.isEmpty()) {
+                return context.getString(R.string.song_not_found);
+            }
+
+            String vkArtist = audioList.get(0).artist;
+            String vkTitle = audioList.get(0).title;
+
+            if ((vkArtist == null) || (vkTitle == null)) {
+                return vkArtist + " - " + vkTitle;
+            } else {
+                return artist + " - " + title;
+            }
         }
 
         protected void onPostExecute(String result) {
@@ -555,9 +616,6 @@ public class SongInfoActivity extends FragmentActivity implements IPlayerStateOb
             if(audioId == null) {
                 try {
                     databaseSongData[0].findVkAudio(vkApi);
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                    result = e.getLocalizedMessage();
                 } catch (IOException e) {
                     e.printStackTrace();
                     result = e.getLocalizedMessage();
@@ -566,10 +624,10 @@ public class SongInfoActivity extends FragmentActivity implements IPlayerStateOb
                     result = e.getLocalizedMessage();
                 } catch (KException e) {
                     e.printStackTrace();
-                    result = e.getLocalizedMessage();
+                    result = context.getString(R.string.vk_not_available);
                 } catch (SongNotFoundException e) {
                     e.printStackTrace();
-                    result = e.getLocalizedMessage();
+                    result = context.getString(R.string.song_not_found);
                 }
                 audioId = databaseSongData[0].getVkAudioId();
             }
@@ -648,7 +706,7 @@ public class SongInfoActivity extends FragmentActivity implements IPlayerStateOb
         }
 
         (new ShowRealArtistTitleTask(this, ppArtistTitleView, ShowRealArtistTitleTask.PP_TASK)).execute(data);
-        //(new ShowRealArtistTitleTask(this, vkArtistTitleView, ShowRealArtistTitleTask.VK_TASK)).execute(data);
+        (new ShowRealArtistTitleTask(this, vkArtistTitleView, ShowRealArtistTitleTask.VK_TASK)).execute(data);
 
 		updatePlayerState();
 	}
