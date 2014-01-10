@@ -61,7 +61,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:src="@android:drawable/ic_media_previous"
-                    android:background="@android:color/transparent"/>
+                    android:background="@drawable/action_button_selector"/>
 
             <LinearLayout
                 android:id="@+id/miniplayerPlayPauseLayout"
@@ -77,7 +77,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@android:drawable/ic_media_play"
-                        android:background="@android:color/transparent"/>
+                        android:background="@drawable/action_button_selector"/>
 
                 <ProgressBar
                         android:id="@+id/miniplayerSongLoading"
@@ -97,7 +97,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:src="@android:drawable/ic_media_next"
-                    android:background="@android:color/transparent"/>
+                    android:background="@drawable/action_button_selector"/>
 
         </LinearLayout>
 
