@@ -107,8 +107,7 @@
     	            android:singleLine="true"
     	            android:text="date"
     	            android:textColor="#99333333"
-    	            android:textSize="15sp"
-    	            android:textStyle="italic" />
+    	            android:textSize="15sp" />
 
     	    </LinearLayout>
 
