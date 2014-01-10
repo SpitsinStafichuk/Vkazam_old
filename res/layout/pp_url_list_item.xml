@@ -134,7 +134,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    style="@style/RadioButtonAppTheme" android:layout_marginTop="1dp"/>
+                    style="@style/RadioButtonAppTheme" android:layout_marginTop="1dp" android:layout_marginLeft="10dp"/>
 
     </LinearLayout>
 
