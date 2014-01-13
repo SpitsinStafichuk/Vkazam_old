@@ -109,5 +109,11 @@
     <string name="new_song_lyrics_title">Vkazam - новая композиция (текст песни)</string>
     <string name="new_song_message">Я только что распознал классную композицию с помощью Vkazam:</string>
     <string name="new_song_lyrics_message">Я только что прочитал текст песни:</string>
+
+    <!-- Tutorial strings -->
+    <string name="tutorial_recognize_button">Нажмите на эту кнопку, чтобы начать или прервать распознавание</string>
+    <string name="tutorial_recognize_timer">Нажмите на эту кнопку, чтобы постоянно распознавать с микрофона</string>
+    <string name="tutorial_recognize_wheel">Круговой индикатор показывать сколько времени осталось до начала следующего распознавания</string>
+    <string name="tutorial_recognize_result">При успешном теггинге вы увидите поле ниже, в котором будет показана информация о распознанном треке и дата распознания</string>
     
 </resources>
