@@ -75,8 +75,6 @@ public class ProgressWheel extends View {
 
     public ProgressWheel(Context context, AttributeSet attrs) {
         super(context, attrs);
-
-        parseAttributes(context.obtainStyledAttributes(attrs, R.styleable.ProgressWheel));
     }
 
     @Override
@@ -137,42 +135,6 @@ public class ProgressWheel extends View {
         circleRadius = (fullRadius - barWidth) + 1;
     }
 
-    private void parseAttributes(TypedArray a) {
-        barWidth = (int) a.getDimension(R.styleable.ProgressWheel_barWidth,
-                barWidth);
-
-        rimWidth = (int) a.getDimension(R.styleable.ProgressWheel_rimWidth,
-                rimWidth);
-
-        spinSpeed = (int) a.getDimension(R.styleable.ProgressWheel_spinSpeed,
-                spinSpeed);
-
-        delayMillis = (int) a.getInteger(R.styleable.ProgressWheel_delayMillis,
-                delayMillis);
-        if(delayMillis<0) {
-            delayMillis = 0;
-        }
-
-        barColor = a.getColor(R.styleable.ProgressWheel_barColor, barColor);
-
-        barLength = (int) a.getDimension(R.styleable.ProgressWheel_barLength,
-                barLength);
-
-        textSize = (int) a.getDimension(R.styleable.ProgressWheel_textSize,
-                textSize);
-
-        textColor = (int) a.getColor(R.styleable.ProgressWheel_textColor,
-                textColor);
-
-        rimColor = (int) a.getColor(R.styleable.ProgressWheel_rimColor,
-                rimColor);
-
-        circleColor = (int) a.getColor(R.styleable.ProgressWheel_circleColor,
-                circleColor);
-
-        a.recycle();
-    }
-
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
@@ -225,6 +187,18 @@ public class ProgressWheel extends View {
             }
         }
         spinHandler.sendEmptyMessage(0);
+    }
+
+    public void setBarColor(int barColor) {
+        this.barColor = barColor;
+        setupPaints();
+        drawableStateChanged();
+    }
+
+    public void setRimColor(int rimColor) {
+        this.rimColor = rimColor;
+        setupPaints();
+        drawableStateChanged();
     }
 
     public void setProgress(int i) {
