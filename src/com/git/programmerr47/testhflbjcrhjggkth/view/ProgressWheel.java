@@ -195,6 +195,12 @@ public class ProgressWheel extends View {
         drawableStateChanged();
     }
 
+    public void setRimColor(int rimColor) {
+        this.rimColor = rimColor;
+        setupPaints();
+        drawableStateChanged();
+    }
+
     public void setProgress(int i) {
         isSpinning = false;
         progress=i;

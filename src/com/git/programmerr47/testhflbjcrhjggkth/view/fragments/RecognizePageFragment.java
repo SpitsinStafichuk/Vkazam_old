@@ -1,5 +1,7 @@
 package com.git.programmerr47.testhflbjcrhjggkth.view.fragments;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.widget.*;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.RecognizeController;
@@ -12,8 +14,8 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IFingerprintStat
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IFingerprintTimerObserver;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeResultObserver;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeStatusObserver;
+import com.git.programmerr47.testhflbjcrhjggkth.utils.AndroidUtils;
 import com.git.programmerr47.testhflbjcrhjggkth.view.ProgressWheel;
-import com.nineoldandroids.view.ViewHelper;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
 import android.app.Activity;
@@ -60,9 +62,20 @@ public class RecognizePageFragment
     private TextView progress;
     private ProgressBar statusProgress;
     private LinearLayout tutorialPage;
+    private LinearLayout recognizePage;
+
+    private TextView tut1RecTimer;
+    private TextView tut1RecNow;
+    private ProgressWheel tut2TimerDelay;
+    private TextView tut2TimerDelayInfo;
+    private TextView tut3ResInfo;
+    private View tut3ResEx;
+    private ImageView tut3ResLink;
     
     private SongData currentApearingSong;
+    private boolean pageOnCreating;
     private boolean firstTimeApearing;
+    private SharedPreferences prefs;
 
     private ProgressWheel fingerprintTimer;
     
@@ -86,7 +99,10 @@ public class RecognizePageFragment
         recognizeManager = model.getMainRecognizeManager();
         recognizeManager.addRecognizeStatusObserver(this);
         recognizeManager.addRecognizeResultObserver(this);
-        firstTimeApearing = true;
+        pageOnCreating = true;
+
+        prefs = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
+        firstTimeApearing = prefs.getBoolean("RecognizePageFragmentFirstTime", true);
     }
 
     @Override
@@ -94,10 +110,7 @@ public class RecognizePageFragment
 
         View view = inflater.inflate(R.layout.recognize_fragment, null);
 
-        tutorialPage = (LinearLayout) view.findViewById(R.id.tutorialPage);
-
         fingerprintTimer = (ProgressWheel) view.findViewById(R.id.fingerprintTimer);
-        fingerprintTimer.setBarColor(0X000000);
         controller.setProgressWheel(fingerprintTimer);
         fingerprintTimer.setOnLoadingListener(new ProgressWheel.OnLoadingListener() {
             @Override
@@ -148,6 +161,61 @@ public class RecognizePageFragment
                 controller.fingerprintNowRecognizeCancel();
             }
         });
+
+        recognizePage = (LinearLayout) view.findViewById(R.id.recognizePage);
+        tutorialPage = (LinearLayout) view.findViewById(R.id.tutorialPage);
+        if (firstTimeApearing) {
+            tutorialPage.setVisibility(View.VISIBLE);
+            tutorialPage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (tut1RecNow.getVisibility() == View.VISIBLE) {
+                        tut1RecNow.setVisibility(View.INVISIBLE);
+                        tut1RecTimer.setVisibility(View.INVISIBLE);
+
+                        tut2TimerDelay.setVisibility(View.VISIBLE);
+                        tut2TimerDelayInfo.setVisibility(View.VISIBLE);
+                    } else if (tut2TimerDelay.getVisibility() == View.VISIBLE) {
+                        tut2TimerDelay.setVisibility(View.INVISIBLE);
+                        tut2TimerDelayInfo.setVisibility(View.INVISIBLE);
+
+                        tut3ResEx.setVisibility(View.VISIBLE);
+                        tut3ResInfo.setVisibility(View.VISIBLE);
+                        tut3ResLink.setVisibility(View.VISIBLE);
+                    } else if (tut3ResInfo.getVisibility() == View.VISIBLE) {
+                        tutorialPage.setVisibility(View.GONE);
+                        AndroidUtils.setViewClickable(recognizePage, true);
+
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.putBoolean("RecognizePageFragmentFirstTime", false);
+                        editor.commit();
+                    }
+                }
+            });
+            AndroidUtils.setViewClickable(recognizePage, false);
+
+            tut1RecNow = (TextView) tutorialPage.findViewById(R.id.tutorial1RecNow);
+            tut1RecNow.setVisibility(View.VISIBLE);
+            tut1RecTimer = (TextView) tutorialPage.findViewById(R.id.tutorial1RecTimer);
+            tut1RecTimer.setVisibility(View.VISIBLE);
+            tut2TimerDelay = (ProgressWheel) tutorialPage.findViewById(R.id.tutorial2TimerDelay);
+            tut2TimerDelay.setRimColor(0XFFFFFFFF);
+            tut2TimerDelay.setVisibility(View.INVISIBLE);
+            tut2TimerDelayInfo = (TextView) tutorialPage.findViewById(R.id.tutorial2TimerDelayInfo);
+            tut2TimerDelayInfo.setVisibility(View.INVISIBLE);
+            tut3ResInfo = (TextView) tutorialPage.findViewById(R.id.tutorial3ResultInfo);
+            tut3ResInfo.setVisibility(View.INVISIBLE);
+            tut3ResEx = tutorialPage.findViewById(R.id.tutorial3Result);
+            tut3ResEx.setVisibility(View.INVISIBLE);
+            LinearLayout tutPlayButton = (LinearLayout) tut3ResEx.findViewById(R.id.songListItemPlayPauseLayout);
+            tutPlayButton.setVisibility(View.GONE);
+            AndroidUtils.setViewEnabled(tut3ResEx, false);
+            tut3ResLink = (ImageView) tutorialPage.findViewById(R.id.tutorial3ResultLink);
+            tut3ResLink.setVisibility(View.INVISIBLE);
+        } else {
+            tutorialPage.setVisibility(View.GONE);
+            AndroidUtils.setViewClickable(recognizePage, true);
+        }
         
         return view;
     }
@@ -198,7 +266,7 @@ public class RecognizePageFragment
     	if(songData != null) {
 			updateItem(song, songArtist, songTitle, songDate, songCoverArt, songData);
 			if (apearing) {
-				if (!firstTimeApearing) {
+				if (!pageOnCreating) {
 					Animation disappear = AnimationUtils.loadAnimation(this.parentActivity, R.anim.disappear);
 					disappear.setAnimationListener(new AnimationListener() {
 						
@@ -219,7 +287,7 @@ public class RecognizePageFragment
 					prevSong.setVisibility(View.VISIBLE);
 				} else {
 					updateItem(prevSong, prevSongArtist, prevSongTitle, prevSongDate, prevSongCoverArt, songData);
-					firstTimeApearing = false;
+					pageOnCreating = false;
 				}
 				song.setAnimation(AnimationUtils.loadAnimation(this.parentActivity, R.anim.appear));
 			}
