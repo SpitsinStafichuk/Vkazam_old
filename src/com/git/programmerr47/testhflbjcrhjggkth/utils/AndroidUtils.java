@@ -18,8 +18,20 @@ public class AndroidUtils {
         if (view instanceof ViewGroup) {
             ViewGroup group = (ViewGroup)view;
 
-            for ( int idx = 0 ; idx < group.getChildCount() ; idx++ ) {
-                setViewEnabled(group.getChildAt(idx), enabled);
+            for (int i = 0; i < group.getChildCount(); i++ ) {
+                setViewEnabled(group.getChildAt(i), enabled);
+            }
+        }
+    }
+
+    public static void setViewClickable(View view, boolean clickable) {
+        view.setClickable(clickable);
+
+        if (view instanceof ViewGroup) {
+            ViewGroup group = (ViewGroup)view;
+
+            for (int i = 0; i < group.getChildCount(); i++) {
+                setViewClickable(group.getChildAt(i), clickable);
             }
         }
     }
