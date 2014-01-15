@@ -2,6 +2,7 @@ package com.git.programmerr47.testhflbjcrhjggkth.controllers;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
@@ -17,16 +18,15 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObse
 import java.io.IOException;
 import java.net.MalformedURLException;
 
-public class URLcontroller implements IPlayerStateObserver{
+public class URLcontroller extends SongController implements IPlayerStateObserver{
 	private static final String TAG = "URLcontroller";
 	
     private View currentElement;
     private String currentUrl;
     private MicroScrobblerMediaPlayer player;
-    private MicroScrobblerModel model;
-    private Thread preparingThread;
 
-    public URLcontroller() {
+    public URLcontroller(FragmentActivity view) {
+        super(view);
         model = RecognizeServiceConnection.getModel();
         player = model.getPlayer();
         player.addPlayerStateObserver(this);
@@ -52,69 +52,6 @@ public class URLcontroller implements IPlayerStateObserver{
 
     public View getCurrentElement() {
         return currentElement;
-    }
-
-    public synchronized void playPauseSong(final String url, final Activity activity) {
-        if(preparingThread != null) {
-            SongManager songManager = model.getSongManager();
-            songManager.set(null, -1, model.getVkApi());
-            preparingThread.interrupt();
-        }
-        preparingThread = new Thread(){
-            @Override
-            public void run() {
-                _playPauseSong(url, activity);
-                preparingThread = null;
-            }
-        };
-        preparingThread.start();
-    }
-
-    private void _playPauseSong(String url, Activity activity) {
-        if(url.equals(currentUrl)) {
-            if(player.isPrepared())
-                if(player.isPlaying()) {
-                    player.pause();
-                } else {
-                    player.start();
-                }
-        } else {
-            currentUrl = url;
-            if(player.isPlaying()) {
-                player.stop();
-            }
-            player.release();
-            player = model.getPlayer();
-            try {
-                player.setLoadingState();
-                player.setDataSource(url);
-            } catch (IOException e) {
-                showToast(e.getLocalizedMessage(), activity);
-            }
-            Log.v("SongListController", "song was setted");
-            try {
-                player.prepare();
-                Log.v("SongListController", "song was prepared ");
-                player.start();
-            } catch (MalformedURLException e) {
-                showToast(activity.getString(R.string.internet_connection_not_available), activity);
-                player.release();
-            } catch (IOException e) {
-                showToast(activity.getString(R.string.internet_connection_not_available), activity);
-                player.release();
-            }
-        }
-    }
-
-    private void showToast(final String message, final Activity activity) {
-        activity.runOnUiThread(new Runnable() {
-
-            @Override
-            public void run() {
-                Toast toast = Toast.makeText(activity.getApplicationContext(), message, Toast.LENGTH_SHORT);
-                toast.show();
-            }
-        });
     }
 
     @Override
