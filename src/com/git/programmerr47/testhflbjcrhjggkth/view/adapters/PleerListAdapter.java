@@ -2,6 +2,7 @@ package com.git.programmerr47.testhflbjcrhjggkth.view.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +12,9 @@ import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.URLcontroller;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
 import com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeServiceConnection;
+import com.git.programmerr47.testhflbjcrhjggkth.model.SongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseSongData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SongManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.Api;
 import com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.Audio;
 import com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.KException;
@@ -28,7 +31,7 @@ public class PleerListAdapter extends BaseAdapter {
     private View currentElement;
     private List<Audio> urls;
     private LayoutInflater inflater;
-    private Activity activity;
+    private FragmentActivity activity;
     private int resLayout;
     private int endOfListResLayout;
     private int page = 1;
@@ -36,11 +39,11 @@ public class PleerListAdapter extends BaseAdapter {
     private boolean isFullList = false;
     private URLcontroller controller;
 
-    public PleerListAdapter(final Activity activity, int resLayout, int endOfListResLayout) {
+    public PleerListAdapter(final FragmentActivity activity, int resLayout, int endOfListResLayout) {
         this.activity = activity;
         this.resLayout = resLayout;
         this.endOfListResLayout = endOfListResLayout;
-        controller = new URLcontroller();
+        controller = new URLcontroller(activity);
         model = RecognizeServiceConnection.getModel();
         currentSongData = model.getCurrentOpenSong();
         Log.v("PleerListAdapter", "Current Song url = " + currentSongData.getPleercomUrl());
@@ -137,7 +140,10 @@ public class PleerListAdapter extends BaseAdapter {
                 public void onClick(View v) {
                 	Log.v("PleerListAdapter", "View = " + v);
                     controller.setCurrentElement(viewFinal);
-                    controller.playPauseSong(urls.get(position).url, activity);
+                    //TODO change
+                    SongData tempInfo = new SongData(null, urls.get(position).artist, null, urls.get(position).title, null);
+                    tempInfo.setPleercomUrl(urls.get(position).url);
+                    controller.playPauseSong(new DatabaseSongData(-1, null, tempInfo), -1, SongManager.PP_SONG);
                 }
             });
         }
@@ -199,4 +205,6 @@ public class PleerListAdapter extends BaseAdapter {
         }
         return result + seconds;
     }
+
+    //TODO finalize
 }

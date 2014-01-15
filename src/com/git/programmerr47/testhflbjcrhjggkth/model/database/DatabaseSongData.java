@@ -38,31 +38,46 @@ public class DatabaseSongData extends SongData implements Data {
 	public void setCoverArtUrl(String coverArtUrl) {
 		super.setCoverArtUrl(coverArtUrl);
 		//TODO возможно неэффективно обновлять все поля, когда нужно обновить только одно
-		dao.update(this);
+
+		if (dao != null) {
+            dao.update(this);
+        }
 	}
 
     @Override
     public void setPleercomUrl(String pleercomUrl) {
         super.setPleercomUrl(pleercomUrl);
-        dao.update(this);
+
+        if (dao != null) {
+            dao.update(this);
+        }
     }
 
     @Override
     public void setPpArtist(String artist) {
         super.setPpArtist(artist);
-        dao.update(this);
+
+        if (dao != null) {
+            dao.update(this);
+        }
     }
 
     @Override
     public void setPpTitle(String title) {
         super.setPpTitle(title);
-        dao.update(this);
+
+        if (dao != null) {
+            dao.update(this);
+        }
     }
 	
 	@Override
 	public void setVkAudioId(String vkAudioId) {
 		super.setVkAudioId(vkAudioId);
-		dao.update(this);
+
+        if (dao != null) {
+            dao.update(this);
+        }
 	}
 	
 	@Override
@@ -79,7 +94,10 @@ public class DatabaseSongData extends SongData implements Data {
 	@Override
 	public void setNullFields(SongData songData) {
 		super.setNullFields(songData);
-		dao.update(this);
+
+        if (dao != null) {
+            dao.update(this);
+        }
 	}
 	
 	@Override
@@ -95,13 +113,20 @@ public class DatabaseSongData extends SongData implements Data {
 	@Override
 	public String findVkAudio(Api vkApi) throws MalformedURLException, IOException, JSONException, KException, SongNotFoundException {
 		String result = super.findVkAudio(vkApi);
-		dao.update(this);
+
+        if (dao != null) {
+            dao.update(this);
+        }
+
 		return result;
 	}
 	
 	@Override
 	public void findPPAudio() throws MalformedURLException, IOException, JSONException, com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.KException, SongNotFoundException {
 		super.findPPAudio();
-		dao.update(this);
+
+        if (dao != null) {
+            dao.update(this);
+        }
 	}
 }

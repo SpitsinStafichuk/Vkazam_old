@@ -2,6 +2,7 @@ package com.git.programmerr47.testhflbjcrhjggkth.view.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,7 +31,7 @@ public class VkListAdapter extends BaseAdapter {
     private View currentElement;
     private List<Audio> audios;
     private LayoutInflater inflater;
-    private Activity activity;
+    private FragmentActivity activity;
     private int resLayout;
     private int endOfListResLayout;
     private int page = 1;
@@ -39,11 +40,11 @@ public class VkListAdapter extends BaseAdapter {
     private URLcontroller controller;
     private Api vkApi;
 
-    public VkListAdapter(final Activity activity, int resLayout, int endOfListResLayout) {
+    public VkListAdapter(final FragmentActivity activity, int resLayout, int endOfListResLayout) {
         this.activity = activity;
         this.resLayout = resLayout;
         this.endOfListResLayout = endOfListResLayout;
-        controller = new URLcontroller();
+        controller = new URLcontroller(activity);
         model = RecognizeServiceConnection.getModel();
         vkApi = model.getVkApi();
         currentSongData = model.getCurrentOpenSong();
@@ -147,7 +148,8 @@ public class VkListAdapter extends BaseAdapter {
                 public void onClick(View v) {
                 	Log.v(TAG, "View = " + v);
                     controller.setCurrentElement(viewFinal);
-                    controller.playPauseSong(audios.get(position).url, activity);
+                    //TODO change
+                    //controller.playPauseSong(audios.get(position).url, activity);
                 }
             });
         }
@@ -209,4 +211,6 @@ public class VkListAdapter extends BaseAdapter {
         }
         return result + seconds;
     }
+
+    //TODO finalize
 }
