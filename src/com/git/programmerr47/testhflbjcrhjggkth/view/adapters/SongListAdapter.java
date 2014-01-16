@@ -215,6 +215,10 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 			e.printStackTrace();
 		}
 	}
+
+    public void resetCurrentElement() {
+        currentListItemView = null;
+    }
 	
 	public void release() {
         model.getPlayer().removePlayerStateObserver(this);
@@ -222,31 +226,33 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 	}
 
 	private void updateListItem(View v) {
-		ImageButton playPauseButton = (ImageButton) v.findViewById(R.id.songPlayPauseButton);
-		ProgressBar progressBar = (ProgressBar) v.findViewById(R.id.songItemLoading);
-		
-		if (songManager.isLoading()) {
-			progressBar.setVisibility(View.VISIBLE);
-			playPauseButton.setVisibility(View.GONE);
-			Log.v("SongPlayer", "Song" + songManager.getArtist() + " - " + songManager.getTitle() + "is loading");
-		} else {
-			progressBar.setVisibility(View.GONE);
-			if (songManager.isPrepared()) {
-				playPauseButton.setVisibility(View.VISIBLE);
-			} else {
-				if (playPauseButton.getVisibility() == View.GONE)
-					progressBar.setVisibility(View.INVISIBLE);
-			}
-			Log.v("SongPlayer", "Song" + /*songManager.getArtist() + " - " + songManager.getTitle() +*/ "is not loading");
-		}
-		
-		if (songManager.isPlaying()) {
-			playPauseButton.setImageResource(android.R.drawable.ic_media_pause);
-			Log.v("SongPlayer", "Song" + songManager.getArtist() + " - " + songManager.getTitle() + "is playing");
-		} else {
-			playPauseButton.setImageResource(android.R.drawable.ic_media_play);
-			Log.v("SongPlayer", "Song" + /*songManager.getArtist() + " - " + songManager.getTitle() +*/ "is on pause");
-		}
+        if (songManager.getPositionInList() != -1) {
+            ImageButton playPauseButton = (ImageButton) v.findViewById(R.id.songPlayPauseButton);
+            ProgressBar progressBar = (ProgressBar) v.findViewById(R.id.songItemLoading);
+
+            if (songManager.isLoading()) {
+                progressBar.setVisibility(View.VISIBLE);
+                playPauseButton.setVisibility(View.GONE);
+                Log.v("SongPlayer", "Song" + songManager.getArtist() + " - " + songManager.getTitle() + "is loading");
+            } else {
+                progressBar.setVisibility(View.GONE);
+                if (songManager.isPrepared()) {
+                    playPauseButton.setVisibility(View.VISIBLE);
+                } else {
+                    if (playPauseButton.getVisibility() == View.GONE)
+                        progressBar.setVisibility(View.INVISIBLE);
+                }
+                Log.v("SongPlayer", "Song" + /*songManager.getArtist() + " - " + songManager.getTitle() +*/ "is not loading");
+            }
+
+            if (songManager.isPlaying()) {
+                playPauseButton.setImageResource(android.R.drawable.ic_media_pause);
+                Log.v("SongPlayer", "Song" + songManager.getArtist() + " - " + songManager.getTitle() + "is playing");
+            } else {
+                playPauseButton.setImageResource(android.R.drawable.ic_media_play);
+                Log.v("SongPlayer", "Song" + /*songManager.getArtist() + " - " + songManager.getTitle() +*/ "is on pause");
+            }
+        }
 	}
 	
 	private void displayCoverArt(DatabaseSongData songData) {
