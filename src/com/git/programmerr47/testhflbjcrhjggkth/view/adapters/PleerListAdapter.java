@@ -140,7 +140,6 @@ public class PleerListAdapter extends BaseAdapter {
                 public void onClick(View v) {
                 	Log.v("PleerListAdapter", "View = " + v);
                     controller.setCurrentElement(viewFinal);
-                    //TODO change
                     SongData tempInfo = new SongData(null, urls.get(position).artist, null, urls.get(position).title, null);
                     tempInfo.setPleercomUrl(urls.get(position).url);
                     controller.playPauseSong(new DatabaseSongData(position, null, tempInfo), -1, SongManager.PP_SONG);

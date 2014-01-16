@@ -12,7 +12,9 @@ import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.URLcontroller;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
 import com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeServiceConnection;
+import com.git.programmerr47.testhflbjcrhjggkth.model.SongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseSongData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SongManager;
 import com.perm.kate.api.Api;
 import com.perm.kate.api.Audio;
 import com.perm.kate.api.KException;
@@ -148,8 +150,9 @@ public class VkListAdapter extends BaseAdapter {
                 public void onClick(View v) {
                 	Log.v(TAG, "View = " + v);
                     controller.setCurrentElement(viewFinal);
-                    //TODO change
-                    //controller.playPauseSong(audios.get(position).url, activity);
+                    SongData tempInfo = new SongData(null, audios.get(position).artist, null, audios.get(position).title, null);
+                    tempInfo.setPleercomUrl(audios.get(position).url);
+                    controller.playPauseSong(new DatabaseSongData(position, null, tempInfo), -1, SongManager.VK_SONG);
                 }
             });
         }
