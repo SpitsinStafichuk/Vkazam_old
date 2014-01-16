@@ -23,19 +23,19 @@ public class URLcontroller extends SongController implements IPlayerStateObserve
 	
     private View currentElement;
     private String currentUrl;
-    private MicroScrobblerMediaPlayer player;
+    private SongManager songManager;
 
     public URLcontroller(FragmentActivity view) {
         super(view);
         model = RecognizeServiceConnection.getModel();
-        player = model.getPlayer();
-        player.addPlayerStateObserver(this);
+        songManager = model.getSongManager();
+        model.getPlayer().addPlayerStateObserver(this);
     }
 
     @Override
     public void finalize() throws Throwable {
         super.finalize();
-        player.removePlayerStateObserver(this);
+        model.getPlayer().removePlayerStateObserver(this);
     }
 
     public void setCurrentElement(View v) {
@@ -61,12 +61,12 @@ public class URLcontroller extends SongController implements IPlayerStateObserve
             ImageButton playPauseButton = (ImageButton) currentElement.findViewById(R.id.ppUrlListItemPlayPauseButton);
             ProgressBar progressBar = (ProgressBar) currentElement.findViewById(R.id.ppUrlListItemLoading);
 
-            if (player.isLoading()) {
+            if (songManager.isLoading()) {
                 progressBar.setVisibility(View.VISIBLE);
                 playPauseButton.setVisibility(View.GONE);
             } else {
                 progressBar.setVisibility(View.GONE);
-                if (player.isPrepared()) {
+                if (songManager.isPrepared()) {
                     playPauseButton.setVisibility(View.VISIBLE);
                 } else {
                     if (playPauseButton.getVisibility() == View.GONE)
@@ -74,7 +74,7 @@ public class URLcontroller extends SongController implements IPlayerStateObserve
                 }
             }
 
-            if (player.isPlaying()) {
+            if (songManager.isPlaying()) {
                 playPauseButton.setImageResource(android.R.drawable.ic_media_pause);
             } else {
                 playPauseButton.setImageResource(android.R.drawable.ic_media_play);
