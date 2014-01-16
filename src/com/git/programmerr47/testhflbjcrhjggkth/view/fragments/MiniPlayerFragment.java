@@ -61,15 +61,19 @@ public class MiniPlayerFragment extends Fragment implements IPlayerStateObserver
         model.getSongManager().setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
             @Override
             public void onBufferingUpdate(MediaPlayer mediaPlayer, int percent) {
-                Log.v("MiniPlayer", "Song downloading is updated " + percent);
-                songProgress.setSecondaryProgress(percent);
+                if (model.getSongManager().getPositionInList() != -1) {
+                    Log.v("MiniPlayer", "Song downloading is updated " + percent);
+                    songProgress.setSecondaryProgress(percent);
+                }
             }
         });
         model.getSongManager().setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
-                Log.v("MiniPlayer", "Song is completed in miniplayer");
-                controller.playPauseSong(currentPosition + 1);
+                if (model.getSongManager().getPositionInList() != -1) {
+                    Log.v("MiniPlayer", "Song is completed in miniplayer");
+                    controller.playPauseSong(currentPosition + 1);
+                }
             }
         });
 
@@ -95,7 +99,9 @@ public class MiniPlayerFragment extends Fragment implements IPlayerStateObserver
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                controller.playPauseSong(currentPosition);
+                if (model.getSongManager().getPositionInList() != -1) {
+                    controller.playPauseSong(currentPosition);
+                }
             }
         });
 
@@ -103,7 +109,9 @@ public class MiniPlayerFragment extends Fragment implements IPlayerStateObserver
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                controller.playPauseSong(currentPosition + 1);
+                if (model.getSongManager().getPositionInList() != -1) {
+                    controller.playPauseSong(currentPosition + 1);
+                }
             }
         });
 
@@ -111,7 +119,9 @@ public class MiniPlayerFragment extends Fragment implements IPlayerStateObserver
         prevButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                controller.playPauseSong(currentPosition - 1);
+                if (model.getSongManager().getPositionInList() != -1) {
+                    controller.playPauseSong(currentPosition - 1);
+                }
             }
         });
 
@@ -120,7 +130,7 @@ public class MiniPlayerFragment extends Fragment implements IPlayerStateObserver
         songProgress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if (fromUser) {
+                if ((fromUser) && model.getSongManager().getPositionInList() != -1) {
                     controller.seekTo(progress);
                 }
             }
@@ -142,55 +152,61 @@ public class MiniPlayerFragment extends Fragment implements IPlayerStateObserver
     @Override
     public void updatePlayerState() {
         SongManager songManager = model.getSongManager();
-        currentPosition = songManager.getPositionInList();
-        if (songManager.isLoading()) {
-            progressBar.setVisibility(View.VISIBLE);
-            playButton.setVisibility(View.GONE);
-        } else {
-            progressBar.setVisibility(View.GONE);
-            if (songManager.isPrepared()) {
-                playButton.setVisibility(View.VISIBLE);
+        if (songManager.getPositionInList() != -1) {
+            currentPosition = songManager.getPositionInList();
+            if (songManager.isLoading()) {
+                progressBar.setVisibility(View.VISIBLE);
+                playButton.setVisibility(View.GONE);
             } else {
-                if (playButton.getVisibility() == View.GONE)
-                    progressBar.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility(View.GONE);
+                if (songManager.isPrepared()) {
+                    playButton.setVisibility(View.VISIBLE);
+                } else {
+                    if (playButton.getVisibility() == View.GONE)
+                        progressBar.setVisibility(View.INVISIBLE);
+                }
             }
-        }
 
-        if (songManager.isPlaying()) {
-            playButton.setImageResource(android.R.drawable.ic_media_pause);
-        } else {
-            playButton.setImageResource(android.R.drawable.ic_media_play);
+            if (songManager.isPlaying()) {
+                playButton.setImageResource(android.R.drawable.ic_media_pause);
+            } else {
+                playButton.setImageResource(android.R.drawable.ic_media_play);
+            }
+            adapter.notifyDataSetChanged();
         }
-        adapter.notifyDataSetChanged();
     }
 
     @Override
     public void updateSongInfo() {
-        SongData data = model.getSongManager().getSongData();
-        if (data != null) {
-            int type = model.getSongManager().getType();
-            Log.v("SongPlayerInfo", "type is " + type);
-            if (type == SongManager.ANY_SONG) {
-                songInfo.setText(data.getArtist() + " - " + data.getTitle());
-            } else if (type == SongManager.PP_SONG) {
-                songInfo.setText(data.getPpArtist() + " - " + data.getPpTitle());
-            } else if (type == SongManager.VK_SONG) {
-                songInfo.setText(data.getVkArtist() + " - " + data.getVkTitle());
-            } else if (type == SongManager.NO_SONG) {
+        if (model.getSongManager().getPositionInList() != -1) {
+            SongData data = model.getSongManager().getSongData();
+            if (data != null) {
+                int type = model.getSongManager().getType();
+                Log.v("SongPlayerInfo", "type is " + type);
+                if (type == SongManager.ANY_SONG) {
+                    songInfo.setText(data.getArtist() + " - " + data.getTitle());
+                } else if (type == SongManager.PP_SONG) {
+                    songInfo.setText(data.getPpArtist() + " - " + data.getPpTitle());
+                } else if (type == SongManager.VK_SONG) {
+                    songInfo.setText(data.getVkArtist() + " - " + data.getVkTitle());
+                } else if (type == SongManager.NO_SONG) {
+                    songInfo.setText("");
+                }
+            } else {
                 songInfo.setText("");
             }
-        } else {
-            songInfo.setText("");
         }
     }
 
     @Override
     public void updateProgress(int progress, int duration) {
-        if (duration == -1) {
-            songProgress.setProgress(0);
-            songProgress.setSecondaryProgress(0);
-        } else {
-            songProgress.setProgress(progress * 100 / duration);
+        if (model.getSongManager().getPositionInList() != -1) {
+            if (duration == -1) {
+                songProgress.setProgress(0);
+                songProgress.setSecondaryProgress(0);
+            } else {
+                songProgress.setProgress(progress * 100 / duration);
+            }
         }
     }
 }
