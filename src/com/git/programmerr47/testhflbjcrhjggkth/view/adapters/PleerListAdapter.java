@@ -143,7 +143,7 @@ public class PleerListAdapter extends BaseAdapter {
                     //TODO change
                     SongData tempInfo = new SongData(null, urls.get(position).artist, null, urls.get(position).title, null);
                     tempInfo.setPleercomUrl(urls.get(position).url);
-                    controller.playPauseSong(new DatabaseSongData(-1, null, tempInfo), -1, SongManager.PP_SONG);
+                    controller.playPauseSong(new DatabaseSongData(position, null, tempInfo), -1, SongManager.PP_SONG);
                 }
             });
         }
