@@ -109,5 +109,11 @@
     <string name="new_song_lyrics_title">Vkazam - new song (lyrics)</string>
     <string name="new_song_message">I recognized a nice song on Vkazam:</string>
     <string name="new_song_lyrics_message">I just read lyrics from song</string>
+
+    <!-- Tutorial strings -->
+    <string name="tutorial_recognize_button">Push that button to start or abort recognizing</string>
+    <string name="tutorial_recognize_timer">Push that button to constantly recognize from microphone at regular intervals</string>
+    <string name="tutorial_recognize_wheel">Round indicator shows how many time is left before the next recognition will begin</string>
+    <string name="tutorial_recognize_result">As a result of success tagging the field with song\'s information and date of recognition will be shown</string>
     
 </resources>

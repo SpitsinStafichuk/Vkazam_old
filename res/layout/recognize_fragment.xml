@@ -1,118 +1,252 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@android:color/transparent">
-
-    <RelativeLayout
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_weight="1"
-        android:padding="10dp">
+        android:layout_height="match_parent">
 
-
-        <Button
-            android:id="@+id/microNowListenButton"
-            android:layout_width="match_parent"
-            android:layout_height="130dp"
-            android:paddingLeft="130dp"
-            android:background="@drawable/micro_image_button_rect_background"
-            android:scaleType="fitCenter"
-            android:text="Click on Button to start or stop recognizing"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            android:textColor="@color/black"/>
+    <LinearLayout
+            android:id="@+id/recognizePage"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:orientation="vertical"
+                  android:background="@android:color/transparent">
 
         <RelativeLayout
-                android:layout_width="130dp"
-                android:layout_height="130dp"
-                android:layout_alignLeft="@+id/microNowListenButton">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:padding="10dp">
 
-            <ImageButton
-                    android:id="@+id/microTimerListenButton"
+
+            <Button
+                    android:id="@+id/microNowListenButton"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_centerVertical="true"
-                    android:padding="20dp"
-                    android:background="@drawable/micro_image_button_round_background"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/timer" />
+                    android:layout_height="130dp"
+                    android:paddingLeft="130dp"
+                    android:background="@drawable/micro_image_button_rect_background"
+                    android:scaleType="fitCenter"
+                    android:text="Click on Button to start or stop recognizing"
+                    android:textAlignment="center"
+                    android:textSize="20sp"
+                    android:textColor="@color/black"/>
 
-            <com.git.programmerr47.testhflbjcrhjggkth.view.ProgressWheel
-                    android:id="@+id/fingerprintTimer"
+            <RelativeLayout
                     android:layout_width="130dp"
-                    android:layout_height="130dp"/>
+                    android:layout_height="130dp"
+                    android:layout_alignLeft="@+id/microNowListenButton">
+
+                <ImageButton
+                        android:id="@+id/microTimerListenButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerVertical="true"
+                        android:padding="20dp"
+                        android:background="@drawable/micro_image_button_round_background"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/timer" />
+
+                <com.git.programmerr47.testhflbjcrhjggkth.view.ProgressWheel
+                        android:id="@+id/fingerprintTimer"
+                        android:layout_width="130dp"
+                        android:layout_height="130dp"/>
+
+            </RelativeLayout>
 
         </RelativeLayout>
 
-    </RelativeLayout>
-
-    <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_margin="10dp"
-            android:layout_weight="1">
-
         <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:orientation="vertical"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
                 android:layout_margin="10dp"
-                android:background="@drawable/standart_block_background">
+                android:layout_weight="1">
 
-        <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
-
-            <TextView
-                    android:id="@+id/status"
-                    android:layout_width="wrap_content"
+            <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:layout_weight="1"
-                    android:text="@string/recognize_status"
-                    android:visibility="visible" />
+                    android:layout_gravity="center"
+                    android:orientation="vertical"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/standart_block_background">
 
-            <TextView
-                    android:id="@+id/progressPercent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="15dp"
-                    android:text="0%"
-                    android:visibility="visible" />
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                    <TextView
+                            android:id="@+id/status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="15dp"
+                            android:layout_weight="1"
+                            android:text="@string/recognize_status"
+                            android:visibility="visible" />
+
+                    <TextView
+                            android:id="@+id/progressPercent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="15dp"
+                            android:text="0%"
+                            android:visibility="visible" />
+
+                </LinearLayout>
+
+                <ProgressBar
+                        android:id="@+id/statusProgress"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_margin="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
-        <ProgressBar
-                android:id="@+id/statusProgress"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_margin="10dp"
+        <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:padding="5dp">
 
-        </LinearLayout>
+            <include layout="@layout/song_list_item"
+                     android:id="@+id/prevSong"/>
+
+            <include layout="@layout/song_list_item"
+                     android:id="@+id/currentSong"/>
+
+        </RelativeLayout>
 
     </LinearLayout>
 
-   <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_weight="1"
-        android:padding="5dp">
-        
-    	<include layout="@layout/song_list_item"
-    	    	 android:id="@+id/prevSong"/>
-    	
-    	<include layout="@layout/song_list_item"
-    	    	 android:id="@+id/currentSong"/>
-    	
-    </RelativeLayout>
+    <LinearLayout
+            android:id="@+id/tutorialPage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@color/black_semitransparent">
 
-</LinearLayout>
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:padding="10dp">
+
+
+            <RelativeLayout
+                    android:layout_width="130dp"
+                    android:layout_height="match_parent">
+
+                <TextView
+                        android:id="@+id/tutorial1RecTimer"
+                        android:layout_width="130dp"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/tutorial_block"
+                        android:text="@string/tutorial_recognize_timer"
+                        android:gravity="center"
+                        android:textSize="13sp"
+                        android:textColor="@color/white"
+                        android:clickable="false"/>
+
+                <com.git.programmerr47.testhflbjcrhjggkth.view.ProgressWheel
+                        android:id="@+id/tutorial2TimerDelay"
+                        android:layout_width="130dp"
+                        android:layout_height="130dp"
+                        android:layout_centerVertical="true"
+                        android:clickable="false"/>
+
+            </RelativeLayout>
+
+            <TextView
+                    android:id="@+id/tutorial1RecNow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/tutorial_block"
+                    android:text="@string/tutorial_recognize_button"
+                    android:gravity="center"
+                    android:textSize="13sp"
+                    android:textColor="@color/white"
+                    android:clickable="false"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp">
+
+            <TextView
+                    android:id="@+id/tutorial2TimerDelayInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/tutorial_block"
+                    android:padding="5dp"
+                    android:text="@string/tutorial_recognize_wheel"
+                    android:gravity="center"
+                    android:textSize="13sp"
+                    android:textColor="@color/white"
+                    android:clickable="false"/>
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
+
+            <TextView
+                    android:id="@+id/tutorial3ResultInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/tutorial_block"
+                    android:padding="5dp"
+                    android:text="@string/tutorial_recognize_result"
+                    android:gravity="center"
+                    android:textSize="13sp"
+                    android:textColor="@color/white"
+                    android:clickable="false"/>
+
+        </LinearLayout>
+
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:padding="5dp">
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true">
+
+                <include layout="@layout/song_list_item"
+                         android:id="@+id/tutorial3Result"
+                         android:clickable="false"/>
+
+            </LinearLayout>
+
+            <ImageView
+                    android:id="@+id/tutorial3ResultLink"
+                    android:layout_height="30dp"
+                    android:layout_width="30dp"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/ic_tutorial_down_arrow"
+                    android:clickable="false"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>
