@@ -398,8 +398,8 @@ public class SongInfoActivity extends FragmentActivity implements IPlayerStateOb
 	    }
 
         @Override
-        protected void onCancelled(String result) {
-            Log.v("ProgressDialog", "onCancel: " + result);
+        protected void onCancelled() {
+            Log.v("ProgressDialog", "onCancel");
             Toast.makeText(context, context.getString(R.string.download_cancel), Toast.LENGTH_SHORT).show();
         }
 
