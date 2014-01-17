@@ -150,6 +150,7 @@ public class RecognizePageFragment
                 controller.fingerprintByTimerRecognizeCancel();
             }
         });
+        microTimerListenButton.setClickable(true);
         
         Button microNowListenButton = (Button) view.findViewById(R.id.microNowListenButton);
         microNowListenButton.setText(getString(R.string.recognize_button));
@@ -161,6 +162,7 @@ public class RecognizePageFragment
                 controller.fingerprintNowRecognizeCancel();
             }
         });
+        microNowListenButton.setClickable(true);
 
         recognizePage = (LinearLayout) view.findViewById(R.id.recognizePage);
         tutorialPage = (LinearLayout) view.findViewById(R.id.tutorialPage);
