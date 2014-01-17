@@ -139,7 +139,7 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 		ViewHelper.setAlpha(view.findViewById(R.id.songListItemPlayPauseLayout), 0.75f);
 		DatabaseSongData songData = getSongData(position);
 		Log.v("SongInformation", "in trackId: " + songData.getTrackId());
-		coverArts.put(songData.getTrackId(), (ImageView) view.findViewById(R.id.songListItemCoverArt));
+		//coverArts.put(songData.getTrackId(), (ImageView) view.findViewById(R.id.songListItemCoverArt));
 		if(songData.getCoverArtUrl() == null) {
 			Log.i(TAG, "songData before search: " + songData.toString());
 			model.getSearchManager().search(songData.getTrackId(), new SearchListener() {
@@ -151,12 +151,16 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 				@Override
 				public void onSearchResult(SongData songData) {
 					if (songData != null) {
+                        if (songData.getCoverArtUrl() == null) {
+                            songData.setCoverArtUrl(SongData.NO_COVER_ART);
+                        }
 						List<DatabaseSongData> historySongData = getSongDataFromHistoryById(songData.getTrackId());
 						if(historySongData != null) {
 							for (DatabaseSongData i : historySongData) {
 								if (i != null) i.setNullFields(songData);
-								displayCoverArt(i);
+								//displayCoverArt(i);
 							}
+                            SongListAdapter.this.notifyDataSetChanged();
 						} else {
 							Log.i(TAG, "historySongData: null");
 						}
@@ -164,7 +168,7 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 				}
 			});
 		} else {
-			displayCoverArt(songData);
+			displayCoverArt(songData, (ImageView) view.findViewById(R.id.songListItemCoverArt));
 		}
 		((TextView) view.findViewById(R.id.songListItemArtist)).setText(songData.getArtist());
 		((TextView) view.findViewById(R.id.songListItemTitle)).setText(songData.getTitle());
@@ -255,7 +259,7 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
         }
 	}
 	
-	private void displayCoverArt(DatabaseSongData songData) {
+	private void displayCoverArt(DatabaseSongData songData, ImageView view) {
 		String coverArtUrl = songData.getCoverArtUrl();
 		Log.v(TAG, "CoverArtUrl: " + coverArtUrl);
 		DisplayImageOptions options = new DisplayImageOptions.Builder()
@@ -264,7 +268,7 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 			.cacheOnDisc(true)
 			.cacheInMemory(true)
 			.build();
-		model.getImageLoader().displayImage(coverArtUrl, coverArts.get(songData.getTrackId()), options);
+		model.getImageLoader().displayImage(coverArtUrl, view, options);
 	}
 
     public int getCurrentListPosition() {

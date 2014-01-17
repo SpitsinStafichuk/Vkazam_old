@@ -16,6 +16,8 @@ import android.util.Log;
 
 public class SongData {
 
+    public static final String NO_COVER_ART = "no_cover_art";
+
 	protected String artist;
 	protected String album;
 	protected String title;
