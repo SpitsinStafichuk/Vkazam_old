@@ -1,24 +1,16 @@
 package com.git.programmerr47.testhflbjcrhjggkth.view.adapters;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ResourceBundle.Control;
-
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.*;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
-import com.git.programmerr47.testhflbjcrhjggkth.controllers.FingerprintListController;
 import com.git.programmerr47.testhflbjcrhjggkth.model.FingerprintData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
 import com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeServiceConnection;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.Data;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseFingerprintData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.FingerprintsDeque;
-import com.git.programmerr47.testhflbjcrhjggkth.utils.AndroidUtils;
 import com.git.programmerr47.testhflbjcrhjggkth.utils.ImageUtils;
 
 import android.app.Activity;
