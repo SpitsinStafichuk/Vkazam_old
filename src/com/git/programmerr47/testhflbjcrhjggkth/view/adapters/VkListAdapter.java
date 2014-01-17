@@ -155,6 +155,23 @@ public class VkListAdapter extends BaseAdapter {
                     controller.playPauseSong(new DatabaseSongData(position, null, tempInfo), -1, SongManager.VK_SONG);
                 }
             });
+
+            if (model.getSongManager().getSongData() != null) {
+                SongData data = model.getSongManager().getSongData();
+                if (data.getTrackId() == null) {
+                    if ((data.getVkAudioId() != null) &&
+                            (data.getVkAudioId().equals(audios.get(position).owner_id + "_" + audios.get(position).aid)) &&
+                            (model.getSongManager().isPlaying())) {
+                        playPause.setImageResource(android.R.drawable.ic_media_pause);
+                    } else {
+                        playPause.setImageResource(android.R.drawable.ic_media_play);
+                    }
+                } else {
+                    playPause.setImageResource(android.R.drawable.ic_media_play);
+                }
+            } else {
+                playPause.setImageResource(android.R.drawable.ic_media_play);
+            }
         }
 
         return view;
