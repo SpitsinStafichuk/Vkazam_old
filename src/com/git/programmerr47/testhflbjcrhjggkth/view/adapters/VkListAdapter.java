@@ -151,7 +151,7 @@ public class VkListAdapter extends BaseAdapter {
                 	Log.v(TAG, "View = " + v);
                     controller.setCurrentElement(viewFinal);
                     SongData tempInfo = new SongData(null, audios.get(position).artist, null, audios.get(position).title, null);
-                    tempInfo.setPleercomUrl(audios.get(position).url);
+                    tempInfo.setVkAudioId(audios.get(position).owner_id + "_" + audios.get(position).aid);
                     controller.playPauseSong(new DatabaseSongData(position, null, tempInfo), -1, SongManager.VK_SONG);
                 }
             });
