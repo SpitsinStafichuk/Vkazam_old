@@ -26,7 +26,7 @@
                     android:paddingLeft="130dp"
                     android:background="@drawable/micro_image_button_rect_background"
                     android:scaleType="fitCenter"
-                    android:text="Click on Button to start or stop recognizing"
+                    android:text="@string/recognize_button"
                     android:gravity="center"
                     android:textSize="20sp"
                     android:textColor="@color/black"/>

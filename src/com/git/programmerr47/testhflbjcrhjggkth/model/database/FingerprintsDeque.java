@@ -1,11 +1,10 @@
 package com.git.programmerr47.testhflbjcrhjggkth.model.database;
 
-import java.util.concurrent.LinkedBlockingDeque;
+import java.util.LinkedList;
 
 import android.util.Log;
-import com.git.programmerr47.testhflbjcrhjggkth.model.FingerprintData;
 
-public class FingerprintsDeque<FingerprintData> extends LinkedBlockingDeque<FingerprintData>{
+public class FingerprintsDeque<FingerprintData> extends LinkedList<FingerprintData> {
 
 	private OnDequeStateListener listener;
 	/**
@@ -35,10 +34,10 @@ public class FingerprintsDeque<FingerprintData> extends LinkedBlockingDeque<Fing
             }
         }
 	}
-	
-	@Override
+
 	public synchronized FingerprintData pollFirst() {
-		FingerprintData result = super.pollFirst();
+        FingerprintData result = getFirst();
+        super.remove(0);
 		if (size() > 0) {
             if (listener != null) {
                 listener.onNonEmpty();
