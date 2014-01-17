@@ -145,6 +145,23 @@ public class PleerListAdapter extends BaseAdapter {
                     controller.playPauseSong(new DatabaseSongData(position, null, tempInfo), -1, SongManager.PP_SONG);
                 }
             });
+
+            if (model.getSongManager().getSongData() != null) {
+                SongData data = model.getSongManager().getSongData();
+                if (data.getTrackId() == null) {
+                    if ((data.getPleercomUrl() != null) &&
+                        (data.getPleercomUrl().equals(urls.get(position).url)) &&
+                        (model.getSongManager().isPlaying())) {
+                        playPause.setImageResource(android.R.drawable.ic_media_pause);
+                    } else {
+                        playPause.setImageResource(android.R.drawable.ic_media_play);
+                    }
+                } else {
+                    playPause.setImageResource(android.R.drawable.ic_media_play);
+                }
+            } else {
+                playPause.setImageResource(android.R.drawable.ic_media_play);
+            }
         }
 
         return view;
