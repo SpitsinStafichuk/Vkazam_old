@@ -11,7 +11,7 @@
     <!-- Main pager strings -->
     <string name="tagging_page_fragment_caption">Tagging</string>
     <string name="history_page_fragment_caption">History</string>
-    <string name="fingerprints_page_fragment_caption">Fingerprints</string>
+    <string name="fingerprints_page_fragment_caption">Fingers</string>
     <string name="search_page_fragment_caption">Search</string>
 
     <!-- Search page strings -->

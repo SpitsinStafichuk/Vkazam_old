@@ -53,7 +53,7 @@ public class FingerprintListController implements FingerprintsDeque.OnDequeState
 	public void onNonEmpty() {
 		// TODO Auto-generated method stub
 		Log.v("Fingers", "Now queue is not empty: size = " + fingerprintsDeque.size());
-		currentFinger = (FingerprintData)fingerprintsDeque.peekFirst();
+		currentFinger = (FingerprintData)fingerprintsDeque.getFirst();
 		storageRacognizeManager.recognizeFingerprint(currentFinger, false);
 	}
 
