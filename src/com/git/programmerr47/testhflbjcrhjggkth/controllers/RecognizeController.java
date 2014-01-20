@@ -89,15 +89,17 @@ public class RecognizeController implements IFingerprintResultObserver, IRecogni
     }
 
 	@Override
-	public void onFingerprintResult(String fingerprint) {
+	public void onFingerprintResult(int errorCode, String fingerprint) {
 		FingerprintData fingerprintData = new FingerprintData(fingerprint, new Date());
 		Log.i(TAG, "fingerprint = " + fingerprint);
-		if (NetworkUtils.isNetworkAvailable(context)) {
-	        recognizeManager.recognizeFingerprint(fingerprintData, false);
-		} else {
-			Log.v("RecognizeController", "adding offline finger");
-			model.getFingerprintList().add(fingerprintData);
-            runTimerDelay();
+		if(errorCode == 0) {
+			if (NetworkUtils.isNetworkAvailable(context)) {
+				recognizeManager.recognizeFingerprint(fingerprintData, false);
+			} else {
+				Log.v("RecognizeController", "adding offline finger");
+				model.getFingerprintList().add(fingerprintData);
+				runTimerDelay();
+			}
 		}
 	}
 
