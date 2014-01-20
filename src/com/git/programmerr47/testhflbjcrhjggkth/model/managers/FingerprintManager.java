@@ -106,15 +106,17 @@ public class FingerprintManager
 		isFingerprintingOneTime = false;
 		String fingerprintStatus = null;
 		String fingerprint = null;
+		int errCode = 0;
 		if(result.isFailure()) {
-			fingerprintStatus = String.format("[%d] %s", result.getErrCode(), result.getErrMessage());
+			errCode = result.getErrCode();
+			fingerprintStatus = String.format("[%d] %s", errCode, result.getErrMessage());
 		} else {
 			fingerprintStatus = FINGERPRINTING_SUCCESS;
 			fingerprint = result.getFingerprintData();
 			Log.i(TAG, "fingerprint = " + fingerprint);
 		}
 		notifyFingerprintStatusObserversOnUiThread(fingerprintStatus);
-		notifyFingerprintResultObserversOnUiThread(fingerprint);
+		notifyFingerprintResultObserversOnUiThread(errCode, fingerprint);
     }
 	
 	@Override
@@ -135,10 +137,10 @@ public class FingerprintManager
 		});
 	}
 	
-	private void notifyFingerprintResultObserversOnUiThread(final String fingerprint) {
+	private void notifyFingerprintResultObserversOnUiThread(final int errorCode, final String fingerprint) {
 		handler.post(new Runnable() {
 			public void run() {
-				notifyFingerprintResultObservers(fingerprint);
+				notifyFingerprintResultObservers(errorCode, fingerprint);
 			}
 		});
 	}
@@ -154,9 +156,9 @@ public class FingerprintManager
 	}
 
 	@Override
-	public void notifyFingerprintResultObservers(String fingerprint) {
+	public void notifyFingerprintResultObservers(int errorCode, String fingerprint) {
 		for(IFingerprintResultObserver o : fingerprintResultObservers)
-			o.onFingerprintResult(fingerprint);
+			o.onFingerprintResult(errorCode, fingerprint);
 	}
 
 	@Override
