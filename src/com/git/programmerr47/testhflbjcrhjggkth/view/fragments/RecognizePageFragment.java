@@ -1,6 +1,7 @@
 package com.git.programmerr47.testhflbjcrhjggkth.view.fragments;
 
 import android.content.SharedPreferences;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.widget.*;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
@@ -16,6 +17,7 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeResult
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeStatusObserver;
 import com.git.programmerr47.testhflbjcrhjggkth.utils.AndroidUtils;
 import com.git.programmerr47.testhflbjcrhjggkth.view.ProgressWheel;
+import com.nineoldandroids.view.ViewHelper;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
 import android.app.Activity;
