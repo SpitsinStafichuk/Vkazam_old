@@ -5,7 +5,7 @@
         android:id="@+id/miniplayer"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@drawable/miniplayer_background">
 
     <TextView
@@ -19,7 +19,7 @@
             android:paddingBottom="2dp"
             android:paddingRight="5dp"
             android:paddingTop="5dp"
-            android:text = "Song Artist - Title full with auto scrolling. XDXD"
+            android:text = "Artist - Title"
             android:textColor="@color/white"
             android:singleLine="true"
             android:textSize="16sp"
