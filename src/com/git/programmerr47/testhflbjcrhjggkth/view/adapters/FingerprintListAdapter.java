@@ -194,7 +194,7 @@ public class FingerprintListAdapter extends BaseAdapter {
                     deque.pollFirst();
                     Log.v("Fingers", "(adapter) after deletion deque.size() = " + deque.size());
                 }
-                notifyDataSetChanged();
+                //notifyDataSetChanged();
 			}
 		}, deletionAnimation.getDuration() + deletionAnimation.getStartOffset());
     }

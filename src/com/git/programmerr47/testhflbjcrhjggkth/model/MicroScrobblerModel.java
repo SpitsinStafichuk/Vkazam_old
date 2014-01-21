@@ -91,8 +91,8 @@ public class MicroScrobblerModel {
 		scrobbler = new Scrobbler(context);
 		songManager = new SongManager(handler, context, scrobbler);
 		searchManager = new SearchManager(config);
-        mainRecognizeManager = new RecognizeManager(config, fingerprintsDeque);
-        storageRecognizeManager = new RecognizeManager(config, fingerprintsDeque);
+        mainRecognizeManager = new RecognizeManager(config);
+        storageRecognizeManager = new RecognizeManager(config);
         fingerprintManager = new FingerprintManager(config, context, handler);
         
         vkAccount = new Account();

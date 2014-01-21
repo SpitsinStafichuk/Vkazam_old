@@ -32,20 +32,16 @@ public class RecognizeManager implements GNSearchResultReady, GNOperationStatusC
 	private Set<IRecognizeResultObserver> recognizeResultObservers;
 	
 	private GNConfig config;
-    private FingerprintsDeque fingerprintsDeque;
-	private FingerprintData currentFingerprintData;
 	
 	
-	public RecognizeManager(GNConfig config, FingerprintsDeque fingerprintsDeque) {
-        this.fingerprintsDeque = fingerprintsDeque;
+	public RecognizeManager(GNConfig config) {
 		this.config = config;
         recognizeStatusObservers = new HashSet<IRecognizeStatusObserver>();
         recognizeResultObservers = new HashSet<IRecognizeResultObserver>();
 	}
 
-	public void recognizeFingerprint(FingerprintData fingerprint, boolean isSaved) {
+	public void recognizeFingerprint(FingerprintData fingerprint) {
 		Log.i(TAG, fingerprint.getFingerprint());
-		currentFingerprintData = fingerprint;
 		GNOperations.searchByFingerprint(this, config, fingerprint.getFingerprint());
 	}
 
@@ -64,13 +60,10 @@ public class RecognizeManager implements GNSearchResultReady, GNOperationStatusC
 		Log.i(TAG, "GNResultReady");
 		String recognizeStatus = null;
 		SongData songData = null;
+		int errCode = result.getErrCode();
 		if (result.isFailure()) {
-			int errCode = result.getErrCode();
 			recognizeStatus = String.format("[%d] %s", errCode,
 					result.getErrMessage());
-	/*		if(result.isNetworkFailure() && !currentFingerprintIsSaved) {
-				fingerprintDAO.insert(currentFingerprintData);
-			}*/
 		} else {
 			if (result.isFingerprintSearchNoMatchStatus()) {
 				recognizeStatus = "Music Not Identified";
@@ -101,7 +94,7 @@ public class RecognizeManager implements GNSearchResultReady, GNOperationStatusC
 		}
 		
 		notifyRecognizeStatusObservers(recognizeStatus);
-		notifyRecognizeResultObservers(songData);
+		notifyRecognizeResultObservers(errCode, songData);
 	}
 
 	@Override
@@ -127,9 +120,9 @@ public class RecognizeManager implements GNSearchResultReady, GNOperationStatusC
 	}
 
 	@Override
-	public void notifyRecognizeResultObservers(SongData songData) {
+	public void notifyRecognizeResultObservers(int errorCode, SongData songData) {
 		for(IRecognizeResultObserver o : recognizeResultObservers)
-			o.onRecognizeResult(songData);
+			o.onRecognizeResult(errorCode, songData);
 	}
 
 	@Override
