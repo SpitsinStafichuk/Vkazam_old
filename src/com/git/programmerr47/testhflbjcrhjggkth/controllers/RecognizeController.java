@@ -94,7 +94,7 @@ public class RecognizeController implements IFingerprintResultObserver, IRecogni
 		Log.i(TAG, "fingerprint = " + fingerprint);
 		if(errorCode == 0) {
 			if (NetworkUtils.isNetworkAvailable(context)) {
-				recognizeManager.recognizeFingerprint(fingerprintData, false);
+				recognizeManager.recognizeFingerprint(fingerprintData);
 			} else {
 				Log.v("RecognizeController", "adding offline finger");
 				model.getFingerprintList().add(fingerprintData);
@@ -104,7 +104,7 @@ public class RecognizeController implements IFingerprintResultObserver, IRecogni
 	}
 
 	@Override
-	public void onRecognizeResult(SongData songData) {
+	public void onRecognizeResult(int errorCode, SongData songData) {
 		if (songData != null) {
 			model.getSongList().add(0, songData);
 			model.getScrobbler().sendLastFMTrack(songData.getArtist(), songData.getTitle(), songData.getAlbum());

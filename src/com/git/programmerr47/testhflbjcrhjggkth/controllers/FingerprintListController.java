@@ -54,7 +54,7 @@ public class FingerprintListController implements FingerprintsDeque.OnDequeState
 		// TODO Auto-generated method stub
 		Log.v("Fingers", "Now queue is not empty: size = " + fingerprintsDeque.size());
 		currentFinger = (FingerprintData)fingerprintsDeque.getFirst();
-		storageRacognizeManager.recognizeFingerprint(currentFinger, false);
+		storageRacognizeManager.recognizeFingerprint(currentFinger);
 	}
 
     @Override
@@ -87,7 +87,7 @@ public class FingerprintListController implements FingerprintsDeque.OnDequeState
     }
 
     @Override
-	public void onRecognizeResult(SongData songData) {
+	public void onRecognizeResult(int errorCode, SongData songData) {
 		Log.v("Fingers", "onRecognizeResult " + songData);
 		if (songData != null) {
 			model.getSongList().add(0, songData);
