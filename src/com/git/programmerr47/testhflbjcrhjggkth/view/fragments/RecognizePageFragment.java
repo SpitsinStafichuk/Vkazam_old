@@ -190,6 +190,7 @@ public class RecognizePageFragment
                         tutorialPage.setVisibility(View.GONE);
                         AndroidUtils.setViewEnabled(recognizePage, true);
 
+                        firstTimeApearing = false;
                         SharedPreferences.Editor editor = prefs.edit();
                         editor.putBoolean("RecognizePageFragmentFirstTime", false);
                         editor.commit();

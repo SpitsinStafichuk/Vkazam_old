@@ -140,6 +140,7 @@ public class FingerprintPageFragment extends FragmentWithName implements IFinger
                         tutorialPage.setVisibility(View.GONE);
                         AndroidUtils.setViewEnabled(fingerPage, true);
 
+                        firstTimeApearing = false;
                         SharedPreferences.Editor editor = prefs.edit();
                         editor.putBoolean("FingersPageFragmentFirstTime", false);
                         editor.commit();

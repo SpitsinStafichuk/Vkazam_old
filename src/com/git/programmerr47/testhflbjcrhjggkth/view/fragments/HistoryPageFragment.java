@@ -126,6 +126,7 @@ public class HistoryPageFragment extends FragmentWithName implements ISongDAOObs
                         tutorialPage.setVisibility(View.GONE);
                         AndroidUtils.setViewClickable(historyPage, true);
 
+                        firstTimeApearing = false;
                         SharedPreferences.Editor editor = prefs.edit();
                         editor.putBoolean("HistoryPageFragmentFirstTime", false);
                         editor.commit();
