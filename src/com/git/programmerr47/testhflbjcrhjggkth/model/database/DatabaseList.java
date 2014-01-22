@@ -1,14 +1,12 @@
 package com.git.programmerr47.testhflbjcrhjggkth.model.database;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.ListIterator;
 
 import android.util.Log;
 
 
-public abstract class DatabaseList extends LinkedList<Data>{
+public abstract class DatabaseList extends LinkedList<Data> {
 
 	/**
 	 * 

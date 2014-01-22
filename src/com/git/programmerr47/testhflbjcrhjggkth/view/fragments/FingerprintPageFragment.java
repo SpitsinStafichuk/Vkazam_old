@@ -1,11 +1,8 @@
 package com.git.programmerr47.testhflbjcrhjggkth.view.fragments;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,6 +20,8 @@ import com.git.programmerr47.testhflbjcrhjggkth.utils.NetworkUtils;
 import com.git.programmerr47.testhflbjcrhjggkth.view.adapters.FingerprintListAdapter;
 
 public class FingerprintPageFragment extends FragmentWithName implements IFingerprintDAOObserver, CompoundButton.OnCheckedChangeListener {
+	private static final String TAG = "FingerprintPageFragment";
+	
 	private FingerprintListAdapter adapter;
     private FingerprintListController controller;
 
@@ -54,7 +53,7 @@ public class FingerprintPageFragment extends FragmentWithName implements IFinger
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.v("Fragments", "FingerprintPageFragment: onCreateView");
+        Log.v(TAG, "FingerprintPageFragment: onCreateView");
         View view = inflater.inflate(R.layout.fingerprints_fragment, null);
 
         fingerprintHLV = (ListView) view.findViewById(R.id.listView);
@@ -65,7 +64,7 @@ public class FingerprintPageFragment extends FragmentWithName implements IFinger
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (NetworkUtils.isNetworkAvailable(FingerprintPageFragment.this.getActivity())) {
-                    Log.v("Figers", "Perform click: " + view + "; " + position);
+                    Log.v(TAG, "Perform click: " + view + "; " + position);
                     adapter.recognizeFingerprint(view, position);
                 }  else {
                     Toast.makeText(FingerprintPageFragment.this.getActivity(), getString(R.string.network_not_available), Toast.LENGTH_LONG).show();
@@ -91,7 +90,7 @@ public class FingerprintPageFragment extends FragmentWithName implements IFinger
             public void onClick(View view) {
                 autoRecognizeCheckBox.setChecked(!autoRecognizeCheckBox.isChecked());
                 if (autoRecognizeCheckBox.isChecked()) {
-                    controller.startRecognizingIfDequeIsEmpty();
+                    RecognizeServiceConnection.getModel().getRecognizeListManager().recognizeFingerprints();
                 }
             }
         });
@@ -102,7 +101,7 @@ public class FingerprintPageFragment extends FragmentWithName implements IFinger
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.v("Fragments", "FingerprintPageFragment: onDestroyView");
+        Log.v(TAG, "FingerprintPageFragment: onDestroyView");
         controller.setListView(null);
     }
 
