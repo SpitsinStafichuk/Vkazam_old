@@ -118,5 +118,8 @@
     <string name="tutorial_history_item">All audio that was recognized moves in history page. Click on song to open page with more information about it</string>
     <string name="tutorial_history_item_play">You can play recognized song in any time by pressing play button, placed on cover art of song</string>
     <string name="tutorial_history_miniplayer">Miniplayer shows important information (Artist and title) about current playing song. Also it contains navigation buttons (previous and next buttons)\n\nRemember, track that was found may not be equal to track that was recognized</string>
+    <string name="tutorial_finger_recognize">Click on list item to begin recognizing of saved music fingerprint</string>
+    <string name="tutorial_finger_recognize_result">As the result of recognizing the out message will be shown in the fingerId field, then the item will disappear</string>
+    <string name="tutorial_finger_auto_recognize">Click on the top item and the programm will be automatic recognize all saved music fingerprints, when network will be available</string>
     
 </resources>
