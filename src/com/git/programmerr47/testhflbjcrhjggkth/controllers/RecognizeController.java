@@ -36,7 +36,6 @@ public class RecognizeController implements IFingerprintResultObserver, IRecogni
     public RecognizeController(Context context) {
         model = RecognizeServiceConnection.getModel();
         this.context = context;
-        fingerprintsDeque = model.getFingerprintsDeque();
         fingerprintManager = model.getFingerprintManager();
         fingerprintManager.addFingerprintResultObserver(this);
         recognizeManager = model.getMainRecognizeManager();

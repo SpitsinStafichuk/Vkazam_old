@@ -10,6 +10,8 @@ import android.util.Log;
 
 import com.git.programmerr47.testhflbjcrhjggkth.model.FingerprintData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.SongData;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.FingerprintList;
+import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongList;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeResultObservable;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeResultObserver;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeStatusObservable;
@@ -26,15 +28,16 @@ public class RecognizeListManager implements IRecognizeStatusObservable, IRecogn
 	
     private RecognizeManager recognizeManager;
     private boolean isRecognizing = false;
-    private List<FingerprintData> fingerprints;
-    private Queue<FingerprintData> fingerprintsQueue;
-    private List<SongData> songs;
+    private FingerprintList fingerprints;
+    private List<FingerprintData> fingerprintsQueue;
+    private SongList songs;
     private FingerprintData currentFingerprint;
+    private boolean autorecognizing = false;
 	
-	public RecognizeListManager(GNConfig config, List<FingerprintData> fingerprints, List<SongData> songs) {
-		this.fingerprints = fingerprints;
+	public RecognizeListManager(GNConfig config, FingerprintList fingerprintList, SongList songList) {
+		this.fingerprints = fingerprintList;
 		fingerprintsQueue = new LinkedList<FingerprintData>();
-		this.songs = songs;
+		this.songs = songList;
 		recognizeManager = new RecognizeManager(config);
 		recognizeManager.addRecognizeResultObserver(this);
 		recognizeManager.addRecognizeStatusObserver(this);
@@ -44,22 +47,48 @@ public class RecognizeListManager implements IRecognizeStatusObservable, IRecogn
 
 	public void recognizeFingerprints() {
 		isRecognizing = true;
-		if(fingerprintsQueue.peek() == null) {
+		autorecognizing = true;
+		if(fingerprintsQueue.isEmpty()) {
 			if(fingerprints.isEmpty()) {
 				return;
 			} else {
-				fingerprintsQueue.offer(fingerprints.get(0));
+				fingerprintsQueue.add((FingerprintData) fingerprints.get(0));
 			}
 		}
-		currentFingerprint = fingerprintsQueue.peek();
+		currentFingerprint = fingerprintsQueue.get(0);
 		recognizeManager.recognizeFingerprint(currentFingerprint);
 	}
 	
 	public void addFingerprintToQueue(FingerprintData fingerprint) {
 		if(fingerprints.contains(fingerprint)) {
-			fingerprintsQueue.offer(fingerprint);
+			fingerprintsQueue.add(fingerprint);
+			if(!isRecognizing) {
+				isRecognizing = true;
+				currentFingerprint = fingerprintsQueue.get(0);
+				recognizeManager.recognizeFingerprint(currentFingerprint);
+			}
 		} else {
 			throw new IllegalArgumentException("You can only add elements from fingerprints list, which have been passed to the constructor");
+		}
+	}
+	
+	public void removeFingerprintFromQueue(FingerprintData fingerprint) {
+		fingerprintsQueue.remove(fingerprint);
+		if(fingerprint == currentFingerprint) {
+			recognizeManager.recognizeFingerprintCancel();
+			if(isRecognizing) {
+				if(fingerprintsQueue.isEmpty()) {
+					if(fingerprints.isEmpty() || !autorecognizing) {
+						autorecognizing = false;
+						isRecognizing = false;
+						return;
+					} else {
+						fingerprintsQueue.add((FingerprintData) fingerprints.get(0));
+					}
+				}
+				currentFingerprint = fingerprintsQueue.get(0);
+				recognizeManager.recognizeFingerprint(currentFingerprint);
+			}
 		}
 	}
 
@@ -105,31 +134,38 @@ public class RecognizeListManager implements IRecognizeStatusObservable, IRecogn
 	@Override
 	public void onRecognizeStatusChanged(String status) {
 		notifyRecognizeStatusObservers(status);
+		currentFingerprint.setRecognizeStatus(status);
 	}
 
 	@Override
 	public void onRecognizeResult(int errorCode, SongData songData) {
 		notifyRecognizeResultObservers(errorCode, songData);
-		if(errorCode == 0) {
+		if (songData != null) {
+			currentFingerprint.setRecognizeStatus(songData.getArtist() + " - " + songData.getTitle());
+		} else {
+			currentFingerprint.setRecognizeStatus("Music not identified");
+		}
+		if(songData != null) {
 			songs.add(songData);
 		}
 		if(errorCode != 5001) {
-			fingerprintsQueue.poll();
+			fingerprintsQueue.remove(0);
 			fingerprints.remove(currentFingerprint);
 		} else {
 			isRecognizing = false;
 			return;
 		}
 		if(isRecognizing) {
-			if(fingerprintsQueue.peek() == null) {
-				if(fingerprints.isEmpty()) {
+			if(fingerprintsQueue.isEmpty()) {
+				if(fingerprints.isEmpty() || !autorecognizing) {
+					autorecognizing = false;
 					isRecognizing = false;
 					return;
 				} else {
-					fingerprintsQueue.offer(fingerprints.get(0));
+					fingerprintsQueue.add((FingerprintData) fingerprints.get(0));
 				}
 			}
-			currentFingerprint = fingerprintsQueue.peek();
+			currentFingerprint = fingerprintsQueue.get(0);
 			recognizeManager.recognizeFingerprint(currentFingerprint);
 		}
 	}
