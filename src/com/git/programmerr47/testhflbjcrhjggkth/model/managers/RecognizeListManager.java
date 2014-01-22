@@ -1,7 +1,9 @@
 package com.git.programmerr47.testhflbjcrhjggkth.model.managers;
 
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Set;
 
 import android.util.Log;
@@ -17,18 +19,22 @@ import com.gracenote.mmid.MobileSDK.GNConfig;
 public class RecognizeListManager implements IRecognizeStatusObservable, IRecognizeResultObservable, 
 											 IRecognizeResultObserver, IRecognizeStatusObserver {
 	public static final String RECOGNIZING_SUCCESS = "Recognizing success";
-	private static final String TAG = "Recognizing";
+	private static final String TAG = "RecognizeListManager";
 	
 	private Set<IRecognizeStatusObserver> recognizeStatusObservers;
 	private Set<IRecognizeResultObserver> recognizeResultObservers;
 	
-	private GNConfig config;
     private RecognizeManager recognizeManager;
     private boolean isRecognizing = false;
     private List<FingerprintData> fingerprints;
+    private Queue<FingerprintData> fingerprintsQueue;
+    private List<SongData> songs;
+    private FingerprintData currentFingerprint;
 	
-	public RecognizeListManager(GNConfig config) {
-		this.config = config;
+	public RecognizeListManager(GNConfig config, List<FingerprintData> fingerprints, List<SongData> songs) {
+		this.fingerprints = fingerprints;
+		fingerprintsQueue = new LinkedList<FingerprintData>();
+		this.songs = songs;
 		recognizeManager = new RecognizeManager(config);
 		recognizeManager.addRecognizeResultObserver(this);
 		recognizeManager.addRecognizeStatusObserver(this);
@@ -36,11 +42,24 @@ public class RecognizeListManager implements IRecognizeStatusObservable, IRecogn
         recognizeResultObservers = new HashSet<IRecognizeResultObserver>();
 	}
 
-	public void recognizeFingerprints(List<FingerprintData> fingerprints) {
-		if(!fingerprints.isEmpty()) {
-			isRecognizing = true;
-			this.fingerprints = fingerprints;
-			recognizeManager.recognizeFingerprint(fingerprints.get(0));
+	public void recognizeFingerprints() {
+		isRecognizing = true;
+		if(fingerprintsQueue.peek() == null) {
+			if(fingerprints.isEmpty()) {
+				return;
+			} else {
+				fingerprintsQueue.offer(fingerprints.get(0));
+			}
+		}
+		currentFingerprint = fingerprintsQueue.peek();
+		recognizeManager.recognizeFingerprint(currentFingerprint);
+	}
+	
+	public void addFingerprintToQueue(FingerprintData fingerprint) {
+		if(fingerprints.contains(fingerprint)) {
+			fingerprintsQueue.offer(fingerprint);
+		} else {
+			throw new IllegalArgumentException("You can only add elements from fingerprints list, which have been passed to the constructor");
 		}
 	}
 
@@ -91,15 +110,27 @@ public class RecognizeListManager implements IRecognizeStatusObservable, IRecogn
 	@Override
 	public void onRecognizeResult(int errorCode, SongData songData) {
 		notifyRecognizeResultObservers(errorCode, songData);
+		if(errorCode == 0) {
+			songs.add(songData);
+		}
+		if(errorCode != 5001) {
+			fingerprintsQueue.poll();
+			fingerprints.remove(currentFingerprint);
+		} else {
+			isRecognizing = false;
+			return;
+		}
 		if(isRecognizing) {
-			if(errorCode != 5001) {
-				if(!fingerprints.isEmpty()) {
-					fingerprints.remove(0);
-					recognizeManager.recognizeFingerprint(fingerprints.get(0));
+			if(fingerprintsQueue.peek() == null) {
+				if(fingerprints.isEmpty()) {
+					isRecognizing = false;
+					return;
+				} else {
+					fingerprintsQueue.offer(fingerprints.get(0));
 				}
-			} else {
-				isRecognizing = false;
 			}
+			currentFingerprint = fingerprintsQueue.peek();
+			recognizeManager.recognizeFingerprint(currentFingerprint);
 		}
 	}
 }
