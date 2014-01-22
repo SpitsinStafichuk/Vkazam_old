@@ -14,12 +14,16 @@
     <string name="fingerprints_page_fragment_caption">Отпечатки</string>
     <string name="search_page_fragment_caption">Поиск</string>
 
-    <!-- Search page strings -->
+    <!-- Common strings -->
     <string name="status">Статус</string>
     <string name="artist">Исполнитель</string>
     <string name="title">Название</string>
     <string name="album">Альбом</string>
     <string name="search">Поиск</string>
+    <string name="date">Дата распознавания</string>
+    <string name="finger_id">Id отпечатка</string>
+    <string name="finger_date">Дата прослушивания</string>
+    <string name="miniplayer_base_line">Исполнитель - Название</string>
 
     <!-- Recognize page strings -->
     <string name="recognize_button">Кликни по кнопке\nчтобы начать\nили остановить\nраспознавание</string>

@@ -14,12 +14,16 @@
     <string name="fingerprints_page_fragment_caption">Fingerprints</string>
     <string name="search_page_fragment_caption">Search</string>
 
-    <!-- Search page strings -->
+    <!-- Common strings -->
     <string name="status">Status</string>
     <string name="artist">Artist</string>
     <string name="title">Title</string>
     <string name="album">Album</string>
     <string name="search">Search</string>
+    <string name="date">Date of recognition</string>
+    <string name="finger_id">Finger Id</string>
+    <string name="finger_date">Date of listening</string>
+    <string name="miniplayer_base_line">Artist - Title</string>
 
     <!-- Recognize page strings -->
     <string name="recognize_button">Click on Button\nto start or stop\nrecognizing</string>
