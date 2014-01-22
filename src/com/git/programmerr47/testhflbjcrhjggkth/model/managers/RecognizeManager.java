@@ -4,12 +4,10 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.git.programmerr47.testhflbjcrhjggkth.model.FingerprintData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.SongData;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.FingerprintsDeque;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeResultObservable;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeResultObserver;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeStatusObservable;
