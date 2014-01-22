@@ -186,7 +186,7 @@ public class RecognizePageFragment
                         tut3ResLink.setVisibility(View.VISIBLE);
                     } else if (tut3ResInfo.getVisibility() == View.VISIBLE) {
                         tutorialPage.setVisibility(View.GONE);
-                        AndroidUtils.setViewClickable(recognizePage, true);
+                        AndroidUtils.setViewEnabled(recognizePage, true);
 
                         SharedPreferences.Editor editor = prefs.edit();
                         editor.putBoolean("RecognizePageFragmentFirstTime", false);
@@ -194,7 +194,7 @@ public class RecognizePageFragment
                     }
                 }
             });
-            AndroidUtils.setViewClickable(recognizePage, false);
+            AndroidUtils.setViewEnabled(recognizePage, false);
 
             tut1RecNow = (TextView) tutorialPage.findViewById(R.id.tutorial1RecNow);
             tut1RecNow.setVisibility(View.VISIBLE);
@@ -216,7 +216,7 @@ public class RecognizePageFragment
             tut3ResLink.setVisibility(View.INVISIBLE);
         } else {
             tutorialPage.setVisibility(View.GONE);
-            AndroidUtils.setViewClickable(recognizePage, true);
+            AndroidUtils.setViewEnabled(recognizePage, true);
         }
         
         return view;

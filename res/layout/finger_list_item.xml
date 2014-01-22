@@ -23,7 +23,7 @@
             android:id="@+id/fingerprintText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView"
+            android:text="Finger id"
             android:singleLine="true"
             android:textSize="25sp"/>
 
@@ -32,7 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="bottom"
-            android:text="TextView"
+            android:text="Date of listening"
             android:singleLine="true"
             android:textSize="18sp" />
 
