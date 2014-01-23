@@ -6,7 +6,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/miniplayer_background">
+        android:background="@color/white">
 
     <LinearLayout
             android:layout_width="match_parent"
@@ -25,97 +25,93 @@
 
     </LinearLayout>
 
-    <TextView
-            android:id="@+id/miniplayerSongInfo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:paddingLeft="10dp"
-            android:paddingBottom="2dp"
-            android:paddingRight="5dp"
-            android:paddingTop="5dp"
-            android:text = "@string/miniplayer_base_line"
-            android:textColor="@color/white"
-            android:singleLine="true"
-            android:textSize="16sp"
-            android:scrollHorizontally="true"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:ellipsize="marquee"
-            android:marqueeRepeatLimit="marquee_forever"
-            android:background="@drawable/text_miniplayr_background"/>
-
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
             android:orientation="horizontal">
 
-        <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical"/>
-
-        <LinearLayout
-                android:layout_width="match_parent"
+        <ImageButton
+                android:id="@+id/miniplayerPrevButton"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="horizontal">
+                android:src="@android:drawable/ic_media_previous"
+                android:background="@drawable/apptheme_btn_default_holo_light"/>
 
-            <ImageButton
-                    android:id="@+id/miniplayerPrevButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:src="@android:drawable/ic_media_previous"
-                    android:background="@drawable/action_button_selector"/>
-
-            <LinearLayout
+        <LinearLayout
                 android:id="@+id/miniplayerPlayPauseLayout"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_centerInParent="true"
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 android:gravity="center">
 
-                <ImageButton
-                        android:id="@+id/miniplayerPlayButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@android:drawable/ic_media_play"
-                        android:background="@drawable/action_button_selector"/>
-
-                <ProgressBar
-                        android:id="@+id/miniplayerSongLoading"
-                        style="?android:attr/progressBarStyleSmall"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:minHeight="20dp"
-                        android:minWidth="20dp"
-                        android:visibility="gone"/>
-
-            </LinearLayout>
-
             <ImageButton
-                    android:id="@+id/miniplayerNextButton"
-                    android:layout_width="match_parent"
+                    android:id="@+id/miniplayerPlayButton"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:src="@android:drawable/ic_media_next"
-                    android:background="@drawable/action_button_selector"/>
+                    android:layout_gravity="center"
+                    android:src="@android:drawable/ic_media_play"
+                    android:background="@drawable/apptheme_btn_default_holo_light"/>
+
+            <ProgressBar
+                    android:id="@+id/miniplayerSongLoading"
+                    style="?android:attr/progressBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:minHeight="20dp"
+                    android:minWidth="20dp"
+                    android:visibility="gone"/>
 
         </LinearLayout>
 
         <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="vertical"/>
+                android:orientation="vertical">
+
+            <TextView
+                    android:id="@+id/miniplayerSongInfoArtist"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:text = "@string/artist"
+                    android:textColor="@color/black"
+                    android:singleLine="true"
+                    android:textSize="16sp"
+                    android:scrollHorizontally="true"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:ellipsize="marquee"
+                    android:marqueeRepeatLimit="2"/>
+
+            <TextView
+                    android:id="@+id/miniplayerSongInfoTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:text = "@string/title"
+                    android:textColor="@color/black"
+                    android:singleLine="true"
+                    android:textSize="16sp"
+                    android:scrollHorizontally="true"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:ellipsize="marquee"
+                    android:marqueeRepeatLimit="2"/>
+
+        </LinearLayout>
+
+        <ImageButton
+                android:id="@+id/miniplayerNextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@android:drawable/ic_media_next"
+                android:background="@drawable/apptheme_btn_default_holo_light"/>
 
     </LinearLayout>
 
