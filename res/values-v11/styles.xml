@@ -5,4 +5,10 @@
     	<item name="android:windowActionBar">false</item>
     	<item name="android:windowNoTitle">true</item>
 	</style>
+
+    <style name="MiniPlayerSeekBar" parent="android:Widget.SeekBar">
+        <item name="android:progressDrawable">@drawable/miniplayer_progress</item>
+        <item name="android:indeterminateDrawable">@drawable/miniplayer_progress</item>
+        <item name="android:thumb">@android:color/transparent</item>
+    </style>
 </resources>

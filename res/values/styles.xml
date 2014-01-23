@@ -49,4 +49,12 @@
     	<item name="android:gravity">center</item>
     </style>
 
+    <style name="MiniPlayerSeekBar" parent="android:Widget.SeekBar">
+        <item name="android:progressDrawable">@drawable/miniplayer_progress</item>
+        <item name="android:indeterminateDrawable">@drawable/miniplayer_progress</item>
+        <item name="android:minHeight">13dip</item>
+        <item name="android:maxHeight">13dip</item>
+        <item name="android:thumb">@android:color/transparent</item>
+    </style>
+
 </resources>

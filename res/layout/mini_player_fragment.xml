@@ -8,6 +8,23 @@
         android:layout_height="wrap_content"
         android:background="@drawable/miniplayer_background">
 
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@color/dark_blue">
+
+        <SeekBar
+                android:id="@+id/miniplayerSongProgress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:layout_marginBottom="1dp"
+                android:progress="0"
+                style="@style/MiniPlayerSeekBar"/>
+
+    </LinearLayout>
+
     <TextView
             android:id="@+id/miniplayerSongInfo"
             android:layout_width="match_parent"
@@ -29,13 +46,6 @@
             android:ellipsize="marquee"
             android:marqueeRepeatLimit="marquee_forever"
             android:background="@drawable/text_miniplayr_background"/>
-    <SeekBar
-            android:id="@+id/miniplayerSongProgress"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:progress="0"/>
 
     <LinearLayout
             android:layout_width="match_parent"
