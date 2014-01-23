@@ -24,7 +24,8 @@ import com.git.programmerr47.testhflbjcrhjggkth.view.adapters.SongListAdapter;
 
 public class MiniPlayerFragment extends Fragment implements IPlayerStateObserver, ISongInfoObserver, ISongProgressObserver{
 
-    private TextView songInfo;
+    private TextView songInfoArtist;
+    private TextView songInfoTitle;
     private ImageButton playButton;
     private ImageButton nextButton;
     private ImageButton prevButton;
@@ -91,9 +92,13 @@ public class MiniPlayerFragment extends Fragment implements IPlayerStateObserver
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.mini_player_fragment, null);
 
-        songInfo = (TextView) view.findViewById(R.id.miniplayerSongInfo);
-        songInfo.setText("");
-        songInfo.setSelected(true);
+        songInfoArtist = (TextView) view.findViewById(R.id.miniplayerSongInfoArtist);
+        songInfoArtist.setText("");
+        songInfoArtist.setSelected(true);
+
+        songInfoTitle = (TextView) view.findViewById(R.id.miniplayerSongInfoTitle);
+        songInfoTitle.setText("");
+        songInfoTitle.setSelected(true);
 
         playButton = (ImageButton) view.findViewById(R.id.miniplayerPlayButton);
         playButton.setOnClickListener(new View.OnClickListener() {
@@ -184,16 +189,21 @@ public class MiniPlayerFragment extends Fragment implements IPlayerStateObserver
                 int type = model.getSongManager().getType();
                 Log.v("SongPlayerInfo", "type is " + type);
                 if (type == SongManager.ANY_SONG) {
-                    songInfo.setText(data.getArtist() + " - " + data.getTitle());
+                    songInfoArtist.setText(data.getArtist());
+                    songInfoArtist.setText(data.getTitle());
                 } else if (type == SongManager.PP_SONG) {
-                    songInfo.setText(data.getPpArtist() + " - " + data.getPpTitle());
+                    songInfoArtist.setText(data.getPpArtist());
+                    songInfoTitle.setText(data.getPpTitle());
                 } else if (type == SongManager.VK_SONG) {
-                    songInfo.setText(data.getVkArtist() + " - " + data.getVkTitle());
+                    songInfoArtist.setText(data.getVkArtist());
+                    songInfoTitle.setText(data.getVkTitle());
                 } else if (type == SongManager.NO_SONG) {
-                    songInfo.setText("");
+                    songInfoArtist.setText("");
+                    songInfoTitle.setText("");
                 }
             } else {
-                songInfo.setText("");
+                songInfoArtist.setText("");
+                songInfoTitle.setText("");
             }
         }
     }
