@@ -12,7 +12,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:background="@color/dark_blue">
+            android:background="#333333">
 
         <SeekBar
                 android:id="@+id/miniplayerSongProgress"
@@ -20,7 +20,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="1dp"
                 android:layout_marginBottom="1dp"
-                android:progress="0"
+                android:progress="50"
                 style="@style/MiniPlayerSeekBar"/>
 
     </LinearLayout>
