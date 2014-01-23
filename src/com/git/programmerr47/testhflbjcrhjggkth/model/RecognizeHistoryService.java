@@ -1,8 +1,8 @@
 package com.git.programmerr47.testhflbjcrhjggkth.model;
 
+import com.git.programmerr47.testhflbjcrhjggkth.model.managers.RecognizeListManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.RecognizeManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeStatusObserver;
-import com.git.programmerr47.testhflbjcrhjggkth.view.activities.MicrophonePagerActivity;
 
 import android.app.Service;
 import android.content.ComponentName;
@@ -10,13 +10,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
 public class RecognizeHistoryService extends Service implements IRecognizeStatusObserver, ServiceConnection {
 	
 	private static final String TAG = "RecognizeHistoryService";
-	private RecognizeManager recognizeManager;
 	private volatile boolean isStarted = false;
 	
 
@@ -40,47 +40,32 @@ public class RecognizeHistoryService extends Service implements IRecognizeStatus
 	
 	@Override 
     public synchronized int onStartCommand(Intent intent, int flags, int startId) {
-		Log.i(TAG, "on fake startCommand just for test");
-		stopSelf();
-/*		if(!isStarted) {
+		Log.i(TAG, "onStartCommand");
+		if(PreferenceManager.getDefaultSharedPreferences(this).getBoolean("settingsAutoRecognize", false) && !isStarted) {
 			isStarted = true;
-			Log.i(TAG, "onStartCommand");
-			recognizeManager.addObserver(this);
-			List<Data> fingerprints = recognizeManager.getFingerprints();
-			if(!fingerprints.isEmpty()) {
-				FingerprintData fingerprint = (FingerprintData) fingerprints.get(0);
-				Log.i(TAG, "recognizing fingerprint date = " + fingerprint.getDate());
-				recognizeManager.recognizeFingerprint(fingerprint, true);
-			} else {
-				stopSelf();
-			}
-		}*/
+			Log.i(TAG, "recognizing");
+			RecognizeServiceConnection.getModel().getRecognizeListManager().addRecognizeStatusObserver(this);
+			RecognizeServiceConnection.getModel().getRecognizeListManager().recognizeFingerprints();
+		}
 		return Service.START_REDELIVER_INTENT;
 	}
 	
 	@Override 
     public void onDestroy() {
+		Log.i(TAG, "onDestroy");
+		RecognizeServiceConnection.getModel().getRecognizeListManager().removeRecognizeStatusObserver(this);
 		unbindService(this);
         Toast.makeText(this, "RecognizeHistoryService onDestroy", Toast.LENGTH_LONG).show();
 		isStarted = false;
 	}
 
-/*	@Override
-	public void updateRecognizeStatus() {
-		List<Data> fingerprints = recognizeManager.getFingerprints();
-		if(!fingerprints.isEmpty()) {
-			FingerprintData fingerprint = (FingerprintData) fingerprints.get(0);
-			Log.i(TAG, "recognizing fingerprint date = " + fingerprint.getDate());
-			recognizeManager.recognizeFingerprint(fingerprint, true);
-		} else {
-			stopSelf();
-		}
-	}*/
-
 	@Override
 	public void onRecognizeStatusChanged(String status) {
-		// TODO Auto-generated method stub
-		
+		Log.i(TAG, "status");
+		if(RecognizeListManager.ALL_RECOGNIZED.equals(status)) {
+			Log.i(TAG, "stopSelf()");
+			stopSelf();
+		}
 	}
 
 	@Override

@@ -21,6 +21,7 @@ import com.gracenote.mmid.MobileSDK.GNConfig;
 public class RecognizeListManager implements IRecognizeStatusObservable, IRecognizeResultObservable, 
 											 IRecognizeResultObserver, IRecognizeStatusObserver {
 	public static final String RECOGNIZING_SUCCESS = "Recognizing success";
+	public static final String ALL_RECOGNIZED = "All recognized";
 	private static final String TAG = "RecognizeListManager";
 	
 	private Set<IRecognizeStatusObserver> recognizeStatusObservers;
@@ -50,6 +51,9 @@ public class RecognizeListManager implements IRecognizeStatusObservable, IRecogn
 		autorecognizing = true;
 		if(fingerprintsQueue.isEmpty()) {
 			if(fingerprints.isEmpty()) {
+				autorecognizing = false;
+				isRecognizing = false;
+				onRecognizeStatusChanged(ALL_RECOGNIZED);
 				return;
 			} else {
 				fingerprintsQueue.add((FingerprintData) fingerprints.get(0));
@@ -81,6 +85,7 @@ public class RecognizeListManager implements IRecognizeStatusObservable, IRecogn
 					if(fingerprints.isEmpty() || !autorecognizing) {
 						autorecognizing = false;
 						isRecognizing = false;
+						onRecognizeStatusChanged(ALL_RECOGNIZED);
 						return;
 					} else {
 						fingerprintsQueue.add((FingerprintData) fingerprints.get(0));
@@ -152,7 +157,9 @@ public class RecognizeListManager implements IRecognizeStatusObservable, IRecogn
 			fingerprintsQueue.remove(0);
 			fingerprints.remove(currentFingerprint);
 		} else {
+			autorecognizing = false;
 			isRecognizing = false;
+			onRecognizeStatusChanged(ALL_RECOGNIZED);
 			return;
 		}
 		if(isRecognizing) {
@@ -160,6 +167,7 @@ public class RecognizeListManager implements IRecognizeStatusObservable, IRecogn
 				if(fingerprints.isEmpty() || !autorecognizing) {
 					autorecognizing = false;
 					isRecognizing = false;
+					onRecognizeStatusChanged(ALL_RECOGNIZED);
 					return;
 				} else {
 					fingerprintsQueue.add((FingerprintData) fingerprints.get(0));
