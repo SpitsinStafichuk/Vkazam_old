@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 public class RecognizeHistoryService extends Service implements IRecognizeStatusObserver, ServiceConnection {
 	
-	private static final String TAG = "RecognizeService";
+	private static final String TAG = "RecognizeHistoryService";
 	private RecognizeManager recognizeManager;
 	private volatile boolean isStarted = false;
 	
@@ -34,6 +34,7 @@ public class RecognizeHistoryService extends Service implements IRecognizeStatus
 		if(!MicroScrobblerModel.hasContext()) {
 			MicroScrobblerModel.setContext(this);
 		}
+		startService(new Intent(RecognizeHistoryService.this, RecognizeService.class));
 		bindService(new Intent(RecognizeHistoryService.this, RecognizeService.class), this, Context.BIND_AUTO_CREATE);
 	}
 	
@@ -59,6 +60,7 @@ public class RecognizeHistoryService extends Service implements IRecognizeStatus
 	
 	@Override 
     public void onDestroy() {
+		unbindService(this);
         Toast.makeText(this, "RecognizeHistoryService onDestroy", Toast.LENGTH_LONG).show();
 		isStarted = false;
 	}

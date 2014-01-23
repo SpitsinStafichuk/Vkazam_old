@@ -18,6 +18,7 @@ public class MicrophonePagerActivity extends PagerActivity implements ServiceCon
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		Log.v(TAG, "Binding to service");
+		startService(new Intent(MicrophonePagerActivity.this, RecognizeService.class));
 		bindService(new Intent(MicrophonePagerActivity.this, RecognizeService.class), this, Context.BIND_AUTO_CREATE);
 		super.onCreate(savedInstanceState);
 	}
