@@ -40,7 +40,7 @@
     	                android:background="@android:color/transparent"
     	                android:focusable="false"
     	                android:focusableInTouchMode="false"
-    	                android:src="@android:drawable/ic_media_play" />
+    	                android:src="@drawable/ic_media_play" />
 
     	            <ProgressBar
     	                android:id="@+id/songItemLoading"
@@ -79,7 +79,7 @@
     	            	android:gravity="center_vertical"
     	            	android:paddingLeft="5dp"
     	            	android:singleLine="true"
-    	            	android:text="Artist"
+    	            	android:text="@string/artist"
     	            	android:textColor="#333333"
     	            	android:textSize="20sp" />
 
@@ -90,7 +90,7 @@
     	       		    android:gravity="center_vertical"
     	       		    android:paddingLeft="5dp"
     	       		    android:singleLine="true"
-    	       		    android:text="Title"
+    	       		    android:text="@string/title"
     	       		    android:textColor="#333333"
     	       		    android:textSize="15sp" />
     	       		
@@ -105,7 +105,7 @@
     	            android:gravity="bottom"
     	            android:paddingLeft="5dp"
     	            android:singleLine="true"
-    	            android:text="date"
+    	            android:text="@string/date"
     	            android:textColor="#99333333"
     	            android:textSize="15sp" />
 

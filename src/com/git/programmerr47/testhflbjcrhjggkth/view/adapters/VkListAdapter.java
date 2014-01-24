@@ -162,15 +162,15 @@ public class VkListAdapter extends BaseAdapter {
                     if ((data.getVkAudioId() != null) &&
                             (data.getVkAudioId().equals(audios.get(position).owner_id + "_" + audios.get(position).aid)) &&
                             (model.getSongManager().isPlaying())) {
-                        playPause.setImageResource(android.R.drawable.ic_media_pause);
+                        playPause.setImageResource(R.drawable.ic_media_pause);
                     } else {
-                        playPause.setImageResource(android.R.drawable.ic_media_play);
+                        playPause.setImageResource(R.drawable.ic_media_play);
                     }
                 } else {
-                    playPause.setImageResource(android.R.drawable.ic_media_play);
+                    playPause.setImageResource(R.drawable.ic_media_play);
                 }
             } else {
-                playPause.setImageResource(android.R.drawable.ic_media_play);
+                playPause.setImageResource(R.drawable.ic_media_play);
             }
         }
 
