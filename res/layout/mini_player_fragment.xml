@@ -17,10 +17,11 @@
         <SeekBar
                 android:id="@+id/miniplayerSongProgress"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="4dp"
                 android:layout_marginTop="1dp"
                 android:layout_marginBottom="1dp"
-                android:progress="50"
+                android:progress="33"
+                android:secondaryProgress="66"
                 style="@style/MiniPlayerSeekBar"/>
 
     </LinearLayout>
@@ -32,10 +33,10 @@
 
         <ImageButton
                 android:id="@+id/miniplayerPrevButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@android:drawable/ic_media_previous"
-                android:background="@drawable/apptheme_btn_default_holo_light"/>
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_media_previous"
+                android:background="@drawable/mini_player_buttons_selector"/>
 
         <LinearLayout
                 android:id="@+id/miniplayerPlayPauseLayout"
@@ -49,8 +50,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:src="@android:drawable/ic_media_play"
-                    android:background="@drawable/apptheme_btn_default_holo_light"/>
+                    android:src="@drawable/ic_media_play"
+                    android:background="@android:color/transparent"/>
 
             <ProgressBar
                     android:id="@+id/miniplayerSongLoading"
@@ -71,23 +72,6 @@
                 android:orientation="vertical">
 
             <TextView
-                    android:id="@+id/miniplayerSongInfoArtist"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:text = "@string/artist"
-                    android:textColor="@color/black"
-                    android:singleLine="true"
-                    android:textSize="16sp"
-                    android:scrollHorizontally="true"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:ellipsize="marquee"
-                    android:marqueeRepeatLimit="2"/>
-
-            <TextView
                     android:id="@+id/miniplayerSongInfoTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -97,7 +81,23 @@
                     android:text = "@string/title"
                     android:textColor="@color/black"
                     android:singleLine="true"
-                    android:textSize="16sp"
+                    android:textSize="20sp"
+                    android:scrollHorizontally="true"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:ellipsize="marquee"
+                    android:marqueeRepeatLimit="2"/>
+
+            <TextView
+                    android:id="@+id/miniplayerSongInfoArtist"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:text = "@string/artist"
+                    android:textColor="@color/black"
+                    android:singleLine="true"
+                    android:textSize="12sp"
                     android:scrollHorizontally="true"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
@@ -108,10 +108,10 @@
 
         <ImageButton
                 android:id="@+id/miniplayerNextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@android:drawable/ic_media_next"
-                android:background="@drawable/apptheme_btn_default_holo_light"/>
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_media_next"
+                android:background="@drawable/mini_player_buttons_selector"/>
 
     </LinearLayout>
 
