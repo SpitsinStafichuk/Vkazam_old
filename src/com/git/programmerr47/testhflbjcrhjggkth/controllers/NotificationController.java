@@ -111,7 +111,7 @@ public class NotificationController implements ISongInfoObserver, IPlayerStateOb
     }
 
     @Override
-    public void onRecognizeResult(SongData songData) {
+    public void onRecognizeResult(int errorCode, SongData songData) {
         updateSong(RECOGNIZING_STATUS + "Complete", songData);
     }
 

@@ -4,5 +4,5 @@ public interface IFingerprintResultObservable {
 	
 	void addFingerprintResultObserver(IFingerprintResultObserver o);
 	void removeFingerprintResultObserver(IFingerprintResultObserver o);
-	void notifyFingerprintResultObservers(String fingerprint);
+	void notifyFingerprintResultObservers(int errorCode, String fingerprint);
 }

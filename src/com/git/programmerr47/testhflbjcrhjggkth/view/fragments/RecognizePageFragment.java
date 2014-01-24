@@ -261,7 +261,7 @@ public class RecognizePageFragment
 	}
 
 	@Override
-	public void onRecognizeResult(SongData songData) {
+	public void onRecognizeResult(int errorCode, SongData songData) {
     	displaySongInformationElement(songData, true);
 	}
 	

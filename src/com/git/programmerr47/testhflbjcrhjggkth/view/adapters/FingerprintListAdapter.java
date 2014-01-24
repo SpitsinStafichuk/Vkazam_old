@@ -23,12 +23,11 @@ import android.view.ViewGroup;
 import com.nineoldandroids.view.ViewHelper;
 
 public class FingerprintListAdapter extends BaseAdapter {
-	private static String TAG = "FingerprintListAdapter";
+	private static final String TAG = "FingerprintListAdapter";
 	private int idItem;
 	private Activity activity;
 	private LayoutInflater inflater;
 	private MicroScrobblerModel model;
-	private FingerprintsDeque deque;
     private boolean isScrolling = false;
     private int lastPosition;
 	
@@ -36,7 +35,6 @@ public class FingerprintListAdapter extends BaseAdapter {
 		this.activity = activity;
 		this.idItem = idItem;
 		model = RecognizeServiceConnection.getModel();
-		deque = model.getFingerprintsDeque();
 		inflater = (LayoutInflater) this.activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
@@ -124,9 +122,9 @@ public class FingerprintListAdapter extends BaseAdapter {
             }
         }
         
-        if (data.isDeleting()) {
+        /*if (data.isDeleting()) {
         	deletionFromList(data, view);
-        }
+        }*/
         
         lastPosition = position;
 		
@@ -150,7 +148,7 @@ public class FingerprintListAdapter extends BaseAdapter {
                     ViewHelper.setPivotX(view, view.getWidth() * 0.5f);
                     ViewHelper.setPivotY(view, view.getHeight() * 0.5f);
                     
-    	            model.getFingerprintsDeque().addLast(data);
+    	            model.getRecognizeListManager().addFingerprintToQueue(data);
                     data.setInQueueForRecognizing(true);
     			}
     		}, addToDequeue.getDuration() + addToDequeue.getStartOffset());
@@ -164,13 +162,10 @@ public class FingerprintListAdapter extends BaseAdapter {
             ViewHelper.setScaleY(view, 1.0f);
             ViewHelper.setPivotX(view, 0);
             ViewHelper.setPivotY(view, 0);
-            if (!model.getFingerprintsDeque().contains(data)) {
-            	model.getStorageRecognizeManager().recognizeFingerprintCancel();
-            	model.getFingerprintsDeque().remove(data);
-            	data.setRecognizeStatus(null);
-                data.setInQueueForRecognizing(false);
-            	notifyDataSetChanged();
-            }
+            model.getRecognizeListManager().removeFingerprintFromQueue(data);
+            data.setRecognizeStatus(null);
+            data.setInQueueForRecognizing(false);
+            notifyDataSetChanged();
         }
     }
     
@@ -188,13 +183,13 @@ public class FingerprintListAdapter extends BaseAdapter {
 			public void run() {
                 int beforeSize = model.getFingerprintList().size();
 				model.getFingerprintList().remove(data);
-                Log.v("Fingers", "Listsize(adapter) after deletion is " + model.getFingerprintList().size());
+                Log.v(TAG, "Listsize(adapter) after deletion is " + model.getFingerprintList().size());
                 int afterSize = model.getFingerprintList().size();
                 if (beforeSize > afterSize) {
-                    deque.pollFirst();
-                    Log.v("Fingers", "(adapter) after deletion deque.size() = " + deque.size());
+                    /*deque.pollFirst();
+                    Log.v("Fingers", "(adapter) after deletion deque.size() = " + deque.size());*/
                 }
-                notifyDataSetChanged();
+                //notifyDataSetChanged();
 			}
 		}, deletionAnimation.getDuration() + deletionAnimation.getStartOffset());
     }

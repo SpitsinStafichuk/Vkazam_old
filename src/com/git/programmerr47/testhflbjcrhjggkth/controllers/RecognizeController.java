@@ -36,7 +36,6 @@ public class RecognizeController implements IFingerprintResultObserver, IRecogni
     public RecognizeController(Context context) {
         model = RecognizeServiceConnection.getModel();
         this.context = context;
-        fingerprintsDeque = model.getFingerprintsDeque();
         fingerprintManager = model.getFingerprintManager();
         fingerprintManager.addFingerprintResultObserver(this);
         recognizeManager = model.getMainRecognizeManager();
@@ -89,20 +88,22 @@ public class RecognizeController implements IFingerprintResultObserver, IRecogni
     }
 
 	@Override
-	public void onFingerprintResult(String fingerprint) {
+	public void onFingerprintResult(int errorCode, String fingerprint) {
 		FingerprintData fingerprintData = new FingerprintData(fingerprint, new Date());
 		Log.i(TAG, "fingerprint = " + fingerprint);
-		if (NetworkUtils.isNetworkAvailable(context)) {
-	        recognizeManager.recognizeFingerprint(fingerprintData, false);
-		} else {
-			Log.v("RecognizeController", "adding offline finger");
-			model.getFingerprintList().add(fingerprintData);
-            runTimerDelay();
+		if(errorCode == 0) {
+			if (NetworkUtils.isNetworkAvailable(context)) {
+				recognizeManager.recognizeFingerprint(fingerprintData);
+			} else {
+				Log.v("RecognizeController", "adding offline finger");
+				model.getFingerprintList().add(fingerprintData);
+				runTimerDelay();
+			}
 		}
 	}
 
 	@Override
-	public void onRecognizeResult(SongData songData) {
+	public void onRecognizeResult(int errorCode, SongData songData) {
 		if (songData != null) {
 			model.getSongList().add(0, songData);
 			model.getScrobbler().sendLastFMTrack(songData.getArtist(), songData.getTitle(), songData.getAlbum());

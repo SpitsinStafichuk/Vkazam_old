@@ -2,5 +2,5 @@ package com.git.programmerr47.testhflbjcrhjggkth.model.observers;
 
 public interface IFingerprintResultObserver {
 
-	void onFingerprintResult(String fingerprint);
+	void onFingerprintResult(int errorCode, String fingerprint);
 }
