@@ -1,6 +1,7 @@
 package com.git.programmerr47.testhflbjcrhjggkth.view.fragments;
 
 import android.content.SharedPreferences;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.widget.*;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
@@ -16,6 +17,7 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeResult
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeStatusObserver;
 import com.git.programmerr47.testhflbjcrhjggkth.utils.AndroidUtils;
 import com.git.programmerr47.testhflbjcrhjggkth.view.ProgressWheel;
+import com.nineoldandroids.view.ViewHelper;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
 import android.app.Activity;
@@ -186,15 +188,16 @@ public class RecognizePageFragment
                         tut3ResLink.setVisibility(View.VISIBLE);
                     } else if (tut3ResInfo.getVisibility() == View.VISIBLE) {
                         tutorialPage.setVisibility(View.GONE);
-                        AndroidUtils.setViewClickable(recognizePage, true);
+                        AndroidUtils.setViewEnabled(recognizePage, true);
 
+                        firstTimeApearing = false;
                         SharedPreferences.Editor editor = prefs.edit();
                         editor.putBoolean("RecognizePageFragmentFirstTime", false);
                         editor.commit();
                     }
                 }
             });
-            AndroidUtils.setViewClickable(recognizePage, false);
+            AndroidUtils.setViewEnabled(recognizePage, false);
 
             tut1RecNow = (TextView) tutorialPage.findViewById(R.id.tutorial1RecNow);
             tut1RecNow.setVisibility(View.VISIBLE);
@@ -216,7 +219,7 @@ public class RecognizePageFragment
             tut3ResLink.setVisibility(View.INVISIBLE);
         } else {
             tutorialPage.setVisibility(View.GONE);
-            AndroidUtils.setViewClickable(recognizePage, true);
+            AndroidUtils.setViewEnabled(recognizePage, true);
         }
         
         return view;

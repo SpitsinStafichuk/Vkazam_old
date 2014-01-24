@@ -762,7 +762,7 @@ public class SongInfoActivity extends FragmentActivity implements IPlayerStateOb
 
             ProgressBar secPB = (ProgressBar) findViewById(R.id.songInfoLoadingForVk);
             secPB.setVisibility(View.GONE);
-            vkPlayPauseButton.setImageResource(android.R.drawable.ic_media_play);
+            vkPlayPauseButton.setImageResource(R.drawable.ic_media_play);
             vkPlayPauseButton.setVisibility(View.VISIBLE);
             vkSongProgress.setProgress(0);
             vkSongProgress.setSecondaryProgress(0);
@@ -772,7 +772,7 @@ public class SongInfoActivity extends FragmentActivity implements IPlayerStateOb
 
             ProgressBar secPB = (ProgressBar) findViewById(R.id.songInfoLoadingForPP);
             secPB.setVisibility(View.GONE);
-            ppPlayPauseButton.setImageResource(android.R.drawable.ic_media_play);
+            ppPlayPauseButton.setImageResource(R.drawable.ic_media_play);
             ppPlayPauseButton.setVisibility(View.VISIBLE);
             ppSongProgress.setProgress(0);
             ppSongProgress.setSecondaryProgress(0);
@@ -798,10 +798,10 @@ public class SongInfoActivity extends FragmentActivity implements IPlayerStateOb
 			}
 			
 			if (model.getSongManager().isPlaying()) {
-                playPauseButton.setImageResource(android.R.drawable.ic_media_pause);
+                playPauseButton.setImageResource(R.drawable.ic_media_pause);
 				Log.v("SongPlayer", "Song" + model.getSongManager().getArtist() + " - " + model.getSongManager().getTitle() + "is playing");
 			} else {
-                playPauseButton.setImageResource(android.R.drawable.ic_media_play);
+                playPauseButton.setImageResource(R.drawable.ic_media_play);
 				Log.v("SongPlayer", "Song is on pause");
 			}
 		}

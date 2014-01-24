@@ -14,12 +14,16 @@
     <string name="fingerprints_page_fragment_caption">Отпечатки</string>
     <string name="search_page_fragment_caption">Поиск</string>
 
-    <!-- Search page strings -->
+    <!-- Common strings -->
     <string name="status">Статус</string>
     <string name="artist">Исполнитель</string>
     <string name="title">Название</string>
     <string name="album">Альбом</string>
     <string name="search">Поиск</string>
+    <string name="date">Дата распознавания</string>
+    <string name="finger_id">Id отпечатка</string>
+    <string name="finger_date">Дата прослушивания</string>
+    <string name="miniplayer_base_line">Исполнитель - Название</string>
 
     <!-- Recognize page strings -->
     <string name="recognize_button">Кликни по кнопке\nчтобы начать\nили остановить\nраспознавание</string>
@@ -115,5 +119,11 @@
     <string name="tutorial_recognize_timer">Нажмите на эту кнопку, чтобы постоянно распознавать с микрофона</string>
     <string name="tutorial_recognize_wheel">Круговой индикатор показывать сколько времени осталось до начала следующего распознавания</string>
     <string name="tutorial_recognize_result">При успешном теггинге вы увидите поле ниже, в котором будет показана информация о распознанном треке и дата распознания</string>
+    <string name="tutorial_history_item">Распознанные композиции запоминаются в историю. Нажмите на композицию, чтобы открыть страничку с подробной информацией о ней</string>
+    <string name="tutorial_history_item_play">Вы можете в любое время проиграть распознанную композицию. Для этого нажмите на кнопку play на нужной композиции</string>
+    <string name="tutorial_history_miniplayer">Информация о текущем проигрываемом треке (Исполнитель и название) отображена в миниплеере. Так же он содержит кнопки для навигирования (следующая и предыдущая композиции)\n\nПомните, что найденный для проигрывания трэк может не совпадать с распознанным</string>
+    <string name="tutorial_finger_recognize">Нажмите на элемент списка, чтобы начать распознавать сохраненный музыкальный отпечаток</string>
+    <string name="tutorial_finger_recognize_result">По окончании распознавания вместо поля индетификатора вы увидите результат, после чего, элемент списка исчезнет</string>
+    <string name="tutorial_finger_auto_recognize">Нажмите на верхний элемент, чтобы позволить программе автоматически распознавать сохраненные музыкальные отпечатки, когда есть доступный интернет</string>
     
 </resources>

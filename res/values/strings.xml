@@ -14,12 +14,16 @@
     <string name="fingerprints_page_fragment_caption">Fingers</string>
     <string name="search_page_fragment_caption">Search</string>
 
-    <!-- Search page strings -->
+    <!-- Common strings -->
     <string name="status">Status</string>
     <string name="artist">Artist</string>
     <string name="title">Title</string>
     <string name="album">Album</string>
     <string name="search">Search</string>
+    <string name="date">Date of recognition</string>
+    <string name="finger_id">Finger Id</string>
+    <string name="finger_date">Date of listening</string>
+    <string name="miniplayer_base_line">Artist - Title</string>
 
     <!-- Recognize page strings -->
     <string name="recognize_button">Click on Button\nto start or stop\nrecognizing</string>
@@ -115,5 +119,11 @@
     <string name="tutorial_recognize_timer">Push that button to constantly recognize from microphone at regular intervals</string>
     <string name="tutorial_recognize_wheel">Round indicator shows how many time is left before the next recognition will begin</string>
     <string name="tutorial_recognize_result">As a result of success tagging the field with song\'s information and date of recognition will be shown</string>
+    <string name="tutorial_history_item">All audio that was recognized moves in history page. Click on song to open page with more information about it</string>
+    <string name="tutorial_history_item_play">You can play recognized song in any time by pressing play button, placed on cover art of song</string>
+    <string name="tutorial_history_miniplayer">Miniplayer shows important information (Artist and title) about current playing song. Also it contains navigation buttons (previous and next buttons)\n\nRemember, track that was found may not be equal to track that was recognized</string>
+    <string name="tutorial_finger_recognize">Click on list item to begin recognizing of saved music fingerprint</string>
+    <string name="tutorial_finger_recognize_result">As the result of recognizing the out message will be shown in the fingerId field, then the item will disappear</string>
+    <string name="tutorial_finger_auto_recognize">Click on the top item and the programm will be automatic recognize all saved music fingerprints, when network will be available</string>
     
 </resources>
