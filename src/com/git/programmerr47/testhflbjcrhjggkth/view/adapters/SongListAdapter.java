@@ -120,7 +120,7 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 				if ((currentListItemView != null) && (currentListItemView != fView)) {
 					ImageButton playPauseButton = (ImageButton) currentListItemView.findViewById(R.id.songPlayPauseButton);
 					playPauseButton.setVisibility(View.VISIBLE);
-					playPauseButton.setImageResource(android.R.drawable.ic_media_play);
+					playPauseButton.setImageResource(R.drawable.ic_media_play);
 					ProgressBar progressBar = (ProgressBar) currentListItemView.findViewById(R.id.songItemLoading);
 					progressBar.setVisibility(View.GONE);
 				    LinearLayout element = (LinearLayout) currentListItemView.findViewById(R.id.songHistoryItemInfo);
@@ -179,7 +179,7 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 			updateListItem(view);
 		} else {
 		    ((LinearLayout) view.findViewById(R.id.songHistoryItemInfo)).setBackgroundResource(R.drawable.list_item_bg_default);
-		    ((ImageButton) view.findViewById(R.id.songPlayPauseButton)).setImageResource(android.R.drawable.ic_media_play);
+		    ((ImageButton) view.findViewById(R.id.songPlayPauseButton)).setImageResource(R.drawable.ic_media_play);
 		    ((ImageButton) view.findViewById(R.id.songPlayPauseButton)).setVisibility(View.VISIBLE);
 		    ((ProgressBar) view.findViewById(R.id.songItemLoading)).setVisibility(View.GONE);
 		}
@@ -250,10 +250,10 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
             }
 
             if (songManager.isPlaying()) {
-                playPauseButton.setImageResource(android.R.drawable.ic_media_pause);
+                playPauseButton.setImageResource(R.drawable.ic_media_pause);
                 Log.v("SongPlayer", "Song" + songManager.getArtist() + " - " + songManager.getTitle() + "is playing");
             } else {
-                playPauseButton.setImageResource(android.R.drawable.ic_media_play);
+                playPauseButton.setImageResource(R.drawable.ic_media_play);
                 Log.v("SongPlayer", "Song" + /*songManager.getArtist() + " - " + songManager.getTitle() +*/ "is on pause");
             }
         }
