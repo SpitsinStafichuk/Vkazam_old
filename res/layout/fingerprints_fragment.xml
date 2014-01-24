@@ -28,7 +28,7 @@
                     android:layout_weight="1"
                     android:padding="10dp"
                     android:singleLine="true"
-                    android:text="Auto-recognizing"
+                    android:text="@string/settings_auto_recognizing_title"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:background="@android:color/transparent"/>
 
