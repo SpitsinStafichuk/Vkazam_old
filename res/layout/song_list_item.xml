@@ -40,7 +40,7 @@
     	                android:background="@android:color/transparent"
     	                android:focusable="false"
     	                android:focusableInTouchMode="false"
-    	                android:src="@android:drawable/ic_media_play" />
+    	                android:src="@drawable/ic_media_play" />
 
     	            <ProgressBar
     	                android:id="@+id/songItemLoading"

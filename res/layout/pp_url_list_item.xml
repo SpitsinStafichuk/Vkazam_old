@@ -30,7 +30,7 @@
                         android:background="@android:color/transparent"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
-                        android:src="@android:drawable/ic_media_play" android:layout_marginTop="5dp"/>
+                        android:src="@drawable/ic_media_play" android:layout_marginTop="5dp"/>
 
                 <ProgressBar
                         android:id="@+id/ppUrlListItemLoading"

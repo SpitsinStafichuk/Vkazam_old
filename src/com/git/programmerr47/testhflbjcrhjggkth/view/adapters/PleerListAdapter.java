@@ -152,15 +152,15 @@ public class PleerListAdapter extends BaseAdapter {
                     if ((data.getPleercomUrl() != null) &&
                         (data.getPleercomUrl().equals(urls.get(position).url)) &&
                         (model.getSongManager().isPlaying())) {
-                        playPause.setImageResource(android.R.drawable.ic_media_pause);
+                        playPause.setImageResource(R.drawable.ic_media_pause);
                     } else {
-                        playPause.setImageResource(android.R.drawable.ic_media_play);
+                        playPause.setImageResource(R.drawable.ic_media_play);
                     }
                 } else {
-                    playPause.setImageResource(android.R.drawable.ic_media_play);
+                    playPause.setImageResource(R.drawable.ic_media_play);
                 }
             } else {
-                playPause.setImageResource(android.R.drawable.ic_media_play);
+                playPause.setImageResource(R.drawable.ic_media_play);
             }
         }
 

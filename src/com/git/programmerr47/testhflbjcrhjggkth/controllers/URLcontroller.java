@@ -43,7 +43,7 @@ public class URLcontroller extends SongController implements IPlayerStateObserve
             ImageButton playPauseButton = (ImageButton) currentElement.findViewById(R.id.ppUrlListItemPlayPauseButton);
             ProgressBar progressBar = (ProgressBar) currentElement.findViewById(R.id.ppUrlListItemLoading);
             playPauseButton.setVisibility(View.VISIBLE);
-            playPauseButton.setImageResource(android.R.drawable.ic_media_play);
+            playPauseButton.setImageResource(R.drawable.ic_media_play);
             progressBar.setVisibility(View.GONE);
         }
         currentElement = v;
@@ -75,9 +75,9 @@ public class URLcontroller extends SongController implements IPlayerStateObserve
             }
 
             if (songManager.isPlaying()) {
-                playPauseButton.setImageResource(android.R.drawable.ic_media_pause);
+                playPauseButton.setImageResource(R.drawable.ic_media_pause);
             } else {
-                playPauseButton.setImageResource(android.R.drawable.ic_media_play);
+                playPauseButton.setImageResource(R.drawable.ic_media_play);
             }
     	}
     }

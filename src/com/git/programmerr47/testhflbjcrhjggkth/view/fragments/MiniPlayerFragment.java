@@ -173,9 +173,9 @@ public class MiniPlayerFragment extends Fragment implements IPlayerStateObserver
             }
 
             if (songManager.isPlaying()) {
-                playButton.setImageResource(android.R.drawable.ic_media_pause);
+                playButton.setImageResource(R.drawable.ic_media_pause);
             } else {
-                playButton.setImageResource(android.R.drawable.ic_media_play);
+                playButton.setImageResource(R.drawable.ic_media_play);
             }
             adapter.notifyDataSetChanged();
         }
