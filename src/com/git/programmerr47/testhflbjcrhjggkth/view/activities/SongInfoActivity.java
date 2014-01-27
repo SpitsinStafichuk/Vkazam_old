@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.media.MediaPlayer;
+import android.provider.ContactsContract;
 import android.view.MenuInflater;
 import android.widget.*;
 
@@ -459,6 +460,10 @@ public class SongInfoActivity extends FragmentActivity implements IPlayerStateOb
 	                input = connection.getInputStream();
 	                File file = new File(Environment.getExternalStoragePublicDirectory(
 	                		Environment.DIRECTORY_MUSIC), data.getFullTitle() + ".mp3");
+                    File directoryFile = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC);
+                    if (!directoryFile.exists()) {
+                        directoryFile.mkdirs();
+                    }
 	                output = new FileOutputStream(file);
 
 	                byte data[] = new byte[4096];
@@ -468,6 +473,9 @@ public class SongInfoActivity extends FragmentActivity implements IPlayerStateOb
 	                    // allow canceling with back button
 	                    if (isCancelled()) {
                             Log.v("ProgressDialog", "Download is canceled");
+                            if (file.exists()) {
+                                file.delete();
+                            }
                             return context.getString(R.string.download_cancel);
                         }
 	                    total += count;
