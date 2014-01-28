@@ -5,50 +5,35 @@
         android:id="@+id/miniplayer"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white">
+        android:layout_height="wrap_content">
 
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
             android:orientation="horizontal"
-            android:background="#333333">
-
-        <SeekBar
-                android:id="@+id/miniplayerSongProgress"
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:layout_marginTop="1dp"
-                android:layout_marginBottom="1dp"
-                android:progress="33"
-                android:secondaryProgress="66"
-                style="@style/MiniPlayerSeekBar"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:background="@drawable/miniplayer_background">
 
         <ImageButton
                 android:id="@+id/miniplayerPrevButton"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:padding="5dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center"
+                android:scaleType="centerCrop"
                 android:src="@drawable/ic_media_previous"
-                android:background="@drawable/mini_player_buttons_selector"/>
+                android:background="@android:color/transparent"/>
 
         <LinearLayout
                 android:id="@+id/miniplayerPlayPauseLayout"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:orientation="horizontal"
                 android:gravity="center">
 
             <ImageButton
                     android:id="@+id/miniplayerPlayButton"
-                    android:layout_width="50dp"
+                    android:layout_width="35dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_media_play"
@@ -57,7 +42,7 @@
             <ProgressBar
                     android:id="@+id/miniplayerSongLoading"
                     style="?android:attr/progressBarStyleSmall"
-                    android:layout_width="50dp"
+                    android:layout_width="35dp"
                     android:layout_height="25dp"
                     android:layout_gravity="center"
                     android:minHeight="20dp"
@@ -66,10 +51,19 @@
 
         </LinearLayout>
 
+        <ImageButton
+                android:id="@+id/miniplayerNextButton"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_media_next"
+                android:background="@android:color/transparent"/>
+
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_gravity="center"
                 android:orientation="vertical">
 
             <TextView
@@ -105,14 +99,25 @@
                     android:ellipsize="marquee"
                     android:marqueeRepeatLimit="2"/>
 
-        </LinearLayout>
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-        <ImageButton
-                android:id="@+id/miniplayerNextButton"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@drawable/ic_media_next"
-                android:background="@drawable/mini_player_buttons_selector"/>
+                <SeekBar
+                        android:id="@+id/miniplayerSongProgress"
+                        android:layout_width="match_parent"
+                        android:layout_height="4dp"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginRight="20dp"
+                        android:progress="33"
+                        android:secondaryProgress="66"
+                        style="@style/MiniPlayerSeekBar"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
 
     </LinearLayout>
 
