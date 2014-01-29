@@ -44,7 +44,6 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 	private int idItem;
 	private SongListController controller;
 	private SongManager songManager;
-	private View currentListItemView;
     private int currentListItemPosition = -1;
 	
 	public SongListAdapter(Activity activity, int idItem, SongListController controller) {
@@ -105,8 +104,7 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 		if (view == null) {
 			view = inflater.inflate(idItem, parent, false);
 		}
-		
-		final View fView = view;
+
 		ImageButton playPauseButton = (ImageButton) view.findViewById(R.id.songPlayPauseButton);
 		Log.v("playPauseButton", "" + playPauseButton);
 		playPauseButton.setOnClickListener(new OnClickListener() {
@@ -114,22 +112,8 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 			@Override
 			public void onClick(View v) {
 				Log.v("playPauseButton", "songPlayPauseButton was clicked");
-				
-				if ((currentListItemView != null) && (currentListItemView != fView)) {
-					ImageButton playPauseButton = (ImageButton) currentListItemView.findViewById(R.id.songPlayPauseButton);
-					playPauseButton.setVisibility(View.VISIBLE);
-					playPauseButton.setImageResource(R.drawable.ic_media_play);
-					ProgressBar progressBar = (ProgressBar) currentListItemView.findViewById(R.id.songItemLoading);
-					progressBar.setVisibility(View.GONE);
-				    LinearLayout element = (LinearLayout) currentListItemView.findViewById(R.id.songHistoryItemInfo);
-				    element.setBackgroundResource(R.drawable.list_item_bg_default);
-					Log.v("SongPlayer", "Song" + /*songManager.getArtist() + " - " + songManager.getTitle() +*/ "is closing");
-				}
-				
-				currentListItemView = fView;
+
                 currentListItemPosition = position;
-			    LinearLayout element = (LinearLayout) currentListItemView.findViewById(R.id.songHistoryItemInfo);
-			    element.setBackgroundResource(R.drawable.list_item_bg_pressed);
 				controller.playPauseSong((DatabaseSongData) getItem(position), position);
 			}
 		});
@@ -137,7 +121,6 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 		ViewHelper.setAlpha(view.findViewById(R.id.songListItemPlayPauseLayout), 0.75f);
 		DatabaseSongData songData = getSongData(position);
 		Log.v("SongInformation", "in trackId: " + songData.getTrackId());
-		//coverArts.put(songData.getTrackId(), (ImageView) view.findViewById(R.id.songListItemCoverArt));
 		if(songData.getCoverArtUrl() == null) {
 			Log.i(TAG, "songData before search: " + songData.toString());
 			model.getSearchManager().search(songData.getTrackId(), new SearchListener() {
@@ -156,7 +139,6 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 						if(historySongData != null) {
 							for (DatabaseSongData i : historySongData) {
 								if (i != null) i.setNullFields(songData);
-								//displayCoverArt(i);
 							}
                             SongListAdapter.this.notifyDataSetChanged();
 						} else {
