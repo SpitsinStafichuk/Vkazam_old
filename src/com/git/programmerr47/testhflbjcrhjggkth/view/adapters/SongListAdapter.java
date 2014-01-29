@@ -202,9 +202,6 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 	public void updatePlayerState() {
 		Log.v("SongPlayer", "updatePlayerState");
         notifyDataSetChanged();
-//		if (currentListItemView != null) {
-//			updateListItem(currentListItemView);
-//		}
 	}
 	
 	@Override
@@ -214,7 +211,6 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 		try {
 			super.finalize();
 		} catch (Throwable e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

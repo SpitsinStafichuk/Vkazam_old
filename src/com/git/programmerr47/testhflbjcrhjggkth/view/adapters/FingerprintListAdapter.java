@@ -1,6 +1,7 @@
 package com.git.programmerr47.testhflbjcrhjggkth.view.adapters;
 
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -88,15 +89,20 @@ public class FingerprintListAdapter extends BaseAdapter {
 		fingerprintDate.setText(data.getDate().toString());
 		
 		Bitmap coverArtBMP = Bitmap.createBitmap(8, 8, Bitmap.Config.ARGB_8888);
-		int[] colors = ImageUtils.getPixel8bitColors(finger);
+		int[] colors = ImageUtils.getColors(finger);
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
-				coverArtBMP.setPixel(i, j, Color.rgb(colors[i * 8 + j], colors[i * 8 + j], colors[i * 8 + j]));
+                coverArtBMP.setPixel(i, j, colors[i * 8 + j]);
 			}
 		}
 
+        BitmapDrawable coverArt = new BitmapDrawable(activity.getResources(), coverArtBMP);
+        coverArt.setAntiAlias(false);
+        coverArt.setDither(false);
+        coverArt.setFilterBitmap(false);
+
 		ImageView fingerCoverArt = (ImageView) view.findViewById(R.id.fingerprintImage);
-        fingerCoverArt.setImageBitmap(coverArtBMP);
+        fingerCoverArt.setImageDrawable(coverArt);
 
         if (data.isInQueueForRecognizing()) {
             ViewHelper.setAlpha(view, 0.5f);

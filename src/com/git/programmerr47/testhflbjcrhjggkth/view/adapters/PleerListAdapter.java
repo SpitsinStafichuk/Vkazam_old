@@ -221,6 +221,4 @@ public class PleerListAdapter extends BaseAdapter {
         }
         return result + seconds;
     }
-
-    //TODO finalize
 }

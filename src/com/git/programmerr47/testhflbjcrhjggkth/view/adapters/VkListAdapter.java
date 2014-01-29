@@ -231,6 +231,4 @@ public class VkListAdapter extends BaseAdapter {
         }
         return result + seconds;
     }
-
-    //TODO finalize
 }

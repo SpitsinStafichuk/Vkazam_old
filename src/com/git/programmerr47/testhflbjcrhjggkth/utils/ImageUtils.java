@@ -19,7 +19,6 @@ public class ImageUtils {
 	        byte messageDigest[] = digest.digest();
 	        return messageDigest;
 		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

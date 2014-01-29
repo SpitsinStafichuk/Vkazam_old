@@ -67,7 +67,6 @@ public class Api {
         }
         Log.i(TAG, "response="+response);
         JSONObject root = new JSONObject(response);
-        //TODO
         //checkError(root, url);
         return root;
     }

@@ -46,7 +46,6 @@ public class FingerprintListController implements IRecognizeStatusObserver,
 
 	@Override
 	public void onRecognizeStatusChanged(String status) {
-		// TODO Auto-generated method stub
 		Log.v("Fingers", "onRecognizeStatusChanged " + status);
 		adapter.notifyDataSetChanged();
 	}
