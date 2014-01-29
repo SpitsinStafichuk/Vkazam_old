@@ -88,6 +88,8 @@ public class MiniPlayerFragment extends Fragment implements IPlayerStateObserver
     public void onStop() {
         super.onStop();
         model.getPlayer().removePlayerStateObserver(this);
+        model.getSongManager().removeSongIngoObserver(this);
+        model.getSongManager().removeSongProgressObserver(this);
     }
 
     @Override
@@ -228,8 +230,18 @@ public class MiniPlayerFragment extends Fragment implements IPlayerStateObserver
                 int minutes = progress / 60;
                 int seconds = progress % 60;
 
-                int durationDim = (int)(Math.log10(duration / 60) + 1);
-                int progressDim = (int)(Math.log10(progress / 60) + 1);
+                int durationDim;
+                if ((duration / 60) != 0) {
+                    durationDim = (int)(Math.log10(duration / 60) + 1);
+                } else {
+                    durationDim = 1;
+                }
+                int progressDim;
+                if ((progress / 60) != 0) {
+                    progressDim = (int)(Math.log10(progress / 60) + 1);
+                } else {
+                    progressDim = 1;
+                }
                 String zerom = "";
                 for (int i = 0; i < durationDim - progressDim; i++) {
                     zerom += "0";
