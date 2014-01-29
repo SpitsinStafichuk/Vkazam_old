@@ -83,39 +83,55 @@
                     android:ellipsize="marquee"
                     android:marqueeRepeatLimit="2"/>
 
-            <TextView
-                    android:id="@+id/miniplayerSongInfoArtist"
+            <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:text = "@string/artist"
-                    android:textColor="@color/black"
-                    android:singleLine="true"
-                    android:textSize="12sp"
-                    android:scrollHorizontally="true"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:ellipsize="marquee"
-                    android:marqueeRepeatLimit="2"/>
+                    android:layout_marginBottom="5dp">
 
-            <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                <SeekBar
-                        android:id="@+id/miniplayerSongProgress"
+                <TextView
+                        android:id="@+id/miniplayerSongInfoArtist"
                         android:layout_width="match_parent"
-                        android:layout_height="4dp"
-                        android:layout_marginTop="1dp"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginRight="20dp"
-                        android:progress="33"
-                        android:secondaryProgress="66"
-                        style="@style/MiniPlayerSeekBar"/>
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:text = "@string/artist"
+                        android:textColor="@color/black"
+                        android:singleLine="true"
+                        android:textSize="12sp"
+                        android:scrollHorizontally="true"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:ellipsize="marquee"
+                        android:marqueeRepeatLimit="2"/>
 
-            </LinearLayout>
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                    <SeekBar
+                            android:id="@+id/miniplayerSongProgress"
+                            android:layout_width="match_parent"
+                            android:layout_height="23dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_weight="1"
+                            android:paddingTop="18dp"
+                            android:progress="33"
+                            android:secondaryProgress="66"
+                            style="@style/MiniPlayerSeekBar"/>
+
+                    <TextView
+                            android:id="@+id/miniPlayerSongProgressText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:layout_gravity="bottom"
+                            android:text="0:00"
+                            android:textColor="@color/black"/>
+
+                </LinearLayout>
+
+            </RelativeLayout>
 
         </LinearLayout>
 

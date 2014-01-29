@@ -21,11 +21,13 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObse
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISongInfoObserver;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISongProgressObserver;
 import com.git.programmerr47.testhflbjcrhjggkth.view.adapters.SongListAdapter;
+import de.umass.util.StringUtilities;
 
 public class MiniPlayerFragment extends Fragment implements IPlayerStateObserver, ISongInfoObserver, ISongProgressObserver{
 
     private TextView songInfoArtist;
     private TextView songInfoTitle;
+    private TextView songProgressText;
     private ImageButton playButton;
     private ImageButton nextButton;
     private ImageButton prevButton;
@@ -151,6 +153,8 @@ public class MiniPlayerFragment extends Fragment implements IPlayerStateObserver
             }
         });
 
+        songProgressText = (TextView) view.findViewById(R.id.miniPlayerSongProgressText);
+
         return view;
     }
 
@@ -214,8 +218,28 @@ public class MiniPlayerFragment extends Fragment implements IPlayerStateObserver
             if (duration == -1) {
                 songProgress.setProgress(0);
                 songProgress.setSecondaryProgress(0);
+                songProgressText.setText("0:00");
             } else {
                 songProgress.setProgress(progress * 100 / duration);
+
+                progress /= 1000;
+                duration /= 1000;
+
+                int minutes = progress / 60;
+                int seconds = progress % 60;
+
+                int durationDim = (int)(Math.log10(duration / 60) + 1);
+                int progressDim = (int)(Math.log10(progress / 60) + 1);
+                String zerom = "";
+                for (int i = 0; i < durationDim - progressDim; i++) {
+                    zerom += "0";
+                }
+                String zeros = "";
+                if (seconds < 10) {
+                    zeros = "0";
+                }
+
+                songProgressText.setText(zerom + minutes + ":" + zeros + seconds);
             }
         }
     }
