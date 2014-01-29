@@ -116,8 +116,6 @@
                             android:layout_marginRight="10dp"
                             android:layout_weight="1"
                             android:paddingTop="18dp"
-                            android:progress="33"
-                            android:secondaryProgress="66"
                             style="@style/MiniPlayerSeekBar"/>
 
                     <TextView
