@@ -12,13 +12,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.media.MediaPlayer;
-import android.provider.ContactsContract;
-import android.view.MenuInflater;
 import android.widget.*;
 
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SongManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.ISongProgressObserver;
 import com.git.programmerr47.testhflbjcrhjggkth.utils.AndroidUtils;
+import com.git.programmerr47.testhflbjcrhjggkth.utils.NetworkUtils;
 import com.git.programmerr47.testhflbjcrhjggkth.view.adapters.MicrophonePagerAdapter;
 import com.perm.kate.api.Audio;
 import org.json.JSONException;
@@ -33,21 +32,15 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.exceptions.SongNotFoundExc
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IPlayerStateObserver;
 import com.git.programmerr47.testhflbjcrhjggkth.utils.FileSystemUtils;
 import com.git.programmerr47.testhflbjcrhjggkth.view.DynamicImageView;
-import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.HistoryPageFragment;
 import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.MessageDialogFragment;
 import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.ProgressDialogFragment;
-import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.ProgressDialogFragment.Builder;
 import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.ProgressDialogFragment.OnCancelListener;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.perm.kate.api.Api;
 import com.perm.kate.api.KException;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.AnimationDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -222,7 +215,11 @@ public class SongInfoActivity extends FragmentActivity implements IPlayerStateOb
 			
 			@Override
 			public void onClick(View v) {
-				new AddToVkTask(SongInfoActivity.this).execute(data);
+				if(NetworkUtils.isNetworkAvailable(SongInfoActivity.this)) {
+					new AddToVkTask(SongInfoActivity.this).execute(data);
+				} else {
+					Toast.makeText(SongInfoActivity.this, getString(R.string.network_not_available), Toast.LENGTH_LONG).show();
+				}
 			}
 		});
 		
@@ -237,18 +234,22 @@ public class SongInfoActivity extends FragmentActivity implements IPlayerStateOb
 			
 			@Override
 			public void onClick(View v) {
-				if(FileSystemUtils.isExternalStorageWritable()) {
-					final DownloadTask downloadTask = new DownloadTask(SongInfoActivity.this, DownloadTask.PP_TASK);
-                    appProgressDialogBuilder.setOnCancelListener(new OnCancelListener() {
+				if(NetworkUtils.isNetworkAvailable(SongInfoActivity.this)) {
+					if(FileSystemUtils.isExternalStorageWritable()) {
+						final DownloadTask downloadTask = new DownloadTask(SongInfoActivity.this, DownloadTask.PP_TASK);
+	                    appProgressDialogBuilder.setOnCancelListener(new OnCancelListener() {
 
-                        @Override
-                        public void onCancel(ProgressDialogFragment fragment) {
-                            downloadTask.cancel(true);
-                        }
-                    });
-					downloadTask.execute(data);
+	                        @Override
+	                        public void onCancel(ProgressDialogFragment fragment) {
+	                            downloadTask.cancel(true);
+	                        }
+	                    });
+						downloadTask.execute(data);
+					} else {
+						Toast.makeText(SongInfoActivity.this, getString(R.string.ext_storage_not_available), Toast.LENGTH_SHORT).show();
+					}
 				} else {
-					Toast.makeText(SongInfoActivity.this, getString(R.string.ext_storage_not_available), Toast.LENGTH_SHORT).show();
+					Toast.makeText(SongInfoActivity.this, getString(R.string.network_not_available), Toast.LENGTH_LONG).show();
 				}
 			}
 		});
@@ -257,19 +258,23 @@ public class SongInfoActivity extends FragmentActivity implements IPlayerStateOb
         downloadVKButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(FileSystemUtils.isExternalStorageWritable()) {
-                    final DownloadTask downloadTask = new DownloadTask(SongInfoActivity.this, DownloadTask.VK_TASK);
-                    appProgressDialogBuilder.setOnCancelListener(new OnCancelListener() {
+            	if(NetworkUtils.isNetworkAvailable(SongInfoActivity.this)) {
+            		if(FileSystemUtils.isExternalStorageWritable()) {
+                        final DownloadTask downloadTask = new DownloadTask(SongInfoActivity.this, DownloadTask.VK_TASK);
+                        appProgressDialogBuilder.setOnCancelListener(new OnCancelListener() {
 
-                        @Override
-                        public void onCancel(ProgressDialogFragment fragment) {
-                            downloadTask.cancel(true);
-                        }
-                    });
-                    downloadTask.execute(data);
-                } else {
-                    Toast.makeText(SongInfoActivity.this, getString(R.string.ext_storage_not_available), Toast.LENGTH_SHORT).show();
-                }
+                            @Override
+                            public void onCancel(ProgressDialogFragment fragment) {
+                                downloadTask.cancel(true);
+                            }
+                        });
+                        downloadTask.execute(data);
+                    } else {
+                        Toast.makeText(SongInfoActivity.this, getString(R.string.ext_storage_not_available), Toast.LENGTH_SHORT).show();
+                    }
+            	} else {
+            		Toast.makeText(SongInfoActivity.this, getString(R.string.network_not_available), Toast.LENGTH_LONG).show();
+            	}
             }
         });
 		
