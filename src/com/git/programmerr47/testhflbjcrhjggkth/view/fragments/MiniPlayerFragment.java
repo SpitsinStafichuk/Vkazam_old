@@ -184,6 +184,16 @@ public class MiniPlayerFragment extends Fragment implements IPlayerStateObserver
                 playButton.setImageResource(R.drawable.ic_media_play);
             }
             adapter.notifyDataSetChanged();
+        } else {
+            progressBar.setVisibility(View.GONE);
+            playButton.setVisibility(View.VISIBLE);
+            playButton.setImageResource(R.drawable.ic_media_play);
+            songProgress.setProgress(0);
+            songProgress.setSecondaryProgress(0);
+            songProgressText.setText("0:00");
+            songInfoArtist.setText("");
+            songInfoTitle.setText("");
+            adapter.notifyDataSetChanged();
         }
     }
 

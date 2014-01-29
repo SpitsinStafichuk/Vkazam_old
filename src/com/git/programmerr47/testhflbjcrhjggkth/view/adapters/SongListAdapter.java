@@ -46,7 +46,6 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 	private SongManager songManager;
 	private View currentListItemView;
     private int currentListItemPosition = -1;
-	private Map<String, ImageView> coverArts;
 	
 	public SongListAdapter(Activity activity, int idItem, SongListController controller) {
 		this.activity = activity;
@@ -54,7 +53,6 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 		this.controller = controller;
 		model = RecognizeServiceConnection.getModel();
 		songManager = model.getSongManager();
-		coverArts = new HashMap<String, ImageView>();
 		Log.v("Lists", "History adapter created");
 		
 		//IPlayerStateObservable songManagerStateObservable = (IPlayerStateObservable) songManager;
@@ -175,13 +173,13 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 		((TextView) view.findViewById(R.id.songListItemDate)).setText(songData.getDate().toString());
 		if ((songManager.getSongData() != null) && 
 		    (songManager.getSongData().equals(songData))) {
-		    ((LinearLayout) view.findViewById(R.id.songHistoryItemInfo)).setBackgroundResource(R.drawable.list_item_bg_pressed);
+		    view.findViewById(R.id.songHistoryItemInfo).setBackgroundResource(R.drawable.list_item_bg_pressed);
 			updateListItem(view);
 		} else {
-		    ((LinearLayout) view.findViewById(R.id.songHistoryItemInfo)).setBackgroundResource(R.drawable.list_item_bg_default);
+		    view.findViewById(R.id.songHistoryItemInfo).setBackgroundResource(R.drawable.list_item_bg_default);
 		    ((ImageButton) view.findViewById(R.id.songPlayPauseButton)).setImageResource(R.drawable.ic_media_play);
-		    ((ImageButton) view.findViewById(R.id.songPlayPauseButton)).setVisibility(View.VISIBLE);
-		    ((ProgressBar) view.findViewById(R.id.songItemLoading)).setVisibility(View.GONE);
+		    view.findViewById(R.id.songPlayPauseButton).setVisibility(View.VISIBLE);
+		    view.findViewById(R.id.songItemLoading).setVisibility(View.GONE);
 		}
 
         if (isScrolling) {
@@ -203,9 +201,10 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 	@Override
 	public void updatePlayerState() {
 		Log.v("SongPlayer", "updatePlayerState");
-		if (currentListItemView != null) {
-			updateListItem(currentListItemView);
-		}
+        notifyDataSetChanged();
+//		if (currentListItemView != null) {
+//			updateListItem(currentListItemView);
+//		}
 	}
 	
 	@Override
@@ -219,10 +218,6 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 			e.printStackTrace();
 		}
 	}
-
-    public void resetCurrentElement() {
-        currentListItemView = null;
-    }
 	
 	public void release() {
         model.getPlayer().removePlayerStateObserver(this);
