@@ -30,6 +30,7 @@ import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.ProgressDialogFra
 import com.musixmatch.lyrics.musiXmatchLyricsConnector;
 import com.perm.kate.api.Api;
 import com.perm.kate.api.KException;
+import com.git.programmerr47.testhflbjcrhjggkth.utils.NetworkUtils;
 import com.git.programmerr47.testhflbjcrhjggkth.utils.YoutubeUtils;
 
 public class SongInfoController extends SongController{
@@ -202,7 +203,7 @@ public class SongInfoController extends SongController{
     }
 
     public void showYoutubePage(final SongData data) {
-
+    
 		ProgressDialogFragment.Builder appProgressDialogBuilder = new ProgressDialogFragment.Builder();
 		appProgressDialogBuilder.setIcon(R.drawable.ic_progress_dialog);
 		appProgressDialogBuilder.setMessage(view.getString(R.string.awaiting_youtube_message));

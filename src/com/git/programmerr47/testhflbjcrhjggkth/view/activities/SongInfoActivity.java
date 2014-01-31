@@ -340,15 +340,16 @@ public class SongInfoActivity extends FragmentActivity implements IPlayerStateOb
         youtubeButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                controller.showYoutubePage(data);
+            	if(NetworkUtils.isNetworkAvailable(SongInfoActivity.this)) { 
+            		controller.showYoutubePage(data);
+            	} else {
+            		Toast.makeText(SongInfoActivity.this, R.string.internet_connection_not_available, Toast.LENGTH_SHORT).show();
+            	}
             }
         });
 
-        TextView ppSong = (TextView) findViewById(R.id.SongInfoRealArtistTitleForPP);
-        ppSong.setSelected(true);
-
-        TextView vkSong = (TextView) findViewById(R.id.SongInfoRealArtistTitleForVk);
-        vkSong.setSelected(true);
+        ppArtistTitleView.setSelected(true);
+        vkArtistTitleView.setSelected(true);
 
         TextView artist = (TextView) findViewById(R.id.artistTitle);
         artist.setText(data.getArtist());
