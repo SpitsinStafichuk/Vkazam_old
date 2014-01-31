@@ -42,6 +42,7 @@ import com.git.programmerr47.testhflbjcrhjggkth.view.adapters.SongReplacePagerAd
 import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.MessageDialogFragment;
 import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.ProgressDialogFragment;
 import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.MessageDialogFragment.onDialogClickListener;
+import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.ProgressDialogFragment.OnCancelListener;
 import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.TimerDelayDialogFragment;
 import com.musixmatch.lyrics.musiXmatchLyricsConnector;
 import com.perm.kate.api.Api;
@@ -234,11 +235,21 @@ public class SongInfoController extends SongController{
         if (prev != null) {
             fragmentTransaction.remove(prev);
         }
+        
+        Thread youtubeThread = null;
+        
+        appProgressDialogBuilder.setOnCancelListener(new OnCancelListener() {
+
+            @Override
+            public void onCancel(ProgressDialogFragment fragment) {
+            	//youtubeThread.interrupt();
+            }
+        });
 
         final DialogFragment dialogFragment = ProgressDialogFragment.newInstance(appProgressDialogBuilder);
         dialogFragment.show(fragmentTransaction, SHOW_DIALOG_TAG);
 
-        new Thread(new Runnable() {
+        youtubeThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 String youtubeUrl;
@@ -254,6 +265,7 @@ public class SongInfoController extends SongController{
                     e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.  \
                 }
             }
-        }).start();
+        });
+        youtubeThread.start();
     }
 }
