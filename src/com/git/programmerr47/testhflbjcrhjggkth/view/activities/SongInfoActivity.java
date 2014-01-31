@@ -426,7 +426,7 @@ public class SongInfoActivity extends FragmentActivity implements IPlayerStateOb
                     URL url;
                     if (task == PP_TASK) {
                         String urlString = databaseSongData[0].getPleercomUrl();
-                        Log.v("SongPlayerInfo", "1 " + urlString);
+                        Log.v(TAG, "1 " + urlString);
                         if(urlString == null) {
                             try {
                                 databaseSongData[0].findPPAudio();
@@ -798,7 +798,7 @@ public class SongInfoActivity extends FragmentActivity implements IPlayerStateOb
 			if (model.getSongManager().isLoading()) {
 				progressBar.setVisibility(View.VISIBLE);
                 playPauseButton.setVisibility(View.GONE);
-				Log.v("SongPlayer", "Song" + model.getSongManager().getArtist() + " - " + model.getSongManager().getTitle() + "is loading");
+				Log.v(TAG, "Song " + model.getSongManager().getArtist() + " - " + model.getSongManager().getTitle() + " is loading");
 			} else {
 				progressBar.setVisibility(View.GONE);
 				if (model.getSongManager().isPrepared()) {
@@ -807,15 +807,15 @@ public class SongInfoActivity extends FragmentActivity implements IPlayerStateOb
 					if (playPauseButton.getVisibility() == View.GONE)
 						progressBar.setVisibility(View.INVISIBLE);
 				}
-				Log.v("SongPlayer", "Song is not loading");
+				Log.v(TAG, "Song is not loading");
 			}
 			
 			if (model.getSongManager().isPlaying()) {
                 playPauseButton.setImageResource(R.drawable.ic_media_pause);
-				Log.v("SongPlayer", "Song" + model.getSongManager().getArtist() + " - " + model.getSongManager().getTitle() + "is playing");
+				Log.v(TAG, "Song " + model.getSongManager().getArtist() + " - " + model.getSongManager().getTitle() + " is playing");
 			} else {
                 playPauseButton.setImageResource(R.drawable.ic_media_play);
-				Log.v("SongPlayer", "Song is on pause");
+				Log.v(TAG, "Song is on pause");
 			}
 		}
 	}

@@ -247,6 +247,7 @@ public class SongManager implements ISongInfoObserverable, ISongProgressObservab
 	public void release() {
 		if(songData != null)
 			scrobbler.sendLastFMPlaybackCompleted(getArtist(), getTitle(), songData.getAlbum(), songPlayer.getDuration());
+		this.type = NO_SONG;
 		songPlayer.release();
 		Log.v(TAG, "Player is released");
 	}

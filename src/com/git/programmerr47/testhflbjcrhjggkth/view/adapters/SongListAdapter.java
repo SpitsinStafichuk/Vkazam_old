@@ -52,12 +52,12 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 		this.controller = controller;
 		model = RecognizeServiceConnection.getModel();
 		songManager = model.getSongManager();
-		Log.v("Lists", "History adapter created");
+		Log.v(TAG, "History adapter created");
 		
 		//IPlayerStateObservable songManagerStateObservable = (IPlayerStateObservable) songManager;
 		//songManagerStateObservable.addObserver((IPlayerStateObserver)this);
         model.getPlayer().addPlayerStateObserver(this);
-		Log.v("SongPlayer", "IPlayerStateObserver was added");
+		Log.v(TAG, "IPlayerStateObserver was added");
 		inflater = (LayoutInflater) this.activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 	
@@ -106,7 +106,7 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 		}
 
 		ImageButton playPauseButton = (ImageButton) view.findViewById(R.id.songPlayPauseButton);
-		Log.v("playPauseButton", "" + playPauseButton);
+		Log.v(TAG, "" + playPauseButton);
 		playPauseButton.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -182,13 +182,13 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 
 	@Override
 	public void updatePlayerState() {
-		Log.v("SongPlayer", "updatePlayerState");
+		Log.v(TAG, "updatePlayerState");
         notifyDataSetChanged();
 	}
 	
 	@Override
 	protected void finalize() {
-		Log.v("SongPlayer", "SongListAdapter was destoyed");
+		Log.v(TAG, "SongListAdapter was destoyed");
 		release();
 		try {
 			super.finalize();
@@ -199,7 +199,7 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 	
 	public void release() {
         model.getPlayer().removePlayerStateObserver(this);
-		Log.v("SongPlayer", "IPlayerStateObserver was removed");
+		Log.v(TAG, "IPlayerStateObserver was removed");
 	}
 
 	private void updateListItem(View v) {
@@ -210,7 +210,7 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
             if (songManager.isLoading()) {
                 progressBar.setVisibility(View.VISIBLE);
                 playPauseButton.setVisibility(View.GONE);
-                Log.v("SongPlayer", "Song" + songManager.getArtist() + " - " + songManager.getTitle() + "is loading");
+                Log.v(TAG, "Song" + songManager.getArtist() + " - " + songManager.getTitle() + "is loading");
             } else {
                 progressBar.setVisibility(View.GONE);
                 if (songManager.isPrepared()) {
@@ -219,15 +219,15 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
                     if (playPauseButton.getVisibility() == View.GONE)
                         progressBar.setVisibility(View.INVISIBLE);
                 }
-                Log.v("SongPlayer", "Song" + /*songManager.getArtist() + " - " + songManager.getTitle() +*/ "is not loading");
+                Log.v(TAG, "Song" + /*songManager.getArtist() + " - " + songManager.getTitle() +*/ "is not loading");
             }
 
             if (songManager.isPlaying()) {
                 playPauseButton.setImageResource(R.drawable.ic_media_pause);
-                Log.v("SongPlayer", "Song" + songManager.getArtist() + " - " + songManager.getTitle() + "is playing");
+                Log.v(TAG, "Song" + songManager.getArtist() + " - " + songManager.getTitle() + "is playing");
             } else {
                 playPauseButton.setImageResource(R.drawable.ic_media_play);
-                Log.v("SongPlayer", "Song" + /*songManager.getArtist() + " - " + songManager.getTitle() +*/ "is on pause");
+                Log.v(TAG, "Song" + /*songManager.getArtist() + " - " + songManager.getTitle() +*/ "is on pause");
             }
         }
 	}
