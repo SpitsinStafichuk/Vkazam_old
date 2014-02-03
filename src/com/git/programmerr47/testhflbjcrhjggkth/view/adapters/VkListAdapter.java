@@ -39,6 +39,7 @@ public class VkListAdapter extends BaseAdapter {
     private int page = 1;
     private ProgressBar newSongLoadingBar;
     private boolean isFullList = false;
+    private boolean isAllSongWithOriginArtistShown = false;
     private URLcontroller controller;
     private Api vkApi;
 
@@ -190,7 +191,14 @@ public class VkListAdapter extends BaseAdapter {
                 });
                 try {
                     int listUpdate = audios.size();
-                    audios.addAll(vkApi.searchAudio(currentSongData.getArtist() + " " + currentSongData.getTitle(), "2", "0", 5l, (page - 1) * 5l, null, null));
+                    if (!isAllSongWithOriginArtistShown) {
+                        audios.addAll(vkApi.searchAudio(currentSongData.getArtist() + " " + currentSongData.getTitle(), "2", "0", 5l, (page - 1) * 5l, null, null));
+                    } else {
+                        if ((!currentSongData.getArtist().equals(currentSongData.getAlbumArtist())) &&
+                                (currentSongData.getAlbumArtist() != null)) {
+                            audios.addAll(vkApi.searchAudio(currentSongData.getAlbumArtist() + " " + currentSongData.getTitle(), "2", "0", 5l, (page - 1) * 5l, null, null));
+                        }
+                    }
                     Log.v(TAG, "ANSWER FROM INTERNET");
                     final int listUpdateFinal = audios.size() - listUpdate;
                     activity.runOnUiThread(new Runnable() {
@@ -198,9 +206,13 @@ public class VkListAdapter extends BaseAdapter {
                         public void run() {
                             Log.v(TAG, "" + listUpdateFinal);
                             if (listUpdateFinal <= 0) {
-                                isFullList = true;
-                                Toast.makeText(activity, activity.getString(R.string.no_more_songs), Toast.LENGTH_SHORT).show();
-                                Log.v(TAG, "No more songs");
+                                if (!isAllSongWithOriginArtistShown) {
+                                    isAllSongWithOriginArtistShown = true;
+                                } else {
+                                    isFullList = true;
+                                    Toast.makeText(activity, activity.getString(R.string.no_more_songs), Toast.LENGTH_SHORT).show();
+                                    Log.v(TAG, "No more songs");
+                                }
                             }
                             VkListAdapter.this.notifyDataSetChanged();
                         }
