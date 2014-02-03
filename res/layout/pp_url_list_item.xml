@@ -23,14 +23,14 @@
 
                 <ImageButton
                         android:id="@+id/ppUrlListItemPlayPauseButton"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:scaleType="fitXY"
                         android:background="@android:color/transparent"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
-                        android:src="@drawable/ic_media_play" android:layout_marginTop="5dp"/>
+                        android:src="@drawable/ic_media_play"/>
 
                 <ProgressBar
                         android:id="@+id/ppUrlListItemLoading"

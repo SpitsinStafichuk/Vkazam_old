@@ -238,7 +238,13 @@ public class SongData {
 	public void findPPAudio() throws MalformedURLException, IOException, JSONException, com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.KException, SongNotFoundException {
 		List<com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.Audio> audioList = com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.Api.searchAudio(getArtist() + " " + getTitle(), 1, 1);
 		if (audioList.isEmpty()) {
-			throw new SongNotFoundException();
+            if ((getAlbumArtist() != null) &&
+                (!getAlbumArtist().equals(getArtist()))) {
+                audioList = com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.Api.searchAudio(getAlbumArtist() + " " + getTitle(), 1, 1);
+            }
+            if (audioList.isEmpty()) {
+                throw new SongNotFoundException();
+            }
 		}
 		pleercomUrl = audioList.get(0).url;
         ppArtist = audioList.get(0).artist;

@@ -37,6 +37,7 @@ public class PleerListAdapter extends BaseAdapter {
     private int page = 1;
     private ProgressBar newSongLoadingBar;
     private boolean isFullList = false;
+    private boolean isAllSongWithOriginArtistShown = false;
     private URLcontroller controller;
 
     public PleerListAdapter(final FragmentActivity activity, int resLayout, int endOfListResLayout) {
@@ -180,7 +181,14 @@ public class PleerListAdapter extends BaseAdapter {
                 });
                 try {
                     int listUpdate = urls.size();
-                    urls.addAll(Api.searchAudio(currentSongData.getArtist() + " " + currentSongData.getTitle(), 5, page));
+                    if (!isAllSongWithOriginArtistShown) {
+                        urls.addAll(Api.searchAudio(currentSongData.getArtist() + " " + currentSongData.getTitle(), 5, page));
+                    } else {
+                        if ((!currentSongData.getArtist().equals(currentSongData.getAlbumArtist())) &&
+                            (currentSongData.getAlbumArtist() != null)) {
+                            urls.addAll(Api.searchAudio(currentSongData.getAlbumArtist() + " " + currentSongData.getTitle(), 5, page));
+                        }
+                    }
                     Log.v("PleerListAdapter", "ANSWER FROM INTERNET");
                     final int listUpdateFinal = urls.size() - listUpdate;
                     activity.runOnUiThread(new Runnable() {
@@ -188,9 +196,13 @@ public class PleerListAdapter extends BaseAdapter {
                         public void run() {
                             Log.v("PleerListAdapter", "" + listUpdateFinal);
                             if (listUpdateFinal <= 0) {
-                                isFullList = true;
-                                Toast.makeText(activity, activity.getString(R.string.no_more_songs), Toast.LENGTH_SHORT).show();
-                                Log.v("PleerListAdapter", "No more songs");
+                                if (!isAllSongWithOriginArtistShown) {
+                                    isAllSongWithOriginArtistShown = true;
+                                } else {
+                                    isFullList = true;
+                                    Toast.makeText(activity, activity.getString(R.string.no_more_songs), Toast.LENGTH_SHORT).show();
+                                    Log.v("PleerListAdapter", "No more songs");
+                                }
                             }
                             PleerListAdapter.this.notifyDataSetChanged();
                         }
