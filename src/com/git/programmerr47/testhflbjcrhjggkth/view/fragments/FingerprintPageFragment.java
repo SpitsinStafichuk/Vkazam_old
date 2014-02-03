@@ -153,7 +153,6 @@ public class FingerprintPageFragment extends FragmentWithName implements IFinger
             AndroidUtils.setViewClickable(tutorial12FingerLayout, false);
             tutorial12FingerLayout.setVisibility(View.VISIBLE);
             tutorial3AutoRecognizeLayout = view.findViewById(R.id.tutorial3AutoRecognizeLayout);
-            AndroidUtils.setViewEnabled(tutorial3AutoRecognizeLayout, false);
             AndroidUtils.setViewClickable(tutorial3AutoRecognizeLayout, false);
             tutorial3AutoRecognizeLayout.setVisibility(View.INVISIBLE);
             tutorial1Recognize = (TextView) view.findViewById(R.id.tutorial1FingerRecognize);

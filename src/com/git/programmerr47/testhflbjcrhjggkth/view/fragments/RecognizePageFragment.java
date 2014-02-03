@@ -211,6 +211,10 @@ public class RecognizePageFragment
             tut3ResInfo = (TextView) tutorialPage.findViewById(R.id.tutorial3ResultInfo);
             tut3ResInfo.setVisibility(View.INVISIBLE);
             tut3ResEx = tutorialPage.findViewById(R.id.tutorial3Result);
+            View tut3ResExInfo = tut3ResEx.findViewById(R.id.songHistoryItemInfo);
+            if (tut3ResExInfo != null) {
+                tut3ResExInfo.setBackgroundResource(R.drawable.list_item_bg_default);
+            }
             tut3ResEx.setVisibility(View.INVISIBLE);
             LinearLayout tutPlayButton = (LinearLayout) tut3ResEx.findViewById(R.id.songListItemPlayPauseLayout);
             tutPlayButton.setVisibility(View.GONE);

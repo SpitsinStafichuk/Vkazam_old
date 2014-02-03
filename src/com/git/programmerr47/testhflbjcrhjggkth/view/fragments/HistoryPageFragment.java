@@ -137,6 +137,10 @@ public class HistoryPageFragment extends FragmentWithName implements ISongDAOObs
 
             historyItem = view.findViewById(R.id.tutorial12SongInfoLayout);
             AndroidUtils.setViewEnabled(historyItem, false);
+            View tut3ResExInfo = historyItem.findViewById(R.id.songHistoryItemInfo);
+            if (tut3ResExInfo != null) {
+                tut3ResExInfo.setBackgroundResource(R.drawable.list_item_bg_default);
+            }
             historyItem.setVisibility(View.VISIBLE);
             historyItemAbout = (TextView) view.findViewById(R.id.tutorial1InfoAboutSong);
             historyItemAbout.setVisibility(View.VISIBLE);
