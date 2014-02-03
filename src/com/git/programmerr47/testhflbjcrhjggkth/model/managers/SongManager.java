@@ -1,6 +1,7 @@
 package com.git.programmerr47.testhflbjcrhjggkth.model.managers;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -8,6 +9,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import com.git.programmerr47.testhflbjcrhjggkth.model.exceptions.VkAccountNotFoundException;
+import com.git.programmerr47.testhflbjcrhjggkth.utils.NetworkUtils;
 import com.git.programmerr47.testhflbjcrhjggkth.view.activities.SongInfoActivity;
 import org.json.JSONException;
 
@@ -85,71 +87,51 @@ public class SongManager implements ISongInfoObserverable, ISongProgressObservab
         asyncNotifySongInfoObservers();
 	}
 	
-	private boolean findPPAudio() {
-		try {
-			if(songData.getPleercomUrl() == null) {
+	private boolean findPPAudio() throws MalformedURLException, IOException, JSONException, KException, SongNotFoundException {
+		if(songData.getPleercomUrl() == null) {
+			songData.findPPAudio();
+            Log.i(TAG, "new Pleercomurl: " + songData.getPleercomUrl());
+        	songPlayer.setDataSource(songData.getPleercomUrl());
+		} else {
+			boolean networkWasAvailable = false;
+			try {
+				Log.i(TAG, "Pleercomurl: " + songData.getPleercomUrl());
+				networkWasAvailable = NetworkUtils.isNetworkAvailable(context);
+				songPlayer.setDataSource(songData.getPleercomUrl());
+			} catch(IOException e) {
+				if(networkWasAvailable) {
+					songData.setPleercomUrl(null);
+					findPPAudio();
+				}
+			} catch(IllegalArgumentException e) {
 				songData.findPPAudio();
-	            Log.i(TAG, "new Pleercomurl: " + songData.getPleercomUrl());
-	            try {
-	        		songPlayer.setDataSource(songData.getPleercomUrl());
-	        	} catch (IllegalArgumentException e) {
-	        		songData.findPPAudio();
-	        	} catch (IOException e) {
-	        		songData.findPPAudio();
-	        	}	
-			} else {
-				try {
-					Log.i(TAG, "Pleercomurl: " + songData.getPleercomUrl());
-					songPlayer.setDataSource(songData.getPleercomUrl());
-				} catch(IOException e) {
-					songData.findPPAudio();
-				} catch(IllegalArgumentException e) {
-					songData.findPPAudio();
-				} 
-			}
-		} catch (Exception e) {
-			return false;
+				if(networkWasAvailable) {
+					songData.setPleercomUrl(null);
+					findPPAudio();
+				}
+			} 
 		}
 		return true;
 	}
 	
-	private boolean findVkAudio() {
-		try {
-			if(songData.getVkAudioId() == null) {
-				String vkUrl;
-				vkUrl = songData.findVkAudio(vkApi);
-				Log.i(TAG, "vk audio id: " + songData.getVkAudioId());
-				Log.i(TAG, "vk audio url: " + vkUrl);
-				try {
-	        		songPlayer.setDataSource(vkUrl);
-	        	} catch (IllegalArgumentException e) {
-	        		songData.findPPAudio();
-	        	} catch (IOException e) {
-	        		songData.findPPAudio();
-	        	}	
-			} else {
-				try {
-					List<com.perm.kate.api.Audio> audioList;
-					try {
-						audioList = vkApi.getAudioById(songData.getVkAudioId(), null, null);
-					} catch (Exception e) {
-						return false;
-					} 
-					if (audioList.isEmpty()) {
-						return false;
-					}
-					String vkUrl = audioList.get(0).url;
-					Log.i(TAG, "vk audio id: " + songData.getVkAudioId());
-					Log.i(TAG, "vk audio url: " + vkUrl);
-					songPlayer.setDataSource(vkUrl);
-				} catch(IOException e) {
-					songData.findVkAudio(vkApi);
-				} catch(IllegalArgumentException e) {
-					songData.findVkAudio(vkApi);
-				} 
+	private boolean findVkAudio() throws MalformedURLException, IOException, JSONException, com.perm.kate.api.KException, SongNotFoundException, KException {
+		if(songData.getVkAudioId() == null) {
+			String vkUrl;
+			vkUrl = songData.findVkAudio(vkApi);
+			Log.i(TAG, "vk audio id: " + songData.getVkAudioId());
+			Log.i(TAG, "vk audio url: " + vkUrl);
+        	songPlayer.setDataSource(vkUrl);
+		} else {
+			List<com.perm.kate.api.Audio> audioList;
+			audioList = vkApi.getAudioById(songData.getVkAudioId(), null, null);
+			if (audioList.isEmpty()) {
+				songData.setVkAudioId(null);
+				findVkAudio();
 			}
-		} catch (Exception e) {
-			return false;
+			String vkUrl = audioList.get(0).url;
+			Log.i(TAG, "vk audio id: " + songData.getVkAudioId());
+			Log.i(TAG, "vk audio url: " + vkUrl);
+			songPlayer.setDataSource(vkUrl);
 		}
 		return true;
 	}
@@ -265,6 +247,7 @@ public class SongManager implements ISongInfoObserverable, ISongProgressObservab
 	public void release() {
 		if(songData != null)
 			scrobbler.sendLastFMPlaybackCompleted(getArtist(), getTitle(), songData.getAlbum(), songPlayer.getDuration());
+		this.type = NO_SONG;
 		songPlayer.release();
 		Log.v(TAG, "Player is released");
 	}

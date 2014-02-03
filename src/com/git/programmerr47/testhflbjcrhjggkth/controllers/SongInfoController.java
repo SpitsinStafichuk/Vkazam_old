@@ -6,12 +6,6 @@ import java.net.MalformedURLException;
 import com.git.programmerr47.testhflbjcrhjggkth.view.activities.PagerActivity;
 import org.json.JSONException;
 
-import android.R.bool;
-import android.app.Activity;
-
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Looper;
@@ -21,36 +15,23 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.widget.Toast;
-import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
-import com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeServiceConnection;
 import com.git.programmerr47.testhflbjcrhjggkth.model.SongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.exceptions.SongNotFoundException;
 import com.git.programmerr47.testhflbjcrhjggkth.view.activities.RefreshPagerActivity;
-import com.git.programmerr47.testhflbjcrhjggkth.view.activities.SongInfoActivity;
 import com.git.programmerr47.testhflbjcrhjggkth.view.activities.VkLyricsActivity;
 import com.git.programmerr47.testhflbjcrhjggkth.view.adapters.SongReplacePagerAdapter;
 import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.MessageDialogFragment;
 import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.ProgressDialogFragment;
 import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.MessageDialogFragment.onDialogClickListener;
-import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.TimerDelayDialogFragment;
+import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.ProgressDialogFragment.OnCancelListener;
 import com.musixmatch.lyrics.musiXmatchLyricsConnector;
 import com.perm.kate.api.Api;
 import com.perm.kate.api.KException;
-import com.git.programmerr47.testhflbjcrhjggkth.model.SongData;
+import com.git.programmerr47.testhflbjcrhjggkth.utils.NetworkUtils;
 import com.git.programmerr47.testhflbjcrhjggkth.utils.YoutubeUtils;
-import org.json.JSONException;
-
-import java.io.IOException;
 
 public class SongInfoController extends SongController{
     private static final String SHOW_DIALOG_TAG = "dialog";
@@ -158,7 +139,7 @@ public class SongInfoController extends SongController{
                 do {
                     lyricsPlugin.doBindService();
                     s = System.currentTimeMillis();
-                } while (!lyricsPlugin.getIsBound() && !((s - millis) > 1000));
+                } while (!lyricsPlugin.getIsBound() && !((s - millis) > 2000));
                 if (lyricsPlugin.getIsBound()) {
                     final String artist = data.getArtist();
                     final String title = data.getTitle();
@@ -222,7 +203,7 @@ public class SongInfoController extends SongController{
     }
 
     public void showYoutubePage(final SongData data) {
-
+    
 		ProgressDialogFragment.Builder appProgressDialogBuilder = new ProgressDialogFragment.Builder();
 		appProgressDialogBuilder.setIcon(R.drawable.ic_progress_dialog);
 		appProgressDialogBuilder.setMessage(view.getString(R.string.awaiting_youtube_message));
@@ -234,11 +215,21 @@ public class SongInfoController extends SongController{
         if (prev != null) {
             fragmentTransaction.remove(prev);
         }
+        
+        Thread youtubeThread = null;
+        
+        appProgressDialogBuilder.setOnCancelListener(new OnCancelListener() {
+
+            @Override
+            public void onCancel(ProgressDialogFragment fragment) {
+            	//youtubeThread.interrupt();
+            }
+        });
 
         final DialogFragment dialogFragment = ProgressDialogFragment.newInstance(appProgressDialogBuilder);
         dialogFragment.show(fragmentTransaction, SHOW_DIALOG_TAG);
 
-        new Thread(new Runnable() {
+        youtubeThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 String youtubeUrl;
@@ -254,6 +245,7 @@ public class SongInfoController extends SongController{
                     e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.  \
                 }
             }
-        }).start();
+        });
+        youtubeThread.start();
     }
 }
