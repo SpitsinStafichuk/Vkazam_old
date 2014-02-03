@@ -12,6 +12,7 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
 import com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeServiceConnection;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseFingerprintData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.FingerprintsDeque;
+import com.git.programmerr47.testhflbjcrhjggkth.model.managers.RecognizeListManager;
 import com.git.programmerr47.testhflbjcrhjggkth.utils.ImageUtils;
 
 import android.app.Activity;
@@ -80,7 +81,8 @@ public class FingerprintListAdapter extends BaseAdapter {
 		String finger = fingerXML.substring(fingerXML.indexOf("<FP_BLOCK"), fingerXML.indexOf("</FP_BLOCK>") + 11);
 		
 		TextView fingerprintText = (TextView) view.findViewById(R.id.fingerprintText);
-		if (data.getRecognizeStatus() != null) {
+		if ((data.getRecognizeStatus() != null) &&
+            (!data.getRecognizeStatus().equals(RecognizeListManager.ALL_RECOGNIZED))) {
 			fingerprintText.setText(data.getRecognizeStatus());
 		} else {
 			fingerprintText.setText(finger.hashCode() + "");

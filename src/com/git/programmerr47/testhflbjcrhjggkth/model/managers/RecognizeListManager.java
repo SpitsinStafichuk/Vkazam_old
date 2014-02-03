@@ -53,7 +53,7 @@ public class RecognizeListManager implements IRecognizeStatusObservable, IRecogn
 			if(fingerprints.isEmpty()) {
 				autorecognizing = false;
 				isRecognizing = false;
-				onRecognizeStatusChanged(null);
+				onRecognizeStatusChanged(ALL_RECOGNIZED);
 				return;
 			} else {
 				fingerprintsQueue.add((FingerprintData) fingerprints.get(0));
@@ -85,7 +85,7 @@ public class RecognizeListManager implements IRecognizeStatusObservable, IRecogn
 					if(fingerprints.isEmpty() || !autorecognizing) {
 						autorecognizing = false;
 						isRecognizing = false;
-						onRecognizeStatusChanged(null);
+						onRecognizeStatusChanged(ALL_RECOGNIZED);
 						return;
 					} else {
 						fingerprintsQueue.add((FingerprintData) fingerprints.get(0));
@@ -159,7 +159,7 @@ public class RecognizeListManager implements IRecognizeStatusObservable, IRecogn
 		} else {
 			autorecognizing = false;
 			isRecognizing = false;
-			onRecognizeStatusChanged(null);
+			onRecognizeStatusChanged(ALL_RECOGNIZED);
 			return;
 		}
 		if(isRecognizing) {
@@ -167,7 +167,7 @@ public class RecognizeListManager implements IRecognizeStatusObservable, IRecogn
 				if(fingerprints.isEmpty() || !autorecognizing) {
 					autorecognizing = false;
 					isRecognizing = false;
-					onRecognizeStatusChanged(null);
+					onRecognizeStatusChanged(ALL_RECOGNIZED);
 					return;
 				} else {
 					fingerprintsQueue.add((FingerprintData) fingerprints.get(0));
