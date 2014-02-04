@@ -199,7 +199,13 @@ public class SongData {
         if (vkApi != null) {
             List<Audio> audioList = vkApi.searchAudio(getArtist() + " " + getTitle(), "2", "0", 1l, 0l, null, null);
             if (audioList.isEmpty()) {
-                throw new SongNotFoundException();
+                if ((getAlbumArtist() != null) &&
+                        (!getAlbumArtist().equals(getArtist()))) {
+                    audioList = vkApi.searchAudio(getAlbumArtist() + " " + getTitle(), "2", "0", 1l, 0l, null, null);
+                }
+                if (audioList.isEmpty()) {
+                    throw new SongNotFoundException();
+                }
             }
             Audio audio = audioList.get(0);
             vkAudioId = audio.owner_id + "_" + audio.aid;
