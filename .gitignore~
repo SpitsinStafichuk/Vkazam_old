@@ -1,8 +1,11 @@
+ic_launcher-web.png
 project.properties
 proguard-project.txt
-ic_launcher-web.png
+TestHflbjCrhjggkth.iml
 .classpath
 .project
 bin/
 gen/
+out/
+.idea/
 .settings/

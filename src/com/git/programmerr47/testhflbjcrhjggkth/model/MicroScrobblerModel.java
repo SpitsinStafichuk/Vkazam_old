@@ -19,7 +19,6 @@ import com.perm.kate.api.Api;
 
 public class MicroScrobblerModel {
 	public static final String RECOGNIZING_SUCCESS = "Success";
-	private static final String GRACENOTE_APPLICATION_ID = "5435392-85C21DCCC8BBE15A8B5EE2BDC8A9ACDC";
 	
 	private static MicroScrobblerModel instance;
 	private static Context context;
@@ -67,7 +66,7 @@ public class MicroScrobblerModel {
 	private MicroScrobblerModel() {
 		handler = new Handler();
         MicroScrobblerMediaPlayer.setHandler(handler);
-		config = GNConfig.init(GRACENOTE_APPLICATION_ID, context);
+		config = GNConfig.init(Constants.GRACENOTE_APPLICATION_ID, context);
 		config.setProperty("content.coverArt","1");
 		config.setProperty("content.contributor.images", "1");
 		config.setProperty("content.contributor.biography", "1");
