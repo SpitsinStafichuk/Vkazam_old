@@ -93,7 +93,12 @@ public class SongController {
 				showToast(view.getString(R.string.song_not_found));
 				//songManager.release();
 				//songManager.set(null, positionInList, model.getVkApi());
-                playPauseSong(positionInList + 1);
+                if (!(view instanceof SongInfoActivity)) {
+                    playPauseSong(positionInList + 1);
+                } else {
+                    songManager.release();
+                    songManager.set(null, positionInList, model.getVkApi());
+                }
 			} catch (MalformedURLException e) {
 				showToast(view.getString(R.string.internet_connection_not_available));
 				songManager.release();
