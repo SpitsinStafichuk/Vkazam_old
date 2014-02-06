@@ -243,4 +243,9 @@ public class VkListAdapter extends BaseAdapter {
         }
         return result + seconds;
     }
+
+    public void finish() {
+        model.getSongManager().release();
+        model.getSongManager().set(null, -1, model.getVkApi());
+    }
 }

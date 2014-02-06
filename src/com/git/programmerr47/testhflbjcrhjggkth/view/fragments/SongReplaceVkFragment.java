@@ -14,7 +14,7 @@ import android.widget.ListView;
 public class SongReplaceVkFragment extends FragmentWithName{
 	
 	private ListView vkURLs;
-	private BaseAdapter adapter;
+	private VkListAdapter adapter;
 	
 	public static SongReplaceVkFragment newInstance(Context context) {
 		SongReplaceVkFragment pageFragment = new SongReplaceVkFragment();
@@ -41,5 +41,11 @@ public class SongReplaceVkFragment extends FragmentWithName{
         vkURLs.setAdapter(adapter);
         
         return view;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        adapter.finish();
     }
 }

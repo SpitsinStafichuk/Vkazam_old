@@ -14,7 +14,7 @@ import com.git.programmerr47.testhflbjcrhjggkth.view.adapters.PleerListAdapter;
 public class SongReplacePPFragment extends FragmentWithName{
 
     private ListView ppURLs;
-    private BaseAdapter adapter;
+    private PleerListAdapter adapter;
 	
 	public static SongReplacePPFragment newInstance(Context context) {
 		SongReplacePPFragment pageFragment = new SongReplacePPFragment();
@@ -41,5 +41,11 @@ public class SongReplacePPFragment extends FragmentWithName{
         ppURLs.setAdapter(adapter);
 
         return view;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        adapter.finish();
     }
 }
