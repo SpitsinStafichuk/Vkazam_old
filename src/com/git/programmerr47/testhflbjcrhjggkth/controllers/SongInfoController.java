@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 
 import com.git.programmerr47.testhflbjcrhjggkth.view.activities.PagerActivity;
+import com.git.programmerr47.testhflbjcrhjggkth.view.activities.SongInfoActivity;
 import org.json.JSONException;
 
 import android.content.Intent;
@@ -35,9 +36,11 @@ import com.git.programmerr47.testhflbjcrhjggkth.utils.YoutubeUtils;
 
 public class SongInfoController extends SongController{
     private static final String SHOW_DIALOG_TAG = "dialog";
+    private SongInfoActivity songInfoActivity;
 	
-	public SongInfoController(FragmentActivity view) {
+	public SongInfoController(SongInfoActivity view) {
 		super(view);
+        songInfoActivity = view;
 	}
 	
 	public void getVkLyrics(final SongData data) {
@@ -65,6 +68,7 @@ public class SongInfoController extends SongController{
 	        	if (api != null) {
 	        		try {
 						String lyrics = data.getLyrics(api);
+                        songInfoActivity.setRealArtistTitleForPlayers();
 						if (lyrics != null) {
 							Intent intent = new Intent(view, VkLyricsActivity.class);
 							intent.putExtra(VkLyricsActivity.LYRICS_KEY, lyrics);
