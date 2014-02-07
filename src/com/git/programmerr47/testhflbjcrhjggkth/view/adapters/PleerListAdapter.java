@@ -38,6 +38,7 @@ public class PleerListAdapter extends BaseAdapter {
     private ProgressBar newSongLoadingBar;
     private boolean isFullList = false;
     private boolean isAllSongWithOriginArtistShown = false;
+    private boolean isFirstClick = true;
     private URLcontroller controller;
 
     public PleerListAdapter(final FragmentActivity activity, int resLayout, int endOfListResLayout) {
@@ -139,6 +140,11 @@ public class PleerListAdapter extends BaseAdapter {
             playPause.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (isFirstClick) {
+                        model.getSongManager().release();
+                        isFirstClick = false;
+                    }
+
                 	Log.v("PleerListAdapter", "View = " + v);
                     controller.setCurrentElement(viewFinal);
                     SongData tempInfo = new SongData(null, urls.get(position).artist, null, urls.get(position).title, null);
@@ -235,7 +241,9 @@ public class PleerListAdapter extends BaseAdapter {
     }
 
     public void finish() {
-        model.getSongManager().release();
-        model.getSongManager().set(null, -1, model.getVkApi());
+        if (!isFirstClick) {
+            model.getSongManager().release();
+            model.getSongManager().set(null, -1, model.getVkApi());
+        }
     }
 }

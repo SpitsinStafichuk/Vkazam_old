@@ -40,6 +40,7 @@ public class VkListAdapter extends BaseAdapter {
     private ProgressBar newSongLoadingBar;
     private boolean isFullList = false;
     private boolean isAllSongWithOriginArtistShown = false;
+    private boolean isFirstClick = true;
     private URLcontroller controller;
     private Api vkApi;
 
@@ -149,6 +150,11 @@ public class VkListAdapter extends BaseAdapter {
             playPause.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (isFirstClick) {
+                        model.getSongManager().release();
+                        isFirstClick = false;
+                    }
+
                 	Log.v(TAG, "View = " + v);
                     controller.setCurrentElement(viewFinal);
                     SongData tempInfo = new SongData(null, audios.get(position).artist, null, audios.get(position).title, null);
@@ -245,7 +251,9 @@ public class VkListAdapter extends BaseAdapter {
     }
 
     public void finish() {
-        model.getSongManager().release();
-        model.getSongManager().set(null, -1, model.getVkApi());
+        if (!isFirstClick) {
+            model.getSongManager().release();
+            model.getSongManager().set(null, -1, model.getVkApi());
+        }
     }
 }

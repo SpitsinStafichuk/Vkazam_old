@@ -82,7 +82,9 @@ public class SongController {
 			if(songManager.isPlaying()) {
 				songManager.stop();
 			}
-			songManager.release();
+            if (songManager.isPrepared() || songManager.isLoading()) {
+                songManager.release();
+            }
 			songManager.set(songData, positionInList, model.getVkApi());
 			Log.v("SongListController", "song was setted");
 			try {
