@@ -13,14 +13,10 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
 import com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeServiceConnection;
 import com.git.programmerr47.testhflbjcrhjggkth.model.SongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseSongData;
-import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SongManager;
-import com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.Api;
 import com.git.programmerr47.testhflbjcrhjggkth.model.pleer.api.KException;
-import com.perm.kate.api.Audio;
 import org.json.JSONException;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * Common pattern adapter for every url-page
@@ -125,6 +121,13 @@ public abstract class URLlistAdapter extends BaseAdapter {
      */
     protected abstract SongData generateSongDataByViewInfo(int position);
 
+    /**
+     * Get type of song
+     *
+     * @return type of song (Vk or PP now)
+     */
+    protected abstract int getSongType();
+
     @Override
     public long getItemId(int i) {
         return 0;
@@ -196,7 +199,7 @@ public abstract class URLlistAdapter extends BaseAdapter {
                     }
 
                     controller.setCurrentElement(viewFinal);
-                    controller.playPauseSong(new DatabaseSongData(position, null, generateSongDataByViewInfo(position)), -1, SongManager.VK_SONG);
+                    controller.playPauseSong(new DatabaseSongData(position, null, generateSongDataByViewInfo(position)), -1, getSongType());
                 }
             });
 

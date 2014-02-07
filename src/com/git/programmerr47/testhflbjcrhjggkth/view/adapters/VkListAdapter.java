@@ -1,19 +1,8 @@
 package com.git.programmerr47.testhflbjcrhjggkth.view.adapters;
 
-import android.app.Activity;
-import android.content.Context;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.*;
-import com.git.programmerr47.testhflbjcrhjggkth.R;
-import com.git.programmerr47.testhflbjcrhjggkth.controllers.URLcontroller;
-import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
-import com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeServiceConnection;
 import com.git.programmerr47.testhflbjcrhjggkth.model.SongData;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseSongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.SongManager;
 import com.perm.kate.api.Api;
 import com.perm.kate.api.Audio;
@@ -22,7 +11,6 @@ import com.perm.kate.api.KException;
 import org.json.JSONException;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -105,5 +93,10 @@ public class VkListAdapter extends URLlistAdapter {
         SongData tempInfo = new SongData(null, audios.get(position).artist, null, audios.get(position).title, null);
         tempInfo.setVkAudioId(audios.get(position).owner_id + "_" + audios.get(position).aid);
         return tempInfo;
+    }
+
+    @Override
+    protected int getSongType() {
+        return SongManager.VK_SONG;
     }
 }
