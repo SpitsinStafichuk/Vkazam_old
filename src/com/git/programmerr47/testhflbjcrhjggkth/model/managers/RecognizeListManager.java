@@ -12,10 +12,7 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.FingerprintData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.SongData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.FingerprintList;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.SongList;
-import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeResultObservable;
-import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeResultObserver;
-import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeStatusObservable;
-import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeStatusObserver;
+import com.git.programmerr47.testhflbjcrhjggkth.model.observers.*;
 import com.gracenote.mmid.MobileSDK.GNConfig;
 
 public class RecognizeListManager implements IRecognizeStatusObservable, IRecognizeResultObservable, 
@@ -26,6 +23,7 @@ public class RecognizeListManager implements IRecognizeStatusObservable, IRecogn
 	
 	private Set<IRecognizeStatusObserver> recognizeStatusObservers;
 	private Set<IRecognizeResultObserver> recognizeResultObservers;
+    private Set<IFingerQueueListener> fingerQueueListeners;
 	
     private RecognizeManager recognizeManager;
     private boolean isRecognizing = false;
@@ -44,6 +42,7 @@ public class RecognizeListManager implements IRecognizeStatusObservable, IRecogn
 		recognizeManager.addRecognizeStatusObserver(this);
         recognizeStatusObservers = new HashSet<IRecognizeStatusObserver>();
         recognizeResultObservers = new HashSet<IRecognizeResultObserver>();
+        fingerQueueListeners = new HashSet<IFingerQueueListener>();
 	}
 
 	public void recognizeFingerprints() {
@@ -57,6 +56,10 @@ public class RecognizeListManager implements IRecognizeStatusObservable, IRecogn
 				return;
 			} else {
 				fingerprintsQueue.add((FingerprintData) fingerprints.get(0));
+
+                for (IFingerQueueListener listener : fingerQueueListeners) {
+                    listener.addElementToQueue((FingerprintData) fingerprints.get(0));
+                }
 			}
 		}
 		currentFingerprint = fingerprintsQueue.get(0);
@@ -66,6 +69,11 @@ public class RecognizeListManager implements IRecognizeStatusObservable, IRecogn
 	public void addFingerprintToQueue(FingerprintData fingerprint) {
 		if(fingerprints.contains(fingerprint)) {
 			fingerprintsQueue.add(fingerprint);
+
+            for (IFingerQueueListener listener : fingerQueueListeners) {
+                listener.addElementToQueue(fingerprint);
+            }
+
 			if(!isRecognizing) {
 				isRecognizing = true;
 				currentFingerprint = fingerprintsQueue.get(0);
@@ -78,6 +86,11 @@ public class RecognizeListManager implements IRecognizeStatusObservable, IRecogn
 	
 	public void removeFingerprintFromQueue(FingerprintData fingerprint) {
 		fingerprintsQueue.remove(fingerprint);
+
+        for (IFingerQueueListener listener : fingerQueueListeners) {
+            listener.removeElementFromQueue((FingerprintData) fingerprints.get(0));
+        }
+
 		if(fingerprint == currentFingerprint) {
 			recognizeManager.recognizeFingerprintCancel();
 			if(isRecognizing) {
@@ -89,6 +102,10 @@ public class RecognizeListManager implements IRecognizeStatusObservable, IRecogn
 						return;
 					} else {
 						fingerprintsQueue.add((FingerprintData) fingerprints.get(0));
+
+                        for (IFingerQueueListener listener : fingerQueueListeners) {
+                            listener.addElementToQueue((FingerprintData) fingerprints.get(0));
+                        }
 					}
 				}
 				currentFingerprint = fingerprintsQueue.get(0);
@@ -97,10 +114,13 @@ public class RecognizeListManager implements IRecognizeStatusObservable, IRecogn
 		}
 	}
 
-	public void recognizeFingerprintCancel() {
-		isRecognizing = false;
-		recognizeManager.recognizeFingerprintCancel();
-	}
+    public void addQueueListener(IFingerQueueListener listener) {
+        fingerQueueListeners.add(listener);
+    }
+
+    public void removeQueueListener(IFingerQueueListener listener) {
+        fingerQueueListeners.remove(listener);
+    }
 
 	@Override
 	public void addRecognizeStatusObserver(IRecognizeStatusObserver o) {

@@ -195,6 +195,7 @@ public class FingerprintPageFragment extends FragmentWithName implements IFinger
     public void onDestroy() {
     	super.onDestroy();
     	controller.finish();
+        adapter.finish();
     	controller.setListView(null);
     }
 

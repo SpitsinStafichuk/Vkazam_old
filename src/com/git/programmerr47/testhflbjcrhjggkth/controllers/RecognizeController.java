@@ -13,10 +13,8 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.FingerprintData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
 import com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeServiceConnection;
 import com.git.programmerr47.testhflbjcrhjggkth.model.SongData;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.FingerprintsDeque;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.FingerprintManager;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.RecognizeManager;
-import com.git.programmerr47.testhflbjcrhjggkth.model.managers.Scrobbler;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IFingerprintResultObserver;
 import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IRecognizeResultObserver;
 import com.git.programmerr47.testhflbjcrhjggkth.utils.NetworkUtils;
@@ -26,7 +24,6 @@ public class RecognizeController implements IFingerprintResultObserver, IRecogni
 	private static final String TAG = "RecognizeController";
 	
 	private MicroScrobblerModel model;
-    private FingerprintsDeque fingerprintsDeque;
     private FingerprintManager fingerprintManager;
     private RecognizeManager recognizeManager;
     private Context context;

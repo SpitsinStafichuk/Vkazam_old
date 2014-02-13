@@ -1,6 +1,5 @@
 package com.git.programmerr47.testhflbjcrhjggkth.view.adapters;
 
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.view.animation.Animation;
@@ -11,8 +10,8 @@ import com.git.programmerr47.testhflbjcrhjggkth.model.FingerprintData;
 import com.git.programmerr47.testhflbjcrhjggkth.model.MicroScrobblerModel;
 import com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeServiceConnection;
 import com.git.programmerr47.testhflbjcrhjggkth.model.database.DatabaseFingerprintData;
-import com.git.programmerr47.testhflbjcrhjggkth.model.database.FingerprintsDeque;
 import com.git.programmerr47.testhflbjcrhjggkth.model.managers.RecognizeListManager;
+import com.git.programmerr47.testhflbjcrhjggkth.model.observers.IFingerQueueListener;
 import com.git.programmerr47.testhflbjcrhjggkth.utils.ImageUtils;
 
 import android.app.Activity;
@@ -24,7 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.nineoldandroids.view.ViewHelper;
 
-public class FingerprintListAdapter extends BaseAdapter {
+public class FingerprintListAdapter extends BaseAdapter implements IFingerQueueListener {
 	private static final String TAG = "FingerprintListAdapter";
 	private int idItem;
 	private Activity activity;
@@ -37,8 +36,13 @@ public class FingerprintListAdapter extends BaseAdapter {
 		this.activity = activity;
 		this.idItem = idItem;
 		model = RecognizeServiceConnection.getModel();
+        model.getRecognizeListManager().addQueueListener(this);
 		inflater = (LayoutInflater) this.activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
+
+    public void finish() {
+        model.getRecognizeListManager().removeQueueListener(this);
+    }
 
 	@Override
 	public int getCount() {
@@ -196,5 +200,28 @@ public class FingerprintListAdapter extends BaseAdapter {
                 //notifyDataSetChanged();
 			}
 		}, deletionAnimation.getDuration() + deletionAnimation.getStartOffset());
+    }
+
+    @Override
+    public void addElementToQueue(FingerprintData finger) {
+        if (model.getFingerprintList().indexOf(finger) != -1) {
+            View view = getView(model.getFingerprintList().indexOf(finger), null, null);
+            final Animation addToDequeue = AnimationUtils.loadAnimation(activity, R.anim.add_to_recognize_queue);
+            view.startAnimation(addToDequeue);
+        }
+    }
+
+    @Override
+    public void removeElementFromQueue(FingerprintData finger) {
+        if (model.getFingerprintList().indexOf(finger) != -1) {
+            View view = getView(model.getFingerprintList().indexOf(finger), null, null);
+            final Animation removeFromDequeue = AnimationUtils.loadAnimation(activity, R.anim.remove_from_recognize_queue);
+            view.startAnimation(removeFromDequeue);
+        }
+    }
+
+    @Override
+    public void removeRecognizedElement(FingerprintData finger) {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 }

@@ -18,7 +18,6 @@ public class FingerprintListController implements IRecognizeStatusObserver,
                                                   IRecognizeResultObserver {
 	
 	MicroScrobblerModel model;
-	FingerprintData currentFinger;
 	FingerprintListAdapter adapter;
 	ListView listView;
 	Activity view;
