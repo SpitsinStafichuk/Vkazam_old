@@ -204,18 +204,37 @@ public class FingerprintListAdapter extends BaseAdapter implements IFingerQueueL
 
     @Override
     public void addElementToQueue(FingerprintData finger) {
+        Log.v("Fingers", "Index of add finger is " + model.getFingerprintList().indexOf(finger));
         if (model.getFingerprintList().indexOf(finger) != -1) {
             View view = getView(model.getFingerprintList().indexOf(finger), null, null);
+            Log.v("Fingers", "View = " + view);
             final Animation addToDequeue = AnimationUtils.loadAnimation(activity, R.anim.add_to_recognize_queue);
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+
+    			@Override
+    			public void run() {
+                    FingerprintListAdapter.this.notifyDataSetChanged();
+    			}
+    		}, addToDequeue.getDuration() + addToDequeue.getStartOffset());
             view.startAnimation(addToDequeue);
         }
     }
 
     @Override
     public void removeElementFromQueue(FingerprintData finger) {
+        Log.v("Fingers", "Index of remove finger is " + model.getFingerprintList().indexOf(finger));
         if (model.getFingerprintList().indexOf(finger) != -1) {
             View view = getView(model.getFingerprintList().indexOf(finger), null, null);
             final Animation removeFromDequeue = AnimationUtils.loadAnimation(activity, R.anim.remove_from_recognize_queue);
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    FingerprintListAdapter.this.notifyDataSetChanged();
+                }
+            }, removeFromDequeue.getDuration() + removeFromDequeue.getStartOffset());
             view.startAnimation(removeFromDequeue);
         }
     }

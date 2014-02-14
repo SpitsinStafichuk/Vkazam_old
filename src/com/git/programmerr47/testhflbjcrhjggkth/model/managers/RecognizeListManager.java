@@ -56,6 +56,7 @@ public class RecognizeListManager implements IRecognizeStatusObservable, IRecogn
 				return;
 			} else {
 				fingerprintsQueue.add((FingerprintData) fingerprints.get(0));
+                ((FingerprintData)fingerprints.get(0)).setInQueueForRecognizing(true);
 
                 for (IFingerQueueListener listener : fingerQueueListeners) {
                     listener.addElementToQueue((FingerprintData) fingerprints.get(0));
@@ -102,6 +103,7 @@ public class RecognizeListManager implements IRecognizeStatusObservable, IRecogn
 						return;
 					} else {
 						fingerprintsQueue.add((FingerprintData) fingerprints.get(0));
+                        ((FingerprintData)fingerprints.get(0)).setInQueueForRecognizing(true);
 
                         for (IFingerQueueListener listener : fingerQueueListeners) {
                             listener.addElementToQueue((FingerprintData) fingerprints.get(0));
@@ -162,6 +164,10 @@ public class RecognizeListManager implements IRecognizeStatusObservable, IRecogn
 		notifyRecognizeStatusObservers(status);
 	}
 
+    public int getPositionOfCurrentFingerprint() {
+        return fingerprints.indexOf(currentFingerprint);
+    }
+
 	@Override
 	public void onRecognizeResult(int errorCode, SongData songData) {
 		notifyRecognizeResultObservers(errorCode, songData);
@@ -191,6 +197,7 @@ public class RecognizeListManager implements IRecognizeStatusObservable, IRecogn
 					return;
 				} else {
 					fingerprintsQueue.add((FingerprintData) fingerprints.get(0));
+                    ((FingerprintData)fingerprints.get(0)).setInQueueForRecognizing(true);
 				}
 			}
 			currentFingerprint = fingerprintsQueue.get(0);

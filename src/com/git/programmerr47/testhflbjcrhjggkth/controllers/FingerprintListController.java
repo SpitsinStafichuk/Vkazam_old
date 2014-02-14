@@ -46,7 +46,12 @@ public class FingerprintListController implements IRecognizeStatusObserver,
 	@Override
 	public void onRecognizeStatusChanged(String status) {
 		Log.v("Fingers", "onRecognizeStatusChanged " + status);
-		adapter.notifyDataSetChanged();
+//        if (!((listView != null) &&
+//            (model.getRecognizeListManager().getPositionOfCurrentFingerprint() >= listView.getFirstVisiblePosition()) &&
+//            (model.getRecognizeListManager().getPositionOfCurrentFingerprint() <= listView.getLastVisiblePosition()))) {
+//            Log.v("Fingers", "Adapter notify because list is invisible");
+//            adapter.notifyDataSetChanged();
+//        }
 	}
 	
 	public void setListView(ListView listView) {
