@@ -15,6 +15,7 @@ import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.testhflbjcrhjggkth.controllers.SettingsController;
 import com.git.programmerr47.testhflbjcrhjggkth.model.RecognizeServiceConnection;
 import com.git.programmerr47.testhflbjcrhjggkth.utils.AndroidUtils;
+import com.git.programmerr47.testhflbjcrhjggkth.utils.NetworkUtils;
 import com.git.programmerr47.testhflbjcrhjggkth.view.activities.interfaces.IConnectedDialogFragmentDissmised;
 import com.git.programmerr47.testhflbjcrhjggkth.view.fragments.TimerDelayDialogFragment;
 
@@ -130,10 +131,12 @@ public class SettingsActivity extends FragmentActivity implements CompoundButton
             @Override
             public void onClick(View view) {
                 autoRecognizeCheckBox.setChecked(!autoRecognizeCheckBox.isChecked());
-                if (autoRecognizeCheckBox.isChecked()) {
-                    RecognizeServiceConnection.getModel().getRecognizeListManager().recognizeFingerprints();
-                } else {
-                    RecognizeServiceConnection.getModel().getRecognizeListManager().cancelAutoRecognize();
+                if (NetworkUtils.isNetworkAvailable(SettingsActivity.this)) {
+                    if (autoRecognizeCheckBox.isChecked()) {
+                        RecognizeServiceConnection.getModel().getRecognizeListManager().recognizeFingerprints();
+                    } else {
+                        RecognizeServiceConnection.getModel().getRecognizeListManager().cancelAutoRecognize();
+                    }
                 }
             }
         });

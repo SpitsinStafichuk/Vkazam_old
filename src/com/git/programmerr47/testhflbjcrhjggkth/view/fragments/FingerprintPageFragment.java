@@ -108,10 +108,12 @@ public class FingerprintPageFragment extends FragmentWithName implements IFinger
             @Override
             public void onClick(View view) {
                 autoRecognizeCheckBox.setChecked(!autoRecognizeCheckBox.isChecked());
-                if (autoRecognizeCheckBox.isChecked()) {
-                    RecognizeServiceConnection.getModel().getRecognizeListManager().recognizeFingerprints();
-                }  else {
-                    RecognizeServiceConnection.getModel().getRecognizeListManager().cancelAutoRecognize();
+                if (NetworkUtils.isNetworkAvailable(FingerprintPageFragment.this.getActivity())) {
+                    if (autoRecognizeCheckBox.isChecked()) {
+                        RecognizeServiceConnection.getModel().getRecognizeListManager().recognizeFingerprints();
+                    } else {
+                        RecognizeServiceConnection.getModel().getRecognizeListManager().cancelAutoRecognize();
+                    }
                 }
             }
         });
