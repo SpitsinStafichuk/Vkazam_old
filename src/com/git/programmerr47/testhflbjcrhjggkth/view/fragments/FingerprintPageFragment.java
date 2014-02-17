@@ -110,6 +110,8 @@ public class FingerprintPageFragment extends FragmentWithName implements IFinger
                 autoRecognizeCheckBox.setChecked(!autoRecognizeCheckBox.isChecked());
                 if (autoRecognizeCheckBox.isChecked()) {
                     RecognizeServiceConnection.getModel().getRecognizeListManager().recognizeFingerprints();
+                }  else {
+                    RecognizeServiceConnection.getModel().getRecognizeListManager().cancelAutoRecognize();
                 }
             }
         });

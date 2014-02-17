@@ -204,4 +204,8 @@ public class RecognizeListManager implements IRecognizeStatusObservable, IRecogn
 			recognizeManager.recognizeFingerprint(currentFingerprint);
 		}
 	}
+
+    public void cancelAutoRecognize() {
+        autorecognizing = false;
+    }
 }
