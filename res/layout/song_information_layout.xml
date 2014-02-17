@@ -91,7 +91,7 @@
                     android:layout_marginBottom="5dp"
                     android:orientation="horizontal">
 
-                <com.git.programmerr47.testhflbjcrhjggkth.view.DynamicImageView
+                <com.git.programmerr47.vkazam.view.DynamicImageView
                     android:id="@+id/songInfoCoverArt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
