@@ -135,7 +135,8 @@ public class FingerprintListAdapter extends BaseAdapter implements IFingerQueueL
         }
         
         lastPosition = position;
-		
+
+        Log.v("Fingers", "View = " + view + "; position =" + position);
 		return view;
 	}
 
