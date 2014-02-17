@@ -19,7 +19,6 @@ public class FingerprintListController implements IRecognizeStatusObserver,
 	
 	MicroScrobblerModel model;
 	FingerprintListAdapter adapter;
-	ListView listView;
 	Activity view;
 	
 	public FingerprintListController(Fragment fragment, FingerprintListAdapter adapter) {
@@ -52,10 +51,6 @@ public class FingerprintListController implements IRecognizeStatusObserver,
 //            Log.v("Fingers", "Adapter notify because list is invisible");
 //            adapter.notifyDataSetChanged();
 //        }
-	}
-	
-	public void setListView(ListView listView) {
-		this.listView = listView;
 	}
 
 }

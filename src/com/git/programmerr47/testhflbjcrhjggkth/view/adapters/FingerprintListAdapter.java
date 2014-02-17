@@ -27,6 +27,7 @@ public class FingerprintListAdapter extends BaseAdapter implements IFingerQueueL
 	private static final String TAG = "FingerprintListAdapter";
 	private int idItem;
 	private Activity activity;
+    private ListView listView;
 	private LayoutInflater inflater;
 	private MicroScrobblerModel model;
     private boolean isScrolling = false;
@@ -40,8 +41,13 @@ public class FingerprintListAdapter extends BaseAdapter implements IFingerQueueL
 		inflater = (LayoutInflater) this.activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
+    public void setListView(ListView listview) {
+        this.listView = listview;
+    }
+
     public void finish() {
         model.getRecognizeListManager().removeQueueListener(this);
+        setListView(null);
     }
 
 	@Override
@@ -143,37 +149,10 @@ public class FingerprintListAdapter extends BaseAdapter implements IFingerQueueL
     public void recognizeFingerprint(final View view, final int position) {
         final FingerprintData data = (FingerprintData) model.getFingerprintList().get(position);
         if (!data.isInQueueForRecognizing()) {
-//            final Animation addToDequeue = AnimationUtils.loadAnimation(activity, R.anim.add_to_recognize_queue);
-//
-//            Handler handler = new Handler();
-//            handler.postDelayed(new Runnable() {
-//
-//    			@Override
-//    			public void run() {
-//                    //try to recognize
-//                    ViewHelper.setAlpha(view, 0.5f);
-//                    ViewHelper.setScaleX(view, 0.85f);
-//                    ViewHelper.setScaleY(view, 0.85f);
-//                    ViewHelper.setPivotX(view, view.getWidth() * 0.5f);
-//                    ViewHelper.setPivotY(view, view.getHeight() * 0.5f);
-
-//    			}
-//    		}, addToDequeue.getDuration() + addToDequeue.getStartOffset());
-//
-//            view.startAnimation(addToDequeue);
             model.getRecognizeListManager().addFingerprintToQueue(data);
-            data.setInQueueForRecognizing(true);
         } else {
-//            final Animation removeFromDequeue = AnimationUtils.loadAnimation(activity, R.anim.remove_from_recognize_queue);
-//            view.startAnimation(removeFromDequeue);
-//            ViewHelper.setAlpha(view, 1.0f);
-//            ViewHelper.setScaleX(view, 1.0f);
-//            ViewHelper.setScaleY(view, 1.0f);
-//            ViewHelper.setPivotX(view, 0);
-//            ViewHelper.setPivotY(view, 0);
             model.getRecognizeListManager().removeFingerprintFromQueue(data);
             data.setRecognizeStatus(null);
-            data.setInQueueForRecognizing(false);
         }
         notifyDataSetChanged();
     }
@@ -205,11 +184,14 @@ public class FingerprintListAdapter extends BaseAdapter implements IFingerQueueL
 
     @Override
     public void addElementToQueue(FingerprintData finger) {
+        finger.setInQueueForRecognizing(true);
         Log.v("Fingers", "Index of add finger is " + model.getFingerprintList().indexOf(finger));
         if (model.getFingerprintList().indexOf(finger) != -1) {
-            View view = getView(model.getFingerprintList().indexOf(finger), null, null);
+            View view = getListViewChild(model.getFingerprintList().indexOf(finger));
             Log.v("Fingers", "View = " + view);
+
             final Animation addToDequeue = AnimationUtils.loadAnimation(activity, R.anim.add_to_recognize_queue);
+
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
 
@@ -218,16 +200,23 @@ public class FingerprintListAdapter extends BaseAdapter implements IFingerQueueL
                     FingerprintListAdapter.this.notifyDataSetChanged();
     			}
     		}, addToDequeue.getDuration() + addToDequeue.getStartOffset());
-            view.startAnimation(addToDequeue);
+
+            if (view != null) {
+                view.startAnimation(addToDequeue);
+            }
         }
     }
 
     @Override
     public void removeElementFromQueue(FingerprintData finger) {
+        finger.setInQueueForRecognizing(false);
         Log.v("Fingers", "Index of remove finger is " + model.getFingerprintList().indexOf(finger));
         if (model.getFingerprintList().indexOf(finger) != -1) {
-            View view = getView(model.getFingerprintList().indexOf(finger), null, null);
+            View view = getListViewChild(model.getFingerprintList().indexOf(finger));
+            Log.v("Fingers", "View = " + view);
+
             final Animation removeFromDequeue = AnimationUtils.loadAnimation(activity, R.anim.remove_from_recognize_queue);
+
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
 
@@ -236,12 +225,29 @@ public class FingerprintListAdapter extends BaseAdapter implements IFingerQueueL
                     FingerprintListAdapter.this.notifyDataSetChanged();
                 }
             }, removeFromDequeue.getDuration() + removeFromDequeue.getStartOffset());
-            view.startAnimation(removeFromDequeue);
+
+            if (view != null) {
+                view.startAnimation(removeFromDequeue);
+            }
         }
     }
 
     @Override
     public void removeRecognizedElement(FingerprintData finger) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        //TODO add deletion animation
+    }
+
+    private View getListViewChild(int itemPosition) {
+        if (listView != null) {
+            int firstPosition = listView.getFirstVisiblePosition() - listView.getHeaderViewsCount();
+            int childPosition = itemPosition - firstPosition;
+            if ((childPosition < 0) || (childPosition >= listView.getChildCount())) {
+                return null;
+            } else {
+                return listView.getChildAt(childPosition);
+            }
+        } else {
+            return null;
+        }
     }
 }

@@ -77,7 +77,7 @@ public class FingerprintPageFragment extends FragmentWithName implements IFinger
 
         fingerprintHLV = (ListView) view.findViewById(R.id.listView);
         fingerprintHLV.setAdapter(adapter);
-        controller.setListView(fingerprintHLV);
+        adapter.setListView(fingerprintHLV);
         fingerprintHLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -184,7 +184,7 @@ public class FingerprintPageFragment extends FragmentWithName implements IFinger
     public void onDestroyView() {
         super.onDestroyView();
         Log.v(TAG, "FingerprintPageFragment: onDestroyView");
-        controller.setListView(null);
+        adapter.setListView(null);
     }
 
     @Override
@@ -200,7 +200,6 @@ public class FingerprintPageFragment extends FragmentWithName implements IFinger
     	super.onDestroy();
     	controller.finish();
         adapter.finish();
-    	controller.setListView(null);
     }
 
 	@Override
