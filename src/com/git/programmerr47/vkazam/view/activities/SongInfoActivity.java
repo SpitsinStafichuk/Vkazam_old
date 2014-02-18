@@ -576,7 +576,8 @@ public class SongInfoActivity extends FragmentActivity implements IPlayerStateOb
 	private void fillActivity(SongData data) {
 		if (data != null) {
 			fillTextInformation(R.id.songInfoArtist, data.getArtist());
-			fillTextInformation(R.id.songInfoTitle, data.getTitle());
+            fillTextInformation(R.id.songInfoTitle, data.getTitle());
+            fillTextInformation(R.id.songInfoAlbum, data.getAlbum());
 			fillTextInformation(R.id.songInfoDate, data.getDate().toString());
 			fillTextInformation(R.id.songInfoTrackId, data.getTrackId());
 			

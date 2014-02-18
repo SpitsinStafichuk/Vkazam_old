@@ -39,14 +39,12 @@ import com.git.programmerr47.vkazam.utils.YoutubeUtils;
 
 public class SongInfoController extends SongController{
     private static final String SHOW_DIALOG_TAG = "dialog";
-    private SongInfoActivity songInfoActivity;
-	
-	public SongInfoController(SongInfoActivity view) {
-		super(view);
-        songInfoActivity = view;
-	}
-	
-	public void getVkLyrics(final SongData data) {
+
+    public SongInfoController(FragmentActivity view) {
+        super(view);
+    }
+
+    public void getVkLyrics(final SongData data) {
 
 		ProgressDialogFragment.Builder appProgressDialogBuilder = new ProgressDialogFragment.Builder();
 		appProgressDialogBuilder.setIcon(R.drawable.ic_progress_dialog);
@@ -71,7 +69,10 @@ public class SongInfoController extends SongController{
 	        	if (api != null) {
 	        		try {
 						String lyrics = data.getLyrics(api);
-                        songInfoActivity.setRealArtistTitleForPlayers();
+                        if (view instanceof  SongInfoActivity) {
+                            SongInfoActivity songInfoActivity = (SongInfoActivity) view;
+                            songInfoActivity.setRealArtistTitleForPlayers();
+                        }
 						if (lyrics != null) {
 							Intent intent = new Intent(view, VkLyricsActivity.class);
 							intent.putExtra(VkLyricsActivity.LYRICS_KEY, lyrics);
