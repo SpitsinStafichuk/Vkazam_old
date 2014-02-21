@@ -20,8 +20,7 @@ import com.git.programmerr47.vkazam.model.observers.IRecognizeResultObserver;
 import com.git.programmerr47.vkazam.model.observers.IRecognizeStatusObserver;
 import com.git.programmerr47.vkazam.view.adapters.FingerprintListAdapter;
 
-public class FingerprintListController implements IRecognizeStatusObserver,
-        IRecognizeResultObserver {
+public class FingerprintListController implements IRecognizeResultObserver {
 	
 	MicroScrobblerModel model;
 	FingerprintListAdapter adapter;
@@ -31,12 +30,10 @@ public class FingerprintListController implements IRecognizeStatusObserver,
 		this.adapter = adapter;
 		view = fragment.getActivity();
 		model = RecognizeServiceConnection.getModel();
-		model.getRecognizeListManager().addRecognizeStatusObserver(this);
 		model.getRecognizeListManager().addRecognizeResultObserver(this);
 	}
 	
 	public void finish() {
-		model.getRecognizeListManager().removeRecognizeStatusObserver(this);
 		model.getRecognizeListManager().removeRecognizeResultObserver(this);
 	}
 
@@ -47,16 +44,4 @@ public class FingerprintListController implements IRecognizeStatusObserver,
 			model.getScrobbler().sendLastFMTrack(songData.getArtist(), songData.getTitle(), songData.getAlbum());
 		}
 	}
-
-	@Override
-	public void onRecognizeStatusChanged(String status) {
-		Log.v("Fingers", "onRecognizeStatusChanged " + status);
-//        if (!((listView != null) &&
-//            (model.getRecognizeListManager().getPositionOfCurrentFingerprint() >= listView.getFirstVisiblePosition()) &&
-//            (model.getRecognizeListManager().getPositionOfCurrentFingerprint() <= listView.getLastVisiblePosition()))) {
-//            Log.v("Fingers", "Adapter notify because list is invisible");
-//            adapter.notifyDataSetChanged();
-//        }
-	}
-
 }

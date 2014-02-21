@@ -44,7 +44,7 @@ public class SongInfoController extends SongController{
         super(view);
     }
 
-    public void getVkLyrics(final SongData data) {
+    private void getVkLyrics(final SongData data) {
 
 		ProgressDialogFragment.Builder appProgressDialogBuilder = new ProgressDialogFragment.Builder();
 		appProgressDialogBuilder.setIcon(R.drawable.ic_progress_dialog);
@@ -69,10 +69,13 @@ public class SongInfoController extends SongController{
 	        	if (api != null) {
 	        		try {
 						String lyrics = data.getLyrics(api);
+
+                        //TODO TMP code (condition), must be removed after separating lyrics and song
                         if (view instanceof  SongInfoActivity) {
                             SongInfoActivity songInfoActivity = (SongInfoActivity) view;
                             songInfoActivity.setRealArtistTitleForPlayers();
                         }
+
 						if (lyrics != null) {
 							Intent intent = new Intent(view, VkLyricsActivity.class);
 							intent.putExtra(VkLyricsActivity.LYRICS_KEY, lyrics);

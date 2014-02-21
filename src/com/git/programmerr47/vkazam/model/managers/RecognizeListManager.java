@@ -3,7 +3,6 @@ package com.git.programmerr47.vkazam.model.managers;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 import java.util.Set;
 
 import android.util.Log;
@@ -12,7 +11,6 @@ import com.git.programmerr47.vkazam.model.FingerprintData;
 import com.git.programmerr47.vkazam.model.SongData;
 import com.git.programmerr47.vkazam.model.database.FingerprintList;
 import com.git.programmerr47.vkazam.model.database.SongList;
-import com.git.programmerr47.vkazam.model.database.SongList;
 import com.git.programmerr47.vkazam.model.observers.*;
 import com.gracenote.mmid.MobileSDK.GNConfig;
 
@@ -20,8 +18,7 @@ public class RecognizeListManager implements IRecognizeStatusObservable, IRecogn
         IRecognizeResultObserver, IRecognizeStatusObserver {
 	public static final String RECOGNIZING_SUCCESS = "Recognizing success";
 	public static final String ALL_RECOGNIZED = "All recognized";
-	private static final String TAG = "RecognizeListManager";
-	
+
 	private Set<IRecognizeStatusObserver> recognizeStatusObservers;
 	private Set<IRecognizeResultObserver> recognizeResultObservers;
     private Set<IFingerQueueListener> fingerQueueListeners;
@@ -49,32 +46,13 @@ public class RecognizeListManager implements IRecognizeStatusObservable, IRecogn
 	public void recognizeFingerprints() {
 		isRecognizing = true;
 		autorecognizing = true;
-		if(fingerprintsQueue.isEmpty()) {
-			if(fingerprints.isEmpty()) {
-				autorecognizing = false;
-				isRecognizing = false;
-				onRecognizeStatusChanged(ALL_RECOGNIZED);
-				return;
-			} else {
-				fingerprintsQueue.add((FingerprintData) fingerprints.get(0));
-                ((FingerprintData)fingerprints.get(0)).setInQueueForRecognizing(true);
 
-                for (IFingerQueueListener listener : fingerQueueListeners) {
-                    listener.addElementToQueue((FingerprintData) fingerprints.get(0));
-                }
-			}
-		}
-		currentFingerprint = fingerprintsQueue.get(0);
-		recognizeManager.recognizeFingerprint(currentFingerprint);
+        recognizeNextFinger();
 	}
 	
 	public void addFingerprintToQueue(FingerprintData fingerprint) {
 		if(fingerprints.contains(fingerprint)) {
-			fingerprintsQueue.add(fingerprint);
-
-            for (IFingerQueueListener listener : fingerQueueListeners) {
-                listener.addElementToQueue(fingerprint);
-            }
+            addFingerToQueueAndNotifyListeners(fingerprint);
 
 			if(!isRecognizing) {
 				isRecognizing = true;
@@ -87,33 +65,12 @@ public class RecognizeListManager implements IRecognizeStatusObservable, IRecogn
 	}
 	
 	public void removeFingerprintFromQueue(FingerprintData fingerprint) {
-		fingerprintsQueue.remove(fingerprint);
-
-        for (IFingerQueueListener listener : fingerQueueListeners) {
-            listener.removeElementFromQueue((FingerprintData) fingerprints.get(0));
-        }
+        removeFingerFromQueueAndNotifyListeners(fingerprint);
 
 		if(fingerprint == currentFingerprint) {
 			recognizeManager.recognizeFingerprintCancel();
-			if(isRecognizing) {
-				if(fingerprintsQueue.isEmpty()) {
-					if(fingerprints.isEmpty() || !autorecognizing) {
-						autorecognizing = false;
-						isRecognizing = false;
-						onRecognizeStatusChanged(ALL_RECOGNIZED);
-						return;
-					} else {
-						fingerprintsQueue.add((FingerprintData) fingerprints.get(0));
-                        ((FingerprintData)fingerprints.get(0)).setInQueueForRecognizing(true);
 
-                        for (IFingerQueueListener listener : fingerQueueListeners) {
-                            listener.addElementToQueue((FingerprintData) fingerprints.get(0));
-                        }
-					}
-				}
-				currentFingerprint = fingerprintsQueue.get(0);
-				recognizeManager.recognizeFingerprint(currentFingerprint);
-			}
+            recognizeNextFinger();
 		}
 	}
 
@@ -162,51 +119,76 @@ public class RecognizeListManager implements IRecognizeStatusObservable, IRecogn
 	@Override
 	public void onRecognizeStatusChanged(String status) {
         currentFingerprint.setRecognizeStatus(status);
-		notifyRecognizeStatusObservers(status);
-	}
 
-    public int getPositionOfCurrentFingerprint() {
-        return fingerprints.indexOf(currentFingerprint);
-    }
+        for (IFingerQueueListener listener : fingerQueueListeners) {
+            listener.changeStatusOfElement(currentFingerprint);
+        }
+	}
 
 	@Override
 	public void onRecognizeResult(int errorCode, SongData songData) {
 		notifyRecognizeResultObservers(errorCode, songData);
-		if (songData != null) {
+
+        if (songData != null) {
 			currentFingerprint.setRecognizeStatus(songData.getArtist() + " - " + songData.getTitle());
+            songs.add(songData);
 		} else {
 			currentFingerprint.setRecognizeStatus("Music not identified");
 		}
-		if(songData != null) {
-			songs.add(songData);
-		}
+
 		if(errorCode != 5001) {
-			fingerprintsQueue.remove(0);
+            removeFingerFromQueueAndNotifyListeners(currentFingerprint);
+
 			fingerprints.remove(currentFingerprint);
 		} else {
-			autorecognizing = false;
-			isRecognizing = false;
-			onRecognizeStatusChanged(ALL_RECOGNIZED);
+            finishRecognizing();
 			return;
 		}
-		if(isRecognizing) {
-			if(fingerprintsQueue.isEmpty()) {
-				if(fingerprints.isEmpty() || !autorecognizing) {
-					autorecognizing = false;
-					isRecognizing = false;
-					onRecognizeStatusChanged(ALL_RECOGNIZED);
-					return;
-				} else {
-					fingerprintsQueue.add((FingerprintData) fingerprints.get(0));
-                    ((FingerprintData)fingerprints.get(0)).setInQueueForRecognizing(true);
-				}
-			}
-			currentFingerprint = fingerprintsQueue.get(0);
-			recognizeManager.recognizeFingerprint(currentFingerprint);
-		}
+
+        recognizeNextFinger();
 	}
 
     public void cancelAutoRecognize() {
         autorecognizing = false;
+    }
+
+    private void finishRecognizing() {
+        autorecognizing = false;
+        isRecognizing = false;
+        onRecognizeStatusChanged(ALL_RECOGNIZED);
+    }
+
+    private void addFingerToQueueAndNotifyListeners(FingerprintData fingerprint) {
+        fingerprintsQueue.add(fingerprint);
+        fingerprint.setInQueueForRecognizing(true);
+
+        for (IFingerQueueListener listener : fingerQueueListeners) {
+            listener.addElementToQueue(fingerprint);
+        }
+    }
+
+    private void removeFingerFromQueueAndNotifyListeners(FingerprintData fingerprint) {
+        fingerprintsQueue.remove(fingerprint);
+        fingerprint.setInQueueForRecognizing(false);
+
+        for (IFingerQueueListener listener : fingerQueueListeners) {
+            listener.removeElementFromQueue((FingerprintData) fingerprints.get(0));
+        }
+    }
+
+    private void recognizeNextFinger() {
+        if(isRecognizing) {
+            if(fingerprintsQueue.isEmpty()) {
+                if(fingerprints.isEmpty() || !autorecognizing) {
+                    finishRecognizing();
+                    return;
+                } else {
+                    addFingerToQueueAndNotifyListeners((FingerprintData) fingerprints.get(0));
+                }
+            }
+
+            currentFingerprint = fingerprintsQueue.get(0);
+            recognizeManager.recognizeFingerprint(currentFingerprint);
+        }
     }
 }

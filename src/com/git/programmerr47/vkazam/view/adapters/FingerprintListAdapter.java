@@ -97,6 +97,7 @@ public class FingerprintListAdapter extends BaseAdapter implements IFingerQueueL
 		} else {
 			fingerprintText.setText(finger.hashCode() + "");
 		}
+
 		TextView fingerprintDate = (TextView) view.findViewById(R.id.fingerprintDate);
 		fingerprintDate.setText(data.getDate().toString());
 		
@@ -184,7 +185,6 @@ public class FingerprintListAdapter extends BaseAdapter implements IFingerQueueL
 
     @Override
     public void addElementToQueue(FingerprintData finger) {
-        finger.setInQueueForRecognizing(true);
         Log.v("Fingers", "Index of add finger is " + model.getFingerprintList().indexOf(finger));
         if (model.getFingerprintList().indexOf(finger) != -1) {
             View view = getListViewChild(model.getFingerprintList().indexOf(finger));
@@ -209,7 +209,6 @@ public class FingerprintListAdapter extends BaseAdapter implements IFingerQueueL
 
     @Override
     public void removeElementFromQueue(FingerprintData finger) {
-        finger.setInQueueForRecognizing(false);
         Log.v("Fingers", "Index of remove finger is " + model.getFingerprintList().indexOf(finger));
         if (model.getFingerprintList().indexOf(finger) != -1) {
             View view = getListViewChild(model.getFingerprintList().indexOf(finger));
@@ -235,6 +234,21 @@ public class FingerprintListAdapter extends BaseAdapter implements IFingerQueueL
     @Override
     public void removeRecognizedElement(FingerprintData finger) {
         //TODO add deletion animation
+    }
+
+    @Override
+    public void changeStatusOfElement(FingerprintData finger) {
+        if (model.getFingerprintList().indexOf(finger) != -1) {
+            View view = getListViewChild(model.getFingerprintList().indexOf(finger));
+            TextView fingerprintText = (TextView) view.findViewById(R.id.fingerprintText);
+
+            if ((finger.getRecognizeStatus() != null) &&
+                    (!finger.getRecognizeStatus().equals(RecognizeListManager.ALL_RECOGNIZED))) {
+                fingerprintText.setText(finger.getRecognizeStatus());
+            } else {
+                fingerprintText.setText(finger.hashCode() + "");
+            }
+        }
     }
 
     private View getListViewChild(int itemPosition) {
