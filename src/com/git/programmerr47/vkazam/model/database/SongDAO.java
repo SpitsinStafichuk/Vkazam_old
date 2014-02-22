@@ -23,7 +23,8 @@ public class SongDAO extends AbstractDAO {
 		ContentValues values = new ContentValues();
 		values.put(DBConstants.MUSIC_HISTORY_ARTIST, songData.getArtist());
 		values.put(DBConstants.MUSIC_HISTORY_TITLE, songData.getTitle());
-		values.put(DBConstants.MUSIC_HISTORY_GRACENOTE_TRACK_ID, songData.getTrackId());
+        values.put(DBConstants.MUSIC_HISTORY_GRACENOTE_TRACK_ID, songData.getTrackId());
+        values.put(DBConstants.MUSIC_HISTORY_ALBUM, songData.getAlbum());
 		values.put(DBConstants.DATE, songData.getDate().getTime());
 		if(songData.getCoverArtUrl() != null) values.put(DBConstants.MUSIC_HISTORY_COVER_ART_URL, songData.getCoverArtUrl());
 		if(songData.getPleercomUrl() != null) values.put(DBConstants.MUSIC_HISTORY_PLEERCOM_URL, songData.getPleercomUrl());
