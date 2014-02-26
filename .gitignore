@@ -1,7 +1,7 @@
 ic_launcher-web.png
 project.properties
 proguard-project.txt
-TestHflbjCrhjggkth.iml
+Vkazam.iml
 .classpath
 .project
 bin/
@@ -9,4 +9,4 @@ gen/
 out/
 .idea/
 .settings/
-src/com/git/programmerr47/testhflbjcrhjggkth/utils/Constants.java
+src/com/git/programmerr47/vkazam/utils/Constants.java

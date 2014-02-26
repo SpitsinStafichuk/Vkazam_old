@@ -15,14 +15,6 @@ public class DBHelper extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL(DBConstants.SQL_CREATE_MUSIC_HISTORY_TABLE);
 		db.execSQL(DBConstants.SQL_CREATE_FINGERPRINTS_TABLE);
-		//for test animation
-		/*for (int i = 0; i < 100; i++) {
-			ContentValues values = new ContentValues();
-			values.put(DBConstants.MUSIC_HISTORY_ARTIST, "Test " + i);
-			values.put(DBConstants.MUSIC_HISTORY_TITLE, "Test " + i);
-			long result = db.insert(DBConstants.MUSIC_HISTORY_TABLE, null, values);
-			Log.v(HISTORY_TAG, i + ":" + " result = " + result);
-		}*/
 	}
 
 	@Override

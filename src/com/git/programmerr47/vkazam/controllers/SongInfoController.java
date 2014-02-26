@@ -72,8 +72,13 @@ public class SongInfoController extends SongController{
 
                         //TODO TMP code (condition), must be removed after separating lyrics and song
                         if (view instanceof  SongInfoActivity) {
-                            SongInfoActivity songInfoActivity = (SongInfoActivity) view;
-                            songInfoActivity.setRealArtistTitleForPlayers();
+                            final SongInfoActivity songInfoActivity = (SongInfoActivity) view;
+                            songInfoActivity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    songInfoActivity.setRealArtistTitleForPlayers();
+                                }
+                            });
                         }
 
 						if (lyrics != null) {
