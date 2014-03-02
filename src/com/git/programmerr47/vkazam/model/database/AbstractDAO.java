@@ -27,6 +27,7 @@ public abstract class AbstractDAO {
 		Cursor cursor = database.rawQuery("SELECT * FROM " + tableName + " ORDER BY " + DBConstants.DATE + " DESC", null);
 		cursor.moveToFirst();
 		List<Data> result = getListByCursor(cursor);
+        cursor.close();
 		database.close();
 		databaseHelper.close();
 		isFirstGetSet = false;

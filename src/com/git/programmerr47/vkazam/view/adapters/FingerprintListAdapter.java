@@ -157,7 +157,8 @@ public class FingerprintListAdapter extends BaseAdapter implements IFingerQueueL
         }
         notifyDataSetChanged();
     }
-    
+
+    @Deprecated
     public void deletionFromList(final FingerprintData data, final View view) {
     	Log.v("Fingers", "Deletion from fingerList " + data.getFingerprint().substring(data.getFingerprint().indexOf("<FP_BLOCK"), data.getFingerprint().indexOf("</FP_BLOCK>") + 11).hashCode());
         final Animation deletionAnimation = AnimationUtils.loadAnimation(activity, R.anim.complete_recognize);
@@ -175,10 +176,7 @@ public class FingerprintListAdapter extends BaseAdapter implements IFingerQueueL
                 Log.v(TAG, "Listsize(adapter) after deletion is " + model.getFingerprintList().size());
                 int afterSize = model.getFingerprintList().size();
                 if (beforeSize > afterSize) {
-                    /*deque.pollFirst();
-                    Log.v("Fingers", "(adapter) after deletion deque.size() = " + deque.size());*/
                 }
-                //notifyDataSetChanged();
 			}
 		}, deletionAnimation.getDuration() + deletionAnimation.getStartOffset());
     }

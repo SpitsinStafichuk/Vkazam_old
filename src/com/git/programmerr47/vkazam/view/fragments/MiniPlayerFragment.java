@@ -21,14 +21,6 @@ import com.git.programmerr47.vkazam.model.observers.IPlayerStateObserver;
 import com.git.programmerr47.vkazam.model.observers.ISongInfoObserver;
 import com.git.programmerr47.vkazam.model.observers.ISongProgressObserver;
 import com.git.programmerr47.vkazam.view.adapters.SongListAdapter;
-import com.git.programmerr47.vkazam.controllers.SongController;
-import com.git.programmerr47.vkazam.model.MicroScrobblerModel;
-import com.git.programmerr47.vkazam.model.RecognizeServiceConnection;
-import com.git.programmerr47.vkazam.model.managers.SongManager;
-import com.git.programmerr47.vkazam.model.observers.ISongInfoObserver;
-import com.git.programmerr47.vkazam.model.observers.ISongProgressObserver;
-import com.git.programmerr47.vkazam.view.adapters.SongListAdapter;
-import de.umass.util.StringUtilities;
 
 public class MiniPlayerFragment extends Fragment implements IPlayerStateObserver, ISongInfoObserver, ISongProgressObserver {
 
@@ -46,6 +38,10 @@ public class MiniPlayerFragment extends Fragment implements IPlayerStateObserver
     private MicroScrobblerModel model;
     private SongController controller;
     private SongListAdapter adapter;
+
+    public MiniPlayerFragment() {
+
+    }
 
     public MiniPlayerFragment(SongListAdapter adapter) {
         this.adapter = adapter;
