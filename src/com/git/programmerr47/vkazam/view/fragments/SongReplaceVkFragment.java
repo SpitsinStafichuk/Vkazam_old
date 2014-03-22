@@ -30,12 +30,12 @@ public class SongReplaceVkFragment extends FragmentWithName{
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        adapter = new VkListAdapter(this.getActivity(), R.layout.pp_url_list_item, R.layout.more_url_list_item);
+        adapter = new VkListAdapter(this.getActivity(), R.layout.list_item_pp_url, R.layout.list_item_more_url);
     }
 	
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.list_view_fragment, null);
+        View view = inflater.inflate(R.layout.fragment_history, null);
         
         vkURLs = (ListView) view.findViewById(R.id.listView);
         vkURLs.setAdapter(adapter);

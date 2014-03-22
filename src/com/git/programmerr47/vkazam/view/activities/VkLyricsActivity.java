@@ -41,7 +41,7 @@ public class VkLyricsActivity extends ActionBarActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.vk_lyrics_layout);
+		setContentView(R.layout.activity_vk_lyrics);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		Intent intent = getIntent();

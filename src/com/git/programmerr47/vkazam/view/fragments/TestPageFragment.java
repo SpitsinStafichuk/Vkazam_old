@@ -70,7 +70,7 @@ public class TestPageFragment extends FragmentWithName {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.test_fragment, null);
+		View view = inflater.inflate(R.layout.fragment_test, null);
 
 		song = (LinearLayout) view.findViewById(R.id.currentSong);
 		song.setVisibility(View.GONE);

@@ -49,7 +49,7 @@ public class SettingsActivity extends ActionBarActivity implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.settings);
+		setContentView(R.layout.activity_settings);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		controller = new SettingsController(this);

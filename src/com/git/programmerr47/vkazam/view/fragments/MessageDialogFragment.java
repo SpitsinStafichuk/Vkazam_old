@@ -67,7 +67,7 @@ public class MessageDialogFragment extends DialogFragment{
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.message_dialog, container, false);
+        View view = inflater.inflate(R.layout.dialog_message, container, false);
         
         iconView = (ImageView) view.findViewById(R.id.icon);
         if (icon != -1) {

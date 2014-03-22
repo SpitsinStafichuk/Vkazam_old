@@ -23,7 +23,7 @@ public class VkLoginActivity extends ActionBarActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.vklogin);
+		setContentView(R.layout.activity_vk_login);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		webview = (WebView) findViewById(R.id.vkontakteview);

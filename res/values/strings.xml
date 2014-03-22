@@ -42,7 +42,7 @@
     <string name="settings_vk_lyrics_title">Lyrics</string>
     <string name="settings_vk_lyrics_summary">Prefer to choose vk lyrics instead of musixmatch lyrics</string>
     <string name="settings_wifi_title">Only Wi-Fi</string>
-    <string name="settings_wifi_summary">Enable syncronization with internet only if there is wi-fi connection</string>
+    <string name="settings_wifi_summary">Enable synchronization with internet only if there is wi-fi connection</string>
     <string name="settings_scrobbling_title">Scrobbling</string>
     <string name="settings_scrobbling_summary">Enable scrobbling from standart last.fm application</string>
     <string name="settings_auto_recognizing_title">Auto-recognizing</string>
@@ -67,6 +67,7 @@
     <string name="title_label">Title:</string>
     <string name="album_label">Album:</string>
     <string name="date_label">Date of recognizing:</string>
+    <string name="delete">Delete</string>
 
     <!-- Dialogs strings -->
     <string name="awaiting_vk_lyrics_message">Please wait for answer from VK</string>
@@ -108,6 +109,7 @@
     <string name="pp_not_available">Seems prostopleer was dropped. Try again later</string>
 
     <!-- Sharing strings -->
+    <string name="share">Share</string>
     <string name="share_song">Share song</string>
     <string name="new_song_title">Vkazam - new song</string>
     <string name="new_song_lyrics_title">Vkazam - new song (lyrics)</string>

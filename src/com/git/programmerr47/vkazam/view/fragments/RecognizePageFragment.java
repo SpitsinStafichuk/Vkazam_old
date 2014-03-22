@@ -113,7 +113,7 @@ public class RecognizePageFragment extends FragmentWithName implements
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		View view = inflater.inflate(R.layout.recognize_fragment, null);
+		View view = inflater.inflate(R.layout.fragment_recognize, null);
 
 		fingerprintTimer = (ProgressWheel) view
 				.findViewById(R.id.fingerprintTimer);

@@ -29,7 +29,7 @@ public class PagerActivity extends ActionBarActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.pager_layout);
+		setContentView(R.layout.activity_pager);
 		Intent intent = getIntent();
 		if (intent.hasExtra(PAGE_NUMBER)) {
 			initialPage = intent.getExtras().getInt(PAGE_NUMBER, 0);

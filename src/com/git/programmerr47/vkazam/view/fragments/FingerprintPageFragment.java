@@ -71,7 +71,7 @@ public class FingerprintPageFragment extends FragmentWithName implements
 		setRetainInstance(true);
 
 		adapter = new FingerprintListAdapter(this.getActivity(),
-				R.layout.finger_list_item);
+				R.layout.list_item_finger);
 		controller = new FingerprintListController(this, adapter);
 		fingerprintList = RecognizeServiceConnection.getModel()
 				.getFingerprintList();
@@ -87,7 +87,7 @@ public class FingerprintPageFragment extends FragmentWithName implements
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		Log.v(TAG, "FingerprintPageFragment: onCreateView");
-		View view = inflater.inflate(R.layout.fingerprints_fragment, null);
+		View view = inflater.inflate(R.layout.fragment_fingerprints, null);
 
 		fingerprintHLV = (ListView) view.findViewById(R.id.listView);
 		fingerprintHLV.setAdapter(adapter);

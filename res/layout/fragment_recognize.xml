@@ -113,10 +113,10 @@
                 android:layout_weight="1"
                 android:padding="5dp">
 
-            <include layout="@layout/song_list_item"
+            <include layout="@layout/list_item_song"
                      android:id="@+id/prevSong"/>
 
-            <include layout="@layout/song_list_item"
+            <include layout="@layout/list_item_song"
                      android:id="@+id/currentSong"/>
 
         </RelativeLayout>
@@ -231,7 +231,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true">
 
-                <include layout="@layout/song_list_item"
+                <include layout="@layout/list_item_song"
                          android:id="@+id/tutorial3Result"
                          android:clickable="false"/>
 

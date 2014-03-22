@@ -52,7 +52,7 @@ public class ProgressDialogFragment extends MessageDialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.progress_dialog, container, false);
+        View view = inflater.inflate(R.layout.dialog_progress, container, false);
         
         iconView = (ImageView) view.findViewById(R.id.icon);
         if (icon != -1) {

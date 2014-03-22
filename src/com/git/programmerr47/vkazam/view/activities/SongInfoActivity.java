@@ -22,7 +22,9 @@ import android.os.PowerManager;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.ShareActionProvider;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -45,7 +47,6 @@ import com.git.programmerr47.vkazam.model.exceptions.SongNotFoundException;
 import com.git.programmerr47.vkazam.model.managers.SongManager;
 import com.git.programmerr47.vkazam.model.observers.IPlayerStateObserver;
 import com.git.programmerr47.vkazam.model.observers.ISongProgressObserver;
-import com.git.programmerr47.vkazam.utils.AndroidUtils;
 import com.git.programmerr47.vkazam.utils.FileSystemUtils;
 import com.git.programmerr47.vkazam.utils.NetworkUtils;
 import com.git.programmerr47.vkazam.view.DynamicImageView;
@@ -86,10 +87,12 @@ public class SongInfoActivity extends ActionBarActivity implements
 	private TextView ppArtistTitleView;
 	private TextView vkArtistTitleView;
 
+	private ShareActionProvider shareActionProvider;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.song_information_layout);
+		setContentView(R.layout.activity_song_info);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		Log.i(TAG, "Creating song info activity");
 
@@ -215,35 +218,6 @@ public class SongInfoActivity extends ActionBarActivity implements
 			}
 		});
 
-		shareButton = (ImageButton) findViewById(R.id.shareButton);
-		shareButton.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				Intent sharingIntent = new Intent(
-						android.content.Intent.ACTION_SEND);
-				sharingIntent.setType("text/plain");
-				sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,
-						getString(R.string.new_song_title));
-				if (data.getAlbum() != null) {
-					sharingIntent.putExtra(
-							android.content.Intent.EXTRA_TEXT,
-							getString(R.string.new_song_message) + " "
-									+ data.getArtist() + " - "
-									+ data.getTitle() + " (" + data.getAlbum()
-									+ ")");
-				} else {
-					sharingIntent.putExtra(
-							android.content.Intent.EXTRA_TEXT,
-							getString(R.string.new_song_message) + " "
-									+ data.getArtist() + " - "
-									+ data.getTitle());
-				}
-				startActivity(Intent.createChooser(sharingIntent,
-						getString(R.string.share_song)));
-			}
-		});
-
 		addVkButton = (ImageButton) findViewById(R.id.addVkButton);
 		addVkButton.setOnClickListener(new OnClickListener() {
 
@@ -330,69 +304,6 @@ public class SongInfoActivity extends ActionBarActivity implements
 			}
 		});
 
-		deleteButton = (ImageButton) findViewById(R.id.deleteButton);
-		deleteButton.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-
-				MessageDialogFragment.Builder builder = new MessageDialogFragment.Builder();
-				builder.setIcon(R.drawable.ic_alert_dialog)
-						.setTitle(getString(R.string.deletion_title))
-						.setMessage(getString(R.string.deletion_message))
-						.setPositiveButton(
-								getString(R.string.yes),
-								new MessageDialogFragment.onDialogClickListener() {
-									@Override
-									public void onDialogClick(
-											DialogFragment fragment, View view) {
-										fragment.dismiss();
-										model.getSongList().remove(data);
-										Intent intent = new Intent(
-												SongInfoActivity.this,
-												MicrophonePagerActivity.class);
-										intent.putExtra(
-												PagerActivity.PAGE_NUMBER,
-												MicrophonePagerAdapter.HISTORY_PAGE_NUMBER);
-										intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-										startActivity(intent);
-									}
-								})
-						.setNegativeButton(
-								getString(R.string.no),
-								new MessageDialogFragment.onDialogClickListener() {
-									@Override
-									public void onDialogClick(
-											DialogFragment fragment, View view) {
-										fragment.dismiss();
-									}
-								});
-
-				FragmentTransaction fragmentTransaction = getSupportFragmentManager()
-						.beginTransaction();
-				Fragment prev = getSupportFragmentManager().findFragmentByTag(
-						SHOW_DIALOG_TAG);
-				if (prev != null) {
-					fragmentTransaction.remove(prev);
-				}
-
-				MessageDialogFragment dialogFragment = ProgressDialogFragment
-						.newInstance(builder);
-				dialogFragment.show(fragmentTransaction, SHOW_DIALOG_TAG);
-			}
-		});
-
-		settingsButton = (ImageButton) findViewById(R.id.settingsButton);
-		if (AndroidUtils.isThereASettingsButton(this)) {
-			settingsButton.setVisibility(View.GONE);
-		}
-		settingsButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				openOptionsMenu();
-			}
-		});
-
 		lyricsButton = (ImageButton) findViewById(R.id.lyricsButton);
 		lyricsButton.setOnClickListener(new OnClickListener() {
 			@Override
@@ -417,12 +328,6 @@ public class SongInfoActivity extends ActionBarActivity implements
 
 		ppArtistTitleView.setSelected(true);
 		vkArtistTitleView.setSelected(true);
-
-		TextView artist = (TextView) findViewById(R.id.artistTitle);
-		artist.setText(data.getArtist());
-
-		TextView title = (TextView) findViewById(R.id.titleTitle);
-		title.setText(data.getTitle());
 	}
 
 	private class DownloadTask extends
@@ -812,15 +717,86 @@ public class SongInfoActivity extends ActionBarActivity implements
 		}
 	}
 
+	/*
+	 * @Override public boolean onCreateOptionsMenu(Menu menu) {
+	 * getMenuInflater().inflate(R.menu.song_info_options_menu, menu); return
+	 * true; }
+	 */
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.song_info_options_menu, menu);
-		return true;
+		getMenuInflater().inflate(R.menu.fragment_song_info_menu, menu);
+
+		MenuItem shareItem = menu.findItem(R.id.action_share);
+		shareActionProvider = (ShareActionProvider) MenuItemCompat
+				.getActionProvider(shareItem);
+		Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+		sharingIntent.setType("text/plain");
+		sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,
+				getString(R.string.new_song_title));
+		if (data.getAlbum() != null) {
+			sharingIntent.putExtra(
+					android.content.Intent.EXTRA_TEXT,
+					getString(R.string.new_song_message) + " "
+							+ data.getArtist() + " - " + data.getTitle() + " ("
+							+ data.getAlbum() + ")");
+		} else {
+			sharingIntent.putExtra(
+					android.content.Intent.EXTRA_TEXT,
+					getString(R.string.new_song_message) + " "
+							+ data.getArtist() + " - " + data.getTitle());
+		}
+		shareActionProvider.setShareIntent(sharingIntent);
+
+		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
+		case R.id.action_delete:
+			MessageDialogFragment.Builder builder = new MessageDialogFragment.Builder();
+			builder.setIcon(R.drawable.ic_alert_dialog)
+					.setTitle(getString(R.string.deletion_title))
+					.setMessage(getString(R.string.deletion_message))
+					.setPositiveButton(getString(R.string.yes),
+							new MessageDialogFragment.onDialogClickListener() {
+								@Override
+								public void onDialogClick(
+										DialogFragment fragment, View view) {
+									fragment.dismiss();
+									model.getSongList().remove(data);
+									Intent intent = new Intent(
+											SongInfoActivity.this,
+											MicrophonePagerActivity.class);
+									intent.putExtra(
+											PagerActivity.PAGE_NUMBER,
+											MicrophonePagerAdapter.HISTORY_PAGE_NUMBER);
+									intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+									startActivity(intent);
+								}
+							})
+					.setNegativeButton(getString(R.string.no),
+							new MessageDialogFragment.onDialogClickListener() {
+								@Override
+								public void onDialogClick(
+										DialogFragment fragment, View view) {
+									fragment.dismiss();
+								}
+							});
+
+			FragmentTransaction fragmentTransaction = getSupportFragmentManager()
+					.beginTransaction();
+			Fragment prev = getSupportFragmentManager().findFragmentByTag(
+					SHOW_DIALOG_TAG);
+			if (prev != null) {
+				fragmentTransaction.remove(prev);
+			}
+
+			MessageDialogFragment dialogFragment = ProgressDialogFragment
+					.newInstance(builder);
+			dialogFragment.show(fragmentTransaction, SHOW_DIALOG_TAG);
+			return true;
 		case R.id.settings:
 			Log.v("Settings", "Creating settings activity");
 			Intent intent = new Intent(SongInfoActivity.this,
