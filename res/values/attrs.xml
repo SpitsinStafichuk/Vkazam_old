@@ -5,10 +5,6 @@
         <attr name="iconCheckBox" format="reference" />
     </declare-styleable>
 
-    <declare-styleable name="IconPreference">
-        <attr name="icon" format="reference" />
-    </declare-styleable>
-
     <declare-styleable name="ProgressWheel">
         <attr name="text" format="string" />
         <attr name="textColor" format="color" />

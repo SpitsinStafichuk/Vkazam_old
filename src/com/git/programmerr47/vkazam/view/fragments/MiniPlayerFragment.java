@@ -11,6 +11,7 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.vkazam.controllers.SongController;
 import com.git.programmerr47.vkazam.model.MicroScrobblerModel;
@@ -22,250 +23,266 @@ import com.git.programmerr47.vkazam.model.observers.ISongInfoObserver;
 import com.git.programmerr47.vkazam.model.observers.ISongProgressObserver;
 import com.git.programmerr47.vkazam.view.adapters.SongListAdapter;
 
-public class MiniPlayerFragment extends Fragment implements IPlayerStateObserver, ISongInfoObserver, ISongProgressObserver {
+public class MiniPlayerFragment extends Fragment implements
+		IPlayerStateObserver, ISongInfoObserver, ISongProgressObserver {
 
-    private TextView songInfoArtist;
-    private TextView songInfoTitle;
-    private TextView songProgressText;
-    private ImageButton playButton;
-    private ImageButton nextButton;
-    private ImageButton prevButton;
-    private ProgressBar progressBar;
-    private SeekBar songProgress;
+	private TextView songInfoArtist;
+	private TextView songInfoTitle;
+	private TextView songProgressText;
+	private ImageButton playButton;
+	private ImageButton nextButton;
+	private ImageButton prevButton;
+	private ProgressBar progressBar;
+	private SeekBar songProgress;
 
-    private int currentPosition = 0;
+	private int currentPosition = 0;
 
-    private MicroScrobblerModel model;
-    private SongController controller;
-    private SongListAdapter adapter;
+	private MicroScrobblerModel model;
+	private SongController controller;
+	private SongListAdapter adapter;
 
-    public MiniPlayerFragment() {
+	public static MiniPlayerFragment newInstance(SongListAdapter adapter) {
+		MiniPlayerFragment fragment = new MiniPlayerFragment();
+		fragment.adapter = adapter;
+		return fragment;
+	}
 
-    }
+	@Override
+	public void onCreate(Bundle saveInstanceState) {
+		super.onCreate(saveInstanceState);
+		setRetainInstance(true);
+		model = RecognizeServiceConnection.getModel();
+		controller = new SongController(this.getActivity());
 
-    public MiniPlayerFragment(SongListAdapter adapter) {
-        this.adapter = adapter;
-    }
+		model.getPlayer().addPlayerStateObserver(this);
+		model.getSongManager().addSongIngoObserver(this);
+		model.getSongManager().addSongProgressObserver(this);
+	}
 
-    @Override
-    public void onCreate(Bundle saveInstanceState) {
-        super.onCreate(saveInstanceState);
-        model = RecognizeServiceConnection.getModel();
-        controller = new SongController(this.getActivity());
+	@Override
+	public void onResume() {
+		super.onResume();
 
-        model.getPlayer().addPlayerStateObserver(this);
-        model.getSongManager().addSongIngoObserver(this);
-        model.getSongManager().addSongProgressObserver(this);
-    }
+		currentPosition = adapter.getCurrentListPosition();
 
-    @Override
-    public void onResume() {
-        super.onResume();
+		model.getSongManager().setOnBufferingUpdateListener(
+				new MediaPlayer.OnBufferingUpdateListener() {
+					@Override
+					public void onBufferingUpdate(MediaPlayer mediaPlayer,
+							int percent) {
+						if (model.getSongManager().getPositionInList() != -1) {
+							Log.v("MiniPlayer", "Song downloading is updated "
+									+ percent);
+							songProgress.setSecondaryProgress(percent);
+						}
+					}
+				});
+		model.getSongManager().setOnCompletionListener(
+				new MediaPlayer.OnCompletionListener() {
+					@Override
+					public void onCompletion(MediaPlayer mediaPlayer) {
+						if (model.getSongManager().getPositionInList() != -1) {
+							Log.v("MiniPlayer",
+									"Song is completed in miniplayer");
+							controller.playPauseSong(currentPosition + 1);
+						}
+					}
+				});
 
-        currentPosition = adapter.getCurrentListPosition();
+		updatePlayerState();
+		updateSongInfo();
+	}
 
-        model.getSongManager().setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
-            @Override
-            public void onBufferingUpdate(MediaPlayer mediaPlayer, int percent) {
-                if (model.getSongManager().getPositionInList() != -1) {
-                    Log.v("MiniPlayer", "Song downloading is updated " + percent);
-                    songProgress.setSecondaryProgress(percent);
-                }
-            }
-        });
-        model.getSongManager().setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mediaPlayer) {
-                if (model.getSongManager().getPositionInList() != -1) {
-                    Log.v("MiniPlayer", "Song is completed in miniplayer");
-                    controller.playPauseSong(currentPosition + 1);
-                }
-            }
-        });
+	@Override
+	public void onStop() {
+		super.onStop();
+		model.getPlayer().removePlayerStateObserver(this);
+		model.getSongManager().removeSongIngoObserver(this);
+		model.getSongManager().removeSongProgressObserver(this);
+	}
 
-        updatePlayerState();
-        updateSongInfo();
-    }
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		View view = inflater.inflate(R.layout.mini_player_fragment, null);
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        model.getPlayer().removePlayerStateObserver(this);
-        model.getSongManager().removeSongIngoObserver(this);
-        model.getSongManager().removeSongProgressObserver(this);
-    }
+		songInfoArtist = (TextView) view
+				.findViewById(R.id.miniplayerSongInfoArtist);
+		songInfoArtist.setText("");
+		songInfoArtist.setSelected(true);
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.mini_player_fragment, null);
+		songInfoTitle = (TextView) view
+				.findViewById(R.id.miniplayerSongInfoTitle);
+		songInfoTitle.setText("");
+		songInfoTitle.setSelected(true);
 
-        songInfoArtist = (TextView) view.findViewById(R.id.miniplayerSongInfoArtist);
-        songInfoArtist.setText("");
-        songInfoArtist.setSelected(true);
+		playButton = (ImageButton) view.findViewById(R.id.miniplayerPlayButton);
+		playButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				if (model.getSongManager().getPositionInList() != -1) {
+					controller.playPauseSong(currentPosition);
+				}
+			}
+		});
 
-        songInfoTitle = (TextView) view.findViewById(R.id.miniplayerSongInfoTitle);
-        songInfoTitle.setText("");
-        songInfoTitle.setSelected(true);
+		nextButton = (ImageButton) view.findViewById(R.id.miniplayerNextButton);
+		nextButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				if (model.getSongManager().getPositionInList() != -1) {
+					controller.playPauseSong(currentPosition + 1);
+				}
+			}
+		});
 
-        playButton = (ImageButton) view.findViewById(R.id.miniplayerPlayButton);
-        playButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (model.getSongManager().getPositionInList() != -1) {
-                    controller.playPauseSong(currentPosition);
-                }
-            }
-        });
+		prevButton = (ImageButton) view.findViewById(R.id.miniplayerPrevButton);
+		prevButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				if (model.getSongManager().getPositionInList() != -1) {
+					controller.playPauseSong(currentPosition - 1);
+				}
+			}
+		});
 
-        nextButton = (ImageButton) view.findViewById(R.id.miniplayerNextButton);
-        nextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (model.getSongManager().getPositionInList() != -1) {
-                    controller.playPauseSong(currentPosition + 1);
-                }
-            }
-        });
+		progressBar = (ProgressBar) view
+				.findViewById(R.id.miniplayerSongLoading);
+		songProgress = (SeekBar) view.findViewById(R.id.miniplayerSongProgress);
+		songProgress
+				.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+					@Override
+					public void onProgressChanged(SeekBar seekBar,
+							int progress, boolean fromUser) {
+						if ((fromUser)
+								&& model.getSongManager().getPositionInList() != -1) {
+							controller.seekTo(progress);
+						}
+					}
 
-        prevButton = (ImageButton) view.findViewById(R.id.miniplayerPrevButton);
-        prevButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (model.getSongManager().getPositionInList() != -1) {
-                    controller.playPauseSong(currentPosition - 1);
-                }
-            }
-        });
+					@Override
+					public void onStartTrackingTouch(SeekBar seekBar) {
+						// To change body of implemented methods use File |
+						// Settings | File Templates.
+					}
 
-        progressBar = (ProgressBar) view.findViewById(R.id.miniplayerSongLoading);
-        songProgress = (SeekBar) view.findViewById(R.id.miniplayerSongProgress);
-        songProgress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if ((fromUser) && model.getSongManager().getPositionInList() != -1) {
-                    controller.seekTo(progress);
-                }
-            }
+					@Override
+					public void onStopTrackingTouch(SeekBar seekBar) {
+						// To change body of implemented methods use File |
+						// Settings | File Templates.
+					}
+				});
 
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                //To change body of implemented methods use File | Settings | File Templates.
-            }
+		songProgressText = (TextView) view
+				.findViewById(R.id.miniPlayerSongProgressText);
 
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                //To change body of implemented methods use File | Settings | File Templates.
-            }
-        });
+		return view;
+	}
 
-        songProgressText = (TextView) view.findViewById(R.id.miniPlayerSongProgressText);
+	@Override
+	public void updatePlayerState() {
+		SongManager songManager = model.getSongManager();
+		if (songManager.getPositionInList() != -1) {
+			currentPosition = songManager.getPositionInList();
+			if (songManager.isLoading()) {
+				progressBar.setVisibility(View.VISIBLE);
+				playButton.setVisibility(View.GONE);
+			} else {
+				progressBar.setVisibility(View.GONE);
+				if (songManager.isPrepared()) {
+					playButton.setVisibility(View.VISIBLE);
+				} else {
+					if (playButton.getVisibility() == View.GONE)
+						progressBar.setVisibility(View.INVISIBLE);
+				}
+			}
 
-        return view;
-    }
+			if (songManager.isPlaying()) {
+				playButton.setImageResource(R.drawable.ic_media_pause);
+			} else {
+				playButton.setImageResource(R.drawable.ic_media_play);
+			}
+			adapter.notifyDataSetChanged();
+		} else {
+			progressBar.setVisibility(View.GONE);
+			playButton.setVisibility(View.VISIBLE);
+			playButton.setImageResource(R.drawable.ic_media_play);
+			songProgress.setProgress(0);
+			songProgress.setSecondaryProgress(0);
+			songProgressText.setText("0:00");
+			songInfoArtist.setText("");
+			songInfoTitle.setText("");
+			adapter.notifyDataSetChanged();
+		}
+	}
 
-    @Override
-    public void updatePlayerState() {
-        SongManager songManager = model.getSongManager();
-        if (songManager.getPositionInList() != -1) {
-            currentPosition = songManager.getPositionInList();
-            if (songManager.isLoading()) {
-                progressBar.setVisibility(View.VISIBLE);
-                playButton.setVisibility(View.GONE);
-            } else {
-                progressBar.setVisibility(View.GONE);
-                if (songManager.isPrepared()) {
-                    playButton.setVisibility(View.VISIBLE);
-                } else {
-                    if (playButton.getVisibility() == View.GONE)
-                        progressBar.setVisibility(View.INVISIBLE);
-                }
-            }
+	@Override
+	public void updateSongInfo() {
+		if (model.getSongManager().getPositionInList() != -1) {
+			SongData data = model.getSongManager().getSongData();
+			if (data != null) {
+				int type = model.getSongManager().getType();
+				Log.v("SongPlayerInfo", "type is " + type);
+				if (type == SongManager.ANY_SONG) {
+					songInfoArtist.setText(data.getArtist());
+					songInfoArtist.setText(data.getTitle());
+				} else if (type == SongManager.PP_SONG) {
+					songInfoArtist.setText(data.getPpArtist());
+					songInfoTitle.setText(data.getPpTitle());
+				} else if (type == SongManager.VK_SONG) {
+					songInfoArtist.setText(data.getVkArtist());
+					songInfoTitle.setText(data.getVkTitle());
+				} else if (type == SongManager.NO_SONG) {
+					songInfoArtist.setText("");
+					songInfoTitle.setText("");
+				}
+			} else {
+				songInfoArtist.setText("");
+				songInfoTitle.setText("");
+			}
+		}
+	}
 
-            if (songManager.isPlaying()) {
-                playButton.setImageResource(R.drawable.ic_media_pause);
-            } else {
-                playButton.setImageResource(R.drawable.ic_media_play);
-            }
-            adapter.notifyDataSetChanged();
-        } else {
-            progressBar.setVisibility(View.GONE);
-            playButton.setVisibility(View.VISIBLE);
-            playButton.setImageResource(R.drawable.ic_media_play);
-            songProgress.setProgress(0);
-            songProgress.setSecondaryProgress(0);
-            songProgressText.setText("0:00");
-            songInfoArtist.setText("");
-            songInfoTitle.setText("");
-            adapter.notifyDataSetChanged();
-        }
-    }
+	@Override
+	public void updateProgress(int progress, int duration) {
+		if (model.getSongManager().getPositionInList() != -1) {
+			if (duration == -1) {
+				songProgress.setProgress(0);
+				songProgress.setSecondaryProgress(0);
+				songProgressText.setText("0:00");
+			} else {
+				songProgress.setProgress(progress * 100 / duration);
 
-    @Override
-    public void updateSongInfo() {
-        if (model.getSongManager().getPositionInList() != -1) {
-            SongData data = model.getSongManager().getSongData();
-            if (data != null) {
-                int type = model.getSongManager().getType();
-                Log.v("SongPlayerInfo", "type is " + type);
-                if (type == SongManager.ANY_SONG) {
-                    songInfoArtist.setText(data.getArtist());
-                    songInfoArtist.setText(data.getTitle());
-                } else if (type == SongManager.PP_SONG) {
-                    songInfoArtist.setText(data.getPpArtist());
-                    songInfoTitle.setText(data.getPpTitle());
-                } else if (type == SongManager.VK_SONG) {
-                    songInfoArtist.setText(data.getVkArtist());
-                    songInfoTitle.setText(data.getVkTitle());
-                } else if (type == SongManager.NO_SONG) {
-                    songInfoArtist.setText("");
-                    songInfoTitle.setText("");
-                }
-            } else {
-                songInfoArtist.setText("");
-                songInfoTitle.setText("");
-            }
-        }
-    }
+				progress /= 1000;
+				duration /= 1000;
 
-    @Override
-    public void updateProgress(int progress, int duration) {
-        if (model.getSongManager().getPositionInList() != -1) {
-            if (duration == -1) {
-                songProgress.setProgress(0);
-                songProgress.setSecondaryProgress(0);
-                songProgressText.setText("0:00");
-            } else {
-                songProgress.setProgress(progress * 100 / duration);
+				int minutes = progress / 60;
+				int seconds = progress % 60;
 
-                progress /= 1000;
-                duration /= 1000;
+				int durationDim;
+				if ((duration / 60) != 0) {
+					durationDim = (int) (Math.log10(duration / 60) + 1);
+				} else {
+					durationDim = 1;
+				}
+				int progressDim;
+				if ((progress / 60) != 0) {
+					progressDim = (int) (Math.log10(progress / 60) + 1);
+				} else {
+					progressDim = 1;
+				}
+				String zerom = "";
+				for (int i = 0; i < durationDim - progressDim; i++) {
+					zerom += "0";
+				}
+				String zeros = "";
+				if (seconds < 10) {
+					zeros = "0";
+				}
 
-                int minutes = progress / 60;
-                int seconds = progress % 60;
-
-                int durationDim;
-                if ((duration / 60) != 0) {
-                    durationDim = (int)(Math.log10(duration / 60) + 1);
-                } else {
-                    durationDim = 1;
-                }
-                int progressDim;
-                if ((progress / 60) != 0) {
-                    progressDim = (int)(Math.log10(progress / 60) + 1);
-                } else {
-                    progressDim = 1;
-                }
-                String zerom = "";
-                for (int i = 0; i < durationDim - progressDim; i++) {
-                    zerom += "0";
-                }
-                String zeros = "";
-                if (seconds < 10) {
-                    zeros = "0";
-                }
-
-                songProgressText.setText(zerom + minutes + ":" + zeros + seconds);
-            }
-        }
-    }
+				songProgressText.setText(zerom + minutes + ":" + zeros
+						+ seconds);
+			}
+		}
+	}
 }
