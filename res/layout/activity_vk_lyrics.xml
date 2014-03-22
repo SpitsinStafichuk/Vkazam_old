@@ -58,15 +58,6 @@
                 android:scaleType="fitCenter"
                 android:background="@drawable/action_button_selector"
                 android:src="@drawable/ic_action_bad" />
-
-        <ImageButton
-                android:id="@+id/settingsButton"
-                android:layout_width="40dp"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:scaleType="fitCenter"
-                android:background="@drawable/action_button_selector"
-                android:src="@drawable/ic_action_overflow" />
         
     </LinearLayout>
     

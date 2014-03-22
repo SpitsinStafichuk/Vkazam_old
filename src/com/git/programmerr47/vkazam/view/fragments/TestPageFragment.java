@@ -54,7 +54,6 @@ public class TestPageFragment extends FragmentWithName {
 		pageFragment.setFragmentName(context
 				.getString(R.string.search_page_fragment_caption));
 		pageFragment.setFragmentIcon(R.drawable.ic_action_search);
-		pageFragment.setContext(context);
 		return pageFragment;
 	}
 

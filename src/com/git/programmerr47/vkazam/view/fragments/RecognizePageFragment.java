@@ -85,13 +85,13 @@ public class RecognizePageFragment extends FragmentWithName implements
 		pageFragment.setArguments(arguments);
 		pageFragment.setFragmentName(context
 				.getString(R.string.tagging_page_fragment_caption));
-		pageFragment.setContext(context);
 		return pageFragment;
 	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setRetainInstance(true);
 		model = RecognizeServiceConnection.getModel();
 		controller = new RecognizeController(this.getActivity()
 				.getApplicationContext());

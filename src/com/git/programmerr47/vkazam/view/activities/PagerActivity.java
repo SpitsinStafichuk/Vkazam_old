@@ -10,11 +10,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageButton;
 
 import com.git.programmerr47.testhflbjcrhjggkth.R;
-import com.git.programmerr47.vkazam.utils.AndroidUtils;
 import com.git.programmerr47.vkazam.view.DepthPageTransformer;
 import com.git.programmerr47.vkazam.view.SmoothPageScroller;
 import com.git.programmerr47.vkazam.view.adapters.PagerAdapter;
@@ -56,17 +53,6 @@ public class PagerActivity extends ActionBarActivity {
 	}
 
 	protected void setupUi() {
-		ImageButton settingsButton = (ImageButton) findViewById(R.id.settingsButton);
-		if (AndroidUtils.isThereASettingsButton(this)) {
-			settingsButton.setVisibility(View.GONE);
-		}
-		settingsButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				openOptionsMenu();
-			}
-		});
-
 		pager = (ViewPager) findViewById(R.id.pager);
 		pager.setPageTransformer(true, new DepthPageTransformer());
 		pager.setOnPageChangeListener(new OnPageChangeListener() {

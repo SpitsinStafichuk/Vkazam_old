@@ -19,24 +19,25 @@ import com.git.programmerr47.vkazam.controllers.SongInfoController;
 import com.git.programmerr47.vkazam.model.MicroScrobblerModel;
 import com.git.programmerr47.vkazam.model.RecognizeServiceConnection;
 import com.git.programmerr47.vkazam.model.SongData;
-import com.git.programmerr47.vkazam.utils.AndroidUtils;
 import com.git.programmerr47.vkazam.view.adapters.SongReplacePagerAdapter;
 import com.git.programmerr47.vkazam.view.fragments.MessageDialogFragment;
 import com.git.programmerr47.vkazam.view.fragments.MessageDialogFragment.onDialogClickListener;
 
 public class VkLyricsActivity extends ActionBarActivity {
 	public static final String LYRICS_KEY = "vkLyrics";
+	public static final String POSITION = "position";
 	private static final String SHOW_DIALOG_TAG = "dialog";
 
-	MicroScrobblerModel model;
-	SongData data;
-	SongInfoController controller;
+	private MicroScrobblerModel model;
+	private int position;
+	private SongData data;
+	private SongInfoController controller;
 
-	TextView lyrics;
-	String lyricsText;
-	ImageButton settingsButton;
-	ImageButton shareButton;
-	ImageButton badButton;
+	private TextView lyrics;
+	private String lyricsText;
+	private ImageButton settingsButton;
+	private ImageButton shareButton;
+	private ImageButton badButton;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +47,10 @@ public class VkLyricsActivity extends ActionBarActivity {
 
 		Intent intent = getIntent();
 		lyricsText = intent.getExtras().getString(LYRICS_KEY);
+		position = intent.getExtras().getInt(POSITION);
 
 		model = RecognizeServiceConnection.getModel();
-		data = model.getCurrentOpenSong();
+		data = (SongData) model.getSongList().get(position);
 		controller = new SongInfoController(this);
 
 		lyrics = (TextView) findViewById(R.id.vkLyrics);
@@ -123,17 +125,6 @@ public class VkLyricsActivity extends ActionBarActivity {
 				DialogFragment dialogFragment = MessageDialogFragment
 						.newInstance(appDialogBuilder);
 				dialogFragment.show(fragmentTransaction, SHOW_DIALOG_TAG);
-			}
-		});
-
-		settingsButton = (ImageButton) findViewById(R.id.settingsButton);
-		if (AndroidUtils.isThereASettingsButton(this)) {
-			settingsButton.setVisibility(View.GONE);
-		}
-		settingsButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				openOptionsMenu();
 			}
 		});
 

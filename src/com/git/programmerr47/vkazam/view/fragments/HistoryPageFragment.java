@@ -22,7 +22,6 @@ import android.widget.TextView;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.vkazam.controllers.SongListController;
 import com.git.programmerr47.vkazam.model.RecognizeServiceConnection;
-import com.git.programmerr47.vkazam.model.database.DatabaseSongData;
 import com.git.programmerr47.vkazam.model.database.SongList;
 import com.git.programmerr47.vkazam.model.observers.ISongDAOObserver;
 import com.git.programmerr47.vkazam.utils.AndroidUtils;
@@ -60,7 +59,6 @@ public class HistoryPageFragment extends FragmentWithName implements
 		pageFragment.setFragmentName(context
 				.getString(R.string.history_page_fragment_caption));
 		pageFragment.setFragmentIcon(R.drawable.ic_action_view_as_list);
-		pageFragment.setContext(context);
 		return pageFragment;
 	}
 
@@ -94,10 +92,7 @@ public class HistoryPageFragment extends FragmentWithName implements
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				Intent intent = new Intent(instance, SongInfoActivity.class);
-				RecognizeServiceConnection.getModel().setCurrentOpenSong(
-						(DatabaseSongData) RecognizeServiceConnection
-								.getModel().getSongList().get(position),
-						position);
+				intent.putExtra("position", position);
 				startActivity(intent);
 			}
 		});

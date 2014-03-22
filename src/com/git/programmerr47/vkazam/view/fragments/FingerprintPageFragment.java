@@ -61,7 +61,6 @@ public class FingerprintPageFragment extends FragmentWithName implements
 		pageFragment.setFragmentName(context
 				.getString(R.string.fingerprints_page_fragment_caption));
 		pageFragment.setFragmentIcon(R.drawable.ic_action_fingerprint);
-		pageFragment.setContext(context);
 		return pageFragment;
 	}
 
