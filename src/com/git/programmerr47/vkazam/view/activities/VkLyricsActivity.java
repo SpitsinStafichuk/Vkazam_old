@@ -120,6 +120,7 @@ public class VkLyricsActivity extends ActionBarActivity {
 			Log.v("Settings", "Creating settings activity");
 			Intent intent = new Intent(VkLyricsActivity.this,
 					SettingsActivity.class);
+			intent.putExtra(SettingsActivity.PARENT_INTENT, getIntent());
 			startActivity(intent);
 			return true;
 		default:

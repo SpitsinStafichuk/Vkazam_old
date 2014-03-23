@@ -29,9 +29,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.git.programmerr47.vkazam.view.activities.SettingsActivity"
-            android:theme="@style/PreferencesTheme" />
+        <activity android:name="com.git.programmerr47.vkazam.view.activities.SettingsActivity" />
         <activity android:name="com.git.programmerr47.vkazam.view.activities.SongInfoActivity" >
         </activity>
         <activity android:name="com.git.programmerr47.vkazam.view.activities.RefreshPagerActivity" >

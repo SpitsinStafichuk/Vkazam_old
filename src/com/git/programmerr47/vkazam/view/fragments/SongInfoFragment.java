@@ -745,6 +745,9 @@ public class SongInfoFragment extends Fragment implements IPlayerStateObserver,
 			Log.v("Settings", "Creating settings activity");
 			Intent intent = new Intent(SongInfoFragment.this.getActivity(),
 					SettingsActivity.class);
+			Intent parentIntent = getActivity().getIntent();
+			parentIntent.putExtra("position", position);
+			intent.putExtra(SettingsActivity.PARENT_INTENT, parentIntent);
 			startActivity(intent);
 			return true;
 		case R.id.refresh:

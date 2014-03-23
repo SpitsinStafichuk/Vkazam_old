@@ -32,7 +32,7 @@
     <string name="recognize_status_recognizing">Recognizing</string>
 
     <!-- Settings strings -->
-    <string name="settings_title">SETTINGS</string>
+    <string name="settings_title">Settings</string>
     <string name="settings_vk_title">Vkontakte</string>
     <string name="settings_vk_summary">Sync with vkontakte</string>
     <string name="settings_vk_urls_title">Vk Urls</string>

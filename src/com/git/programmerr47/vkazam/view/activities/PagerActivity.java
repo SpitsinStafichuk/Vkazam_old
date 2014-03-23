@@ -45,6 +45,9 @@ public class PagerActivity extends ActionBarActivity {
 		case R.id.settings:
 			Log.v("Settings", "Creating settings activity");
 			Intent intent = new Intent(this, SettingsActivity.class);
+			Intent parentIntent = getIntent();
+			parentIntent.putExtra(PAGE_NUMBER, pager.getCurrentItem());
+			intent.putExtra(SettingsActivity.PARENT_INTENT, parentIntent);
 			startActivity(intent);
 			return true;
 		default:

@@ -9,7 +9,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
+import android.view.MenuItem;
 
+import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.vkazam.model.RecognizeService;
 import com.git.programmerr47.vkazam.model.RecognizeServiceConnection;
 import com.git.programmerr47.vkazam.view.adapters.MicrophonePagerAdapter;
@@ -74,6 +76,23 @@ public class MicrophonePagerActivity extends PagerActivity implements
 							.setTabListener(tabListener));
 		}
 		getSupportActionBar().setSelectedNavigationItem(initialPage);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.settings:
+			Log.v("Settings", "Creating settings activity");
+			Intent intent = new Intent(this, SettingsActivity.class);
+			Intent parentIntent = new Intent(this,
+					MicrophonePagerActivity.class);
+			parentIntent.putExtra(PAGE_NUMBER, pager.getCurrentItem());
+			intent.putExtra(SettingsActivity.PARENT_INTENT, parentIntent);
+			startActivity(intent);
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 
 	@Override

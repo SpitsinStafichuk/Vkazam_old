@@ -32,7 +32,7 @@
     <string name="recognize_status_recognizing">Распознавание</string>
 
     <!-- Settings strings -->
-    <string name="settings_title">НАСТРОЙКИ</string>
+    <string name="settings_title">Настройки</string>
     <string name="settings_vk_title">Вконтакте</string>
     <string name="settings_vk_summary">Синхронизация с вконтакте</string>
     <string name="settings_vk_urls_title">Вк ссылки</string>

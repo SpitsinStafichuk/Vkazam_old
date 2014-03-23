@@ -27,6 +27,7 @@ import com.git.programmerr47.vkazam.view.fragments.TimerDelayDialogFragment;
 public class SettingsActivity extends ActionBarActivity implements
 		CompoundButton.OnCheckedChangeListener,
 		IConnectedDialogFragmentDissmised {
+	public static final String PARENT_INTENT = "parentIntent";
 	private static final String SHOW_DIALOG_TAG = "dialog";
 
 	SettingsController controller;
@@ -46,11 +47,16 @@ public class SettingsActivity extends ActionBarActivity implements
 	private CheckBox lastFmConnectionCheckBox;
 	private CheckBox autoRecognizeCheckBox;
 
+	private Intent parentIntent;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_settings);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setTitle(getString(R.string.settings_title));
+
+		parentIntent = getIntent().getParcelableExtra(PARENT_INTENT);
 
 		controller = new SettingsController(this);
 		vkConnection = (LinearLayout) findViewById(R.id.settingsVkConnection);
@@ -295,5 +301,10 @@ public class SettingsActivity extends ActionBarActivity implements
 	@Override
 	public void onComplete() {
 		resume();
+	}
+
+	@Override
+	public Intent getSupportParentActivityIntent() {
+		return parentIntent;
 	}
 }
