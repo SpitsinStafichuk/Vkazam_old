@@ -28,6 +28,7 @@ public class SongReplacePPFragment extends FragmentWithName {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setRetainInstance(true);
 		position = getArguments().getInt("position");
 		adapter = new PleerListAdapter(this.getActivity(), position,
 				R.layout.list_item_pp_url, R.layout.list_item_more_url);

@@ -9,7 +9,7 @@ import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import com.git.programmerr47.vkazam.view.fragments.RecognizePageFragment;
 
-public class MicrophonePagerAdapter extends PagerAdapter {
+public class MicrophonePagerAdapter extends MyPagerAdapter {
     public static final int HISTORY_PAGE_NUMBER = 1;
    
     public MicrophonePagerAdapter(FragmentManager fm, Context context) {

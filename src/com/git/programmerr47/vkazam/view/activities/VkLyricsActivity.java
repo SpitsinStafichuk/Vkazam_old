@@ -95,6 +95,7 @@ public class VkLyricsActivity extends ActionBarActivity {
 									RefreshPagerActivity.class);
 							intent.putExtra(PagerActivity.PAGE_NUMBER,
 									SongReplacePagerAdapter.VK_PAGE_NUMBER);
+							intent.putExtra("position", position);
 							startActivity(intent);
 							finish();
 							fragment.dismiss();

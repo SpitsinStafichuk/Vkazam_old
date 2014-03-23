@@ -7,7 +7,7 @@ import com.git.programmerr47.vkazam.model.RecognizeServiceConnection;
 import com.git.programmerr47.vkazam.view.fragments.SongReplacePPFragment;
 import com.git.programmerr47.vkazam.view.fragments.SongReplaceVkFragment;
 
-public class SongReplacePagerAdapter extends PagerAdapter {
+public class SongReplacePagerAdapter extends MyPagerAdapter {
 	public static final int VK_PAGE_NUMBER = 1;
 
 	public SongReplacePagerAdapter(int position, FragmentManager fm,

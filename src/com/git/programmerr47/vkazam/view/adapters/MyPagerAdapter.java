@@ -13,14 +13,14 @@ import android.text.style.ImageSpan;
 
 import com.git.programmerr47.vkazam.view.fragments.FragmentWithName;
 
-public class PagerAdapter extends FragmentPagerAdapter {
+public class MyPagerAdapter extends FragmentPagerAdapter {
 
 	protected int pageCount;
 	protected List<FragmentWithName> fragments;
 	private int currentPosition;
 	private boolean isDraggingPage;
 
-	public PagerAdapter(FragmentManager fm, int pages) {
+	public MyPagerAdapter(FragmentManager fm, int pages) {
 		super(fm);
 		fragments = new ArrayList<FragmentWithName>();
 		pageCount = pages;

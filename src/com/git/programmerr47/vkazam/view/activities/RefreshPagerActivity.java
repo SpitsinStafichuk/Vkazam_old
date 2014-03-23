@@ -3,6 +3,7 @@ package com.git.programmerr47.vkazam.view.activities;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.git.programmerr47.vkazam.view.adapters.MyPagerAdapter;
 import com.git.programmerr47.vkazam.view.adapters.SongReplacePagerAdapter;
 
 public class RefreshPagerActivity extends PagerActivity {
@@ -18,12 +19,9 @@ public class RefreshPagerActivity extends PagerActivity {
 	}
 
 	@Override
-	protected void setupUi() {
-		super.setupUi();
-		pagerAdapter = new SongReplacePagerAdapter(position,
+	protected MyPagerAdapter getAdapter() {
+		return new SongReplacePagerAdapter(position,
 				getSupportFragmentManager(), getApplicationContext());
-		pager.setAdapter(pagerAdapter);
-		pager.setCurrentItem(initialPage);
 	}
 
 	@Override
@@ -32,4 +30,5 @@ public class RefreshPagerActivity extends PagerActivity {
 		intent.putExtra("position", position);
 		return intent;
 	}
+
 }

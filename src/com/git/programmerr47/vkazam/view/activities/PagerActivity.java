@@ -4,8 +4,9 @@ import java.lang.reflect.Field;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -14,23 +15,22 @@ import android.view.MenuItem;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.vkazam.view.DepthPageTransformer;
 import com.git.programmerr47.vkazam.view.SmoothPageScroller;
-import com.git.programmerr47.vkazam.view.adapters.PagerAdapter;
+import com.git.programmerr47.vkazam.view.adapters.MyPagerAdapter;
+import com.git.programmerr47.vkazam.view.fragments.FragmentWithName;
 
-public class PagerActivity extends ActionBarActivity {
+public abstract class PagerActivity extends ActionBarActivity {
 	public static final String PAGE_NUMBER = "page_number";
 
 	protected ViewPager pager;
-	protected PagerAdapter pagerAdapter;
-	protected int initialPage = 0;
+	protected MyPagerAdapter pagerAdapter;
+	protected int initialPage;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_pager);
 		Intent intent = getIntent();
-		if (intent.hasExtra(PAGE_NUMBER)) {
-			initialPage = intent.getExtras().getInt(PAGE_NUMBER, 0);
-		}
+		initialPage = intent.getIntExtra(PAGE_NUMBER, 0);
 	}
 
 	@Override
@@ -55,35 +55,50 @@ public class PagerActivity extends ActionBarActivity {
 		}
 	}
 
+	abstract protected MyPagerAdapter getAdapter();
+
 	protected void setupUi() {
 		pager = (ViewPager) findViewById(R.id.pager);
-		pager.setPageTransformer(true, new DepthPageTransformer());
-		pager.setOnPageChangeListener(new OnPageChangeListener() {
-
+		pagerAdapter = getAdapter();
+		pager.setAdapter(pagerAdapter);
+		pager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 			@Override
 			public void onPageSelected(int position) {
-				pagerAdapter.setCurrentPage(position);
-			}
-
-			@Override
-			public void onPageScrolled(int position, float positionOffset,
-					int arg2) {
-			}
-
-			@Override
-			public void onPageScrollStateChanged(int status) {
-				if ((status == ViewPager.SCROLL_STATE_SETTLING)
-						|| (status == ViewPager.SCROLL_STATE_IDLE)) {
-					pagerAdapter.setIsDragging(false);
-					pagerAdapter.notifyDataSetChanged();
-				} else if (status == ViewPager.SCROLL_STATE_DRAGGING) {
-					if (!pagerAdapter.isDragging()) {
-						pagerAdapter.setIsDragging(true);
-						pagerAdapter.notifyDataSetChanged();
-					}
-				}
+				getSupportActionBar().setSelectedNavigationItem(position);
 			}
 		});
+		pager.setPageTransformer(true, new DepthPageTransformer());
+		getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		ActionBar.TabListener tabListener = new ActionBar.TabListener() {
+			@Override
+			public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
+				pager.setCurrentItem(tab.getPosition());
+			}
+
+			@Override
+			public void onTabUnselected(ActionBar.Tab tab,
+					FragmentTransaction ft) {
+				// hide the given tab
+			}
+
+			@Override
+			public void onTabReselected(ActionBar.Tab tab,
+					FragmentTransaction ft) {
+				// probably ignore this event
+			}
+		};
+
+		// Add 3 tabs, specifying the tab's text and TabListener
+		for (int i = 0; i < pagerAdapter.getCount(); i++) {
+			getSupportActionBar()
+					.addTab(getSupportActionBar()
+							.newTab()
+							.setText(
+									((FragmentWithName) pagerAdapter.getItem(i))
+											.getFragmentName())
+							.setTabListener(tabListener));
+		}
+		getSupportActionBar().setSelectedNavigationItem(initialPage);
 
 		try {
 			Field mScroller;
