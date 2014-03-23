@@ -17,7 +17,7 @@ import com.git.programmerr47.vkazam.view.fragments.FragmentWithName;
 
 public class MicrophonePagerActivity extends PagerActivity implements
 		ServiceConnection {
-	private static final String TAG = "myLogs";
+	private static final String TAG = "MicrophonePagerActivity";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +35,7 @@ public class MicrophonePagerActivity extends PagerActivity implements
 		pagerAdapter = new MicrophonePagerAdapter(getSupportFragmentManager(),
 				getApplicationContext());
 		pager.setAdapter(pagerAdapter);
-		pager.setCurrentItem(initialPage);
+		Log.i(TAG, "initialPage: " + initialPage);
 		pager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 			@Override
 			public void onPageSelected(int position) {
@@ -73,6 +73,7 @@ public class MicrophonePagerActivity extends PagerActivity implements
 											.getFragmentName())
 							.setTabListener(tabListener));
 		}
+		getSupportActionBar().setSelectedNavigationItem(initialPage);
 	}
 
 	@Override

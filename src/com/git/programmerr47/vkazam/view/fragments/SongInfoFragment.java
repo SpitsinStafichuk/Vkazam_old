@@ -127,7 +127,7 @@ public class SongInfoFragment extends Fragment implements IPlayerStateObserver,
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.activity_song_info, container,
+		View view = inflater.inflate(R.layout.fragment_song_info, container,
 				false);
 		coverArt = ((DynamicImageView) view.findViewById(R.id.songInfoCoverArt));
 		coverArt.setMaxRatioKoef(1.0);
@@ -351,7 +351,7 @@ public class SongInfoFragment extends Fragment implements IPlayerStateObserver,
 		lyricsButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				controller.getLyrics(data);
+				controller.getLyrics(data, position);
 			}
 		});
 

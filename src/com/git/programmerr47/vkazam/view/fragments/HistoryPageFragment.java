@@ -83,7 +83,6 @@ public class HistoryPageFragment extends FragmentWithName implements
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_history, null);
 
-		final Context instance = this.parentActivity;
 		songHLV = (ListView) view.findViewById(R.id.listView);
 		songHLV.setAdapter(adapter);
 		songHLV.setOnItemClickListener(new OnItemClickListener() {
@@ -91,7 +90,8 @@ public class HistoryPageFragment extends FragmentWithName implements
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				Intent intent = new Intent(instance, SongInfoActivity.class);
+				Intent intent = new Intent(HistoryPageFragment.this
+						.getActivity(), SongInfoActivity.class);
 				intent.putExtra("position", position);
 				startActivity(intent);
 			}

@@ -1,11 +1,13 @@
 package com.git.programmerr47.vkazam.view.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.vkazam.model.RecognizeServiceConnection;
@@ -25,7 +27,7 @@ public class SongInfoActivity extends ActionBarActivity {
 		setContentView(R.layout.activity_pager);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		position = getIntent().getIntExtra("position", 0);
-
+		Log.i(TAG, "position: " + position);
 		adapter = new MyAdapter(getSupportFragmentManager());
 		pager = (ViewPager) findViewById(R.id.pager);
 		pager.setAdapter(adapter);
@@ -47,6 +49,14 @@ public class SongInfoActivity extends ActionBarActivity {
 		public Fragment getItem(int position) {
 			return SongInfoFragment.newInstance(position);
 		}
+	}
+
+	@Override
+	public Intent getSupportParentActivityIntent() {
+		Intent intent = new Intent(this, MicrophonePagerActivity.class);
+		Log.i(TAG, "getSupportParentActivityIntent");
+		intent.putExtra(MicrophonePagerActivity.PAGE_NUMBER, 1);
+		return intent;
 	}
 
 }

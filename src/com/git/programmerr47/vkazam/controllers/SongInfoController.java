@@ -41,7 +41,7 @@ public class SongInfoController extends SongController {
 		super(view);
 	}
 
-	private void getVkLyrics(final SongData data) {
+	private void getVkLyrics(final SongData data, final int position) {
 
 		ProgressDialogFragment.Builder appProgressDialogBuilder = new ProgressDialogFragment.Builder();
 		appProgressDialogBuilder.setIcon(R.drawable.ic_progress_dialog);
@@ -93,6 +93,7 @@ public class SongInfoController extends SongController {
 							Intent intent = new Intent(view,
 									VkLyricsActivity.class);
 							intent.putExtra(VkLyricsActivity.LYRICS_KEY, lyrics);
+							intent.putExtra(VkLyricsActivity.POSITION, position);
 							view.startActivity(intent);
 						} else {
 							FragmentTransaction fragmentTransaction = view
@@ -254,14 +255,14 @@ public class SongInfoController extends SongController {
 		}).start();
 	}
 
-	public void getLyrics(final SongData data) {
+	public void getLyrics(final SongData data, int position) {
 		boolean vkConnection = PreferenceManager.getDefaultSharedPreferences(
 				view).getBoolean("settingsVkConnection", false);
 		boolean vkLyrics = PreferenceManager.getDefaultSharedPreferences(view)
 				.getBoolean("settingsVkLyrics", false);
 
 		if (vkConnection && vkLyrics) {
-			getVkLyrics(data);
+			getVkLyrics(data, position);
 		} else {
 			getMMLyrics(data);
 		}

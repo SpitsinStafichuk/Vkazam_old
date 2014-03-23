@@ -28,7 +28,7 @@ public class SongReplaceVkFragment extends FragmentWithName {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		position = getArguments().getInt("position");
 		adapter = new VkListAdapter(this.getActivity(), position,
 				R.layout.list_item_pp_url, R.layout.list_item_more_url);
 	}

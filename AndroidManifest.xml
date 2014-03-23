@@ -32,32 +32,11 @@
         <activity
             android:name="com.git.programmerr47.vkazam.view.activities.SettingsActivity"
             android:theme="@style/PreferencesTheme" />
-        <activity
-            android:name="com.git.programmerr47.vkazam.view.activities.SongInfoActivity"
-            android:parentActivityName="com.git.programmerr47.vkazam.view.activities.MicrophonePagerActivity" >
-
-            <!-- Parent activity meta-data to support 4.0 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.git.programmerr47.vkazam.view.activities.MicrophonePagerActivity" />
+        <activity android:name="com.git.programmerr47.vkazam.view.activities.SongInfoActivity" >
         </activity>
-        <activity
-            android:name="com.git.programmerr47.vkazam.view.activities.RefreshPagerActivity"
-            android:parentActivityName="com.git.programmerr47.vkazam.view.activities.SongInfoActivity" >
-
-            <!-- Parent activity meta-data to support 4.0 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.git.programmerr47.vkazam.view.activities.SongInfoActivity" />
+        <activity android:name="com.git.programmerr47.vkazam.view.activities.RefreshPagerActivity" >
         </activity>
-        <activity
-            android:name="com.git.programmerr47.vkazam.view.activities.VkLyricsActivity"
-            android:parentActivityName="com.git.programmerr47.vkazam.view.activities.SongInfoActivity" >
-
-            <!-- Parent activity meta-data to support 4.0 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.git.programmerr47.vkazam.view.activities.SongInfoActivity" />
+        <activity android:name="com.git.programmerr47.vkazam.view.activities.VkLyricsActivity" >
         </activity>
         <activity
             android:name="com.git.programmerr47.vkazam.view.activities.VkLoginActivity"
