@@ -19,6 +19,8 @@
     <!-- Application theme. -->
 
     <style name="AppTheme" parent="AppBaseTheme">
+        <!-- Setting values in the android namespace affects API levels 14+ -->
+        <item name="android:actionBarStyle">@style/MyActionBar</item>
         <item name="android:listChoiceIndicatorMultiple">@drawable/apptheme_btn_check_holo_light</item>
         <item name="android:radioButtonStyle">@drawable/apptheme_btn_radio_holo_light</item>
         <item name="android:buttonStyle">@style/ButtonAppTheme</item>
@@ -27,14 +29,11 @@
         <item name="android:seekBarStyle">@style/SeekBarAppTheme</item>
         <item name="android:scrollbarThumbVertical">@drawable/apptheme_fastscroll_thumb_default_holo</item>
         <item name="android:editTextStyle">@style/EditTextAppTheme</item>
-        
-        <!-- Setting values in the default namespace affects API levels 7-13 -->
-        <item name="actionBarStyle">@style/MyActionBar</item>
     </style>
 
     <style name="MyActionBar" parent="@style/Widget.AppCompat.ActionBar">
-        <!-- Setting values in the default namespace affects API levels 7-13 -->
-        <item name="background">@color/pure_blue</item>
+        <!-- Setting values in the android namespace affects API levels 14+ -->
+        <item name="android:background">@color/pure_blue</item>
     </style>
 
     <style name="HistoryListView" parent="@android:style/Widget.ListView">
