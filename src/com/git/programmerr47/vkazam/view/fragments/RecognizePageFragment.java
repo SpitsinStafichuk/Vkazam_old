@@ -38,8 +38,6 @@ public class RecognizePageFragment extends FragmentWithName implements
 		IRecognizeStatusObserver, IRecognizeResultObserver,
 		IFingerprintStatusObserver, IFingerprintTimerObserver {
 
-	static final String ARGUMENT_RADIO_ID = "arg_rad_id";
-
 	private RecognizeController controller;
 	private MicroScrobblerModel model;
 	private RecognizeManager recognizeManager;
