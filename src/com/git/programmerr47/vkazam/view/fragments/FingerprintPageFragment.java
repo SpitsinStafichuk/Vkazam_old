@@ -19,26 +19,24 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.git.programmerr47.testhflbjcrhjggkth.R;
-import com.git.programmerr47.vkazam.controllers.FingerprintListController;
+import com.git.programmerr47.vkazam.model.MicroScrobblerModel;
 import com.git.programmerr47.vkazam.model.RecognizeServiceConnection;
+import com.git.programmerr47.vkazam.model.SongData;
 import com.git.programmerr47.vkazam.model.database.FingerprintList;
 import com.git.programmerr47.vkazam.model.observers.IFingerprintDAOObserver;
+import com.git.programmerr47.vkazam.model.observers.IRecognizeResultObserver;
 import com.git.programmerr47.vkazam.utils.AndroidUtils;
 import com.git.programmerr47.vkazam.utils.NetworkUtils;
 import com.git.programmerr47.vkazam.view.adapters.FingerprintListAdapter;
 
 public class FingerprintPageFragment extends FragmentWithName implements
-		IFingerprintDAOObserver, CompoundButton.OnCheckedChangeListener {
+		IFingerprintDAOObserver, CompoundButton.OnCheckedChangeListener, IRecognizeResultObserver {
 	private static final String TAG = "FingerprintPageFragment";
 
 	private FingerprintListAdapter adapter;
-	private FingerprintListController controller;
+    private MicroScrobblerModel model;
 
-	private ListView fingerprintHLV;
-	private FingerprintList fingerprintList;
-
-	private LinearLayout autoRecognize;
-	private CheckBox autoRecognizeCheckBox;
+    private CheckBox autoRecognizeCheckBox;
 
 	private ImageView tutorial1Link;
 	private ImageView tutorial2Link;
@@ -51,8 +49,8 @@ public class FingerprintPageFragment extends FragmentWithName implements
 
 	private LinearLayout tutorialPage;
 	private LinearLayout fingerPage;
-	private boolean firstTimeApearing;
-	private SharedPreferences prefs;
+	private boolean firstTimeAppearing;
+	private SharedPreferences preferences;
 
 	public static FingerprintPageFragment newInstance(Context context) {
 		FingerprintPageFragment pageFragment = new FingerprintPageFragment();
@@ -71,14 +69,15 @@ public class FingerprintPageFragment extends FragmentWithName implements
 
 		adapter = new FingerprintListAdapter(this.getActivity(),
 				R.layout.list_item_finger);
-		controller = new FingerprintListController(this, adapter);
-		fingerprintList = RecognizeServiceConnection.getModel()
-				.getFingerprintList();
+        model = RecognizeServiceConnection.getModel();
+        model.getRecognizeListManager().addRecognizeResultObserver(this);
+        FingerprintList fingerprintList = RecognizeServiceConnection.getModel()
+                .getFingerprintList();
 		fingerprintList.addObserver(this);
 
-		prefs = PreferenceManager.getDefaultSharedPreferences(this
+		preferences = PreferenceManager.getDefaultSharedPreferences(this
 				.getActivity());
-		firstTimeApearing = prefs.getBoolean("FingersPageFragmentFirstTime",
+		firstTimeAppearing = preferences.getBoolean("FingersPageFragmentFirstTime",
 				true);
 	}
 
@@ -88,70 +87,70 @@ public class FingerprintPageFragment extends FragmentWithName implements
 		Log.v(TAG, "FingerprintPageFragment: onCreateView");
 		View view = inflater.inflate(R.layout.fragment_fingerprints, null);
 
-		fingerprintHLV = (ListView) view.findViewById(R.id.listView);
+        ListView fingerprintHLV = (ListView) view.findViewById(R.id.listView);
 		fingerprintHLV.setAdapter(adapter);
 		adapter.setListView(fingerprintHLV);
 		fingerprintHLV
 				.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-					@Override
-					public void onItemClick(AdapterView<?> parent, View view,
-							int position, long id) {
-						if (NetworkUtils
-								.isNetworkAvailable(FingerprintPageFragment.this
-										.getActivity())) {
-							Log.v(TAG, "Perform click: " + view + "; "
-									+ position);
-							adapter.recognizeFingerprint(view, position);
-						} else {
-							Toast.makeText(
-									FingerprintPageFragment.this.getActivity(),
-									getString(R.string.network_not_available),
-									Toast.LENGTH_LONG).show();
-						}
-					}
-				});
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view,
+                                            int position, long id) {
+                        if (NetworkUtils
+                                .isNetworkAvailable(FingerprintPageFragment.this
+                                        .getActivity())) {
+                            Log.v(TAG, "Perform click: " + view + "; "
+                                    + position);
+                            adapter.recognizeFingerprint(view, position);
+                        } else {
+                            Toast.makeText(
+                                    FingerprintPageFragment.this.getActivity(),
+                                    getString(R.string.network_not_available),
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
 		fingerprintHLV.setOnScrollListener(new AbsListView.OnScrollListener() {
-			@Override
-			public void onScrollStateChanged(AbsListView view, int scrollState) {
-			}
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+            }
 
-			@Override
-			public void onScroll(AbsListView view, int firstVisibleItem,
-					int visibleItemCount, int totalItemCount) {
-				adapter.scrolling();
-			}
-		});
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem,
+                                 int visibleItemCount, int totalItemCount) {
+                adapter.scrolling();
+            }
+        });
 
-		autoRecognize = (LinearLayout) view
-				.findViewById(R.id.settingsAutoRecognize);
+        LinearLayout autoRecognize = (LinearLayout) view
+                .findViewById(R.id.settingsAutoRecognize);
 		autoRecognizeCheckBox = (CheckBox) autoRecognize
 				.findViewById(R.id.checkbox);
 		autoRecognizeCheckBox.setOnCheckedChangeListener(this);
 		autoRecognize.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				autoRecognizeCheckBox.setChecked(!autoRecognizeCheckBox
-						.isChecked());
-				if (NetworkUtils
-						.isNetworkAvailable(FingerprintPageFragment.this
-								.getActivity())) {
-					if (autoRecognizeCheckBox.isChecked()) {
-						RecognizeServiceConnection.getModel()
-								.getRecognizeListManager()
-								.recognizeFingerprints();
-					} else {
-						RecognizeServiceConnection.getModel()
-								.getRecognizeListManager()
-								.cancelAutoRecognize();
-					}
-				}
-			}
-		});
+            @Override
+            public void onClick(View view) {
+                autoRecognizeCheckBox.setChecked(!autoRecognizeCheckBox
+                        .isChecked());
+                if (NetworkUtils
+                        .isNetworkAvailable(FingerprintPageFragment.this
+                                .getActivity())) {
+                    if (autoRecognizeCheckBox.isChecked()) {
+                        RecognizeServiceConnection.getModel()
+                                .getRecognizeListManager()
+                                .recognizeFingerprints();
+                    } else {
+                        RecognizeServiceConnection.getModel()
+                                .getRecognizeListManager()
+                                .cancelAutoRecognize();
+                    }
+                }
+            }
+        });
 
 		fingerPage = (LinearLayout) view.findViewById(R.id.fingersPage);
 		tutorialPage = (LinearLayout) view.findViewById(R.id.tutorialPage);
-		if (firstTimeApearing) {
+		if (firstTimeAppearing) {
 			tutorialPage.setVisibility(View.VISIBLE);
 			tutorialPage.setOnClickListener(new View.OnClickListener() {
 				@Override
@@ -175,8 +174,8 @@ public class FingerprintPageFragment extends FragmentWithName implements
 						tutorialPage.setVisibility(View.GONE);
 						AndroidUtils.setViewEnabled(fingerPage, true);
 
-						firstTimeApearing = false;
-						SharedPreferences.Editor editor = prefs.edit();
+						firstTimeAppearing = false;
+						SharedPreferences.Editor editor = preferences.edit();
 						editor.putBoolean("FingersPageFragmentFirstTime", false);
 						editor.commit();
 					}
@@ -237,7 +236,7 @@ public class FingerprintPageFragment extends FragmentWithName implements
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		controller.finish();
+        model.getRecognizeListManager().removeRecognizeResultObserver(this);
 		adapter.finish();
 	}
 
@@ -254,4 +253,12 @@ public class FingerprintPageFragment extends FragmentWithName implements
 		editor.putBoolean("settingsAutoRecognize", b);
 		editor.commit();
 	}
+
+    @Override
+    public void onRecognizeResult(int errorCode, SongData songData) {
+        Log.v("Fingers", "onRecognizeResult " + songData);
+        if (songData != null) {
+            model.getScrobbler().sendLastFMTrack(songData.getArtist(), songData.getTitle(), songData.getAlbum());
+        }
+    }
 }

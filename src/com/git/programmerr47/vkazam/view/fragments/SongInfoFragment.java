@@ -380,7 +380,7 @@ public class SongInfoFragment extends Fragment implements IPlayerStateObserver,
 		} else {
 			progressBar = (ProgressBar) view
 					.findViewById(R.id.songInfoLoadingForVk);
-			ProgressBar secPB = (ProgressBar) view
+			secPB = (ProgressBar) view
 					.findViewById(R.id.songInfoLoadingForPP);
 		}
 
