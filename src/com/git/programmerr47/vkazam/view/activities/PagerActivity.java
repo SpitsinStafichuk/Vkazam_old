@@ -39,6 +39,18 @@ public abstract class PagerActivity extends ActionBarActivity {
 		return true;
 	}
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(PAGE_NUMBER, getSupportActionBar().getSelectedNavigationIndex());
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        initialPage = savedInstanceState.getInt(PAGE_NUMBER);
+    }
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {

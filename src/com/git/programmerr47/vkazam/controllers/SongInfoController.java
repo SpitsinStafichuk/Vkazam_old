@@ -250,6 +250,7 @@ public class SongInfoController extends SongController {
 							.newInstance(appDialogBuilder);
 					dialogFragment.show(fragmentTransaction, SHOW_DIALOG_TAG);
 				}
+                lyricsPlugin.doUnbindService();
 				Looper.loop();
 			}
 		}).start();
