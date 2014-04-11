@@ -1,5 +1,6 @@
 package com.git.programmerr47.vkazam.view.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -17,21 +18,26 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.git.programmerr47.testhflbjcrhjggkth.R;
-import com.git.programmerr47.vkazam.controllers.SettingsController;
+import com.git.programmerr47.vkazam.model.MicroScrobblerModel;
 import com.git.programmerr47.vkazam.model.RecognizeServiceConnection;
 import com.git.programmerr47.vkazam.utils.AndroidUtils;
+import com.git.programmerr47.vkazam.utils.Constants;
 import com.git.programmerr47.vkazam.utils.NetworkUtils;
 import com.git.programmerr47.vkazam.view.activities.interfaces.IConnectedDialogFragmentDissmised;
 import com.git.programmerr47.vkazam.view.fragments.TimerDelayDialogFragment;
+import com.perm.kate.api.Api;
 
 public class SettingsActivity extends ActionBarActivity implements
 		CompoundButton.OnCheckedChangeListener,
 		IConnectedDialogFragmentDissmised {
-	public static final String PARENT_INTENT = "parentIntent";
-	private static final String SHOW_DIALOG_TAG = "dialog";
 
-	SettingsController controller;
-	public LinearLayout vkConnection;
+    public static final String PARENT_INTENT = "parentIntent";
+    private static final String SHOW_DIALOG_TAG = "dialog";
+    private static final int REQUEST_VK_LOGIN = 1;
+
+    private MicroScrobblerModel model;
+
+	private LinearLayout vkConnection;
 	private LinearLayout vkUrls;
 	private LinearLayout vkAudioBroadcast;
 	private LinearLayout vkLyrics;
@@ -58,7 +64,7 @@ public class SettingsActivity extends ActionBarActivity implements
 
 		parentIntent = getIntent().getParcelableExtra(PARENT_INTENT);
 
-		controller = new SettingsController(this);
+        this.model = RecognizeServiceConnection.getModel();
 		vkConnection = (LinearLayout) findViewById(R.id.settingsVkConnection);
 		((ImageView) vkConnection.findViewById(R.id.icon))
 				.setImageResource(R.drawable.ic_settings_vk);
@@ -72,7 +78,15 @@ public class SettingsActivity extends ActionBarActivity implements
 		vkConnection.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				controller.changeVkAccount();
+                if (model.getVkApi() == null) {
+                    vkConnection.setEnabled(false);
+                    Intent intent = new Intent();
+                    intent.setClass(SettingsActivity.this, VkLoginActivity.class);
+                    startActivityForResult(intent, REQUEST_VK_LOGIN);
+                } else {
+                    model.setVkApi(null, 0, null);
+                    changeVkButton();
+                }
 			}
 		});
 
@@ -248,14 +262,30 @@ public class SettingsActivity extends ActionBarActivity implements
 	}
 
 	public void changeVkButton() {
-		vkConntectionCheckBox.setChecked(controller.hasVkAccount());
+		vkConntectionCheckBox.setChecked(hasVkAccount());
 	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		controller.checkOnActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_VK_LOGIN) {
+            if (resultCode == Activity.RESULT_OK) {
+                model.setVkApi(data.getStringExtra("token"),
+                        data.getLongExtra("user_id", 0),
+                        new Api(data.getStringExtra("token"), Constants.VK_API_ID));
+                changeVkButton();
+                return;
+            }
+        }
+
+        model.setVkApi(null, 0, null);
+        changeVkButton();
 		vkConnection.setEnabled(true);
 	}
+
+    public boolean hasVkAccount() {
+        Log.i("Settings", "model.getVkApi() == null: " + (model.getVkApi() == null));
+        return model.getVkApi() != null;
+    }
 
 	@Override
 	public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
