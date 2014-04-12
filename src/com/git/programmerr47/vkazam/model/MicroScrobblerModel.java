@@ -19,6 +19,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.perm.kate.api.Api;
 
+@Deprecated
 public class MicroScrobblerModel {
 	public static final String RECOGNIZING_SUCCESS = "Success";
 

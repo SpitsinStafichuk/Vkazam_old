@@ -1,5 +1,6 @@
 package com.git.programmerr47.vkazam.model;
 
+@Deprecated
 public class RecognizeServiceConnection {
 	
 	private static MicroScrobblerModel model = null;
