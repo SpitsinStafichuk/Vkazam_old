@@ -32,10 +32,18 @@ public class MicrophoneRecordingService extends Service implements GNOperationSt
     private final Set<OnStatusChangedListener> onStatusListeners = new HashSet<OnStatusChangedListener>();
 
     private boolean isRecording;
+    int binderCount;
 
     @Override
     public IBinder onBind(Intent intent) {
+        binderCount++;
         return microphoneRecordingBinder;
+    }
+
+    @Override
+    public boolean onUnbind(Intent intent) {
+        binderCount--;
+        return super.onUnbind(intent);
     }
 
     /**
@@ -75,7 +83,7 @@ public class MicrophoneRecordingService extends Service implements GNOperationSt
         if(gnFingerprintResult.isFailure()) {
             onStatusChanged(String.format("[%d] %s", gnFingerprintResult.getErrCode(), gnFingerprintResult.getErrMessage()));
         } else {
-            //recognize in RecognizeFingerprintService
+            //TODO recognize in RecognizeFingerprintService
         }
     }
 
@@ -98,6 +106,10 @@ public class MicrophoneRecordingService extends Service implements GNOperationSt
     public void onResultStatus(SongData data) {
         for (OnStatusChangedListener listener : onStatusListeners) {
             listener.onResultStatus(data);
+        }
+
+        if (binderCount == 0) {
+            stopSelf();
         }
     }
 

@@ -26,24 +26,19 @@ public class MicrophoneRecordingTimerService extends Service implements OnStatus
     public static final int TIMER_PROGRESS_MAX = 360;
 
     // Binder given to clients
-    private final IBinder microphoneRecordingTimerService = new MicrophoneRecordingTimerBinder();
+    private final IBinder microphoneRecordingTimerBinder = new MicrophoneRecordingTimerBinder();
     private final Set<OnTimerUpdateListener> onUpdateListeners = new HashSet<OnTimerUpdateListener>();
     private final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);
 
-    private int binderCount;
     private int timerProgress;
-
 
     @Override
     public IBinder onBind(Intent intent) {
-        binderCount++;
-        return microphoneRecordingTimerService;
+        return microphoneRecordingTimerBinder;
     }
 
-    @Override
-    public boolean onUnbind(Intent intent) {
-        binderCount--;
-        return super.onUnbind(intent);
+    public int onStartCommand(android.content.Intent intent, int flags, int startId) {
+        return START_STICKY;
     }
 
     /**
@@ -54,7 +49,7 @@ public class MicrophoneRecordingTimerService extends Service implements OnStatus
         timerProgress = 0;
         onUpdate(timerProgress);
 
-        //Calls recording
+        //TODO Calls recording
     }
 
     /**
@@ -64,7 +59,7 @@ public class MicrophoneRecordingTimerService extends Service implements OnStatus
         if (timerProgress > 0) {
             executor.shutdownNow();
         } else {
-            //Calls cancel
+            //TODO Calls cancel
         }
     }
 

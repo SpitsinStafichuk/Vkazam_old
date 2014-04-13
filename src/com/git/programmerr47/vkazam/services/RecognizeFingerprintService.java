@@ -31,10 +31,22 @@ public class RecognizeFingerprintService extends Service implements GNSearchResu
     private final GNConfig config = ((VkazamApplication) getApplication()).getConfig();
 
     private FingerprintWrapper currentRecognizingFingerprint = null;
+    int binderCount;
 
     @Override
     public IBinder onBind(Intent intent) {
-        return recognizeFingerprintBinder;  //To change body of implemented methods use File | Settings | File Templates.
+        binderCount++;
+        return recognizeFingerprintBinder;
+    }
+
+    @Override
+    public boolean onUnbind(Intent intent) {
+        binderCount--;
+        return super.onUnbind(intent);
+    }
+
+    public int onStartCommand(android.content.Intent intent, int flags, int startId) {
+        return START_STICKY;
     }
 
     /**
@@ -113,7 +125,11 @@ public class RecognizeFingerprintService extends Service implements GNSearchResu
         }
 
         if (fingerprintQueue.isEmpty()) {
-            currentRecognizingFingerprint = null;
+            if (binderCount != 0) {
+                currentRecognizingFingerprint = null;
+            } else {
+                stopSelf();
+            }
         } else {
             recognizeNow(fingerprintQueue.get(0));
             fingerprintQueue.remove(fingerprintQueue.get(0));
