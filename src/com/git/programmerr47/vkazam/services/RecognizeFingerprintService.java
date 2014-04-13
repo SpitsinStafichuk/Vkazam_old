@@ -23,29 +23,18 @@ import java.util.*;
  */
 public class RecognizeFingerprintService extends Service implements GNSearchResultReady, GNOperationStatusChanged {
 
+    public static final String STATUS_NO_CONNECTION = "STATUS_NO_CONNECTION";
+
     // Binder given to clients
     private final IBinder recognizeFingerprintBinder = new RecognizeFingerprintBinder();
     private final List<FingerprintWrapper> fingerprintQueue = new ArrayList<FingerprintWrapper>();
     private final GNConfig config = ((VkazamApplication) getApplication()).getConfig();
 
-    private int binderCount = 0;
     private FingerprintWrapper currentRecognizingFingerprint = null;
 
     @Override
     public IBinder onBind(Intent intent) {
-        binderCount++;
         return recognizeFingerprintBinder;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public boolean onUnbind(Intent intent) {
-        binderCount--;
-        return super.onUnbind(intent);
-    }
-
-    @Override
-    public int onStartCommand(android.content.Intent intent, int flags, int startId) {
-        return Service.START_STICKY;
     }
 
     /**
@@ -94,6 +83,7 @@ public class RecognizeFingerprintService extends Service implements GNSearchResu
     public void GNResultReady(GNSearchResult gnSearchResult) {
         SongData songData = null;
         if (gnSearchResult.isFailure()) {
+            //TODO dsfsgagas
             currentRecognizingFingerprint
                     .getFingerprintListener()
                     .onStatusChanged(String.format("[%d] %s", gnSearchResult.getErrCode(), gnSearchResult.getErrMessage()));
@@ -123,11 +113,7 @@ public class RecognizeFingerprintService extends Service implements GNSearchResu
         }
 
         if (fingerprintQueue.isEmpty()) {
-            if (binderCount != 0) {
-                currentRecognizingFingerprint = null;
-            } else {
-                stopSelf();
-            }
+            currentRecognizingFingerprint = null;
         } else {
             recognizeNow(fingerprintQueue.get(0));
             fingerprintQueue.remove(fingerprintQueue.get(0));
@@ -160,22 +146,5 @@ public class RecognizeFingerprintService extends Service implements GNSearchResu
         RecognizeFingerprintService getService() {
             return RecognizeFingerprintService.this;
         }
-    }
-
-    /**
-     * Callbacks for status of recognizing
-     */
-    public interface OnStatusChangedListener {
-        /**
-         * Calls when status of recognizing has changed
-         * @param status - current active status
-         */
-        void onStatusChanged(String status);
-
-        /**
-         * Calls when result of recognizing has received
-         * @param data - result of recognizing or null if result is negative
-         */
-        void onResultStatus(SongData data);
     }
 }

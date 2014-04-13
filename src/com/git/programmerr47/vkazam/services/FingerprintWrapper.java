@@ -16,14 +16,14 @@ public class FingerprintWrapper {
     public static final int RECOGNIZE_PRIORITY_LOW = 0;
 
     private FingerprintData fingerprint;
-    private RecognizeFingerprintService.OnStatusChangedListener listener;
+    private OnStatusChangedListener listener;
 
 //    priority of recognizing fingerprint. If there is queue on recognizing
 //    low priority finger will be added to the end of queue
 //    and hight priority finger will be added to the beginning of queue
     private int fingerprintPriority;
 
-    public FingerprintWrapper(FingerprintData fingerprint, RecognizeFingerprintService.OnStatusChangedListener listener) {
+    public FingerprintWrapper(FingerprintData fingerprint, OnStatusChangedListener listener) {
         if (fingerprint == null) {
             throw new NullPointerException();
         }
@@ -32,7 +32,7 @@ public class FingerprintWrapper {
         this.listener = listener;
     }
 
-    public RecognizeFingerprintService.OnStatusChangedListener getFingerprintListener() {
+    public OnStatusChangedListener getFingerprintListener() {
         return listener;
     }
 

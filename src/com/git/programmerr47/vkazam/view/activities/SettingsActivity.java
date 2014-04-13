@@ -31,6 +31,7 @@ public class SettingsActivity extends ActionBarActivity implements
 		CompoundButton.OnCheckedChangeListener,
 		IConnectedDialogFragmentDissmised {
 
+    public static final int DEFAULT_TIMER_DELAY = 5;
     public static final String PARENT_INTENT = "parentIntent";
     private static final String SHOW_DIALOG_TAG = "dialog";
     private static final int REQUEST_VK_LOGIN = 1;
@@ -237,7 +238,7 @@ public class SettingsActivity extends ActionBarActivity implements
 				.getDefaultSharedPreferences(this);
 
 		((TextView) timerDelay.findViewById(R.id.additional_info))
-				.setText(prefs.getInt("settingsTimerDelay", 5) + " "
+				.setText(prefs.getInt("settingsTimerDelay", DEFAULT_TIMER_DELAY) + " "
 						+ getString(R.string.settings_secs));
 
 		vkConntectionCheckBox.setChecked(prefs.getBoolean(
