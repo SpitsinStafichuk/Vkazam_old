@@ -12,7 +12,9 @@ import com.git.programmerr47.vkazam.model.FingerprintData;
  */
 public class FingerprintWrapper {
 
-    public static final int RECOGNIZE_PRIORITY_HIGH = 1;
+    public static final int RECOGNIZE_PRIORITY_HIGHEST = 3;
+    public static final int RECOGNIZE_PRIORITY_HIGH = 2;
+    public static final int RECOGNIZE_PRIORITY_STANDART = 1;
     public static final int RECOGNIZE_PRIORITY_LOW = 0;
 
     private FingerprintData fingerprint;
@@ -23,13 +25,22 @@ public class FingerprintWrapper {
 //    and hight priority finger will be added to the beginning of queue
     private int fingerprintPriority;
 
-    public FingerprintWrapper(FingerprintData fingerprint, OnStatusChangedListener listener) {
+    public FingerprintWrapper(FingerprintData fingerprint, OnStatusChangedListener listener, int fingerprintPriority) {
         if (fingerprint == null) {
             throw new NullPointerException();
         }
 
         this.fingerprint = fingerprint;
         this.listener = listener;
+        this.fingerprintPriority = fingerprintPriority;
+    }
+
+    public FingerprintWrapper(FingerprintData fingerprint, OnStatusChangedListener listener) {
+        this(fingerprint, listener, RECOGNIZE_PRIORITY_STANDART);
+    }
+
+    public FingerprintWrapper(FingerprintData fingerprint) {
+        this(fingerprint, null);
     }
 
     public OnStatusChangedListener getFingerprintListener() {

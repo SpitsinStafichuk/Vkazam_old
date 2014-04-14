@@ -95,10 +95,14 @@ public class RecognizeFingerprintService extends Service implements GNSearchResu
     public void GNResultReady(GNSearchResult gnSearchResult) {
         SongData songData = null;
         if (gnSearchResult.isFailure()) {
-            //TODO dsfsgagas
-            currentRecognizingFingerprint
-                    .getFingerprintListener()
-                    .onStatusChanged(String.format("[%d] %s", gnSearchResult.getErrCode(), gnSearchResult.getErrMessage()));
+            //TODO fix on real error code
+            if (gnSearchResult.getErrCode() == 1) {
+                currentRecognizingFingerprint.getFingerprintListener().onStatusChanged(STATUS_NO_CONNECTION);
+            } else {
+                currentRecognizingFingerprint
+                        .getFingerprintListener()
+                        .onStatusChanged(String.format("[%d] %s", gnSearchResult.getErrCode(), gnSearchResult.getErrMessage()));
+            }
         } else {
             if (!gnSearchResult.isFingerprintSearchNoMatchStatus()) {
                 GNSearchResponse bestResponse = gnSearchResult.getBestResponse();

@@ -1,20 +1,17 @@
 package com.git.programmerr47.vkazam.services;
 
 import android.app.Service;
-import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.*;
 import android.os.Binder;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import com.git.programmerr47.vkazam.VkazamApplication;
+import com.git.programmerr47.vkazam.model.FingerprintData;
 import com.git.programmerr47.vkazam.model.SongData;
 import com.git.programmerr47.vkazam.utils.NetworkUtils;
 import com.gracenote.mmid.MobileSDK.*;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 /**
  * Service that provides recording audio from microphone
@@ -31,8 +28,31 @@ public class MicrophoneRecordingService extends Service implements GNOperationSt
     private final GNConfig config = ((VkazamApplication) getApplication()).getConfig();
     private final Set<OnStatusChangedListener> onStatusListeners = new HashSet<OnStatusChangedListener>();
 
+    private RecognizeFingerprintService recognizeFingerprintService;
     private boolean isRecording;
+    private boolean isRecognizeFingerprintServiceBound;
     int binderCount;
+
+    /**
+     * Defines callbacks for service binding, passed to bindService()
+     */
+    private ServiceConnection connection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName className,
+                                       IBinder service) {
+            // We've bound to RecognizeFingerprintService, cast the IBinder and get RecognizeFingerprintService instance
+            RecognizeFingerprintService.RecognizeFingerprintBinder binder = (RecognizeFingerprintService.RecognizeFingerprintBinder) service;
+            recognizeFingerprintService = binder.getService();
+            isRecognizeFingerprintServiceBound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            isRecognizeFingerprintServiceBound = false;
+        }
+    };
+
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -46,22 +66,22 @@ public class MicrophoneRecordingService extends Service implements GNOperationSt
         return super.onUnbind(intent);
     }
 
+    public void onCreate() {
+        Intent intent = new Intent(this, RecognizeFingerprintService.class);
+        bindService(intent, connection, Context.BIND_AUTO_CREATE);
+    }
+
+    public void onDestroy() {
+        if (isRecognizeFingerprintServiceBound) {
+            unbindService(connection);
+            isRecognizeFingerprintServiceBound = false;
+        }
+    }
+
     /**
      * Records fingerprint one time
      */
     public void recordFingerprint() {
-        recordNow();
-    }
-
-    /**
-     * Cancels current recording fingerprint
-     */
-    public void cancelRecording() {
-        GNOperations.cancel(this);
-        isRecording = false;
-    }
-
-    private void recordNow() {
         if (!isRecording) {
             synchronized (this) {
                 if (!isRecording) {
@@ -70,6 +90,14 @@ public class MicrophoneRecordingService extends Service implements GNOperationSt
                 }
             }
         }
+    }
+
+    /**
+     * Cancels current recording fingerprint
+     */
+    public void cancelRecording() {
+        GNOperations.cancel(this);
+        isRecording = false;
     }
 
     @Override
@@ -83,7 +111,9 @@ public class MicrophoneRecordingService extends Service implements GNOperationSt
         if(gnFingerprintResult.isFailure()) {
             onStatusChanged(String.format("[%d] %s", gnFingerprintResult.getErrCode(), gnFingerprintResult.getErrMessage()));
         } else {
-            //TODO recognize in RecognizeFingerprintService
+            FingerprintData fingerprint = new FingerprintData(gnFingerprintResult.getFingerprintData(), new Date());
+            FingerprintWrapper wrapper = new FingerprintWrapper(fingerprint, this, FingerprintWrapper.RECOGNIZE_PRIORITY_HIGHEST);
+            recognizeFingerprintService.recognize(wrapper);
         }
     }
 
