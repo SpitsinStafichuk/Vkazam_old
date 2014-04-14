@@ -21,61 +21,22 @@ import java.util.*;
  * @author Michael Spitsin
  * @since 2014-04-13
  */
-public class MicrophoneRecordingService extends Service implements GNOperationStatusChanged, GNFingerprintResultReady, OnStatusChangedListener {
+public class MicrophoneRecordingService extends RelatingService implements GNOperationStatusChanged, GNFingerprintResultReady, OnStatusChangedListener {
 
-    // Binder given to clients
-    private final IBinder microphoneRecordingBinder = new MicrophoneRecordingBinder();
     private final GNConfig config = ((VkazamApplication) getApplication()).getConfig();
     private final Set<OnStatusChangedListener> onStatusListeners = new HashSet<OnStatusChangedListener>();
 
     private RecognizeFingerprintService recognizeFingerprintService;
     private boolean isRecording;
-    private boolean isRecognizeFingerprintServiceBound;
-    int binderCount;
-
-    /**
-     * Defines callbacks for service binding, passed to bindService()
-     */
-    private ServiceConnection connection = new ServiceConnection() {
-
-        @Override
-        public void onServiceConnected(ComponentName className,
-                                       IBinder service) {
-            // We've bound to RecognizeFingerprintService, cast the IBinder and get RecognizeFingerprintService instance
-            RecognizeFingerprintService.RecognizeFingerprintBinder binder = (RecognizeFingerprintService.RecognizeFingerprintBinder) service;
-            recognizeFingerprintService = binder.getService();
-            isRecognizeFingerprintServiceBound = true;
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName arg0) {
-            isRecognizeFingerprintServiceBound = false;
-        }
-    };
-
 
     @Override
-    public IBinder onBind(Intent intent) {
-        binderCount++;
-        return microphoneRecordingBinder;
+    protected void onServiceConnected(Service service) {
+        recognizeFingerprintService = (RecognizeFingerprintService) service;
     }
 
     @Override
-    public boolean onUnbind(Intent intent) {
-        binderCount--;
-        return super.onUnbind(intent);
-    }
-
-    public void onCreate() {
-        Intent intent = new Intent(this, RecognizeFingerprintService.class);
-        bindService(intent, connection, Context.BIND_AUTO_CREATE);
-    }
-
-    public void onDestroy() {
-        if (isRecognizeFingerprintServiceBound) {
-            unbindService(connection);
-            isRecognizeFingerprintServiceBound = false;
-        }
+    protected Class<?> getRelativeServiceClass() {
+        return RecognizeFingerprintService.class;
     }
 
     /**
@@ -138,22 +99,8 @@ public class MicrophoneRecordingService extends Service implements GNOperationSt
             listener.onResultStatus(data);
         }
 
-        if (binderCount == 0) {
+        if (getBinderCount() == 0) {
             stopSelf();
-        }
-    }
-
-    /**
-     * Class used for the client Binder.  Because we know this service always
-     * runs in the same process as its clients, we don't need to deal with IPC.
-     */
-    public class MicrophoneRecordingBinder extends Binder {
-
-        /**
-         * @return instance of RecognizeFingerprintService so clients can call public methods
-         */
-        MicrophoneRecordingService getService() {
-            return MicrophoneRecordingService.this;
         }
     }
 }

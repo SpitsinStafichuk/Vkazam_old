@@ -1,9 +1,5 @@
 package com.git.programmerr47.vkazam.services;
 
-import android.app.Service;
-import android.content.Intent;
-import android.os.Binder;
-import android.os.IBinder;
 import com.git.programmerr47.vkazam.VkazamApplication;
 import com.git.programmerr47.vkazam.model.SongData;
 import com.gracenote.mmid.MobileSDK.*;
@@ -21,33 +17,14 @@ import java.util.*;
  * @author Michael Spitsin
  * @since 2014-04-12
  */
-public class RecognizeFingerprintService extends Service implements GNSearchResultReady, GNOperationStatusChanged {
+public class RecognizeFingerprintService extends StartBoundService implements GNSearchResultReady, GNOperationStatusChanged {
 
     public static final String STATUS_NO_CONNECTION = "STATUS_NO_CONNECTION";
 
-    // Binder given to clients
-    private final IBinder recognizeFingerprintBinder = new RecognizeFingerprintBinder();
     private final List<FingerprintWrapper> fingerprintQueue = new ArrayList<FingerprintWrapper>();
     private final GNConfig config = ((VkazamApplication) getApplication()).getConfig();
 
     private FingerprintWrapper currentRecognizingFingerprint = null;
-    int binderCount;
-
-    @Override
-    public IBinder onBind(Intent intent) {
-        binderCount++;
-        return recognizeFingerprintBinder;
-    }
-
-    @Override
-    public boolean onUnbind(Intent intent) {
-        binderCount--;
-        return super.onUnbind(intent);
-    }
-
-    public int onStartCommand(android.content.Intent intent, int flags, int startId) {
-        return START_STICKY;
-    }
 
     /**
      * Perform recognizing of given fingerprint
@@ -129,7 +106,7 @@ public class RecognizeFingerprintService extends Service implements GNSearchResu
         }
 
         if (fingerprintQueue.isEmpty()) {
-            if (binderCount != 0) {
+            if (getBinderCount() != 0) {
                 currentRecognizingFingerprint = null;
             } else {
                 stopSelf();
@@ -152,19 +129,5 @@ public class RecognizeFingerprintService extends Service implements GNSearchResu
     private void recognizeNow(FingerprintWrapper wrapper) {
         currentRecognizingFingerprint = wrapper;
         GNOperations.searchByFingerprint(this, config, wrapper.getFingerprintData().getFingerprint());
-    }
-
-    /**
-     * Class used for the client Binder.  Because we know this service always
-     * runs in the same process as its clients, we don't need to deal with IPC.
-     */
-    public class RecognizeFingerprintBinder extends Binder {
-
-        /**
-         * @return instance of RecognizeFingerprintService so clients can call public methods
-         */
-        RecognizeFingerprintService getService() {
-            return RecognizeFingerprintService.this;
-        }
     }
 }
