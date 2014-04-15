@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
+import android.util.Log;
 
 /**
  * Base service class for all vkazam recognizing services
@@ -18,13 +19,14 @@ public class StartBoundService extends Service {
     private final IBinder serviceBinder = new ServiceBinder();
 
     /**
-     * Count of binded objects to this service
+     * Count of bound objects to this service
      */
     private int binderCount;
 
     @Override
     public IBinder onBind(Intent intent) {
         binderCount++;
+        Log.v("Services", this.getClass().getName() + ": Recieved bindIntent (" + intent.getPackage() + ")");
         return serviceBinder;
     }
 
@@ -41,7 +43,7 @@ public class StartBoundService extends Service {
     /**
      * Made protected method to observe binders from subclasses
      *
-     * @return count of binded objects to this service
+     * @return count of bound objects to this service
      */
     protected int getBinderCount() {
         return binderCount;
@@ -56,7 +58,7 @@ public class StartBoundService extends Service {
         /**
          * @return instance of RecognizeFingerprintService so clients can call public methods
          */
-        StartBoundService getService() {
+        public StartBoundService getService() {
             return StartBoundService.this;
         }
     }

@@ -46,8 +46,16 @@
             android:enabled="true" >
         </service>
         <service
-            android:name="com.git.programmerr47.vkazam.model.RecognizeService"
-            android:enabled="true" >
+                android:name="com.git.programmerr47.vkazam.model.RecognizeService"
+                android:enabled="true" >
+        </service>
+        <service
+                android:name="com.git.programmerr47.vkazam.services.RecognizeFingerprintService"
+                android:enabled="true" >
+        </service>
+        <service
+                android:name="com.git.programmerr47.vkazam.services.MicrophoneRecordingService"
+                android:enabled="true" >
         </service>
 
         <receiver

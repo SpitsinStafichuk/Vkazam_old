@@ -11,12 +11,13 @@ import com.gracenote.mmid.MobileSDK.GNConfig;
  * @since 2014-04-12
  */
 public class VkazamApplication extends Application{
-    private final GNConfig config = GNConfig.init(Constants.GRACENOTE_APPLICATION_ID, this);
+    private GNConfig config;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
+        config = GNConfig.init(Constants.GRACENOTE_APPLICATION_ID, this);
         config.setProperty("content.coverArt", "1");
         config.setProperty("content.contributor.images", "1");
         config.setProperty("content.contributor.biography", "1");

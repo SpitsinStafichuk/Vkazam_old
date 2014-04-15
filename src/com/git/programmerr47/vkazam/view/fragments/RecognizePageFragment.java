@@ -1,9 +1,9 @@
 package com.git.programmerr47.vkazam.view.fragments;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
+import android.content.*;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,15 +20,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.git.programmerr47.testhflbjcrhjggkth.R;
-import com.git.programmerr47.vkazam.model.FingerprintData;
-import com.git.programmerr47.vkazam.model.MicroScrobblerModel;
-import com.git.programmerr47.vkazam.model.RecognizeServiceConnection;
 import com.git.programmerr47.vkazam.model.SongData;
-import com.git.programmerr47.vkazam.model.managers.FingerprintManager;
-import com.git.programmerr47.vkazam.model.managers.RecognizeManager;
 import com.git.programmerr47.vkazam.model.observers.*;
+import com.git.programmerr47.vkazam.services.MicrophoneRecordingService;
+import com.git.programmerr47.vkazam.services.OnStatusChangedListener;
+import com.git.programmerr47.vkazam.services.StartBoundService;
 import com.git.programmerr47.vkazam.utils.AndroidUtils;
-import com.git.programmerr47.vkazam.utils.NetworkUtils;
 import com.git.programmerr47.vkazam.view.ProgressWheel;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
@@ -38,13 +35,13 @@ import java.util.TimerTask;
 
 public class RecognizePageFragment extends FragmentWithName implements
 		IRecognizeStatusObserver, IRecognizeResultObserver,
-		IFingerprintStatusObserver, IFingerprintTimerObserver, IFingerprintResultObserver {
+		IFingerprintStatusObserver, IFingerprintTimerObserver, IFingerprintResultObserver, OnStatusChangedListener {
 
-	private MicroScrobblerModel model;
-	private RecognizeManager recognizeManager;
-	private FingerprintManager fingerprintManager;
+    private MicrophoneRecordingService mService;
+    private boolean isServiceBound;
+
 	private Activity parentActivity;
-    private Timer timerDelay;
+//    private Timer timerDelay;
 
 	private LinearLayout song;
 	private TextView songArtist;
@@ -79,6 +76,27 @@ public class RecognizePageFragment extends FragmentWithName implements
 
 	private ProgressWheel fingerprintTimer;
 
+    /**
+     * Defines callbacks for service binding, passed to bindService()
+     */
+    private ServiceConnection connection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName className,
+                                       IBinder service) {
+            // We've bound to RecognizeFingerprintService, cast the IBinder and get RecognizeFingerprintService instance
+            StartBoundService.ServiceBinder binder = (StartBoundService.ServiceBinder) service;
+            isServiceBound = true;
+            mService = (MicrophoneRecordingService) binder.getService();
+            mService.addOnStatusChangedListener(RecognizePageFragment.this);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            isServiceBound = false;
+        }
+    };
+
 	public static RecognizePageFragment newInstance(Context context) {
 		RecognizePageFragment pageFragment = new RecognizePageFragment();
 		Bundle arguments = new Bundle();
@@ -92,16 +110,16 @@ public class RecognizePageFragment extends FragmentWithName implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setRetainInstance(true);
-		model = RecognizeServiceConnection.getModel();
-		fingerprintManager = model.getFingerprintManager();
-		fingerprintManager.addFingerprintStatusObserver(this);
-        fingerprintManager.addFingerprintResultObserver(this);
-		fingerprintManager.addFingerprintTimerObserver(this);
-		recognizeManager = model.getMainRecognizeManager();
-		recognizeManager.addRecognizeStatusObserver(this);
-		recognizeManager.addRecognizeResultObserver(this);
+//		model = RecognizeServiceConnection.getModel();
+//		fingerprintManager = model.getFingerprintManager();
+//		fingerprintManager.addFingerprintStatusObserver(this);
+//        fingerprintManager.addFingerprintResultObserver(this);
+//		fingerprintManager.addFingerprintTimerObserver(this);
+//		recognizeManager = model.getMainRecognizeManager();
+//		recognizeManager.addRecognizeStatusObserver(this);
+//		recognizeManager.addRecognizeResultObserver(this);
 		pageOnCreating = true;
-        timerDelay = new Timer();
+//        timerDelay = new Timer();
 
 		prefs = PreferenceManager.getDefaultSharedPreferences(this
 				.getActivity());
@@ -109,13 +127,33 @@ public class RecognizePageFragment extends FragmentWithName implements
 				true);
 	}
 
-    private void fingerprint() {
-        timerDelay.cancel();
-        if (fingerprintTimer != null) {
-            fingerprintTimer.resetCount();
-        }
-        fingerprintManager.fingerprintByTimer();
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        Intent intent = new Intent(getActivity(), MicrophoneRecordingService.class);
+        getActivity().startService(intent);
+        getActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE);
+        Log.v("Services", this.getClass().getName() + ".onActivityCreated(): try to connect to MicrophoneRecordingService");
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        if (isServiceBound) {
+            getActivity().unbindService(connection);
+            isServiceBound = false;
+        }
+    }
+
+//    private void fingerprint() {
+//        timerDelay.cancel();
+//        if (fingerprintTimer != null) {
+//            fingerprintTimer.resetCount();
+//        }
+//        fingerprintManager.fingerprintByTimer();
+//    }
 
     @Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -129,7 +167,7 @@ public class RecognizePageFragment extends FragmentWithName implements
 				.setOnLoadingListener(new ProgressWheel.OnLoadingListener() {
 					@Override
 					public void onComplete() {
-                        fingerprint();
+//                        fingerprint();
 					}
 				});
 
@@ -167,15 +205,18 @@ public class RecognizePageFragment extends FragmentWithName implements
 			@Override
 			public void onClick(View v) {
 				Log.v("Recognizing", "Recognize by timer: onLongClick");
-                if(fingerprintManager.isFingerprintingByTimer()) {
-                    Log.v("Fingerprinting", "Cancel fingerprintByTimer");
-                    timerDelay.cancel();
-                    timerDelay = new Timer();
-                    fingerprintManager.fingerprintCancel();
-                } else {
-                    Log.v("Fingerprinting", "fingerprintByTimer");
-                    fingerprint();
-                }
+//                if(fingerprintManager.isFingerprintingByTimer()) {
+//                    Log.v("Fingerprinting", "Cancel fingerprintByTimer");
+//                    timerDelay.cancel();
+//                    timerDelay = new Timer();
+//                    fingerprintManager.fingerprintCancel();
+//                } else {
+//                    Log.v("Fingerprinting", "fingerprintByTimer");
+//                if (isServiceBound) {
+//                    mService.recordFingerprint();
+//                }
+//                    fingerprint();
+//                }
 			}
 		});
 		microTimerListenButton.setClickable(true);
@@ -188,13 +229,16 @@ public class RecognizePageFragment extends FragmentWithName implements
 			@Override
 			public void onClick(View v) {
 				Log.v("Recognizing", "Recognize now: onLongClick");
-                timerDelay.cancel();
-                if(fingerprintManager.isFingerprintingOneTime()) {
-                    Log.v("Fingerprinting", "Cancel fingerprintNow");
-                    fingerprintManager.fingerprintCancel();
-                } else {
-                    Log.v("Fingerprinting", "fingerprintNow");
-                    fingerprintManager.fingerprintOneTime();
+//                timerDelay.cancel();
+//                if(fingerprintManager.isFingerprintingOneTime()) {
+//                    Log.v("Fingerprinting", "Cancel fingerprintNow");
+//                    fingerprintManager.fingerprintCancel();
+//                } else {
+//                    Log.v("Fingerprinting", "fingerprintNow");
+//                    fingerprintManager.fingerprintOneTime();
+//                }
+                if (isServiceBound) {
+                    mService.recordFingerprint();
                 }
 			}
 		});
@@ -276,11 +320,11 @@ public class RecognizePageFragment extends FragmentWithName implements
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		fingerprintManager.removeFingerprintStatusObserver(this);
-        fingerprintManager.addFingerprintResultObserver(this);
-		fingerprintManager.removeFingerprintTimerObserver(this);
-		recognizeManager.removeRecognizeStatusObserver(this);
-		recognizeManager.removeRecognizeResultObserver(this);
+//		fingerprintManager.removeFingerprintStatusObserver(this);
+//        fingerprintManager.addFingerprintResultObserver(this);
+//		fingerprintManager.removeFingerprintTimerObserver(this);
+//		recognizeManager.removeRecognizeStatusObserver(this);
+//		recognizeManager.removeRecognizeResultObserver(this);
 		Log.v("Fragments", "HistoryPageFragment onDestroy()");
 	}
 
@@ -311,12 +355,12 @@ public class RecognizePageFragment extends FragmentWithName implements
 
 	@Override
 	public void onRecognizeResult(int errorCode, SongData songData) {
-        runTimerDelay();
-        if (songData != null) {
-            model.getSongList().add(0, songData);
-            model.getScrobbler().sendLastFMTrack(songData.getArtist(), songData.getTitle(), songData.getAlbum());
-        }
-		displaySongInformationElement(songData, true);
+//        runTimerDelay();
+//        if (songData != null) {
+//            model.getSongList().add(0, songData);
+//            model.getScrobbler().sendLastFMTrack(songData.getArtist(), songData.getTitle(), songData.getAlbum());
+//        }
+//		displaySongInformationElement(songData, true);
 	}
 
 	public void displaySongInformationElement(final SongData songData,
@@ -364,22 +408,22 @@ public class RecognizePageFragment extends FragmentWithName implements
 		}
 	}
 
-    private void runTimerDelay() {
-        if (fingerprintManager.isFingerprintingByTimer()) {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-            int period = prefs.getInt("settingsTimerDelay", 5) * 1000 / 360;
-            TimerTask task = new TimerTask() {
-                @Override
-                public void run() {
-                    if (fingerprintTimer != null) {
-                        fingerprintTimer.incrementProgress();
-                    }
-                }
-            };
-            timerDelay = new Timer();
-            timerDelay.scheduleAtFixedRate(task, 0, period);
-        }
-    }
+//    private void runTimerDelay() {
+//        if (fingerprintManager.isFingerprintingByTimer()) {
+//            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+//            int period = prefs.getInt("settingsTimerDelay", 5) * 1000 / 360;
+//            TimerTask task = new TimerTask() {
+//                @Override
+//                public void run() {
+//                    if (fingerprintTimer != null) {
+//                        fingerprintTimer.incrementProgress();
+//                    }
+//                }
+//            };
+//            timerDelay = new Timer();
+//            timerDelay.scheduleAtFixedRate(task, 0, period);
+//        }
+//    }
 
 	private void updateItem(LinearLayout song, TextView artist, TextView title,
 			TextView date, ImageView coverArt, SongData songData) {
@@ -392,7 +436,7 @@ public class RecognizePageFragment extends FragmentWithName implements
 				.showImageForEmptyUri(R.drawable.no_cover_art)
 				.showImageOnFail(R.drawable.no_cover_art)
 				.showStubImage(R.drawable.cover_art_loading).build();
-		model.getImageLoader().displayImage(coverArtUrl, coverArt, options);
+//		model.getImageLoader().displayImage(coverArtUrl, coverArt, options);
 	}
 
 	private void updateProgress(String status) {
@@ -432,15 +476,32 @@ public class RecognizePageFragment extends FragmentWithName implements
 
     @Override
     public void onFingerprintResult(int errorCode, String fingerprint) {
-        FingerprintData fingerprintData = new FingerprintData(fingerprint, new Date());
-        if(errorCode == 0) {
-            if (NetworkUtils.isNetworkAvailable(getActivity())) {
-                recognizeManager.recognizeFingerprint(fingerprintData);
-            } else {
-                Log.v("RecognizeController", "adding offline finger");
-                model.getFingerprintList().add(fingerprintData);
-                runTimerDelay();
-            }
+//        FingerprintData fingerprintData = new FingerprintData(fingerprint, new Date());
+//        if(errorCode == 0) {
+//            if (NetworkUtils.isNetworkAvailable(getActivity())) {
+//                recognizeManager.recognizeFingerprint(fingerprintData);
+//            } else {
+//                Log.v("RecognizeController", "adding offline finger");
+//                model.getFingerprintList().add(fingerprintData);
+//                runTimerDelay();
+//            }
+//        }
+    }
+
+    @Override
+    public void onStatusChanged(String status) {
+        Log.v("Status_text", status);
+        updateProgress(status);
+    }
+
+    @Override
+    public void onResultStatus(SongData data) {
+        if (data != null) {
+//            model.getSongList().add(0, songData);
+//            model.getScrobbler().sendLastFMTrack(songData.getArtist(), songData.getTitle(), songData.getAlbum());
+            displaySongInformationElement(data, true);
+        } else {
+            updateProgress("No music found");
         }
     }
 }

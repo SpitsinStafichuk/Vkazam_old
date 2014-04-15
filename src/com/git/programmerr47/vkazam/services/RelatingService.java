@@ -42,11 +42,14 @@ public abstract class RelatingService extends StartBoundService{
     };
 
     public void onCreate() {
+        super.onCreate();
         Intent intent = new Intent(this, getRelativeServiceClass());
+        startService(intent);
         bindService(intent, connection, Context.BIND_AUTO_CREATE);
     }
 
     public void onDestroy() {
+        super.onDestroy();
         if (isRelativeServiceBound) {
             unbindService(connection);
             isRelativeServiceBound = false;

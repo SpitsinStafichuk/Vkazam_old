@@ -22,9 +22,15 @@ public class RecognizeFingerprintService extends StartBoundService implements GN
     public static final String STATUS_NO_CONNECTION = "STATUS_NO_CONNECTION";
 
     private final List<FingerprintWrapper> fingerprintQueue = new ArrayList<FingerprintWrapper>();
-    private final GNConfig config = ((VkazamApplication) getApplication()).getConfig();
 
+    private GNConfig config;
     private FingerprintWrapper currentRecognizingFingerprint = null;
+
+    public void onCreate() {
+        super.onCreate();
+
+        config = ((VkazamApplication) getApplication()).getConfig();
+    }
 
     /**
      * Perform recognizing of given fingerprint

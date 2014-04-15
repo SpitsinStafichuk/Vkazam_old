@@ -33,7 +33,7 @@ public class HistoryPageFragment extends FragmentWithName implements
 	public static final String ARGUMENT_SONGLIST_POSITION = "SongDataPosition";
 
 	private SongListAdapter adapter;
-	private SongListController controller;
+	//private SongListController controller;
 	private Activity parentActivity;
 	private ListView songHLV;
 	private SongList songList;
@@ -66,9 +66,9 @@ public class HistoryPageFragment extends FragmentWithName implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setRetainInstance(true);
-		controller = new SongListController(this);
+//		controller = new SongListController(this);
 		adapter = new SongListAdapter(this.getActivity(),
-				R.layout.list_item_song, controller);
+				R.layout.list_item_song, null);
 		songList = RecognizeServiceConnection.getModel().getSongList();
 		songList.addObserver(this);
 
