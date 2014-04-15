@@ -1,6 +1,7 @@
 package com.git.programmerr47.vkazam.services;
 
 import android.app.Service;
+import android.content.Intent;
 import com.git.programmerr47.vkazam.VkazamApplication;
 import com.git.programmerr47.vkazam.model.FingerprintData;
 import com.git.programmerr47.vkazam.model.SongData;
@@ -23,12 +24,22 @@ public class MicrophoneRecordingService extends RelatingService implements GNOpe
     private GNConfig config;
     private RecognizeFingerprintService recognizeFingerprintService;
     private boolean isRecording;
+    private boolean isWorking;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
         config = ((VkazamApplication) getApplication()).getConfig();
+    }
+
+    @Override
+    public boolean onUnbind(Intent intent) {
+        boolean result = super.onUnbind(intent);
+        if (!isWorking && (getBinderCount() == 0)) {
+            stopSelf();
+        }
+        return result;
     }
 
     @Override
@@ -45,10 +56,11 @@ public class MicrophoneRecordingService extends RelatingService implements GNOpe
      * Records fingerprint one time
      */
     public void recordFingerprint() {
-        if (!isRecording) {
+        if (!isWorking) {
             synchronized (this) {
-                if (!isRecording) {
+                if (!isWorking) {
                     isRecording = true;
+                    isWorking = true;
                     GNOperations.fingerprintMIDStreamFromMic(this, config);
                 }
             }
@@ -58,9 +70,23 @@ public class MicrophoneRecordingService extends RelatingService implements GNOpe
     /**
      * Cancels current recording fingerprint
      */
-    public void cancelRecording() {
+    private void cancelRecording() {
         GNOperations.cancel(this);
         isRecording = false;
+    }
+
+    /**
+     * Cancels current recording fingerprint
+     * or cancels recognizing already recorded fingerprint
+     */
+    public void cancel() {
+        if (isRecording) {
+            cancelRecording();
+        } else if (isWorking) {
+            if (isRelativeServiceBound) {
+                //TODO cancels
+            }
+        }
     }
 
     @Override
@@ -97,6 +123,7 @@ public class MicrophoneRecordingService extends RelatingService implements GNOpe
 
     @Override
     public void onResultStatus(SongData data) {
+        isWorking = false;
         for (OnStatusChangedListener listener : onStatusListeners) {
             listener.onResultStatus(data);
         }

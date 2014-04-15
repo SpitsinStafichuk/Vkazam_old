@@ -19,7 +19,7 @@ public abstract class RelatingService extends StartBoundService{
     /**
      * Defines if service is bound
      */
-    private boolean isRelativeServiceBound;
+    protected boolean isRelativeServiceBound;
 
     /**
      * Defines callbacks for service binding, passed to bindService()

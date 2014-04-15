@@ -27,12 +27,21 @@ public class StartBoundService extends Service {
     public IBinder onBind(Intent intent) {
         binderCount++;
         Log.v("Services", this.getClass().getName() + ": Recieved bindIntent (" + intent.getPackage() + ")");
+        Log.v("Services", this.getClass().getName() + ": binderCount = " + binderCount);
         return serviceBinder;
+    }
+
+    @Override
+    public void onRebind(Intent intent) {
+        binderCount++;
+        Log.v("Services", this.getClass().getName() + ": Recieved rebindIntent (" + intent.getPackage() + ")");
+        Log.v("Services", this.getClass().getName() + ": binderCount = " + binderCount);
     }
 
     @Override
     public boolean onUnbind(Intent intent) {
         binderCount--;
+        Log.v("Services", this.getClass().getName() + ": binderCount = " + binderCount);
         return super.onUnbind(intent);
     }
 
