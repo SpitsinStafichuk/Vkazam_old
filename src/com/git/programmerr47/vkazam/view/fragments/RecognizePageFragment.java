@@ -23,22 +23,22 @@ import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.vkazam.model.SongData;
 import com.git.programmerr47.vkazam.model.observers.*;
 import com.git.programmerr47.vkazam.services.MicrophoneRecordingService;
+import com.git.programmerr47.vkazam.services.MicrophoneRecordingTimerService;
 import com.git.programmerr47.vkazam.services.OnStatusChangedListener;
 import com.git.programmerr47.vkazam.services.StartBoundService;
 import com.git.programmerr47.vkazam.utils.AndroidUtils;
 import com.git.programmerr47.vkazam.view.ProgressWheel;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
-import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
-
 public class RecognizePageFragment extends FragmentWithName implements
 		IRecognizeStatusObserver, IRecognizeResultObserver,
-		IFingerprintStatusObserver, IFingerprintTimerObserver, IFingerprintResultObserver, OnStatusChangedListener {
+		IFingerprintStatusObserver, IFingerprintTimerObserver, IFingerprintResultObserver, OnStatusChangedListener, MicrophoneRecordingTimerService.OnTimerUpdateListener {
 
-    private MicrophoneRecordingService mService;
-    private boolean isServiceBound;
+    private MicrophoneRecordingService mMicrophoneService;
+    private boolean isMicrophoneServiceBound;
+
+    private MicrophoneRecordingTimerService mTimerService;
+    private boolean isTimerServiceBound;
 
 	private Activity parentActivity;
 //    private Timer timerDelay;
@@ -76,24 +76,39 @@ public class RecognizePageFragment extends FragmentWithName implements
 
 	private ProgressWheel fingerprintTimer;
 
-    /**
-     * Defines callbacks for service binding, passed to bindService()
-     */
-    private ServiceConnection connection = new ServiceConnection() {
+    private ServiceConnection microphoneServiceConnection = new ServiceConnection() {
 
         @Override
         public void onServiceConnected(ComponentName className,
                                        IBinder service) {
-            // We've bound to RecognizeFingerprintService, cast the IBinder and get RecognizeFingerprintService instance
             StartBoundService.ServiceBinder binder = (StartBoundService.ServiceBinder) service;
-            isServiceBound = true;
-            mService = (MicrophoneRecordingService) binder.getService();
-            mService.addOnStatusChangedListener(RecognizePageFragment.this);
+            isMicrophoneServiceBound = true;
+            mMicrophoneService = (MicrophoneRecordingService) binder.getService();
+            mMicrophoneService.addOnStatusChangedListener(RecognizePageFragment.this);
+            Log.v("Services", "microphoneServiceConnection.onServiceConnected: " + binder.getService().getClass().getName());
         }
 
         @Override
         public void onServiceDisconnected(ComponentName arg0) {
-            isServiceBound = false;
+            isMicrophoneServiceBound = false;
+        }
+    };
+
+    private ServiceConnection timerServiceConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName className,
+                                       IBinder service) {
+            StartBoundService.ServiceBinder binder = (StartBoundService.ServiceBinder) service;
+            isTimerServiceBound = true;
+            mTimerService = (MicrophoneRecordingTimerService) binder.getService();
+            mTimerService.addOnTimerUpdateListener(RecognizePageFragment.this);
+            Log.v("Services", "timerServiceConnection.onServiceConnected: " + binder.getService().getClass().getName());
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            isTimerServiceBound = false;
         }
     };
 
@@ -133,18 +148,27 @@ public class RecognizePageFragment extends FragmentWithName implements
 
         Intent intent = new Intent(getActivity(), MicrophoneRecordingService.class);
         getActivity().startService(intent);
-        getActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE);
-        Log.v("Services", this.getClass().getName() + ".onActivityCreated(): try to connect to MicrophoneRecordingService");
+        getActivity().bindService(intent, microphoneServiceConnection, Context.BIND_AUTO_CREATE);
+
+        intent = new Intent(getActivity(), MicrophoneRecordingTimerService.class);
+        getActivity().startService(intent);
+        getActivity().bindService(intent, timerServiceConnection, Context.BIND_AUTO_CREATE);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
 
-        if (isServiceBound) {
-            mService.removeOnStatusChangedListener(this);
-            getActivity().unbindService(connection);
-            isServiceBound = false;
+        if (isMicrophoneServiceBound) {
+            mMicrophoneService.removeOnStatusChangedListener(this);
+            getActivity().unbindService(microphoneServiceConnection);
+            isMicrophoneServiceBound = false;
+        }
+
+        if (isTimerServiceBound) {
+            mTimerService.removeOnTimerUpdateListener(this);
+            getActivity().unbindService(timerServiceConnection);
+            isTimerServiceBound = false;
         }
     }
 
@@ -164,13 +188,13 @@ public class RecognizePageFragment extends FragmentWithName implements
 
 		fingerprintTimer = (ProgressWheel) view
 				.findViewById(R.id.fingerprintTimer);
-		fingerprintTimer
-				.setOnLoadingListener(new ProgressWheel.OnLoadingListener() {
-					@Override
-					public void onComplete() {
+//		fingerprintTimer
+//				.setOnLoadingListener(new ProgressWheel.OnLoadingListener() {
+//					@Override
+//					public void onComplete() {
 //                        fingerprint();
-					}
-				});
+//					}
+//				});
 
 		song = (LinearLayout) view.findViewById(R.id.currentSong);
 		song.setVisibility(View.GONE);
@@ -205,19 +229,13 @@ public class RecognizePageFragment extends FragmentWithName implements
 
 			@Override
 			public void onClick(View v) {
-				Log.v("Recognizing", "Recognize by timer: onLongClick");
-//                if(fingerprintManager.isFingerprintingByTimer()) {
-//                    Log.v("Fingerprinting", "Cancel fingerprintByTimer");
-//                    timerDelay.cancel();
-//                    timerDelay = new Timer();
-//                    fingerprintManager.fingerprintCancel();
-//                } else {
-//                    Log.v("Fingerprinting", "fingerprintByTimer");
-//                if (isServiceBound) {
-//                    mService.recordFingerprint();
-//                }
-//                    fingerprint();
-//                }
+                if (isTimerServiceBound) {
+                    if (mTimerService.isWorking()) {
+                        mTimerService.cancel();
+                    } else {
+                        mTimerService.record();
+                    }
+                }
 			}
 		});
 		microTimerListenButton.setClickable(true);
@@ -229,20 +247,11 @@ public class RecognizePageFragment extends FragmentWithName implements
 
 			@Override
 			public void onClick(View v) {
-				Log.v("Recognizing", "Recognize now: onLongClick");
-//                timerDelay.cancel();
-//                if(fingerprintManager.isFingerprintingOneTime()) {
-//                    Log.v("Fingerprinting", "Cancel fingerprintNow");
-//                    fingerprintManager.fingerprintCancel();
-//                } else {
-//                    Log.v("Fingerprinting", "fingerprintNow");
-//                    fingerprintManager.fingerprintOneTime();
-//                }
-                if (isServiceBound) {
-                    if (mService.isWorking()) {
-                        mService.cancel();
+                if (isMicrophoneServiceBound) {
+                    if (mMicrophoneService.isWorking()) {
+                        mMicrophoneService.cancel();
                     } else {
-                        mService.recordFingerprint();
+                        mMicrophoneService.recordFingerprint();
                     }
                 }
 			}
@@ -508,5 +517,10 @@ public class RecognizePageFragment extends FragmentWithName implements
         } else {
             updateProgress("No music found");
         }
+    }
+
+    @Override
+    public void onUpdate(int progress) {
+        fingerprintTimer.setProgress(progress);
     }
 }

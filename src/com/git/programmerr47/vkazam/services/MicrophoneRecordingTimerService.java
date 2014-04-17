@@ -1,10 +1,7 @@
 package com.git.programmerr47.vkazam.services;
 
 import android.app.Service;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Binder;
-import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.text.format.DateUtils;
 import com.git.programmerr47.vkazam.model.SongData;
@@ -21,35 +18,31 @@ import java.util.concurrent.TimeUnit;
  * @author Spitsin Michael
  * @since 2014-04-13
  */
-public class MicrophoneRecordingTimerService extends Service implements OnStatusChangedListener{
+public class MicrophoneRecordingTimerService extends RelatingService implements OnStatusChangedListener{
 
     public static final int TIMER_PROGRESS_MAX = 360;
 
-    // Binder given to clients
-    private final IBinder microphoneRecordingTimerBinder = new MicrophoneRecordingTimerBinder();
     private final Set<OnTimerUpdateListener> onUpdateListeners = new HashSet<OnTimerUpdateListener>();
-    private final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);
 
+    private MicrophoneRecordingService mService;
+    private ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);
     private int timerProgress;
-
-    @Override
-    public IBinder onBind(Intent intent) {
-        return microphoneRecordingTimerBinder;
-    }
-
-    public int onStartCommand(android.content.Intent intent, int flags, int startId) {
-        return START_STICKY;
-    }
 
     /**
      * Records fingers from microphone by timer
      * Actually: calls record method from MicrophoneRecordingService with fixed delay
      */
     public void record() {
+        startServiceWorking();
+        if (executor.isShutdown()) {
+            executor = new ScheduledThreadPoolExecutor(1);
+        }
         timerProgress = 0;
         onUpdate(timerProgress);
 
-        //TODO Calls recording
+        if (isRelativeServiceBound) {
+            mService.recordFingerprint();
+        }
     }
 
     /**
@@ -59,8 +52,12 @@ public class MicrophoneRecordingTimerService extends Service implements OnStatus
         if (timerProgress > 0) {
             executor.shutdownNow();
         } else {
-            //TODO Calls cancel
+            if (isRelativeServiceBound) {
+                mService.cancel();
+            }
         }
+
+        stopWorking();
     }
 
     public void addOnTimerUpdateListener(OnTimerUpdateListener listener) {
@@ -71,12 +68,19 @@ public class MicrophoneRecordingTimerService extends Service implements OnStatus
         onUpdateListeners.remove(listener);
     }
 
+    /**
+     * Calls when progress has updated
+     * @param progress - new progress of delay
+     */
     public void onUpdate(int progress) {
         for (OnTimerUpdateListener listener : onUpdateListeners) {
             listener.onUpdate(progress);
         }
     }
 
+    /**
+     * @return progress of timer delay between two recordings
+     */
     public int getTimerProgress() {
         return timerProgress;
     }
@@ -104,18 +108,20 @@ public class MicrophoneRecordingTimerService extends Service implements OnStatus
         }, 0, period, TimeUnit.MILLISECONDS);
     }
 
-    /**
-     * Class used for the client Binder.  Because we know this service always
-     * runs in the same process as its clients, we don't need to deal with IPC.
-     */
-    public class MicrophoneRecordingTimerBinder extends Binder {
+    @Override
+    protected void onServiceConnected(Service service) {
+        mService = (MicrophoneRecordingService) service;
+        mService.addOnStatusChangedListener(this);
+    }
 
-        /**
-         * @return instance of RecognizeFingerprintService so clients can call public methods
-         */
-        MicrophoneRecordingTimerService getService() {
-            return MicrophoneRecordingTimerService.this;
-        }
+    @Override
+    protected Class<?> getRelativeServiceClass() {
+        return MicrophoneRecordingService.class;
+    }
+
+    @Override
+    protected void cleanUpAllDependencies() {
+        mService.removeOnStatusChangedListener(this);
     }
 
     /**

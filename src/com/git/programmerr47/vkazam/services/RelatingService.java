@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
+import android.util.Log;
 
 /**
  * Service that connects to another single service when onCreate is called
@@ -33,6 +34,7 @@ public abstract class RelatingService extends StartBoundService{
             StartBoundService.ServiceBinder binder = (StartBoundService.ServiceBinder) service;
             isRelativeServiceBound = true;
             RelatingService.this.onServiceConnected(binder.getService());
+            Log.v("Services", "onServiceConnected: " + binder.getService().getClass().getName());
         }
 
         @Override
@@ -51,9 +53,19 @@ public abstract class RelatingService extends StartBoundService{
     public void onDestroy() {
         super.onDestroy();
         if (isRelativeServiceBound) {
+            cleanUpAllDependencies();
             unbindService(connection);
             isRelativeServiceBound = false;
         }
+    }
+
+    /**
+     * Calls when service is destroyed.
+     * Subclasses must remove all observers and dependencies of related service
+     */
+    protected void cleanUpAllDependencies() {
+        //Subclasses must override this method and
+        //clean up all dependencies between two services: this and related
     }
 
     /**
