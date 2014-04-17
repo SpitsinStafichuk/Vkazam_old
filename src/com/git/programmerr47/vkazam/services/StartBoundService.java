@@ -19,6 +19,11 @@ public class StartBoundService extends Service {
     private final IBinder serviceBinder = new ServiceBinder();
 
     /**
+     * A flag that indicates whether the service is working
+     */
+    private boolean isWorking;
+
+    /**
      * Count of bound objects to this service
      */
     private int binderCount;
@@ -26,22 +31,20 @@ public class StartBoundService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         binderCount++;
-        Log.v("Services", this.getClass().getName() + ": Recieved bindIntent (" + intent.getPackage() + ")");
-        Log.v("Services", this.getClass().getName() + ": binderCount = " + binderCount);
         return serviceBinder;
     }
 
     @Override
     public void onRebind(Intent intent) {
         binderCount++;
-        Log.v("Services", this.getClass().getName() + ": Recieved rebindIntent (" + intent.getPackage() + ")");
-        Log.v("Services", this.getClass().getName() + ": binderCount = " + binderCount);
     }
 
     @Override
     public boolean onUnbind(Intent intent) {
         binderCount--;
-        Log.v("Services", this.getClass().getName() + ": binderCount = " + binderCount);
+        if (!isWorking && (binderCount == 0)) {
+            stopSelf();
+        }
         return super.onUnbind(intent);
     }
 
@@ -56,6 +59,37 @@ public class StartBoundService extends Service {
      */
     protected int getBinderCount() {
         return binderCount;
+    }
+
+    /**
+     * Stops working service and if no one have bound to it stops service
+     * Subclasses must use this method to tell StartBoundService when it is working
+     * They must call this method in the end of working function
+     */
+    protected void stopWorking() {
+        isWorking = false;
+
+        if (binderCount == 0) {
+            stopSelf();
+        }
+    }
+
+    /**
+     * Start working service.
+     * Subclasses must use this method to tell StartBoundService when it is working
+     * They must call this method in the beginning of function
+     */
+    protected void startServiceWorking() {
+        isWorking = true;
+    }
+
+    /**
+     * Checks if service is working
+     *
+     * @return true if working, false otherwise
+     */
+    public boolean isWorking() {
+        return isWorking;
     }
 
     /**

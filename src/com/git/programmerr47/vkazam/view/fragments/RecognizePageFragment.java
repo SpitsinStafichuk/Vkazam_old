@@ -142,6 +142,7 @@ public class RecognizePageFragment extends FragmentWithName implements
         super.onDestroyView();
 
         if (isServiceBound) {
+            mService.removeOnStatusChangedListener(this);
             getActivity().unbindService(connection);
             isServiceBound = false;
         }
@@ -238,7 +239,11 @@ public class RecognizePageFragment extends FragmentWithName implements
 //                    fingerprintManager.fingerprintOneTime();
 //                }
                 if (isServiceBound) {
-                    mService.recordFingerprint();
+                    if (mService.isWorking()) {
+                        mService.cancel();
+                    } else {
+                        mService.recordFingerprint();
+                    }
                 }
 			}
 		});

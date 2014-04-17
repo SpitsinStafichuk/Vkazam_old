@@ -67,6 +67,8 @@ public class RecognizeFingerprintService extends StartBoundService implements GN
         } else if (fingerprintQueue.contains(currentRecognizingFingerprint)) {
             fingerprintQueue.remove(currentRecognizingFingerprint);
         }
+
+        recognizeNextFingerIfItExists();
     }
 
     @Override
@@ -111,12 +113,17 @@ public class RecognizeFingerprintService extends StartBoundService implements GN
             currentRecognizingFingerprint.getFingerprintListener().onResultStatus(songData);
         }
 
+        recognizeNextFingerIfItExists();
+    }
+
+    /**
+     * Calls recognizeNow if there is another finger is queue
+     * or stops service working if there is no more fingers
+     */
+    private void recognizeNextFingerIfItExists() {
         if (fingerprintQueue.isEmpty()) {
-            if (getBinderCount() != 0) {
-                currentRecognizingFingerprint = null;
-            } else {
-                stopSelf();
-            }
+            currentRecognizingFingerprint = null;
+            stopWorking();
         } else {
             recognizeNow(fingerprintQueue.get(0));
             fingerprintQueue.remove(fingerprintQueue.get(0));

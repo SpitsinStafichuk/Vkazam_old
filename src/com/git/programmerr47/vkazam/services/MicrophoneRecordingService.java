@@ -1,7 +1,6 @@
 package com.git.programmerr47.vkazam.services;
 
 import android.app.Service;
-import android.content.Intent;
 import com.git.programmerr47.vkazam.VkazamApplication;
 import com.git.programmerr47.vkazam.model.FingerprintData;
 import com.git.programmerr47.vkazam.model.SongData;
@@ -23,23 +22,14 @@ public class MicrophoneRecordingService extends RelatingService implements GNOpe
 
     private GNConfig config;
     private RecognizeFingerprintService recognizeFingerprintService;
+    private FingerprintWrapper currentRecognizingWrapper;
     private boolean isRecording;
-    private boolean isWorking;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
         config = ((VkazamApplication) getApplication()).getConfig();
-    }
-
-    @Override
-    public boolean onUnbind(Intent intent) {
-        boolean result = super.onUnbind(intent);
-        if (!isWorking && (getBinderCount() == 0)) {
-            stopSelf();
-        }
-        return result;
     }
 
     @Override
@@ -56,11 +46,11 @@ public class MicrophoneRecordingService extends RelatingService implements GNOpe
      * Records fingerprint one time
      */
     public void recordFingerprint() {
-        if (!isWorking) {
+        if (!isWorking()) {
             synchronized (this) {
-                if (!isWorking) {
+                if (!isWorking()) {
                     isRecording = true;
-                    isWorking = true;
+                    startServiceWorking();
                     GNOperations.fingerprintMIDStreamFromMic(this, config);
                 }
             }
@@ -82,11 +72,13 @@ public class MicrophoneRecordingService extends RelatingService implements GNOpe
     public void cancel() {
         if (isRecording) {
             cancelRecording();
-        } else if (isWorking) {
+        } else if (isWorking()) {
             if (isRelativeServiceBound) {
-                //TODO cancels
+                recognizeFingerprintService.cancel(currentRecognizingWrapper);
             }
         }
+
+        stopWorking();
     }
 
     @Override
@@ -101,8 +93,8 @@ public class MicrophoneRecordingService extends RelatingService implements GNOpe
             onStatusChanged(String.format("[%d] %s", gnFingerprintResult.getErrCode(), gnFingerprintResult.getErrMessage()));
         } else {
             FingerprintData fingerprint = new FingerprintData(gnFingerprintResult.getFingerprintData(), new Date());
-            FingerprintWrapper wrapper = new FingerprintWrapper(fingerprint, this, FingerprintWrapper.RECOGNIZE_PRIORITY_HIGHEST);
-            recognizeFingerprintService.recognize(wrapper);
+            currentRecognizingWrapper = new FingerprintWrapper(fingerprint, this, FingerprintWrapper.RECOGNIZE_PRIORITY_HIGHEST);
+            recognizeFingerprintService.recognize(currentRecognizingWrapper);
         }
     }
 
@@ -116,20 +108,23 @@ public class MicrophoneRecordingService extends RelatingService implements GNOpe
 
     @Override
     public void onStatusChanged(String status) {
-        for (OnStatusChangedListener listener : onStatusListeners) {
-            listener.onStatusChanged(status);
+        if (RecognizeFingerprintService.STATUS_NO_CONNECTION.equals(status)) {
+            //TODO add to db fingerprint
+            currentRecognizingWrapper = null;
+        } else {
+            for (OnStatusChangedListener listener : onStatusListeners) {
+                listener.onStatusChanged(status);
+            }
         }
     }
 
     @Override
     public void onResultStatus(SongData data) {
-        isWorking = false;
         for (OnStatusChangedListener listener : onStatusListeners) {
             listener.onResultStatus(data);
         }
 
-        if (getBinderCount() == 0) {
-            stopSelf();
-        }
+        currentRecognizingWrapper = null;
+        stopWorking();
     }
 }
