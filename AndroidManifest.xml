@@ -54,7 +54,7 @@
                 android:enabled="true" >
         </service>
         <service
-                android:name="com.git.programmerr47.vkazam.services.MicrophoneRecordingService"
+                android:name="com.git.programmerr47.vkazam.services.MicrophoneRecordingNowService"
                 android:enabled="true" >
         </service>
         <service

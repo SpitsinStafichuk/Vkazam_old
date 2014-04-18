@@ -1,6 +1,5 @@
 package com.git.programmerr47.vkazam.services;
 
-import android.app.Service;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.text.format.DateUtils;
@@ -13,26 +12,27 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Provides calling MicrophoneRecordingService by timer
+ * Provides calling MicrophoneRecordingNowService by timer
  *
  * @author Spitsin Michael
  * @since 2014-04-13
  */
-public class MicrophoneRecordingTimerService extends RelatingService implements OnStatusChangedListener{
+public class MicrophoneRecordingTimerService extends MicrophoneRecordingService{
 
-    public static final int TIMER_PROGRESS_MAX = 360;
+    /**
+     * Value that tells about maximum progress of timer delay
+     * Because of round progress implementation (as default),
+     * progress increments until 360 value will be reached
+     */
+    private static final int TIMER_PROGRESS_MAX = 360;
 
     private final Set<OnTimerUpdateListener> onUpdateListeners = new HashSet<OnTimerUpdateListener>();
-
-    private MicrophoneRecordingService mService;
     private ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);
     private int timerProgress;
 
-    /**
-     * Records fingers from microphone by timer
-     * Actually: calls record method from MicrophoneRecordingService with fixed delay
-     */
-    public void record() {
+
+    @Override
+    public void recordFingerprint() {
         startServiceWorking();
         if (executor.isShutdown()) {
             executor = new ScheduledThreadPoolExecutor(1);
@@ -41,20 +41,16 @@ public class MicrophoneRecordingTimerService extends RelatingService implements 
         onUpdate(timerProgress);
 
         if (isRelativeServiceBound) {
-            mService.recordFingerprint();
+            defRecordingMethod();
         }
     }
 
-    /**
-     * Cancels recording from microphone
-     */
-    public void cancel() {
+    @Override
+    public void cancelRecording() {
         if (timerProgress > 0) {
             executor.shutdownNow();
         } else {
-            if (isRelativeServiceBound) {
-                mService.cancel();
-            }
+            defCancelingMethod();
         }
 
         stopWorking();
@@ -81,16 +77,22 @@ public class MicrophoneRecordingTimerService extends RelatingService implements 
     /**
      * @return progress of timer delay between two recordings
      */
+    @SuppressWarnings("unused")
     public int getTimerProgress() {
         return timerProgress;
     }
 
-    @Override
-    public void onStatusChanged(String status) {
+    /**
+     * Clears timer progress
+     */
+    @SuppressWarnings("unused")
+    public void resetProgress() {
+        timerProgress = 0;
     }
 
     @Override
     public void onResultStatus(SongData data) {
+        super.onResultStatus(data);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         long period = prefs.getInt("settingsTimerDelay", SettingsActivity.DEFAULT_TIMER_DELAY) * DateUtils.SECOND_IN_MILLIS / TIMER_PROGRESS_MAX;
 
@@ -102,26 +104,10 @@ public class MicrophoneRecordingTimerService extends RelatingService implements 
                 onUpdate(timerProgress);
                 if (timerProgress >= TIMER_PROGRESS_MAX) {
                     executor.shutdownNow();
-                    record();
+                    recordFingerprint();
                 }
             }
         }, 0, period, TimeUnit.MILLISECONDS);
-    }
-
-    @Override
-    protected void onServiceConnected(Service service) {
-        mService = (MicrophoneRecordingService) service;
-        mService.addOnStatusChangedListener(this);
-    }
-
-    @Override
-    protected Class<?> getRelativeServiceClass() {
-        return MicrophoneRecordingService.class;
-    }
-
-    @Override
-    protected void cleanUpAllDependencies() {
-        mService.removeOnStatusChangedListener(this);
     }
 
     /**

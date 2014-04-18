@@ -11,7 +11,7 @@ import java.util.*;
  * Communicates with GraceNote service and receives answers from it.
  *
  * Only this service recognize exact fingerprints.
- * All others recognize services (like MicrophoneRecordingService)
+ * All others recognize services (like MicrophoneRecordingNowService)
  * must translate resulting fingerprint to this service.
  *
  * @author Michael Spitsin

@@ -22,7 +22,7 @@ import android.widget.TextView;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
 import com.git.programmerr47.vkazam.model.SongData;
 import com.git.programmerr47.vkazam.model.observers.*;
-import com.git.programmerr47.vkazam.services.MicrophoneRecordingService;
+import com.git.programmerr47.vkazam.services.MicrophoneRecordingNowService;
 import com.git.programmerr47.vkazam.services.MicrophoneRecordingTimerService;
 import com.git.programmerr47.vkazam.services.OnStatusChangedListener;
 import com.git.programmerr47.vkazam.services.StartBoundService;
@@ -30,11 +30,12 @@ import com.git.programmerr47.vkazam.utils.AndroidUtils;
 import com.git.programmerr47.vkazam.view.ProgressWheel;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
+//TODO fix it
 public class RecognizePageFragment extends FragmentWithName implements
 		IRecognizeStatusObserver, IRecognizeResultObserver,
 		IFingerprintStatusObserver, IFingerprintTimerObserver, IFingerprintResultObserver, OnStatusChangedListener, MicrophoneRecordingTimerService.OnTimerUpdateListener {
 
-    private MicrophoneRecordingService mMicrophoneService;
+    private MicrophoneRecordingNowService mMicrophoneService;
     private boolean isMicrophoneServiceBound;
 
     private MicrophoneRecordingTimerService mTimerService;
@@ -83,7 +84,7 @@ public class RecognizePageFragment extends FragmentWithName implements
                                        IBinder service) {
             StartBoundService.ServiceBinder binder = (StartBoundService.ServiceBinder) service;
             isMicrophoneServiceBound = true;
-            mMicrophoneService = (MicrophoneRecordingService) binder.getService();
+            mMicrophoneService = (MicrophoneRecordingNowService) binder.getService();
             mMicrophoneService.addOnStatusChangedListener(RecognizePageFragment.this);
             Log.v("Services", "microphoneServiceConnection.onServiceConnected: " + binder.getService().getClass().getName());
         }
@@ -146,7 +147,7 @@ public class RecognizePageFragment extends FragmentWithName implements
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        Intent intent = new Intent(getActivity(), MicrophoneRecordingService.class);
+        Intent intent = new Intent(getActivity(), MicrophoneRecordingNowService.class);
         getActivity().startService(intent);
         getActivity().bindService(intent, microphoneServiceConnection, Context.BIND_AUTO_CREATE);
 

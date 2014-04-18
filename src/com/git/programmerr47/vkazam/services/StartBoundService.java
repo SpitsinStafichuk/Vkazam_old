@@ -4,7 +4,6 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
-import android.util.Log;
 
 /**
  * Base service class for all vkazam recognizing services
@@ -13,7 +12,7 @@ import android.util.Log;
  * @author Michael Spitsin
  * @since 2014-04-14
  */
-public class StartBoundService extends Service {
+public abstract class StartBoundService extends Service {
 
     // Binder given to clients
     private final IBinder serviceBinder = new ServiceBinder();
@@ -57,6 +56,7 @@ public class StartBoundService extends Service {
      *
      * @return count of bound objects to this service
      */
+    @SuppressWarnings("unused")
     protected int getBinderCount() {
         return binderCount;
     }
