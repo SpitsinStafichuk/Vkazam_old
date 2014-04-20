@@ -22,10 +22,10 @@ public abstract class MicrophoneRecordingService extends RelatingService impleme
 
     private final Set<OnStatusChangedListener> onStatusListeners = new HashSet<OnStatusChangedListener>();
 
-    /**
-     * graceNote object to record fingerprints and receive answers
-     */
-    protected GNConfig config;
+	/**
+	 * Gracenote object to record fingerprints and receive answers
+	 */
+	protected GNConfig config;
 
     /**
      * related service that gives messages about current recognizing fingerprint
@@ -59,27 +59,25 @@ public abstract class MicrophoneRecordingService extends RelatingService impleme
         config = ((VkazamApplication) getApplication()).getConfig();
     }
 
-    /**
-     * Calls when need to record some new fingerprint
-     * Subclasses must override this method to determine
-     * their own mode of recording
-     *
-     * If subclass does not have its own implementation
-     * then it must call defRecodingMethod()
-     */
-    @SuppressWarnings("unused")
-    public abstract void recordFingerprint();
+	/**
+	 * Called when need to record some new fingerprint. Subclasses must override
+	 * this method to determine their own mode of recording
+	 * 
+	 * If subclass does not have its own implementation then it must call
+	 * defRecodingMethod()
+	 */
+	@SuppressWarnings("unused")
+	public abstract void recordFingerprint();
 
-    /**
-     * Calls when need to cancel some recording of new finger
-     * Subclasses must override this method to determine
-     * their own mode of canceling
-     *
-     * If subclass does not have its own implementation
-     * then it must call defCancelingMethod()
-     */
-    @SuppressWarnings("unused")
-    public abstract void cancelRecording();
+	/**
+	 * Called when need to cancel some recording of new finger Subclasses must
+	 * override this method to determine their own mode of canceling
+	 * 
+	 * If subclass does not have its own implementation then it must call
+	 * defCancelingMethod()
+	 */
+	@SuppressWarnings("unused")
+	public abstract void cancelRecording();
 
     /**
      * @return priority of fingerprint. Subclasses must tell what sort of priority this fingerprint will be
@@ -154,7 +152,7 @@ public abstract class MicrophoneRecordingService extends RelatingService impleme
             onStatusChanged(String.format("[%d] %s", gnFingerprintResult.getErrCode(), gnFingerprintResult.getErrMessage()));
         } else {
             FingerprintData fingerprint = new FingerprintData(gnFingerprintResult.getFingerprintData(), new Date());
-            currentRecognizingWrapper = new FingerprintWrapper(fingerprint, this, getFingerprintPriority());
+            currentRecognizingWrapper = new FingerprintWrapper(fingerprint, this, FingerprintWrapper.RECOGNIZE_PRIORITY_HIGHEST);
             recognizeFingerprintService.recognize(currentRecognizingWrapper);
         }
     }

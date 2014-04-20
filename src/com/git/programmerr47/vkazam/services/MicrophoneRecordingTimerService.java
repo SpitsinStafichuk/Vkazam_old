@@ -35,11 +35,8 @@ public class MicrophoneRecordingTimerService extends MicrophoneRecordingService{
     public void recordFingerprint() {
         startServiceWorking();
         setTimerProgress(0);
-
-        if (isRelativeServiceBound) {
-            defRecordingMethod();
-        }
-    }
+		defRecordingMethod();
+	}
 
     @Override
     public void cancelRecording() {
