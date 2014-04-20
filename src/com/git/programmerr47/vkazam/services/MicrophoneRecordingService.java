@@ -82,6 +82,11 @@ public abstract class MicrophoneRecordingService extends RelatingService impleme
     public abstract void cancelRecording();
 
     /**
+     * @return priority of fingerprint. Subclasses must tell what sort of priority this fingerprint will be
+     */
+    protected abstract int getFingerprintPriority();
+
+    /**
      * Default recording functionality
      * Simply starts recording and enables recording flag
      */
@@ -116,6 +121,19 @@ public abstract class MicrophoneRecordingService extends RelatingService impleme
         return isRecording;
     }
 
+    /**
+     * @return true if service send fingerprint to RecognizeFingerprintService
+     * (system is recognizing fingerprint) ot false otherwise
+     */
+    @SuppressWarnings("unused")
+    public boolean isRecognizing() {
+        if (isRelativeServiceBound) {
+            return recognizeFingerprintService.isWorking();
+        } else {
+            return false;
+        }
+    }
+
     public void addOnStatusChangedListener(OnStatusChangedListener listener) {
         onStatusListeners.add(listener);
     }
@@ -136,7 +154,7 @@ public abstract class MicrophoneRecordingService extends RelatingService impleme
             onStatusChanged(String.format("[%d] %s", gnFingerprintResult.getErrCode(), gnFingerprintResult.getErrMessage()));
         } else {
             FingerprintData fingerprint = new FingerprintData(gnFingerprintResult.getFingerprintData(), new Date());
-            currentRecognizingWrapper = new FingerprintWrapper(fingerprint, this, FingerprintWrapper.RECOGNIZE_PRIORITY_HIGHEST);
+            currentRecognizingWrapper = new FingerprintWrapper(fingerprint, this, getFingerprintPriority());
             recognizeFingerprintService.recognize(currentRecognizingWrapper);
         }
     }

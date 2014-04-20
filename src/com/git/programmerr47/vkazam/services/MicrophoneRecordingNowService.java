@@ -25,6 +25,11 @@ public class MicrophoneRecordingNowService extends MicrophoneRecordingService{
     }
 
     @Override
+    protected int getFingerprintPriority() {
+        return FingerprintWrapper.RECOGNIZE_PRIORITY_HIGHEST;
+    }
+
+    @Override
     public void onResultStatus(SongData data) {
         super.onResultStatus(data);
         stopWorking();

@@ -34,11 +34,7 @@ public class MicrophoneRecordingTimerService extends MicrophoneRecordingService{
     @Override
     public void recordFingerprint() {
         startServiceWorking();
-        if (executor.isShutdown()) {
-            executor = new ScheduledThreadPoolExecutor(1);
-        }
-        timerProgress = 0;
-        onUpdate(timerProgress);
+        setTimerProgress(0);
 
         if (isRelativeServiceBound) {
             defRecordingMethod();
@@ -54,6 +50,11 @@ public class MicrophoneRecordingTimerService extends MicrophoneRecordingService{
         }
 
         stopWorking();
+    }
+
+    @Override
+    protected int getFingerprintPriority() {
+        return FingerprintWrapper.RECOGNIZE_PRIORITY_HIGH;
     }
 
     public void addOnTimerUpdateListener(OnTimerUpdateListener listener) {
@@ -87,21 +88,37 @@ public class MicrophoneRecordingTimerService extends MicrophoneRecordingService{
      */
     @SuppressWarnings("unused")
     public void resetProgress() {
-        timerProgress = 0;
+        if (!executor.isShutdown()) {
+            executor.shutdownNow();
+        }
+    }
+
+    private void setTimerProgress(int progress) {
+        timerProgress = progress;
+        onUpdate(timerProgress);
     }
 
     @Override
     public void onResultStatus(SongData data) {
         super.onResultStatus(data);
+        startTimer();
+    }
+
+    /**
+     * Starts timer delay. When it is ends, recording will be started
+     */
+    public void startTimer() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         long period = prefs.getInt("settingsTimerDelay", SettingsActivity.DEFAULT_TIMER_DELAY) * DateUtils.SECOND_IN_MILLIS / TIMER_PROGRESS_MAX;
 
-        timerProgress = 0;
+        setTimerProgress(0);
+        if (executor.isShutdown()) {
+            executor = new ScheduledThreadPoolExecutor(1);
+        }
         executor.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
-                timerProgress++;
-                onUpdate(timerProgress);
+                setTimerProgress(timerProgress + 1);
                 if (timerProgress >= TIMER_PROGRESS_MAX) {
                     executor.shutdownNow();
                     recordFingerprint();

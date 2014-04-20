@@ -40,6 +40,7 @@ public class RecognizeFingerprintService extends StartBoundService implements GN
      * @param wrapper - wrapper that contains fingerprint that must be recognized
      */
     public void recognize(FingerprintWrapper wrapper) {
+        startServiceWorking();
         if (currentRecognizingFingerprint != null) {
             addFingerprintWrapperToQueue(wrapper);
         } else {
