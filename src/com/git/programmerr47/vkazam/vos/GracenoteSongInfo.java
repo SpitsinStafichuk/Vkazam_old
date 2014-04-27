@@ -4,7 +4,7 @@ import java.util.List;
 
 public class GracenoteSongInfo {
 
-	private int id;
+	private final int id;
 	private String trackId;
 	private String artist;
 	private String album;
@@ -36,6 +36,7 @@ public class GracenoteSongInfo {
 			String title, String coverArtUrl, String albumReleaseYear,
 			String albumArtist, String lyricsId, List<SongUrl> songUrls) {
 		super();
+		id = -1;
 		this.trackId = trackId;
 		this.artist = artist;
 		this.album = album;

@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class SongInfo {
 
-	private int id;
+	private final int id;
 	private GracenoteSongInfo gracenoteSongInfo;
 	private Date date;
 	private String songPosition;
@@ -25,6 +25,7 @@ public class SongInfo {
 	public SongInfo(GracenoteSongInfo gracenoteSongInfo, Date date,
 			String songPosition, boolean favourite, boolean deleted) {
 		super();
+		id = -1;
 		this.gracenoteSongInfo = gracenoteSongInfo;
 		this.date = date;
 		this.songPosition = songPosition;

@@ -2,14 +2,13 @@ package com.git.programmerr47.vkazam.vos;
 
 public class SongUrl {
 
-	private int id;
+	private final int id;
 	private String url;
 	private String artist;
 	private String title;
 	private int urlType;
 
-	public SongUrl(int id, String url, String artist,
-			String title, int urlType) {
+	public SongUrl(int id, String url, String artist, String title, int urlType) {
 		super();
 		this.id = id;
 		this.url = url;
@@ -18,9 +17,9 @@ public class SongUrl {
 		this.urlType = urlType;
 	}
 
-	public SongUrl(String url, String artist, String title,
-			int urlType) {
+	public SongUrl(String url, String artist, String title, int urlType) {
 		super();
+		id = -1;
 		this.url = url;
 		this.artist = artist;
 		this.title = title;
