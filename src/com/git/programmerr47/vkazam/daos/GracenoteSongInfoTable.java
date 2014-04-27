@@ -27,8 +27,6 @@ public class GracenoteSongInfoTable {
                 ALBUM_RELEASE_YEAR + " INTEGER, " +
                 ALBUM_ARTIST + " TEXT, " +
                 LYRICS + " TEXT)";
-        final String createIndex = "CREATE INDEX " + GRACENOTE_SONG_INFO + TRACK_ID + "Index"
-                + " ON " + GRACENOTE_SONG_INFO + "(" + TRACK_ID + ");";
-        database.execSQL(createStatement + createIndex);
+        database.execSQL(createStatement);
     }
 }
