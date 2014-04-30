@@ -40,7 +40,7 @@ public class FingerprintDao {
     public Fingerprint getLastFingerprint() {
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
         Cursor cursor = db.query(FingerprintTable.FINGERPRINTS, null, null,
-                null, null, FingerprintTable.DELETION_DATE + " DESC", "1");
+                null, null, FingerprintTable.DATE + " DESC", "1");
         Fingerprint fingerprint = null;
         if (cursor.moveToFirst()) {
             fingerprint = new Fingerprint(

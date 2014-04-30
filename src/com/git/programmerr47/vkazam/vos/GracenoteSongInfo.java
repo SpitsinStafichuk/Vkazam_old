@@ -12,12 +12,12 @@ public class GracenoteSongInfo {
 	private String coverArtUrl;
 	private String albumReleaseYear;
 	private String albumArtist;
-	private String lyricsId;
+	private String lyrics;
 	private List<SongUrl> songUrls;
 
 	public GracenoteSongInfo(int id, String trackId, String artist,
 			String album, String title, String coverArtUrl,
-			String albumReleaseYear, String albumArtist, String lyricsId,
+			String albumReleaseYear, String albumArtist, String lyrics,
 			List<SongUrl> songUrls) {
 		super();
 		this.id = id;
@@ -28,13 +28,13 @@ public class GracenoteSongInfo {
 		this.coverArtUrl = coverArtUrl;
 		this.albumReleaseYear = albumReleaseYear;
 		this.albumArtist = albumArtist;
-		this.lyricsId = lyricsId;
+		this.lyrics = lyrics;
 		this.songUrls = songUrls;
 	}
 
 	public GracenoteSongInfo(String trackId, String artist, String album,
 			String title, String coverArtUrl, String albumReleaseYear,
-			String albumArtist, String lyricsId, List<SongUrl> songUrls) {
+			String albumArtist, String lyrics, List<SongUrl> songUrls) {
 		super();
 		id = -1;
 		this.trackId = trackId;
@@ -44,7 +44,7 @@ public class GracenoteSongInfo {
 		this.coverArtUrl = coverArtUrl;
 		this.albumReleaseYear = albumReleaseYear;
 		this.albumArtist = albumArtist;
-		this.lyricsId = lyricsId;
+		this.lyrics = lyrics;
 		this.songUrls = songUrls;
 	}
 
@@ -108,12 +108,12 @@ public class GracenoteSongInfo {
 		this.albumArtist = albumArtist;
 	}
 
-	public String getLyricsId() {
-		return lyricsId;
+	public String getLyrics() {
+		return lyrics;
 	}
 
-	public void setLyricsId(String lyricsId) {
-		this.lyricsId = lyricsId;
+	public void setLyrics(String lyricsId) {
+		this.lyrics = lyricsId;
 	}
 
 	public List<SongUrl> getSongUrls() {
