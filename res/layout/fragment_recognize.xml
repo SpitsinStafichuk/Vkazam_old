@@ -46,7 +46,7 @@
                         android:scaleType="centerInside"
                         android:src="@drawable/timer" />
 
-                <com.git.programmerr47.vkazam.view.ProgressWheel
+                <com.github.spitsinstafichuk.vkazam.view.ProgressWheel
                         android:id="@+id/fingerprintTimer"
                         android:layout_width="130dp"
                         android:layout_height="130dp"/>
@@ -156,7 +156,7 @@
                         android:textColor="@color/white"
                         android:clickable="false"/>
 
-                <com.git.programmerr47.vkazam.view.ProgressWheel
+                <com.github.spitsinstafichuk.vkazam.view.ProgressWheel
                         android:id="@+id/tutorial2TimerDelay"
                         android:layout_width="130dp"
                         android:layout_height="130dp"
