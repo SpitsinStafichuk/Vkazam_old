@@ -5,14 +5,14 @@ import java.util.Date;
 
 public class SongInfo {
 
-    private final int id;
+    private final long id;
     private GracenoteSongInfo gracenoteSongInfo;
     private Date date;
     private String songPosition;
     private boolean favourite;
     private Date deletionDate;
 
-    public SongInfo(int id, GracenoteSongInfo gracenoteSongInfo, Date date,
+    public SongInfo(long id, GracenoteSongInfo gracenoteSongInfo, Date date,
             String songPosition, boolean favourite, Date deletionDate) {
         super();
         this.id = id;
@@ -34,7 +34,7 @@ public class SongInfo {
         this.deletionDate = deletionDate;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 

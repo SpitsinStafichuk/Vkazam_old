@@ -9,22 +9,22 @@ import android.database.sqlite.SQLiteDatabase;
 import com.git.programmerr47.vkazam.vos.SongUrl;
 
 public class SongUrlDao {
-	
-	DatabaseHelper databaseHelper;
+
+    DatabaseHelper databaseHelper;
 
     public SongUrlDao(Context context) {
         databaseHelper = new DatabaseHelper(context);
     }
 
-    public SongUrl get(int id) {
-    	SQLiteDatabase db = databaseHelper.getReadableDatabase();
+    public SongUrl get(long id) {
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
         Cursor cursor = db.query(SongUrlTable.SONG_URL, null, SongUrlTable._ID + "=?",
                 new String[] {
-                    Integer.toString(id)
+                    Long.toString(id)
                 }, null, null, null);
         SongUrl songUrl = null;
         if (cursor.moveToFirst()) {
-        	songUrl = new SongUrl(
+            songUrl = new SongUrl(
                     cursor.getInt(cursor.getColumnIndex(SongUrlTable._ID)),
                     cursor.getString(cursor.getColumnIndex(SongUrlTable.URL)),
                     cursor.getString(cursor.getColumnIndex(SongUrlTable.ARTIST)),
@@ -34,9 +34,9 @@ public class SongUrlDao {
         db.close();
         return songUrl;
     }
-    
+
     public long save(SongUrl songUrl) {
-    	long result;
+        long result;
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(SongUrlTable.ARTIST, songUrl.getArtist());
@@ -49,7 +49,7 @@ public class SongUrlDao {
             result = db.update(SongUrlTable.SONG_URL, values, SongUrlTable._ID
                     + "=?",
                     new String[] {
-                        Integer.toString(songUrl.getId())
+                        Long.toString(songUrl.getId())
                     });
         }
         db.close();
