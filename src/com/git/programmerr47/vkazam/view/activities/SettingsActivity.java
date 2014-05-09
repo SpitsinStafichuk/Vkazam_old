@@ -18,24 +18,20 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.git.programmerr47.testhflbjcrhjggkth.R;
-import com.git.programmerr47.vkazam.model.MicroScrobblerModel;
 import com.git.programmerr47.vkazam.model.RecognizeServiceConnection;
 import com.git.programmerr47.vkazam.utils.AndroidUtils;
-import com.git.programmerr47.vkazam.utils.Constants;
 import com.git.programmerr47.vkazam.utils.NetworkUtils;
 import com.git.programmerr47.vkazam.view.activities.interfaces.IConnectedDialogFragmentDissmised;
 import com.git.programmerr47.vkazam.view.fragments.TimerDelayDialogFragment;
-import com.perm.kate.api.Api;
 
 public class SettingsActivity extends ActionBarActivity implements
 		CompoundButton.OnCheckedChangeListener,
 		IConnectedDialogFragmentDissmised {
 
+    public static final int DEFAULT_TIMER_DELAY = 5;
     public static final String PARENT_INTENT = "parentIntent";
     private static final String SHOW_DIALOG_TAG = "dialog";
     private static final int REQUEST_VK_LOGIN = 1;
-
-    private MicroScrobblerModel model;
 
 	private LinearLayout vkConnection;
 	private LinearLayout vkUrls;
@@ -64,7 +60,6 @@ public class SettingsActivity extends ActionBarActivity implements
 
 		parentIntent = getIntent().getParcelableExtra(PARENT_INTENT);
 
-        this.model = RecognizeServiceConnection.getModel();
 		vkConnection = (LinearLayout) findViewById(R.id.settingsVkConnection);
 		((ImageView) vkConnection.findViewById(R.id.icon))
 				.setImageResource(R.drawable.ic_settings_vk);
@@ -78,15 +73,16 @@ public class SettingsActivity extends ActionBarActivity implements
 		vkConnection.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-                if (model.getVkApi() == null) {
-                    vkConnection.setEnabled(false);
-                    Intent intent = new Intent();
-                    intent.setClass(SettingsActivity.this, VkLoginActivity.class);
-                    startActivityForResult(intent, REQUEST_VK_LOGIN);
-                } else {
-                    model.setVkApi(null, 0, null);
-                    changeVkButton();
-                }
+// TODO CHANGE
+//                if (model.getVkApi() == null) {
+//                    vkConnection.setEnabled(false);
+//                    Intent intent = new Intent();
+//                    intent.setClass(SettingsActivity.this, VkLoginActivity.class);
+//                    startActivityForResult(intent, REQUEST_VK_LOGIN);
+//                } else {
+//                    model.setVkApi(null, 0, null);
+//                    changeVkButton();
+//                }
 			}
 		});
 
@@ -237,7 +233,7 @@ public class SettingsActivity extends ActionBarActivity implements
 				.getDefaultSharedPreferences(this);
 
 		((TextView) timerDelay.findViewById(R.id.additional_info))
-				.setText(prefs.getInt("settingsTimerDelay", 5) + " "
+				.setText(prefs.getInt("settingsTimerDelay", DEFAULT_TIMER_DELAY) + " "
 						+ getString(R.string.settings_secs));
 
 		vkConntectionCheckBox.setChecked(prefs.getBoolean(
@@ -267,24 +263,27 @@ public class SettingsActivity extends ActionBarActivity implements
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_VK_LOGIN) {
-            if (resultCode == Activity.RESULT_OK) {
-                model.setVkApi(data.getStringExtra("token"),
-                        data.getLongExtra("user_id", 0),
-                        new Api(data.getStringExtra("token"), Constants.VK_API_ID));
-                changeVkButton();
-                return;
-            }
-        }
-
-        model.setVkApi(null, 0, null);
-        changeVkButton();
-		vkConnection.setEnabled(true);
+// TODO CHANGE
+//        if (requestCode == REQUEST_VK_LOGIN) {
+//            if (resultCode == Activity.RESULT_OK) {
+//                model.setVkApi(data.getStringExtra("token"),
+//                        data.getLongExtra("user_id", 0),
+//                        new Api(data.getStringExtra("token"), Constants.VK_API_ID));
+//                changeVkButton();
+//                return;
+//            }
+//        }
+//
+//        model.setVkApi(null, 0, null);
+//        changeVkButton();
+//		vkConnection.setEnabled(true);
 	}
 
     public boolean hasVkAccount() {
-        Log.i("Settings", "model.getVkApi() == null: " + (model.getVkApi() == null));
-        return model.getVkApi() != null;
+// TODO CHANGE
+//        Log.i("Settings", "model.getVkApi() == null: " + (model.getVkApi() == null));
+//        return model.getVkApi() != null;
+        return false;
     }
 
 	@Override

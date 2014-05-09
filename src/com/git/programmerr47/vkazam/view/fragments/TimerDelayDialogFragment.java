@@ -19,11 +19,14 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.git.programmerr47.testhflbjcrhjggkth.R;
+import com.git.programmerr47.vkazam.view.activities.SettingsActivity;
 import com.git.programmerr47.vkazam.view.activities.interfaces.IConnectedDialogFragmentDissmised;
 import com.git.programmerr47.vkazam.view.activities.interfaces.IConnectedDialogFragmentDissmised;
 
 public class TimerDelayDialogFragment extends DialogFragment{
     public static final String TAG = "timerDelay";
+    public static final int MIN_TIMER_DELAY = 2;
+    public static final int MAX_TIMER_DELAY = 300;
 
     private int result;
     private LinearLayout acceptButton;
@@ -54,7 +57,7 @@ public class TimerDelayDialogFragment extends DialogFragment{
         super.onCreate(savedInstanceState);
         setStyle(STYLE_NO_TITLE, 0);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
-        result = prefs.getInt("settingsTimerDelay", 5);
+        result = prefs.getInt("settingsTimerDelay", SettingsActivity.DEFAULT_TIMER_DELAY);
     }
 
     @Override
@@ -62,18 +65,18 @@ public class TimerDelayDialogFragment extends DialogFragment{
         View view = inflater.inflate(R.layout.timer_delay, container, false);
 
         TextView min = (TextView) view.findViewById(R.id.minDelay);
-        min.setText("2 " + getString(R.string.settings_secs));
+        min.setText(MIN_TIMER_DELAY + " " + getString(R.string.settings_secs));
 
         TextView max = (TextView) view.findViewById(R.id.maxDelay);
-        max.setText("300 " + getString(R.string.settings_secs));
+        max.setText(MAX_TIMER_DELAY + " " + getString(R.string.settings_secs));
 
         chooseBar = (SeekBar) view.findViewById(R.id.timerDelayChooseBar);
-        chooseBar.setProgress(result - 2);
+        chooseBar.setProgress(result - MIN_TIMER_DELAY);
         chooseBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
-                    result = progress + 2;
+                    result = progress + MIN_TIMER_DELAY;
                     resultValue.setText(result + "");
                 }
             }
@@ -86,7 +89,7 @@ public class TimerDelayDialogFragment extends DialogFragment{
         });
 
         resultValue = (EditText) view.findViewById(R.id.timerDelayResultValue);
-        resultValue.setText(chooseBar.getProgress() + 2 + "");
+        resultValue.setText(chooseBar.getProgress() + MIN_TIMER_DELAY + "");
         resultValue.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {}
@@ -96,9 +99,9 @@ public class TimerDelayDialogFragment extends DialogFragment{
                 try {
                     result = Integer.parseInt(charSequence.toString());
                 } catch(Exception e) {
-                    result = 5;
+                    result = SettingsActivity.DEFAULT_TIMER_DELAY;
                 }
-                chooseBar.setProgress(result - 2);
+                chooseBar.setProgress(result - MIN_TIMER_DELAY);
             }
 
             @Override

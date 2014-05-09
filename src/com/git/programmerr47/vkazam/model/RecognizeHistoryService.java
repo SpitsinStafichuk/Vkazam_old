@@ -14,6 +14,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
+@Deprecated
 public class RecognizeHistoryService extends Service implements IRecognizeStatusObserver, ServiceConnection {
 	
 	private static final String TAG = "RecognizeHistoryService";

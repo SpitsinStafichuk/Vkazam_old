@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.git.programmerr47.vkazam.controllers.NotificationController;
 import com.git.programmerr47.vkazam.controllers.NotificationController;
 
+@Deprecated
 public class RecognizeService extends Service {
 	
 	private static final String TAG = "RecognizeService";

@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
+@Deprecated
 public class MicroScrobblerMediaPlayer extends MediaPlayer implements IPlayerStateObservable {
     private static MicroScrobblerMediaPlayer instance;
     private static Set<IPlayerStateObserver> playerStateObservers = new HashSet<IPlayerStateObserver>();

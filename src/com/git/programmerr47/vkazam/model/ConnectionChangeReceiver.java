@@ -7,6 +7,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.widget.Toast;
 
+@Deprecated
 public class ConnectionChangeReceiver extends BroadcastReceiver {
 
 	  @Override

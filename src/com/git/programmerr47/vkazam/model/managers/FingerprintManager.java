@@ -80,7 +80,7 @@ public class FingerprintManager
 	
 	
 	public void fingerprintCancel() {
-		GNOperations.cancel((GNFingerprintResultReady)this);
+		GNOperations.cancel(this);
 		isFingerprinting = false;
         isFingerprintingByTimer = false;
         isFingerprintingOneTime = false;
