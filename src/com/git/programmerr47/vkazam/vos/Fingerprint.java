@@ -5,12 +5,12 @@ import java.util.Date;
 
 public class Fingerprint {
 
-    private int id;
+    private long id;
     private String fingerprint;
     private Date date;
     private Date deletionDate;
 
-    public Fingerprint(int id, String fingerprint, Date date, Date deletionDate) {
+    public Fingerprint(long id, String fingerprint, Date date, Date deletionDate) {
         super();
         this.id = id;
         this.fingerprint = fingerprint;
@@ -26,7 +26,7 @@ public class Fingerprint {
         this.deletionDate = deletionDate;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 

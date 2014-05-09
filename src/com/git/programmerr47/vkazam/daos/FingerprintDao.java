@@ -18,11 +18,11 @@ public class FingerprintDao {
         databaseHelper = new DatabaseHelper(context);
     }
 
-    public Fingerprint get(int id) {
+    public Fingerprint get(long id) {
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
         Cursor cursor = db.query(FingerprintTable.FINGERPRINTS, null, FingerprintTable._ID + "=?",
                 new String[] {
-                    Integer.toString(id)
+                    Long.toString(id)
                 }, null, null, null);
         Fingerprint fingerprint = null;
         if (cursor.moveToFirst()) {
@@ -40,7 +40,7 @@ public class FingerprintDao {
     public Fingerprint getLastFingerprint() {
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
         Cursor cursor = db.query(FingerprintTable.FINGERPRINTS, null, null,
-                null, null, FingerprintTable.DELETION_DATE + " DESC", "1");
+                null, null, FingerprintTable.DATE + " DESC", "1");
         Fingerprint fingerprint = null;
         if (cursor.moveToFirst()) {
             fingerprint = new Fingerprint(
@@ -67,18 +67,18 @@ public class FingerprintDao {
             result = db.update(FingerprintTable.FINGERPRINTS, values, FingerprintTable._ID
                     + "=?",
                     new String[] {
-                        Integer.toString(fingerprint.getId())
+                        Long.toString(fingerprint.getId())
                     });
         }
         db.close();
         return result;
     }
 
-    public int delete(int id) {
+    public int delete(long id) {
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
         int result = db.delete(FingerprintTable.FINGERPRINTS, FingerprintTable._ID + "=?",
                 new String[] {
-                    Integer.toString(id)
+                    Long.toString(id)
                 });
         db.close();
         return result;
