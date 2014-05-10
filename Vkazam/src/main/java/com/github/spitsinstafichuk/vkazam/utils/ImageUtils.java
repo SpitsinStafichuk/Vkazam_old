@@ -14,7 +14,7 @@ public class ImageUtils {
 	private static byte[] getMD5(String str) {
 		MessageDigest digest;
 		try {
-			digest = java.security.MessageDigest.getInstance("MD5");
+			digest = MessageDigest.getInstance("MD5");
 	        digest.update(str.getBytes());
 	        byte messageDigest[] = digest.digest();
 	        return messageDigest;

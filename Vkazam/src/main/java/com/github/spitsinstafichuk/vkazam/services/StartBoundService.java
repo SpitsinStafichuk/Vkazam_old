@@ -48,7 +48,7 @@ public abstract class StartBoundService extends Service {
 	}
 
 	@Override
-	public int onStartCommand(android.content.Intent intent, int flags,
+	public int onStartCommand(Intent intent, int flags,
 			int startId) {
 		return START_STICKY;
 	}

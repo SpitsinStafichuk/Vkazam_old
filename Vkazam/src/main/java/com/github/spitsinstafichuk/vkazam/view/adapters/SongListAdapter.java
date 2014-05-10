@@ -124,7 +124,7 @@ public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver
 		Log.v("SongInformation", "in trackId: " + songData.getTrackId());
 		if(songData.getCoverArtUrl() == null) {
 			Log.i(TAG, "songData before search: " + songData.toString());
-			model.getSearchManager().search(songData.getTrackId(), new SearchManager.SearchListener() {
+			model.getSearchManager().search(songData.getTrackId(), new SearchListener() {
 				
 				@Override
 				public void onSearchStatusChanged(String status) {

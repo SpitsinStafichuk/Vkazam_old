@@ -19,7 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.spitsinstafichuk.vkazam.R;
-import com.github.spitsinstafichuk.vkazam.controllers.URLcontroller;
+import com.github.spitsinstafichuk.vkazam.controllers.UrlController;
 import com.github.spitsinstafichuk.vkazam.model.MicroScrobblerModel;
 import com.github.spitsinstafichuk.vkazam.model.RecognizeServiceConnection;
 import com.github.spitsinstafichuk.vkazam.model.SongData;
@@ -50,14 +50,14 @@ public abstract class URLlistAdapter extends BaseAdapter {
 	protected boolean isAllSongWithOriginArtistShown = false;
 	protected boolean isFirstClick = true;
 
-	protected URLcontroller controller;
+	protected UrlController controller;
 
 	public URLlistAdapter(final FragmentActivity activity, int position,
 			int resLayout, int endOfListResLayout) {
 		this.activity = activity;
 		this.resLayout = resLayout;
 		this.endOfListResLayout = endOfListResLayout;
-		controller = new URLcontroller(activity);
+		controller = new UrlController(activity);
 		model = RecognizeServiceConnection.getModel();
 		currentSongData = (DatabaseSongData) model.getSongList().get(position);
 		updateSongsList();
@@ -69,8 +69,8 @@ public abstract class URLlistAdapter extends BaseAdapter {
 	 * Send request to service and wait for answer, then add to list new songs.
 	 * 
 	 * @throws com.github.spitsinstafichuk.vkazam.model.pleer.api.KException
-	 * @throws IOException
-	 * @throws JSONException
+	 * @throws java.io.IOException
+	 * @throws org.json.JSONException
 	 * @throws com.perm.kate.api.KException
 	 */
 	protected abstract void addMoreUrls() throws KException, IOException,

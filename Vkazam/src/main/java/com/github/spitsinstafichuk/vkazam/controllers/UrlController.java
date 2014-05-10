@@ -18,14 +18,14 @@ import com.github.spitsinstafichuk.vkazam.model.observers.IPlayerStateObserver;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
-public class URLcontroller extends SongController implements IPlayerStateObserver{
-	private static final String TAG = "URLcontroller";
+public class UrlController extends SongController implements IPlayerStateObserver{
+	private static final String TAG = "UrlController";
 	
     private View currentElement;
     private String currentUrl;
     private SongManager songManager;
 
-    public URLcontroller(FragmentActivity view) {
+    public UrlController(FragmentActivity view) {
         super(view);
         model = RecognizeServiceConnection.getModel();
         songManager = model.getSongManager();

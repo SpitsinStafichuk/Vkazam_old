@@ -676,19 +676,19 @@ public class SongInfoFragment extends Fragment implements IPlayerStateObserver,
 		MenuItem shareItem = menu.findItem(R.id.action_share);
 		shareActionProvider = (ShareActionProvider) MenuItemCompat
 				.getActionProvider(shareItem);
-		Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+		Intent sharingIntent = new Intent(Intent.ACTION_SEND);
 		sharingIntent.setType("text/plain");
-		sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,
+		sharingIntent.putExtra(Intent.EXTRA_SUBJECT,
 				getString(R.string.new_song_title));
 		if (data.getAlbum() != null) {
 			sharingIntent.putExtra(
-					android.content.Intent.EXTRA_TEXT,
+					Intent.EXTRA_TEXT,
 					getString(R.string.new_song_message) + " "
 							+ data.getArtist() + " - " + data.getTitle() + " ("
 							+ data.getAlbum() + ")");
 		} else {
 			sharingIntent.putExtra(
-					android.content.Intent.EXTRA_TEXT,
+					Intent.EXTRA_TEXT,
 					getString(R.string.new_song_message) + " "
 							+ data.getArtist() + " - " + data.getTitle());
 		}

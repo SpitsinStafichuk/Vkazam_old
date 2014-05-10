@@ -7,8 +7,9 @@ android {
     defaultConfig {
         minSdkVersion 8
         targetSdkVersion 19
+        versionCode 1
+        versionName "1.0"
     }
-
     buildTypes {
         release {
             runProguard false
@@ -20,10 +21,6 @@ android {
 dependencies {
     compile 'com.android.support:support-v4:+'
     compile 'com.android.support:appcompat-v7:+'
-    compile files('libs/androidvksdk.jar')
+    compile fileTree(dir: 'libs', include: ['*.jar'])
     compile files('libs/GN_Music_SDK.jar')
-    compile files('libs/lastfm-java-0.1.2.jar')
-    compile files('libs/musiXmatchConnector.jar')
-    compile files('libs/nineoldandroids-2.4.0.jar')
-    compile files('libs/universal-image-loader-1.8.6-with-sources.jar')
 }

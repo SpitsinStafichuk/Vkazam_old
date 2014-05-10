@@ -37,7 +37,7 @@ public class RecognizeHistoryService extends Service implements OnStatusChangedL
         return super.onUnbind(intent);
     }
 
-    public int onStartCommand(android.content.Intent intent, int flags, int startId) {
+    public int onStartCommand(Intent intent, int flags, int startId) {
         return START_STICKY;
     }
 
