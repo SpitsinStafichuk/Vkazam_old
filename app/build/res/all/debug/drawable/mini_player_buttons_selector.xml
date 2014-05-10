@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_pressed="false" android:drawable="@drawable/panel_picture_frame_bg_normal" />
+    <!--  Pressed
+     -->
+    <item android:state_pressed="true" android:drawable="@drawable/panel_picture_frame_bg_pressed_blue" />
+</selector><!-- From: file:/C:/Users/sydy/asprojects/Vkazam/app/src/main/res/drawable/mini_player_buttons_selector.xml -->

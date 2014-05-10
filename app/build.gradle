@@ -1,0 +1,29 @@
+apply plugin: 'android'
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion "19.0.3"
+
+    defaultConfig {
+        minSdkVersion 8
+        targetSdkVersion 19
+    }
+
+    buildTypes {
+        release {
+            runProguard false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+}
+
+dependencies {
+    compile 'com.android.support:support-v4:+'
+    compile 'com.android.support:appcompat-v7:+'
+    compile files('libs/androidvksdk.jar')
+    compile files('libs/GN_Music_SDK.jar')
+    compile files('libs/lastfm-java-0.1.2.jar')
+    compile files('libs/musiXmatchConnector.jar')
+    compile files('libs/nineoldandroids-2.4.0.jar')
+    compile files('libs/universal-image-loader-1.8.6-with-sources.jar')
+}

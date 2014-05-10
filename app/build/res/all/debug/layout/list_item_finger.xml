@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/fingerprintImage"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginRight="5dp"
+        android:src="@drawable/ic_fingerprint"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="5dp"
+        android:orientation="vertical"
+        android:background="@drawable/list_item_bg_default">
+
+        <TextView
+            android:id="@+id/fingerprintText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/finger_id"
+            android:singleLine="true"
+            android:textSize="25sp"/>
+
+        <TextView
+            android:id="@+id/fingerprintDate"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            android:text="@string/finger_date"
+            android:singleLine="true"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
+</LinearLayout>
+<!-- From: file:/C:/Users/sydy/asprojects/Vkazam/app/src/main/res/layout/list_item_finger.xml -->

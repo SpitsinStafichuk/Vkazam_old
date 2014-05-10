@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:shape="rectangle">
+
+    <solid
+            android:color="@color/very_pale_cyan" />
+</shape>
+<!-- From: file:/C:/Users/sydy/asprojects/Vkazam/app/src/main/res/drawable/pref_item_bg_default.xml -->

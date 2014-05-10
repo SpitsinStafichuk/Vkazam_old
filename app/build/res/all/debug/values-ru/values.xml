@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- From: file:/C:/Users/sydy/asprojects/Vkazam/app/build/exploded-bundles/ComAndroidSupportAppcompatV71910.aar/res/values-ru/values.xml -->
+    <eat-comment />
+
+    <string name="abc_action_bar_home_description" msgid="4600421777120114993">"Перейти на главный экран"</string>
+    <string name="abc_action_bar_up_description" msgid="1594238315039666878">"Перейти вверх"</string>
+    <string name="abc_action_menu_overflow_description" msgid="3588849162933574182">"Другие параметры"</string>
+    <string name="abc_action_mode_done" msgid="4076576682505996667">"Готово"</string>
+    <string name="abc_activity_chooser_view_see_all" msgid="7468859129482906941">"Показать все"</string>
+    <string name="abc_activitychooserview_choose_application" msgid="2031811694353399454">"Выбрать приложение"</string>
+    <string name="abc_searchview_description_clear" msgid="3691816814315814921">"Удалить запрос"</string>
+    <string name="abc_searchview_description_query" msgid="2550479030709304392">"Поисковый запрос"</string>
+    <string name="abc_searchview_description_search" msgid="8264924765203268293">"Поиск"</string>
+    <string name="abc_searchview_description_submit" msgid="8928215447528550784">"Отправить запрос"</string>
+    <string name="abc_searchview_description_voice" msgid="893419373245838918">"Голосовой поиск"</string>
+    <string name="abc_shareactionprovider_share_with" msgid="3421042268587513524">"Открыть доступ"</string>
+    <string name="abc_shareactionprovider_share_with_application" msgid="7165123711973476752">"Открыть доступ пользователю %s"</string>
+    <!-- From: file:/C:/Users/sydy/asprojects/Vkazam/app/src/main/res/values-ru/strings.xml -->
+    <eat-comment />
+
+    <string name="accept_button">Принять</string>
+    <string name="action_refresh">Выбрать другой вариант песни</string>
+    <string name="action_settings">Настройки</string>
+    <string name="added_in_vk_music">Песня добавлена в ваши ВК аудиозаписи</string>
+    <string name="album">Альбом</string>
+    <string name="album_label">Альбом:</string>
+    <string name="artist">Исполнитель</string>
+    <string name="artist_label">Исполнитель:</string>
+    <string name="awaiting_title">Ожидание ответа</string>
+    <string name="awaiting_vk_lyrics_message">Пожалуйста, дождитесь ответа ВК</string>
+    <string name="awaiting_youtube_message">Пожалуйста, дождитесь ответа YouTube</string>
+    <string name="bad_lyrics_message">Не нравится текст песни? Вы можете выбрать другую ссылку или получить текст песни из Musixmatch</string>
+    <string name="bad_lyrics_title">Плохой текст песни</string>
+    <string name="cancel_button">Отменить</string>
+    <string name="date">Дата распознавания</string>
+    <string name="date_label">Дата распознания:</string>
+    <string name="deletion_message">Вы действительно хотите удалить эту композицию из истории?</string>
+    <string name="deletion_title">Подтверждение удаления</string>
+    <string name="download_cancel">Отмена сохранения</string>
+    <string name="download_error">Ошибка сохранения:</string>
+    <string name="download_success">Файл сохранен для оффлайн прослушивания</string>
+    <string name="empty_fingerlist">Список отпечатков пуст</string>
+    <string name="ext_storage_not_available">Внешняя память недоступна</string>
+    <string name="finger_date">Дата прослушивания</string>
+    <string name="finger_id">Id отпечатка</string>
+    <string name="fingerprints_page_fragment_caption">Отпечатки</string>
+    <string name="get_lyrics">Просмотреть текст</string>
+    <string name="get_musixmatch">Получить Musixmatch</string>
+    <string name="get_musixmatch_lyrics">Получить текст из MM</string>
+    <string name="get_youtube_video">Посмотреть видео из YouTube</string>
+    <string name="history_page_fragment_caption">История</string>
+    <string name="internet_connection_not_available">Кажется, вы не подключены к интернету</string>
+    <string name="loading_message">сохраняется для оффлайн прослушивания</string>
+    <string name="loading_title">Загрузка</string>
+    <string name="miniplayer_base_line">Исполнитель - Название</string>
+    <string name="more_elements">Больше композиций</string>
+    <string name="musixmatch_not_available">Не могу подключиться к Musixmatch, попытайтесь еще раз позже</string>
+    <string name="network_not_available">Подключение к интернету не доступно в данный момент</string>
+    <string name="new_song_lyrics_message">Я только что прочитал текст песни:</string>
+    <string name="new_song_lyrics_title">Vkazam - новая композиция (текст песни)</string>
+    <string name="new_song_message">Я только что распознал классную композицию с помощью Vkazam:</string>
+    <string name="new_song_title">Vkazam - новая композиция</string>
+    <string name="no">Нет</string>
+    <string name="no_more_songs">Больше песен нет</string>
+    <string name="no_musixmatch_app_message">Вам нужно установить приложение Musixmatch и запустить его хотя бы один раз, чтобы увидеть текст песни</string>
+    <string name="no_musixmatch_app_title">Musixmatch не установлено</string>
+    <string name="no_thanks">Нет, спасибо</string>
+    <string name="no_vk_lyrics_message">Текст песни из ВК недоступен для данной песни. Вы можете выбрать другую ссылку или получить текст песни из Musixmatch</string>
+    <string name="no_vk_lyrics_title">Отсутствует текст для песни</string>
+    <string name="pp_not_available">Кажется, prostopleer упал. Попытайтесь заново позже</string>
+    <string name="pp_player_label">Плеер для ссылок из ProstoPleer</string>
+    <string name="recognize_button">Кликни по кнопке\nчтобы начать\nили остановить\nраспознавание</string>
+    <string name="recognize_status">Статус</string>
+    <string name="recognize_status_listening">Прослушивание</string>
+    <string name="recognize_status_recognizing">Распознавание</string>
+    <string name="search">Поиск</string>
+    <string name="search_page_fragment_caption">Поиск</string>
+    <string name="settings_auto_recognizing_summary">Автоматическое распознавание всех запомненных отпечатков, когда включен интернет</string>
+    <string name="settings_auto_recognizing_title">Авто-распознавание</string>
+    <string name="settings_scrobbling_summary">Разрешить скробблить стандартным last.fm приложениям</string>
+    <string name="settings_scrobbling_title">Скробблинг</string>
+    <string name="settings_secs">сек</string>
+    <string name="settings_timer_delay_summary">Установить задержку распознавания по таймеру</string>
+    <string name="settings_timer_delay_title">Задержка таймера</string>
+    <string name="settings_title">Настройки</string>
+    <string name="settings_vk_lyrics_summary">Показывать тексты песен из вк вместо текстов из musixmatch, если они есть</string>
+    <string name="settings_vk_lyrics_title">Тексты песен</string>
+    <string name="settings_vk_status_summary">Транслировать текущую прослушиваемую песню в статус в vk.com</string>
+    <string name="settings_vk_status_title">Отображать в статусе</string>
+    <string name="settings_vk_summary">Синхронизация с вконтакте</string>
+    <string name="settings_vk_title">Вконтакте</string>
+    <string name="settings_vk_urls_summary">Выбирать вк ссылки про проигрывании песни вместо ссылко просто плеера</string>
+    <string name="settings_vk_urls_title">Вк ссылки</string>
+    <string name="settings_wifi_summary">Позволять приложению пользоваться интернет-ресурсами только при включенном wi-fi</string>
+    <string name="settings_wifi_title">Только Wi-Fi</string>
+    <string name="share_song">Поделиться композицией</string>
+    <string name="song_not_found">Композиция не найдена</string>
+    <string name="status">Статус</string>
+    <string name="tagging_page_fragment_caption">Теггинг</string>
+    <string name="timer_delay_dialog_summary">Переместите ползунок для изменения задержки. Затем кликните по кнопке \"Принять\" для сохранения изменений или нажмите на кнопку \"Отменить\" для сброса</string>
+    <string name="timer_delay_dialog_title">Задержка таймера</string>
+    <string name="title">Название</string>
+    <string name="title_label">Название:</string>
+    <string name="track_id_label">Id Трека:</string>
+    <string name="tutorial_finger_auto_recognize">Нажмите на верхний элемент, чтобы позволить программе автоматически распознавать сохраненные музыкальные отпечатки, когда есть доступный интернет</string>
+    <string name="tutorial_finger_recognize">Нажмите на элемент списка, чтобы начать распознавать сохраненный музыкальный отпечаток</string>
+    <string name="tutorial_finger_recognize_result">По окончании распознавания вместо поля индетификатора вы увидите результат, после чего, элемент списка исчезнет</string>
+    <string name="tutorial_history_item">Распознанные композиции запоминаются в историю. Нажмите на композицию, чтобы открыть страничку с подробной информацией о ней</string>
+    <string name="tutorial_history_item_play">Вы можете в любое время проиграть распознанную композицию. Для этого нажмите на кнопку play на нужной композиции</string>
+    <string name="tutorial_history_miniplayer">Информация о текущем проигрываемом треке (Исполнитель и название) отображена в миниплеере. Так же он содержит кнопки для навигирования (следующая и предыдущая композиции)\n\nПомните, что найденный для проигрывания трэк может не совпадать с распознанным</string>
+    <string name="tutorial_recognize_button">Нажмите на эту кнопку, чтобы начать или прервать распознавание</string>
+    <string name="tutorial_recognize_result">При успешном теггинге вы увидите поле ниже, в котором будет показана информация о распознанном треке и дата распознания</string>
+    <string name="tutorial_recognize_timer">Нажмите на эту кнопку, чтобы постоянно распознавать с микрофона</string>
+    <string name="tutorial_recognize_wheel">Круговой индикатор показывать сколько времени осталось до начала следующего распознавания</string>
+    <string name="video_not_found">Видео не найдено</string>
+    <string name="vk_not_available">Кажется, вы не подключены к ВК. Используйте настройки для подключения</string>
+    <string name="vk_player_label">Плеер для ссылок из Вконтакте</string>
+    <string name="yes">Да</string>
+
+</resources>
