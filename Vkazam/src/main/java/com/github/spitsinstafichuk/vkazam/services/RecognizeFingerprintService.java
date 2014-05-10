@@ -142,6 +142,6 @@ public class RecognizeFingerprintService extends StartBoundService implements GN
 
     private void recognizeNow(FingerprintWrapper wrapper) {
         currentRecognizingFingerprint = wrapper;
-        GNOperations.searchByFingerprint(this, config, wrapper.getFingerprintData().getFingerprint());
+        GNOperations.searchByFingerprint(this, config, wrapper.getFingerprint().getFingerprint());
     }
 }

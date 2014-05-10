@@ -3,8 +3,8 @@ package com.github.spitsinstafichuk.vkazam.services;
 import android.app.Service;
 
 import com.github.spitsinstafichuk.vkazam.VkazamApplication;
-import com.github.spitsinstafichuk.vkazam.model.FingerprintData;
 import com.github.spitsinstafichuk.vkazam.model.SongData;
+import com.github.spitsinstafichuk.vkazam.vos.Fingerprint;
 import com.gracenote.mmid.MobileSDK.*;
 
 import java.util.Date;
@@ -152,7 +152,8 @@ public abstract class MicrophoneRecordingService extends RelatingService impleme
         if(gnFingerprintResult.isFailure()) {
             onStatusChanged(String.format("[%d] %s", gnFingerprintResult.getErrCode(), gnFingerprintResult.getErrMessage()));
         } else {
-            FingerprintData fingerprint = new FingerprintData(gnFingerprintResult.getFingerprintData(), new Date());
+            Fingerprint fingerprint = new Fingerprint(gnFingerprintResult.getFingerprintData(),
+                    new Date(), null);
             currentRecognizingWrapper = new FingerprintWrapper(fingerprint, this, FingerprintWrapper.RECOGNIZE_PRIORITY_HIGHEST);
             recognizeFingerprintService.recognize(currentRecognizingWrapper);
         }
