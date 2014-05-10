@@ -83,6 +83,7 @@ public abstract class MicrophoneRecordingService extends RelatingService impleme
     /**
      * @return priority of fingerprint. Subclasses must tell what sort of priority this fingerprint will be
      */
+    @SuppressWarnings("unused")
     protected abstract int getFingerprintPriority();
 
     /**
@@ -126,11 +127,7 @@ public abstract class MicrophoneRecordingService extends RelatingService impleme
      */
     @SuppressWarnings("unused")
     public boolean isRecognizing() {
-        if (isRelativeServiceBound) {
-            return recognizeFingerprintService.isWorking();
-        } else {
-            return false;
-        }
+        return isRelativeServiceBound && recognizeFingerprintService.isWorking();
     }
 
     public void addOnStatusChangedListener(OnStatusChangedListener listener) {
