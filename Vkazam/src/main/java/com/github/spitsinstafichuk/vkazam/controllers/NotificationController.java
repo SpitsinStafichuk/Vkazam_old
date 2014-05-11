@@ -5,41 +5,51 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
-import android.os.Handler;
-import android.os.HandlerThread;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.widget.RemoteViews;
+
 import com.github.spitsinstafichuk.vkazam.R;
 import com.github.spitsinstafichuk.vkazam.model.MicroScrobblerModel;
 import com.github.spitsinstafichuk.vkazam.model.SongData;
 import com.github.spitsinstafichuk.vkazam.model.observers.*;
-import com.github.spitsinstafichuk.vkazam.view.activities.MicrophonePagerActivity;
+import com.github.spitsinstafichuk.vkazam.activities.MicrophonePagerActivity;
 
-public class NotificationController implements ISongInfoObserver, IPlayerStateObserver, IRecognizeStatusObserver, IRecognizeResultObserver, IFingerprintStatusObserver {
+public class NotificationController
+        implements ISongInfoObserver, IPlayerStateObserver, IRecognizeStatusObserver,
+        IRecognizeResultObserver, IFingerprintStatusObserver {
 
     private static final int PLAYBACK_SERVICE_STATUS = 1;
+
     private static final CharSequence PLAYING_STATUS = "Playing song";
+
     private static final CharSequence LOADING_STATUS = "Loading song";
+
     private static final CharSequence RECOGNIZING_STATUS = "TAGGING: ";
+
     private static final CharSequence NOTHING = "Music not found";
 
     private MicroScrobblerModel model;
+
     private Service service;
+
     private Notification notification;
+
     private NotificationManager notificationManager;
+
     //private HandlerThread thread;
     //private Handler handler;
     private PendingIntent openIntent;
 
     private CharSequence status = "MicroScrobbler";
+
     private CharSequence artistTitle = "Nothing";
 
     public NotificationController(MicroScrobblerModel model, Service service) {
         //setting variables
         this.model = model;
         this.service = service;
-        notificationManager = (NotificationManager) service.getSystemService(service.NOTIFICATION_SERVICE);
+        notificationManager = (NotificationManager) service
+                .getSystemService(service.NOTIFICATION_SERVICE);
         //thread = new HandlerThread(NotificationController.class.getName());
         //thread.start();
         //handler = new Handler(thread.getLooper());

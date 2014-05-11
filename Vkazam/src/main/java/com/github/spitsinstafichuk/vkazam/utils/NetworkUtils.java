@@ -7,12 +7,16 @@ import android.preference.PreferenceManager;
 
 public class NetworkUtils {
 
-	public static boolean isNetworkAvailable(Context context) {
-	    ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-	    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-	    if(PreferenceManager.getDefaultSharedPreferences(context).getBoolean("settingsOnlyWiFiConntection", false)) {
-	    	return activeNetworkInfo != null && activeNetworkInfo.getType() == ConnectivityManager.TYPE_WIFI && activeNetworkInfo.isConnected();
-	    }
-	    return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-	}
+    public static boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        if (PreferenceManager.getDefaultSharedPreferences(context)
+                .getBoolean("settingsOnlyWiFiConntection", false)) {
+            return activeNetworkInfo != null
+                    && activeNetworkInfo.getType() == ConnectivityManager.TYPE_WIFI
+                    && activeNetworkInfo.isConnected();
+        }
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
 }

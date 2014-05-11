@@ -9,16 +9,18 @@ import android.view.ViewGroup;
 public class AndroidUtils {
 
     public static boolean isThereASettingsButton(Context context) {
-        return Build.VERSION.SDK_INT <= Build.VERSION_CODES.HONEYCOMB_MR2 || (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB_MR2) && ViewConfiguration.get(context).hasPermanentMenuKey();
+        return Build.VERSION.SDK_INT <= Build.VERSION_CODES.HONEYCOMB_MR2
+                || (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB_MR2) && ViewConfiguration
+                .get(context).hasPermanentMenuKey();
     }
 
     public static void setViewEnabled(View view, boolean enabled) {
         view.setEnabled(enabled);
 
         if (view instanceof ViewGroup) {
-            ViewGroup group = (ViewGroup)view;
+            ViewGroup group = (ViewGroup) view;
 
-            for (int i = 0; i < group.getChildCount(); i++ ) {
+            for (int i = 0; i < group.getChildCount(); i++) {
                 setViewEnabled(group.getChildAt(i), enabled);
             }
         }
@@ -28,7 +30,7 @@ public class AndroidUtils {
         view.setClickable(clickable);
 
         if (view instanceof ViewGroup) {
-            ViewGroup group = (ViewGroup)view;
+            ViewGroup group = (ViewGroup) view;
 
             for (int i = 0; i < group.getChildCount(); i++) {
                 setViewClickable(group.getChildAt(i), clickable);

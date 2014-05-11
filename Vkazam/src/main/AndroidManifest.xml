@@ -1,64 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.github.spitsinstafichuk.vkazam"
-    android:versionCode="1"
-    android:versionName="1.0" >
+          package="com.github.spitsinstafichuk.vkazam"
+          android:versionCode="1"
+          android:versionName="1.0">
 
     <uses-sdk
-        android:minSdkVersion="8"
-        android:targetSdkVersion="19" />
+            android:minSdkVersion="8"
+            android:targetSdkVersion="19"/>
 
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
     <application
-        android:name="com.github.spitsinstafichuk.vkazam.VkazamApplication"
-        android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+            android:name="com.github.spitsinstafichuk.vkazam.VkazamApplication"
+            android:allowBackup="true"
+            android:icon="@drawable/ic_launcher"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme">
         <activity
-            android:name="com.github.spitsinstafichuk.vkazam.view.activities.MicrophonePagerActivity"
-            android:label="@string/app_name" >
+                android:name=".activities.MainActivity"
+                android:label="@string/title_activity_main">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name="com.github.spitsinstafichuk.vkazam.view.activities.SettingsActivity" />
-        <activity android:name="com.github.spitsinstafichuk.vkazam.view.activities.SongInfoActivity" >
-        </activity>
-        <activity android:name="com.github.spitsinstafichuk.vkazam.view.activities.RefreshPagerActivity" >
-        </activity>
-        <activity android:name="com.github.spitsinstafichuk.vkazam.view.activities.VkLyricsActivity" >
+        <activity
+                android:name=".activities.SettingsActivity"/>
+        <activity
+                android:name=".activities.SongInfoActivity">
         </activity>
         <activity
-            android:name="com.github.spitsinstafichuk.vkazam.view.activities.VkLoginActivity"
-            android:label="@string/app_name" />
+                android:name=".activities.RefreshPagerActivity">
+        </activity>
+        <activity
+                android:name=".activities.VkLyricsActivity">
+        </activity>
+        <activity
+                android:name=".activities.VkLoginActivity"
+                android:label="@string/app_name"/>
 
-        <service android:name="com.github.spitsinstafichuk.vkazam.model.RecognizeHistoryService" >
+        <service android:name="com.github.spitsinstafichuk.vkazam.model.RecognizeHistoryService">
         </service>
-        <service android:name="com.github.spitsinstafichuk.vkazam.model.RecognizeService" >
+        <service android:name="com.github.spitsinstafichuk.vkazam.model.RecognizeService">
         </service>
-        <service android:name="com.github.spitsinstafichuk.vkazam.services.RecognizeFingerprintService" >
+        <service
+                android:name="com.github.spitsinstafichuk.vkazam.services.RecognizeFingerprintService">
         </service>
-        <service android:name="com.github.spitsinstafichuk.vkazam.services.MicrophoneRecordingNowService" >
+        <service
+                android:name="com.github.spitsinstafichuk.vkazam.services.MicrophoneRecordingNowService">
         </service>
-        <service android:name="com.github.spitsinstafichuk.vkazam.services.MicrophoneRecordingTimerService" >
+        <service
+                android:name="com.github.spitsinstafichuk.vkazam.services.MicrophoneRecordingTimerService">
         </service>
 
         <receiver
-            android:name="com.github.spitsinstafichuk.vkazam.model.ConnectionChangeReceiver"
-            android:label="NetworkConnection" >
+                android:name="com.github.spitsinstafichuk.vkazam.model.ConnectionChangeReceiver"
+                android:label="NetworkConnection">
             <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
             </intent-filter>
         </receiver>
+
+
     </application>
 
 </manifest>

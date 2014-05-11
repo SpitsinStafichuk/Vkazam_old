@@ -6,14 +6,23 @@ import java.util.List;
 public class GracenoteSongInfo {
 
     private final long id;
+
     private String trackId;
+
     private String artist;
+
     private String album;
+
     private String title;
+
     private String coverArtUrl;
+
     private String albumReleaseYear;
+
     private String albumArtist;
+
     private String lyrics;
+
     private List<SongUrl> songUrls;
 
     public GracenoteSongInfo(int id, String trackId, String artist,

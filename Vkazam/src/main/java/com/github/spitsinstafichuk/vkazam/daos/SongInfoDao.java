@@ -15,6 +15,7 @@ import com.github.spitsinstafichuk.vkazam.vos.SongInfo;
 public class SongInfoDao {
 
     DatabaseHelper databaseHelper;
+
     GracenoteSongInfoDao gracenoteSongInfoDao;
 
     public SongInfoDao(Context context) {
@@ -24,10 +25,13 @@ public class SongInfoDao {
 
     public SongInfo get(long id) {
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
+        if (db == null) {
+            return null;
+        }
         Cursor cursor = db.query(SongInfoTable.SONG_INFO, null,
                 SongInfoTable._ID + "=?",
-                new String[] {
-                    Long.toString(id)
+                new String[]{
+                        Long.toString(id)
                 }, null, null, null);
         SongInfo songInfo = null;
         if (cursor.moveToFirst()) {
@@ -47,12 +51,24 @@ public class SongInfoDao {
     public long save(SongInfo songInfo) {
         long result;
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        if (db == null) {
+            if (songInfo.getId() == -1) {
+                return -1;
+            } else {
+                return 0;
+            }
+        }
         db.beginTransaction();
         try {
-
             result = gracenoteSongInfoDao.save(songInfo.getGracenoteSongInfo());
             if (songInfo.getGracenoteSongInfo().getId() == -1) {
-
+                if (result == -1) {
+                    throw new SQLException("Cannot insert gracenoteSongInfo");
+                }
+            } else {
+                if (result == 0) {
+                    throw new SQLException("Cannot update gracenoteSongInfo");
+                }
             }
             ContentValues values = new ContentValues();
             values.put(SongInfoTable.DATE, songInfo.getDate().getTime());
@@ -66,8 +82,8 @@ public class SongInfoDao {
                 }
             } else {
                 result = db.update(SongInfoTable.SONG_INFO, values, SongInfoTable._ID + "=?",
-                        new String[] {
-                            Long.toString(songInfo.getId())
+                        new String[]{
+                                Long.toString(songInfo.getId())
                         });
                 if (result != 1) {
                     throw new SQLException("Cannot update songInfo");

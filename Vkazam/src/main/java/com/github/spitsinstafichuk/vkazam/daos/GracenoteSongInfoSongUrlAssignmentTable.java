@@ -5,9 +5,11 @@ import android.database.sqlite.SQLiteDatabase;
 
 public class GracenoteSongInfoSongUrlAssignmentTable {
 
-    public static final String GRACENOTE_SONG_INFO_SONG_URL_ASSIGNMENT = "GracenoteSongInfoSongUrlAssignment";
+    public static final String GRACENOTE_SONG_INFO_SONG_URL_ASSIGNMENT
+            = "GracenoteSongInfoSongUrlAssignment";
 
     public static final String TRACK__ID = "Track_id";
+
     public static final String URL__ID = "Url_id";
 
     public static void create(SQLiteDatabase database) {

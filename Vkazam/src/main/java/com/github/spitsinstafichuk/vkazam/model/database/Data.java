@@ -4,9 +4,9 @@ import java.util.Date;
 
 
 public interface Data {
-	
-	public Date getDate();
 
-	public long getId();
+    public Date getDate();
+
+    public long getId();
 
 }
