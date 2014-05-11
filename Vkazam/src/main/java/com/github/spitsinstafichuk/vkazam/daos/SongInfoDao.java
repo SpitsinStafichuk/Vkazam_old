@@ -12,6 +12,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.github.spitsinstafichuk.vkazam.vos.GracenoteSongInfo;
 import com.github.spitsinstafichuk.vkazam.vos.SongInfo;
 
+@SuppressWarnings("unused")
 public class SongInfoDao {
 
     DatabaseHelper databaseHelper;
@@ -24,6 +25,7 @@ public class SongInfoDao {
 
     public SongInfo get(long id) {
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
+        assert db != null;
         Cursor cursor = db.query(SongInfoTable.SONG_INFO, null,
                 SongInfoTable._ID + "=?",
                 new String[] {
@@ -47,6 +49,7 @@ public class SongInfoDao {
     public long save(SongInfo songInfo) {
         long result;
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        assert db != null;
         db.beginTransaction();
         try {
 

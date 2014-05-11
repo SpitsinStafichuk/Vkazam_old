@@ -3,8 +3,8 @@ package com.github.spitsinstafichuk.vkazam.view.activities;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.github.spitsinstafichuk.vkazam.view.adapters.MyPagerAdapter;
-import com.github.spitsinstafichuk.vkazam.view.adapters.SongReplacePagerAdapter;
+import com.github.spitsinstafichuk.vkazam.adapters.MyPagerAdapter;
+import com.github.spitsinstafichuk.vkazam.adapters.SongReplacePagerAdapter;
 
 public class RefreshPagerActivity extends PagerActivity {
 

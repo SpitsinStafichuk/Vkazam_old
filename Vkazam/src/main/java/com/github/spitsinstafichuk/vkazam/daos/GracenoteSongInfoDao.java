@@ -25,6 +25,7 @@ public class GracenoteSongInfoDao {
 
     public GracenoteSongInfo get(long id) {
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
+        assert db != null;
         Cursor cursor = db.query(GracenoteSongInfoTable.GRACENOTE_SONG_INFO, null,
                 GracenoteSongInfoTable._ID + "=?",
                 new String[] {
@@ -52,6 +53,7 @@ public class GracenoteSongInfoDao {
     public long save(GracenoteSongInfo gracenoteSongInfo) {
         long result;
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        assert db != null;
         db.beginTransaction();
         try {
             ContentValues values = new ContentValues();

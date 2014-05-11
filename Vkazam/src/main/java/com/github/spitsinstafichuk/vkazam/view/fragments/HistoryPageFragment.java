@@ -20,13 +20,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.github.spitsinstafichuk.vkazam.R;
-import com.github.spitsinstafichuk.vkazam.controllers.SongListController;
 import com.github.spitsinstafichuk.vkazam.model.RecognizeServiceConnection;
 import com.github.spitsinstafichuk.vkazam.model.database.SongList;
 import com.github.spitsinstafichuk.vkazam.model.observers.ISongDAOObserver;
 import com.github.spitsinstafichuk.vkazam.utils.AndroidUtils;
 import com.github.spitsinstafichuk.vkazam.view.activities.SongInfoActivity;
-import com.github.spitsinstafichuk.vkazam.view.adapters.SongListAdapter;
+import com.github.spitsinstafichuk.vkazam.adapters.SongListAdapter;
 
 public class HistoryPageFragment extends FragmentWithName implements
 		ISongDAOObserver {

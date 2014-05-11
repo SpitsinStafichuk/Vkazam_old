@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.github.spitsinstafichuk.vkazam.R;
-import com.github.spitsinstafichuk.vkazam.view.adapters.PleerListAdapter;
+import com.github.spitsinstafichuk.vkazam.adapters.PleerListAdapter;
 
 public class SongReplacePPFragment extends FragmentWithName {
 

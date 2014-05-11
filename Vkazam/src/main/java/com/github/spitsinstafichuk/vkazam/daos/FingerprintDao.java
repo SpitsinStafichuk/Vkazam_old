@@ -10,16 +10,20 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.github.spitsinstafichuk.vkazam.vos.Fingerprint;
 
+@SuppressWarnings("unused")
 public class FingerprintDao {
 
     DatabaseHelper databaseHelper;
 
+    @SuppressWarnings("unused")
     public FingerprintDao(Context context) {
         databaseHelper = new DatabaseHelper(context);
     }
 
+    @SuppressWarnings("unused")
     public Fingerprint get(long id) {
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
+        assert db != null;
         Cursor cursor = db.query(FingerprintTable.FINGERPRINTS, null, FingerprintTable._ID + "=?",
                 new String[] {
                     Long.toString(id)
@@ -37,8 +41,10 @@ public class FingerprintDao {
         return fingerprint;
     }
 
+    @SuppressWarnings("unused")
     public Fingerprint getLastFingerprint() {
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
+        assert db != null;
         Cursor cursor = db.query(FingerprintTable.FINGERPRINTS, null, null,
                 null, null, FingerprintTable.DATE + " DESC", "1");
         Fingerprint fingerprint = null;
@@ -54,9 +60,11 @@ public class FingerprintDao {
         return fingerprint;
     }
 
+    @SuppressWarnings("unused")
     public long save(Fingerprint fingerprint) {
         long result;
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        assert db != null;
         ContentValues values = new ContentValues();
         values.put(FingerprintTable.FINGERPRINT, fingerprint.getFingerprint());
         values.put(FingerprintTable.DATE, fingerprint.getDate().getTime());
@@ -74,8 +82,10 @@ public class FingerprintDao {
         return result;
     }
 
+    @SuppressWarnings("unused")
     public int delete(long id) {
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        assert db != null;
         int result = db.delete(FingerprintTable.FINGERPRINTS, FingerprintTable._ID + "=?",
                 new String[] {
                     Long.toString(id)

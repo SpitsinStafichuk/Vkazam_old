@@ -28,7 +28,7 @@ import com.github.spitsinstafichuk.vkazam.model.observers.IFingerprintDAOObserve
 import com.github.spitsinstafichuk.vkazam.model.observers.IRecognizeResultObserver;
 import com.github.spitsinstafichuk.vkazam.utils.AndroidUtils;
 import com.github.spitsinstafichuk.vkazam.utils.NetworkUtils;
-import com.github.spitsinstafichuk.vkazam.view.adapters.FingerprintListAdapter;
+import com.github.spitsinstafichuk.vkazam.adapters.FingerprintListAdapter;
 
 public class FingerprintPageFragment extends FragmentWithName implements
         IFingerprintDAOObserver, CompoundButton.OnCheckedChangeListener, IRecognizeResultObserver {

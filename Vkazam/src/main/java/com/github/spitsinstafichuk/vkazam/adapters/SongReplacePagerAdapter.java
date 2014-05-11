@@ -1,4 +1,4 @@
-package com.github.spitsinstafichuk.vkazam.view.adapters;
+package com.github.spitsinstafichuk.vkazam.adapters;
 
 import android.content.Context;
 import android.support.v4.app.FragmentManager;

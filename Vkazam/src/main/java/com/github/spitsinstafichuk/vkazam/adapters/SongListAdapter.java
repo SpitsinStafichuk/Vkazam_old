@@ -1,9 +1,7 @@
-package com.github.spitsinstafichuk.vkazam.view.adapters;
+package com.github.spitsinstafichuk.vkazam.adapters;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.github.spitsinstafichuk.vkazam.R;
 import com.github.spitsinstafichuk.vkazam.controllers.SongListController;
@@ -12,7 +10,6 @@ import com.github.spitsinstafichuk.vkazam.model.RecognizeServiceConnection;
 import com.github.spitsinstafichuk.vkazam.model.SongData;
 import com.github.spitsinstafichuk.vkazam.model.database.Data;
 import com.github.spitsinstafichuk.vkazam.model.database.DatabaseSongData;
-import com.github.spitsinstafichuk.vkazam.model.managers.SearchManager;
 import com.github.spitsinstafichuk.vkazam.model.managers.SongManager;
 import com.github.spitsinstafichuk.vkazam.model.managers.SearchManager.SearchListener;
 import com.github.spitsinstafichuk.vkazam.model.observers.IPlayerStateObserver;
@@ -30,7 +27,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 

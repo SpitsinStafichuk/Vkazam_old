@@ -18,6 +18,7 @@ public class SongUrlDao {
 
     public SongUrl get(long id) {
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
+        assert db != null;
         Cursor cursor = db.query(SongUrlTable.SONG_URL, null, SongUrlTable._ID + "=?",
                 new String[] {
                     Long.toString(id)
@@ -38,6 +39,7 @@ public class SongUrlDao {
     public long save(SongUrl songUrl) {
         long result;
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        assert db != null;
         ContentValues values = new ContentValues();
         values.put(SongUrlTable.ARTIST, songUrl.getArtist());
         values.put(SongUrlTable.URL, songUrl.getUrl());

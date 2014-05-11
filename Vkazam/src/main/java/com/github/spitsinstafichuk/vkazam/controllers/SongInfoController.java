@@ -25,7 +25,7 @@ import com.github.spitsinstafichuk.vkazam.view.activities.PagerActivity;
 import com.github.spitsinstafichuk.vkazam.view.activities.RefreshPagerActivity;
 import com.github.spitsinstafichuk.vkazam.view.activities.SongInfoActivity;
 import com.github.spitsinstafichuk.vkazam.view.activities.VkLyricsActivity;
-import com.github.spitsinstafichuk.vkazam.view.adapters.SongReplacePagerAdapter;
+import com.github.spitsinstafichuk.vkazam.adapters.SongReplacePagerAdapter;
 import com.github.spitsinstafichuk.vkazam.view.fragments.MessageDialogFragment;
 import com.github.spitsinstafichuk.vkazam.view.fragments.ProgressDialogFragment;
 import com.github.spitsinstafichuk.vkazam.view.fragments.MessageDialogFragment.onDialogClickListener;

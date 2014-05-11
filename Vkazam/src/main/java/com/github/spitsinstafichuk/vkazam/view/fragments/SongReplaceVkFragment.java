@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.github.spitsinstafichuk.vkazam.R;
-import com.github.spitsinstafichuk.vkazam.view.adapters.VkListAdapter;
+import com.github.spitsinstafichuk.vkazam.adapters.VkListAdapter;
 
 public class SongReplaceVkFragment extends FragmentWithName {
 

@@ -1,13 +1,10 @@
-package com.github.spitsinstafichuk.vkazam.view.adapters;
+package com.github.spitsinstafichuk.vkazam.adapters;
 
 
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 
-import com.github.spitsinstafichuk.vkazam.view.fragments.FingerprintPageFragment;
-import com.github.spitsinstafichuk.vkazam.view.fragments.HistoryPageFragment;
 import com.github.spitsinstafichuk.vkazam.view.fragments.RecognizePageFragment;
-import com.github.spitsinstafichuk.vkazam.view.fragments.TestPageFragment;
 
 public class MicrophonePagerAdapter extends MyPagerAdapter {
     public static final int HISTORY_PAGE_NUMBER = 1;

@@ -20,7 +20,6 @@ public class SongUrlTable {
                 ARTIST + " text, " +
                 TITLE + " text, " +
                 TYPE + " integer)";
-        ;
         database.execSQL(createStatement);
     }
 

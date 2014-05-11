@@ -55,7 +55,7 @@ import com.github.spitsinstafichuk.vkazam.view.activities.MicrophonePagerActivit
 import com.github.spitsinstafichuk.vkazam.view.activities.PagerActivity;
 import com.github.spitsinstafichuk.vkazam.view.activities.RefreshPagerActivity;
 import com.github.spitsinstafichuk.vkazam.view.activities.SettingsActivity;
-import com.github.spitsinstafichuk.vkazam.view.adapters.MicrophonePagerAdapter;
+import com.github.spitsinstafichuk.vkazam.adapters.MicrophonePagerAdapter;
 import com.github.spitsinstafichuk.vkazam.view.fragments.ProgressDialogFragment.OnCancelListener;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.perm.kate.api.Api;

@@ -15,7 +15,7 @@ import android.view.MenuItem;
 import com.github.spitsinstafichuk.vkazam.R;
 import com.github.spitsinstafichuk.vkazam.view.DepthPageTransformer;
 import com.github.spitsinstafichuk.vkazam.view.SmoothPageScroller;
-import com.github.spitsinstafichuk.vkazam.view.adapters.MyPagerAdapter;
+import com.github.spitsinstafichuk.vkazam.adapters.MyPagerAdapter;
 import com.github.spitsinstafichuk.vkazam.view.fragments.FragmentWithName;
 
 public abstract class PagerActivity extends ActionBarActivity {

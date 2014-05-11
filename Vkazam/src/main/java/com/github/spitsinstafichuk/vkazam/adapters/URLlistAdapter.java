@@ -1,4 +1,4 @@
-package com.github.spitsinstafichuk.vkazam.view.adapters;
+package com.github.spitsinstafichuk.vkazam.adapters;
 
 import java.io.IOException;
 
