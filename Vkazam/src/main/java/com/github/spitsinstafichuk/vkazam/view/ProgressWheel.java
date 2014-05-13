@@ -13,6 +13,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+
 import com.github.spitsinstafichuk.vkazam.R;
 
 /**
@@ -20,57 +21,80 @@ import com.github.spitsinstafichuk.vkazam.R;
  */
 public class ProgressWheel extends View {
 
-    private final float boundOffset =  TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics());
+    private final float boundOffset = TypedValue
+            .applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics());
 
     private int layout_height = 0;
+
     private int layout_width = 0;
+
     private int fullRadius = 100;
+
     private int circleRadius = 80;
+
     private int barLength = 60;
+
     private int barWidth = 10;
+
     private int rimWidth = 10;
+
     private int textSize = 20;
 
     private int paddingTop = 5;
+
     private int paddingBottom = 5;
+
     private int paddingLeft = 5;
+
     private int paddingRight = 5;
 
     private int barColor = 0xAA000000;
+
     private int circleColor = 0x00000000;
+
     private int rimColor = R.color.dark_grey;
+
     private int textColor = 0xFF000000;
 
     private Paint barPaint = new Paint();
+
     private Paint circlePaint = new Paint();
+
     private Paint rimPaint = new Paint();
+
     private Paint textPaint = new Paint();
 
     private RectF rectBounds = new RectF();
+
     private RectF circleBounds = new RectF();
 
     private OnLoadingListener listener;
 
     private int spinSpeed = 2;
+
     private int delayMillis = 0;
+
     private Handler spinHandler = new Handler() {
 
         @Override
         public void handleMessage(Message msg) {
             invalidate();
-            if(isSpinning) {
-                progress+=spinSpeed;
-                if(progress>360) {
+            if (isSpinning) {
+                progress += spinSpeed;
+                if (progress > 360) {
                     progress = 0;
                 }
                 spinHandler.sendEmptyMessageDelayed(0, delayMillis);
             }
         }
     };
+
     int progress = 0;
+
     boolean isSpinning = false;
 
     private String text = "";
+
     private String[] splitText = {};
 
     public ProgressWheel(Context context, AttributeSet attrs) {
@@ -131,7 +155,7 @@ public class ProgressWheel extends View {
                 this.getLayoutParams().width - paddingRight - boundOffset,
                 this.getLayoutParams().height - paddingBottom - boundOffset);
 
-        fullRadius = (this.getLayoutParams().width - paddingRight - barWidth)/2;
+        fullRadius = (this.getLayoutParams().width - paddingRight - barWidth) / 2;
         circleRadius = (fullRadius - barWidth) + 1;
     }
 
@@ -140,22 +164,22 @@ public class ProgressWheel extends View {
 
         canvas.drawArc(circleBounds, 360, 360, false, rimPaint);
 
-        if(isSpinning) {
+        if (isSpinning) {
             canvas.drawArc(circleBounds, progress - 90, barLength, false,
                     barPaint);
         } else {
             canvas.drawArc(circleBounds, -90, progress, false, barPaint);
         }
 
-        canvas.drawCircle((circleBounds.width()/2) + rimWidth + paddingLeft,
-                (circleBounds.height()/2) + rimWidth + paddingTop,
+        canvas.drawCircle((circleBounds.width() / 2) + rimWidth + paddingLeft,
+                (circleBounds.height() / 2) + rimWidth + paddingTop,
                 circleRadius,
                 circlePaint);
 
         float textHeight = textPaint.descent() - textPaint.ascent();
         float verticalTextOffset = (textHeight / 2) - textPaint.descent();
 
-        for(String s : splitText) {
+        for (String s : splitText) {
             float horizontalTextOffset = textPaint.measureText(s) / 2;
             canvas.drawText(s, this.getWidth() / 2 - horizontalTextOffset,
                     this.getHeight() / 2 + verticalTextOffset, textPaint);
@@ -203,7 +227,7 @@ public class ProgressWheel extends View {
 
     public void setProgress(int i) {
         isSpinning = false;
-        progress=i;
+        progress = i;
         spinHandler.sendEmptyMessage(0);
     }
 
@@ -241,6 +265,7 @@ public class ProgressWheel extends View {
     }
 
     public interface OnLoadingListener {
+
         void onComplete();
     }
 }

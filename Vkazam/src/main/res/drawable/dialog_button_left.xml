@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    
-    <item 
-        android:drawable="@drawable/dialog_button_border"/>
-    
-    <item 
-        android:drawable="@drawable/dialog_button_selector"
-        android:top="2dp" 
-        android:right="1dp" 
-        android:bottom="0dp"
-        android:left="0dp" />
-    
+
+    <item
+            android:drawable="@drawable/dialog_button_border"/>
+
+    <item
+            android:drawable="@drawable/dialog_button_selector"
+            android:top="2dp"
+            android:right="1dp"
+            android:bottom="0dp"
+            android:left="0dp"/>
+
 </layer-list>

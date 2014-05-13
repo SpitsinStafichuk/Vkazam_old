@@ -13,36 +13,40 @@ import com.perm.kate.api.KException;
 
 
 public class DatabaseSongData extends SongData implements Data {
-	
-	private long id;
-	private AbstractDAO dao;
-	
-	DatabaseSongData(long id, String ppArtist, String ppTitle, AbstractDAO dao, String trackId, String artist, String album,
-			String title, Date date, String pleercomUrl, String vkAudioId, String coverArtUrl, String contributorImageUrl, 
-			String artistBiographyURL, String albumReviewUrl, String albumReleaseYear,
-			String albumArtist) {
-		super(ppArtist, ppTitle, trackId, artist, album, title, pleercomUrl, vkAudioId, coverArtUrl, date, contributorImageUrl,
-				artistBiographyURL, null, albumReviewUrl, albumReleaseYear, albumArtist);
-		this.id = id;
-		this.dao = dao;
-	}
-	
-	public DatabaseSongData(long id, AbstractDAO dao, SongData data) {
-		super(data);
-		this.id = id;
-		this.dao = dao;
-	}
-	
-	//возможно вообще стоит убрать сет методы для единичных полей
-	@Override
-	public void setCoverArtUrl(String coverArtUrl) {
-		super.setCoverArtUrl(coverArtUrl);
-		//TODO возможно неэффективно обновлять все поля, когда нужно обновить только одно
 
-		if (dao != null) {
+    private long id;
+
+    private AbstractDAO dao;
+
+    DatabaseSongData(long id, String ppArtist, String ppTitle, AbstractDAO dao, String trackId,
+            String artist, String album,
+            String title, Date date, String pleercomUrl, String vkAudioId, String coverArtUrl,
+            String contributorImageUrl,
+            String artistBiographyURL, String albumReviewUrl, String albumReleaseYear,
+            String albumArtist) {
+        super(ppArtist, ppTitle, trackId, artist, album, title, pleercomUrl, vkAudioId, coverArtUrl,
+                date, contributorImageUrl,
+                artistBiographyURL, null, albumReviewUrl, albumReleaseYear, albumArtist);
+        this.id = id;
+        this.dao = dao;
+    }
+
+    public DatabaseSongData(long id, AbstractDAO dao, SongData data) {
+        super(data);
+        this.id = id;
+        this.dao = dao;
+    }
+
+    //возможно вообще стоит убрать сет методы для единичных полей
+    @Override
+    public void setCoverArtUrl(String coverArtUrl) {
+        super.setCoverArtUrl(coverArtUrl);
+        //TODO возможно неэффективно обновлять все поля, когда нужно обновить только одно
+
+        if (dao != null) {
             dao.update(this);
         }
-	}
+    }
 
     @Override
     public void setPleercomUrl(String pleercomUrl) {
@@ -70,63 +74,66 @@ public class DatabaseSongData extends SongData implements Data {
             dao.update(this);
         }
     }
-	
-	@Override
-	public void setVkAudioId(String vkAudioId) {
-		super.setVkAudioId(vkAudioId);
+
+    @Override
+    public void setVkAudioId(String vkAudioId) {
+        super.setVkAudioId(vkAudioId);
 
         if (dao != null) {
             dao.update(this);
         }
-	}
-	
-	@Override
-	public boolean equals(Object o) {
-		if (o != null) {
-			if (o instanceof DatabaseSongData) {
-				DatabaseSongData oData = (DatabaseSongData) o;
-				return this.id == oData.id;
-			}
-		}
-		return false;
-	}
-	
-	@Override
-	public void setNullFields(SongData songData) {
-		super.setNullFields(songData);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o != null) {
+            if (o instanceof DatabaseSongData) {
+                DatabaseSongData oData = (DatabaseSongData) o;
+                return this.id == oData.id;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void setNullFields(SongData songData) {
+        super.setNullFields(songData);
 
         if (dao != null) {
             dao.update(this);
         }
-	}
-	
-	@Override
-	public String toString() {
-		return "id: " + id + "\n" + super.toString();
-	}
+    }
 
-	@Override
-	public long getId() {
-		return id;
-	}
-	
-	@Override
-	public String findVkAudio(Api vkApi) throws MalformedURLException, IOException, JSONException, KException, SongNotFoundException {
-		String result = super.findVkAudio(vkApi);
+    @Override
+    public String toString() {
+        return "id: " + id + "\n" + super.toString();
+    }
 
-        if (dao != null) {
-            dao.update(this);
-        }
+    @Override
+    public long getId() {
+        return id;
+    }
 
-		return result;
-	}
-	
-	@Override
-	public void findPPAudio() throws MalformedURLException, IOException, JSONException, com.github.spitsinstafichuk.vkazam.model.pleer.api.KException, SongNotFoundException {
-		super.findPPAudio();
+    @Override
+    public String findVkAudio(Api vkApi)
+            throws MalformedURLException, IOException, JSONException, KException,
+            SongNotFoundException {
+        String result = super.findVkAudio(vkApi);
 
         if (dao != null) {
             dao.update(this);
         }
-	}
+
+        return result;
+    }
+
+    @Override
+    public void findPPAudio() throws MalformedURLException, IOException, JSONException,
+            com.github.spitsinstafichuk.vkazam.model.pleer.api.KException, SongNotFoundException {
+        super.findPPAudio();
+
+        if (dao != null) {
+            dao.update(this);
+        }
+    }
 }

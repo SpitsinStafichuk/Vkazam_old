@@ -4,5 +4,5 @@ import com.github.spitsinstafichuk.vkazam.model.SongData;
 
 public interface IRecognizeResultObserver {
 
-	void onRecognizeResult(int errorCode, SongData songData);
+    void onRecognizeResult(int errorCode, SongData songData);
 }

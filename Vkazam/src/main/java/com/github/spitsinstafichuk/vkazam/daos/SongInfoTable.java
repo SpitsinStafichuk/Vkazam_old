@@ -8,10 +8,15 @@ public class SongInfoTable {
     public static final String SONG_INFO = "SongInfo";
 
     public static final String _ID = "_id";
+
     public static final String TRACK__ID = "Track_id";
+
     public static final String DATE = "Date";
+
     public static final String SONG_POSITION = "SongPosition";
+
     public static final String FAVOURITE = "Favourite";
+
     public static final String DELETION_TIME = "DeletionTime";
 
     public static void create(SQLiteDatabase database) {

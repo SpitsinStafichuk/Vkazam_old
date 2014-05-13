@@ -1,4 +1,4 @@
-package com.github.spitsinstafichuk.vkazam.view.activities.interfaces;
+package com.github.spitsinstafichuk.vkazam.activities.interfaces;
 
 public interface IConnectedDialogFragmentDissmised {
 

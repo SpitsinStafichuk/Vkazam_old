@@ -19,14 +19,16 @@ import java.util.Set;
  * @author Michael Spitsin
  * @since 2014-04-18
  */
-public abstract class MicrophoneRecordingService extends RelatingService implements GNOperationStatusChanged, GNFingerprintResultReady, OnStatusChangedListener {
+public abstract class MicrophoneRecordingService extends RelatingService
+        implements GNOperationStatusChanged, GNFingerprintResultReady, OnStatusChangedListener {
 
-    private final Set<OnStatusChangedListener> onStatusListeners = new HashSet<OnStatusChangedListener>();
+    private final Set<OnStatusChangedListener> onStatusListeners
+            = new HashSet<OnStatusChangedListener>();
 
-	/**
-	 * Gracenote object to record fingerprints and receive answers
-	 */
-	protected GNConfig config;
+    /**
+     * Gracenote object to record fingerprints and receive answers
+     */
+    protected GNConfig config;
 
     /**
      * related service that gives messages about current recognizing fingerprint
@@ -60,28 +62,29 @@ public abstract class MicrophoneRecordingService extends RelatingService impleme
         config = ((VkazamApplication) getApplication()).getConfig();
     }
 
-	/**
-	 * Called when need to record some new fingerprint. Subclasses must override
-	 * this method to determine their own mode of recording
-	 * 
-	 * If subclass does not have its own implementation then it must call
-	 * defRecodingMethod()
-	 */
-	@SuppressWarnings("unused")
-	public abstract void recordFingerprint();
-
-	/**
-	 * Called when need to cancel some recording of new finger Subclasses must
-	 * override this method to determine their own mode of canceling
-	 * 
-	 * If subclass does not have its own implementation then it must call
-	 * defCancelingMethod()
-	 */
-	@SuppressWarnings("unused")
-	public abstract void cancelRecording();
+    /**
+     * Called when need to record some new fingerprint. Subclasses must override
+     * this method to determine their own mode of recording
+     *
+     * If subclass does not have its own implementation then it must call
+     * defRecodingMethod()
+     */
+    @SuppressWarnings("unused")
+    public abstract void recordFingerprint();
 
     /**
-     * @return priority of fingerprint. Subclasses must tell what sort of priority this fingerprint will be
+     * Called when need to cancel some recording of new finger Subclasses must
+     * override this method to determine their own mode of canceling
+     *
+     * If subclass does not have its own implementation then it must call
+     * defCancelingMethod()
+     */
+    @SuppressWarnings("unused")
+    public abstract void cancelRecording();
+
+    /**
+     * @return priority of fingerprint. Subclasses must tell what sort of priority this fingerprint
+     * will be
      */
     @SuppressWarnings("unused")
     protected abstract int getFingerprintPriority();
@@ -146,12 +149,14 @@ public abstract class MicrophoneRecordingService extends RelatingService impleme
     @Override
     public void GNResultReady(GNFingerprintResult gnFingerprintResult) {
         isRecording = false;
-        if(gnFingerprintResult.isFailure()) {
-            onStatusChanged(String.format("[%d] %s", gnFingerprintResult.getErrCode(), gnFingerprintResult.getErrMessage()));
+        if (gnFingerprintResult.isFailure()) {
+            onStatusChanged(String.format("[%d] %s", gnFingerprintResult.getErrCode(),
+                    gnFingerprintResult.getErrMessage()));
         } else {
             Fingerprint fingerprint = new Fingerprint(gnFingerprintResult.getFingerprintData(),
                     new Date(), null);
-            currentRecognizingWrapper = new FingerprintWrapper(fingerprint, this, FingerprintWrapper.RECOGNIZE_PRIORITY_HIGHEST);
+            currentRecognizingWrapper = new FingerprintWrapper(fingerprint, this,
+                    FingerprintWrapper.RECOGNIZE_PRIORITY_HIGHEST);
             recognizeFingerprintService.recognize(currentRecognizingWrapper);
         }
     }

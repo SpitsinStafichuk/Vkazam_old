@@ -17,13 +17,15 @@ import java.util.*;
  * @author Michael Spitsin
  * @since 2014-04-12
  */
-public class RecognizeFingerprintService extends StartBoundService implements GNSearchResultReady, GNOperationStatusChanged {
+public class RecognizeFingerprintService extends StartBoundService
+        implements GNSearchResultReady, GNOperationStatusChanged {
 
     public static final String STATUS_NO_CONNECTION = "STATUS_NO_CONNECTION";
 
     private final List<FingerprintWrapper> fingerprintQueue = new ArrayList<FingerprintWrapper>();
 
     private GNConfig config;
+
     private FingerprintWrapper currentRecognizingFingerprint = null;
 
     public void onCreate() {
@@ -44,7 +46,8 @@ public class RecognizeFingerprintService extends StartBoundService implements GN
         if (currentRecognizingFingerprint != null) {
             addFingerprintWrapperToQueue(wrapper);
         } else {
-            if (fingerprintQueue.isEmpty() || fingerprintQueue.get(0).getPriority() < wrapper.getPriority()) {
+            if (fingerprintQueue.isEmpty() || fingerprintQueue.get(0).getPriority() < wrapper
+                    .getPriority()) {
                 recognizeNow(wrapper);
             } else {
                 addFingerprintWrapperToQueue(wrapper);
@@ -74,7 +77,8 @@ public class RecognizeFingerprintService extends StartBoundService implements GN
 
     @Override
     public void GNStatusChanged(GNStatus gnStatus) {
-        currentRecognizingFingerprint.getFingerprintListener().onStatusChanged(gnStatus.getMessage());
+        currentRecognizingFingerprint.getFingerprintListener()
+                .onStatusChanged(gnStatus.getMessage());
     }
 
     @Override
@@ -83,11 +87,13 @@ public class RecognizeFingerprintService extends StartBoundService implements GN
         if (gnSearchResult.isFailure()) {
             //TODO fix on real error code
             if (gnSearchResult.getErrCode() == 1) {
-                currentRecognizingFingerprint.getFingerprintListener().onStatusChanged(STATUS_NO_CONNECTION);
+                currentRecognizingFingerprint.getFingerprintListener()
+                        .onStatusChanged(STATUS_NO_CONNECTION);
             } else {
                 currentRecognizingFingerprint
                         .getFingerprintListener()
-                        .onStatusChanged(String.format("[%d] %s", gnSearchResult.getErrCode(), gnSearchResult.getErrMessage()));
+                        .onStatusChanged(String.format("[%d] %s", gnSearchResult.getErrCode(),
+                                gnSearchResult.getErrMessage()));
             }
         } else {
             if (!gnSearchResult.isFingerprintSearchNoMatchStatus()) {
@@ -107,8 +113,10 @@ public class RecognizeFingerprintService extends StartBoundService implements GN
                 String albumReviewUrl = bestResponse.getAlbumReviewUrl();
                 String albumReleaseYear = bestResponse.getAlbumReleaseYear();
 
-                songData = new SongData(null, null, trackId, artist, album, title, null, null, coverArtURL, new Date(), contributorImageURL,
-                        artistBiographyURL, songPosition, albumReviewUrl, albumReleaseYear, albumArtist);
+                songData = new SongData(null, null, trackId, artist, album, title, null, null,
+                        coverArtURL, new Date(), contributorImageURL,
+                        artistBiographyURL, songPosition, albumReviewUrl, albumReleaseYear,
+                        albumArtist);
             }
 
             currentRecognizingFingerprint.getFingerprintListener().onResultStatus(songData);
@@ -133,7 +141,8 @@ public class RecognizeFingerprintService extends StartBoundService implements GN
 
     private void addFingerprintWrapperToQueue(FingerprintWrapper wrapper) {
         int index = fingerprintQueue.size() - 1;
-        while ((index > -1) && (fingerprintQueue.get(index).getPriority() < wrapper.getPriority())) {
+        while ((index > -1) && (fingerprintQueue.get(index).getPriority() < wrapper
+                .getPriority())) {
             index--;
         }
 

@@ -4,9 +4,13 @@ package com.github.spitsinstafichuk.vkazam.vos;
 public class SongUrl {
 
     private final long id;
+
     private String url;
+
     private String artist;
+
     private String title;
+
     private int urlType;
 
     public SongUrl(long id, String url, String artist, String title, int urlType) {

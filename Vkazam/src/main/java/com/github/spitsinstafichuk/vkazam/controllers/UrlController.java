@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
 import com.github.spitsinstafichuk.vkazam.R;
 import com.github.spitsinstafichuk.vkazam.model.MicroScrobblerMediaPlayer;
 import com.github.spitsinstafichuk.vkazam.model.MicroScrobblerModel;
@@ -18,11 +19,14 @@ import com.github.spitsinstafichuk.vkazam.model.observers.IPlayerStateObserver;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
-public class UrlController extends SongController implements IPlayerStateObserver{
-	private static final String TAG = "UrlController";
-	
+public class UrlController extends SongController implements IPlayerStateObserver {
+
+    private static final String TAG = "UrlController";
+
     private View currentElement;
+
     private String currentUrl;
+
     private SongManager songManager;
 
     public UrlController(FragmentActivity view) {
@@ -40,8 +44,10 @@ public class UrlController extends SongController implements IPlayerStateObserve
 
     public void setCurrentElement(View v) {
         if (currentElement != null) {
-            ImageButton playPauseButton = (ImageButton) currentElement.findViewById(R.id.ppUrlListItemPlayPauseButton);
-            ProgressBar progressBar = (ProgressBar) currentElement.findViewById(R.id.ppUrlListItemLoading);
+            ImageButton playPauseButton = (ImageButton) currentElement
+                    .findViewById(R.id.ppUrlListItemPlayPauseButton);
+            ProgressBar progressBar = (ProgressBar) currentElement
+                    .findViewById(R.id.ppUrlListItemLoading);
             playPauseButton.setVisibility(View.VISIBLE);
             playPauseButton.setImageResource(R.drawable.ic_media_play);
             progressBar.setVisibility(View.GONE);
@@ -56,10 +62,12 @@ public class UrlController extends SongController implements IPlayerStateObserve
 
     @Override
     public void updatePlayerState() {
-    	if (currentElement != null) {
+        if (currentElement != null) {
             Log.v(TAG, "before updatePlayerState: currentElement = " + currentElement);
-            ImageButton playPauseButton = (ImageButton) currentElement.findViewById(R.id.ppUrlListItemPlayPauseButton);
-            ProgressBar progressBar = (ProgressBar) currentElement.findViewById(R.id.ppUrlListItemLoading);
+            ImageButton playPauseButton = (ImageButton) currentElement
+                    .findViewById(R.id.ppUrlListItemPlayPauseButton);
+            ProgressBar progressBar = (ProgressBar) currentElement
+                    .findViewById(R.id.ppUrlListItemLoading);
 
             if (songManager.isLoading()) {
                 progressBar.setVisibility(View.VISIBLE);
@@ -69,8 +77,9 @@ public class UrlController extends SongController implements IPlayerStateObserve
                 if (songManager.isPrepared()) {
                     playPauseButton.setVisibility(View.VISIBLE);
                 } else {
-                    if (playPauseButton.getVisibility() == View.GONE)
+                    if (playPauseButton.getVisibility() == View.GONE) {
                         progressBar.setVisibility(View.INVISIBLE);
+                    }
                 }
             }
 
@@ -79,6 +88,6 @@ public class UrlController extends SongController implements IPlayerStateObserve
             } else {
                 playPauseButton.setImageResource(R.drawable.ic_media_play);
             }
-    	}
+        }
     }
 }

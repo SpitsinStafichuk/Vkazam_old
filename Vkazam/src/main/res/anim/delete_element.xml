@@ -15,13 +15,13 @@
             android:pivotX="50%"
             android:pivotY="50%"
             android:fillAfter="false"
-            android:duration="600" />
+            android:duration="600"/>
 
     <alpha
             android:fromAlpha="0.5"
             android:toAlpha="0.0"
             android:startOffset="600"
-            android:duration="600" />
+            android:duration="600"/>
 
     <translate
             android:fromXDelta="0"

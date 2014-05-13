@@ -12,56 +12,58 @@ import com.github.spitsinstafichuk.vkazam.model.observers.ISongDAOObservable;
 import com.github.spitsinstafichuk.vkazam.model.observers.ISongDAOObserver;
 
 public class SongList extends DatabaseList implements ISongDAOObservable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 7599946891053671003L;
-	
-	private Set<ISongDAOObserver> observers;
 
-	public SongList(Context context) {
-		super(new SongDAO(context));
-		observers = new HashSet<ISongDAOObserver>();
-	}
+    /**
+     *
+     */
+    private static final long serialVersionUID = 7599946891053671003L;
 
-	public synchronized DatabaseSongData add(SongData songData) {
-		DatabaseSongData databaseSongData = new DatabaseSongData(size() + 1 , dao, songData);
-		boolean result = super.add(databaseSongData);
-		if (result) {
-			notifySongDAOObservers();
-		}
-		return result ? databaseSongData : null;
-	}
-	
-	public synchronized DatabaseSongData add(int index, SongData songData) {
-		DatabaseSongData databaseSongData = new DatabaseSongData(size() + 1 , dao, songData);
-		super.add(index, databaseSongData);
-		notifySongDAOObservers();
-		return databaseSongData;
-	}
-	
-	@Override
-	public synchronized boolean remove(Object obj) {
-		boolean result = super.remove(obj);
-		if (result) {
-			notifySongDAOObservers();
-		}
-		return result;
-	}
+    private Set<ISongDAOObserver> observers;
 
-	@Override
-	public void addObserver(ISongDAOObserver o) {
-		observers.add(o);
-	}
+    public SongList(Context context) {
+        super(new SongDAO(context));
+        observers = new HashSet<ISongDAOObserver>();
+    }
 
-	@Override
-	public void removeObserver(ISongDAOObserver o) {
-		observers.remove(o);
-	}
+    public synchronized DatabaseSongData add(SongData songData) {
+        DatabaseSongData databaseSongData = new DatabaseSongData(size() + 1, dao, songData);
+        boolean result = super.add(databaseSongData);
+        if (result) {
+            notifySongDAOObservers();
+        }
+        return result ? databaseSongData : null;
+    }
 
-	@Override
-	public void notifySongDAOObservers() {
-		for(ISongDAOObserver o : observers) 
-			o.onHistoryListChanged();
-	}
+    public synchronized DatabaseSongData add(int index, SongData songData) {
+        DatabaseSongData databaseSongData = new DatabaseSongData(size() + 1, dao, songData);
+        super.add(index, databaseSongData);
+        notifySongDAOObservers();
+        return databaseSongData;
+    }
+
+    @Override
+    public synchronized boolean remove(Object obj) {
+        boolean result = super.remove(obj);
+        if (result) {
+            notifySongDAOObservers();
+        }
+        return result;
+    }
+
+    @Override
+    public void addObserver(ISongDAOObserver o) {
+        observers.add(o);
+    }
+
+    @Override
+    public void removeObserver(ISongDAOObserver o) {
+        observers.remove(o);
+    }
+
+    @Override
+    public void notifySongDAOObservers() {
+        for (ISongDAOObserver o : observers) {
+            o.onHistoryListChanged();
+        }
+    }
 }
