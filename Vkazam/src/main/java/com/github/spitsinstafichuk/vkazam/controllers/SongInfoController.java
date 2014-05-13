@@ -10,10 +10,6 @@ import android.net.Uri;
 import android.os.Looper;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.Toast;
 
