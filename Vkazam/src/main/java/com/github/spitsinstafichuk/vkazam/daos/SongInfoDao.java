@@ -12,6 +12,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.github.spitsinstafichuk.vkazam.vos.GracenoteSongInfo;
 import com.github.spitsinstafichuk.vkazam.vos.SongInfo;
 
+@SuppressWarnings("unused")
 public class SongInfoDao {
 
     DatabaseHelper databaseHelper;

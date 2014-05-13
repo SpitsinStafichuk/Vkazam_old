@@ -15,6 +15,7 @@ public class FingerprintTable {
 
     public static final String DELETION_DATE = "DeletionDate";
 
+    @SuppressWarnings("unused")
     public static void create(SQLiteDatabase database) {
         final String createStatement = "CREATE TABLE " + FINGERPRINTS + "(" +
                 _ID + " integer primary key, " +

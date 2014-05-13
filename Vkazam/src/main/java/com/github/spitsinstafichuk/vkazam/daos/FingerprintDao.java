@@ -10,14 +10,17 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.github.spitsinstafichuk.vkazam.vos.Fingerprint;
 
+@SuppressWarnings("unused")
 public class FingerprintDao {
 
     DatabaseHelper databaseHelper;
 
+    @SuppressWarnings("unused")
     public FingerprintDao(Context context) {
         databaseHelper = new DatabaseHelper(context);
     }
 
+    @SuppressWarnings("unused")
     public Fingerprint get(long id) {
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
         if (db == null) {
@@ -41,6 +44,7 @@ public class FingerprintDao {
         return fingerprint;
     }
 
+    @SuppressWarnings("unused")
     public Fingerprint getLastFingerprint() {
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
         if (db == null) {
@@ -62,6 +66,7 @@ public class FingerprintDao {
         return fingerprint;
     }
 
+    @SuppressWarnings("unused")
     public long save(Fingerprint fingerprint) {
         long result;
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
@@ -89,6 +94,7 @@ public class FingerprintDao {
         return result;
     }
 
+    @SuppressWarnings("unused")
     public int delete(long id) {
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
         if (db == null) {
