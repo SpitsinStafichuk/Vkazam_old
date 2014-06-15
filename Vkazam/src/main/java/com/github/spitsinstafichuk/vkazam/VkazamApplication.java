@@ -11,7 +11,8 @@ import com.gracenote.mmid.MobileSDK.GNConfig;
  * @author Michael Spitsin
  * @since 2014-04-12
  */
-public class VkazamApplication extends Application{
+public class VkazamApplication extends Application {
+
     private GNConfig config;
 
     @Override

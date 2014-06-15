@@ -1,5 +1,5 @@
 
-package com.github.spitsinstafichuk.vkazam.view.fragments;
+package com.github.spitsinstafichuk.vkazam.fragments;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -32,25 +32,37 @@ import com.github.spitsinstafichuk.vkazam.adapters_old.FingerprintListAdapter;
 
 public class FingerprintPageFragment extends FragmentWithName implements
         IFingerprintDAOObserver, CompoundButton.OnCheckedChangeListener, IRecognizeResultObserver {
+
     private static final String TAG = "FingerprintPageFragment";
 
     private FingerprintListAdapter adapter;
+
     private MicroScrobblerModel model;
 
     private CheckBox autoRecognizeCheckBox;
 
     private ImageView tutorial1Link;
+
     private ImageView tutorial2Link;
+
     private ImageView tutorial3Link;
+
     private TextView tutorial1Recognize;
+
     private TextView tutorial2RecognizeResult;
+
     private TextView tutorial3AutoRecognize;
+
     private View tutorial3AutoRecognizeLayout;
+
     private View tutorial12FingerLayout;
 
     private LinearLayout tutorialPage;
+
     private LinearLayout fingerPage;
+
     private boolean firstTimeAppearing;
+
     private SharedPreferences preferences;
 
     public static FingerprintPageFragment newInstance(Context context) {

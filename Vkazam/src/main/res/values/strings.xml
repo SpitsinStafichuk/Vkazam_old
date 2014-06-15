@@ -36,24 +36,35 @@
     <string name="settings_vk_title">Vkontakte</string>
     <string name="settings_vk_summary">Sync with vkontakte</string>
     <string name="settings_vk_urls_title">Vk Urls</string>
-    <string name="settings_vk_urls_summary">Prefer to choose vk urls istead of prostopleer urls</string>
+    <string name="settings_vk_urls_summary">Prefer to choose vk urls istead of prostopleer urls
+    </string>
     <string name="settings_vk_status_title">Broadcast to status</string>
-    <string name="settings_vk_status_summary">Broadcast current playing song to vk.com status</string>
+    <string name="settings_vk_status_summary">Broadcast current playing song to vk.com status
+    </string>
     <string name="settings_vk_lyrics_title">Lyrics</string>
-    <string name="settings_vk_lyrics_summary">Prefer to choose vk lyrics instead of musixmatch lyrics</string>
+    <string name="settings_vk_lyrics_summary">Prefer to choose vk lyrics instead of musixmatch
+        lyrics
+    </string>
     <string name="settings_wifi_title">Only Wi-Fi</string>
-    <string name="settings_wifi_summary">Enable synchronization with internet only if there is wi-fi connection</string>
+    <string name="settings_wifi_summary">Enable synchronization with internet only if there is wi-fi
+        connection
+    </string>
     <string name="settings_scrobbling_title">Scrobbling</string>
-    <string name="settings_scrobbling_summary">Enable scrobbling from standart last.fm application</string>
+    <string name="settings_scrobbling_summary">Enable scrobbling from standart last.fm application
+    </string>
     <string name="settings_auto_recognizing_title">Auto-recognizing</string>
-    <string name="settings_auto_recognizing_summary">Automatic recognizing all fingerprints when internet is available</string>
+    <string name="settings_auto_recognizing_summary">Automatic recognizing all fingerprints when
+        internet is available
+    </string>
     <string name="settings_timer_delay_title">Timer delay</string>
     <string name="settings_timer_delay_summary">Setting fingerprint timer delay</string>
     <string name="settings_secs">sec</string>
 
     <!-- Timer delay dialog strings -->
     <string name="timer_delay_dialog_title">Timer delay</string>
-    <string name="timer_delay_dialog_summary">Move the slider to set custom timer delay. Then click accept button to save changes or push cancel button to discard them</string>
+    <string name="timer_delay_dialog_summary">Move the slider to set custom timer delay. Then click
+        accept button to save changes or push cancel button to discard them
+    </string>
     <string name="accept_button">Accept</string>
     <string name="cancel_button">Cancel</string>
 
@@ -73,14 +84,20 @@
     <string name="awaiting_vk_lyrics_message">Please wait for answer from VK</string>
     <string name="awaiting_youtube_message">Please wait for answer from youtube app</string>
     <string name="awaiting_title">Waiting for answer</string>
-    <string name="no_musixmatch_app_message">You need to install Musixmatch\'s app and launch it at least one time to see lyrics</string>
+    <string name="no_musixmatch_app_message">You need to install Musixmatch\'s app and launch it at
+        least one time to see lyrics
+    </string>
     <string name="no_musixmatch_app_title">No musiXmatch application</string>
     <string name="get_musixmatch">Get Musixmatch</string>
     <string name="no_thanks">No, thanks</string>
-    <string name="no_vk_lyrics_message">Vk lyrics is not available for this song. You can choose another url or get lyrics from Musicxmatch</string>
+    <string name="no_vk_lyrics_message">Vk lyrics is not available for this song. You can choose
+        another url or get lyrics from Musicxmatch
+    </string>
     <string name="no_vk_lyrics_title">No lyrics for song</string>
     <string name="get_musixmatch_lyrics">Get MM lyrics</string>
-    <string name="bad_lyrics_message">Don\'t like this lyrics? You can choose another url or get lyrics from musicXmatch</string>
+    <string name="bad_lyrics_message">Don\'t like this lyrics? You can choose another url or get
+        lyrics from musicXmatch
+    </string>
     <string name="bad_lyrics_title">Bad lyrics</string>
     <string name="loading_title">Loading</string>
     <string name="loading_message">is saving for offline listening</string>
@@ -105,7 +122,8 @@
     <string name="no_more_songs">No more songs</string>
     <string name="song_not_found">Song is not found</string>
     <string name="internet_connection_not_available">Seems you haven\'t internet connection</string>
-    <string name="vk_not_available">Seems you haven\'t VK connection. Use settings to log in</string>
+    <string name="vk_not_available">Seems you haven\'t VK connection. Use settings to log in
+    </string>
     <string name="pp_not_available">Seems prostopleer was dropped. Try again later</string>
 
     <!-- Sharing strings -->
@@ -118,14 +136,40 @@
 
     <!-- Tutorial strings -->
     <string name="tutorial_recognize_button">Push that button to start or abort recognizing</string>
-    <string name="tutorial_recognize_timer">Push that button to constantly recognize from microphone at regular intervals</string>
-    <string name="tutorial_recognize_wheel">Round indicator shows how many time is left before the next recognition will begin</string>
-    <string name="tutorial_recognize_result">As a result of success tagging the field with song\'s information and date of recognition will be shown</string>
-    <string name="tutorial_history_item">All audio that was recognized moves in history page. Click on song to open page with more information about it</string>
-    <string name="tutorial_history_item_play">You can play recognized song in any time by pressing play button, placed on cover art of song</string>
-    <string name="tutorial_history_miniplayer">Miniplayer shows important information (Artist and title) about current playing song. Also it contains navigation buttons (previous and next buttons)\n\nRemember, track that was found may not be equal to track that was recognized</string>
-    <string name="tutorial_finger_recognize">Click on list item to begin recognizing of saved music fingerprint</string>
-    <string name="tutorial_finger_recognize_result">As the result of recognizing the out message will be shown in the fingerId field, then the item will disappear</string>
-    <string name="tutorial_finger_auto_recognize">Click on the top item and the programm will be automatic recognize all saved music fingerprints, when network will be available</string>
-    
+    <string name="tutorial_recognize_timer">Push that button to constantly recognize from microphone
+        at regular intervals
+    </string>
+    <string name="tutorial_recognize_wheel">Round indicator shows how many time is left before the
+        next recognition will begin
+    </string>
+    <string name="tutorial_recognize_result">As a result of success tagging the field with song\'s
+        information and date of recognition will be shown
+    </string>
+    <string name="tutorial_history_item">All audio that was recognized moves in history page. Click
+        on song to open page with more information about it
+    </string>
+    <string name="tutorial_history_item_play">You can play recognized song in any time by pressing
+        play button, placed on cover art of song
+    </string>
+    <string name="tutorial_history_miniplayer">Miniplayer shows important information (Artist and
+        title) about current playing song. Also it contains navigation buttons (previous and next
+        buttons)\n\nRemember, track that was found may not be equal to track that was recognized
+    </string>
+    <string name="tutorial_finger_recognize">Click on list item to begin recognizing of saved music
+        fingerprint
+    </string>
+    <string name="tutorial_finger_recognize_result">As the result of recognizing the out message
+        will be shown in the fingerId field, then the item will disappear
+    </string>
+    <string name="tutorial_finger_auto_recognize">Click on the top item and the programm will be
+        automatic recognize all saved music fingerprints, when network will be available
+    </string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_example">Example action</string>
+
 </resources>

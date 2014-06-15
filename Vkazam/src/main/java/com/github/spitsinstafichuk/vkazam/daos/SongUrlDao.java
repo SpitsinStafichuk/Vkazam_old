@@ -18,10 +18,12 @@ public class SongUrlDao {
 
     public SongUrl get(long id) {
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
-        assert db != null;
+        if (db == null) {
+            return null;
+        }
         Cursor cursor = db.query(SongUrlTable.SONG_URL, null, SongUrlTable._ID + "=?",
-                new String[] {
-                    Long.toString(id)
+                new String[]{
+                        Long.toString(id)
                 }, null, null, null);
         SongUrl songUrl = null;
         if (cursor.moveToFirst()) {
@@ -39,7 +41,13 @@ public class SongUrlDao {
     public long save(SongUrl songUrl) {
         long result;
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
-        assert db != null;
+        if (db == null) {
+            if (songUrl.getId() == -1) {
+                return -1;
+            } else {
+                return 0;
+            }
+        }
         ContentValues values = new ContentValues();
         values.put(SongUrlTable.ARTIST, songUrl.getArtist());
         values.put(SongUrlTable.URL, songUrl.getUrl());
@@ -50,8 +58,8 @@ public class SongUrlDao {
         } else {
             result = db.update(SongUrlTable.SONG_URL, values, SongUrlTable._ID
                     + "=?",
-                    new String[] {
-                        Long.toString(songUrl.getId())
+                    new String[]{
+                            Long.toString(songUrl.getId())
                     });
         }
         db.close();

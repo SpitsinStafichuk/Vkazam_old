@@ -26,42 +26,52 @@ import com.github.spitsinstafichuk.vkazam.model.observers.ISongProgressObservabl
 import com.github.spitsinstafichuk.vkazam.model.observers.ISongProgressObserver;
 import com.github.spitsinstafichuk.vkazam.model.pleer.api.KException;
 import com.github.spitsinstafichuk.vkazam.utils.NetworkUtils;
-import com.github.spitsinstafichuk.vkazam.view.activities.SongInfoActivity;
 
 public class SongManager implements ISongInfoObserverable, ISongProgressObservable {
-	private final static String TAG = "SongManager";
+
+    private final static String TAG = "SongManager";
 
     public static final int NO_SONG = -1;
+
     public static final int ANY_SONG = 0;
+
     public static final int VK_SONG = 1;
+
     public static final int PP_SONG = 2;
 
     private Set<ISongInfoObserver> songInfoObservers;
+
     private Set<ISongProgressObserver> songProgressObservers;
-	
-	private MicroScrobblerMediaPlayer songPlayer;
+
+    private MicroScrobblerMediaPlayer songPlayer;
+
     private MediaPlayer.OnBufferingUpdateListener onBufferingUpdateListener;
+
     private MediaPlayer.OnCompletionListener onCompletionListener;
-	
-	private DatabaseSongData songData;
+
+    private DatabaseSongData songData;
+
     private int positionInList;
+
     private int type = ANY_SONG;
-	
-	private Handler handler;
-	
-	private Context context;
-	private Scrobbler scrobbler;
+
+    private Handler handler;
+
+    private Context context;
+
+    private Scrobbler scrobbler;
+
     private ScheduledThreadPoolExecutor songProgressTimer;
-    
+
     private boolean wasPlayed = false;
-    
+
     private com.perm.kate.api.Api vkApi;
-	
-	public SongManager(Handler handler, Context context, Scrobbler scrobbler) {
-		songPlayer = MicroScrobblerMediaPlayer.getInstance();
-		this.handler = handler;
-		this.context = context;
-		this.scrobbler = scrobbler;
+
+    public SongManager(Handler handler, Context context, Scrobbler scrobbler) {
+        songPlayer = MicroScrobblerMediaPlayer.getInstance();
+        this.handler = handler;
+        this.context = context;
+        this.scrobbler = scrobbler;
         songInfoObservers = new HashSet<ISongInfoObserver>();
         songProgressObservers = new HashSet<ISongProgressObserver>();
 
@@ -76,91 +86,101 @@ public class SongManager implements ISongInfoObserverable, ISongProgressObservab
             }
 
         }, 0, 1000, TimeUnit.MILLISECONDS);
-	}
-	
-	public void set(DatabaseSongData songData, int positionInList, com.perm.kate.api.Api vkApi) {
-		this.vkApi = vkApi;
-		this.songData = songData;
+    }
+
+    public void set(DatabaseSongData songData, int positionInList, com.perm.kate.api.Api vkApi) {
+        this.vkApi = vkApi;
+        this.songData = songData;
         this.positionInList = positionInList;
         wasPlayed = false;
         //isPrepared = false;
         asyncNotifySongInfoObservers();
-	}
-	
-	private boolean findPPAudio() throws MalformedURLException, IOException, JSONException, KException, SongNotFoundException {
-		if(songData.getPleercomUrl() == null) {
-			songData.findPPAudio();
+    }
+
+    private boolean findPPAudio()
+            throws MalformedURLException, IOException, JSONException, KException,
+            SongNotFoundException {
+        if (songData.getPleercomUrl() == null) {
+            songData.findPPAudio();
             Log.i(TAG, "new Pleercomurl: " + songData.getPleercomUrl());
-        	songPlayer.setDataSource(songData.getPleercomUrl());
-		} else {
-			boolean networkWasAvailable = false;
-			try {
-				Log.i(TAG, "Pleercomurl: " + songData.getPleercomUrl());
-				networkWasAvailable = NetworkUtils.isNetworkAvailable(context);
-				songPlayer.setDataSource(songData.getPleercomUrl());
-			} catch(IOException e) {
-				if(networkWasAvailable) {
-					songData.setPleercomUrl(null);
-					findPPAudio();
-				}
-			} catch(IllegalArgumentException e) {
-				songData.findPPAudio();
-				if(networkWasAvailable) {
-					songData.setPleercomUrl(null);
-					findPPAudio();
-				}
-			} 
-		}
-		return true;
-	}
-	
-	private boolean findVkAudio() throws MalformedURLException, IOException, JSONException, com.perm.kate.api.KException, SongNotFoundException, KException {
-		if(songData.getVkAudioId() == null) {
-			String vkUrl;
-			vkUrl = songData.findVkAudio(vkApi);
-			Log.i(TAG, "vk audio id: " + songData.getVkAudioId());
-			Log.i(TAG, "vk audio url: " + vkUrl);
-        	songPlayer.setDataSource(vkUrl);
-		} else {
-			List<com.perm.kate.api.Audio> audioList;
-			audioList = vkApi.getAudioById(songData.getVkAudioId(), null, null);
-			if (audioList.isEmpty()) {
-				songData.setVkAudioId(null);
-				findVkAudio();
-			}
-			String vkUrl = audioList.get(0).url;
-			Log.i(TAG, "vk audio id: " + songData.getVkAudioId());
-			Log.i(TAG, "vk audio url: " + vkUrl);
-			songPlayer.setDataSource(vkUrl);
-		}
-		return true;
-	}
-	
-	//есть сомнения по поводу корректности проверки рабочий ли url для песни перед попыткой его обновить: возможно, помимо setDataSource, стоит также вызывать prepare
-    public void prepare(int type) throws IOException, JSONException, SongNotFoundException, KException, com.perm.kate.api.KException, VkAccountNotFoundException {
-		Log.v(TAG, "Player is loading");
+            songPlayer.setDataSource(songData.getPleercomUrl());
+        } else {
+            boolean networkWasAvailable = false;
+            try {
+                Log.i(TAG, "Pleercomurl: " + songData.getPleercomUrl());
+                networkWasAvailable = NetworkUtils.isNetworkAvailable(context);
+                songPlayer.setDataSource(songData.getPleercomUrl());
+            } catch (IOException e) {
+                if (networkWasAvailable) {
+                    songData.setPleercomUrl(null);
+                    findPPAudio();
+                }
+            } catch (IllegalArgumentException e) {
+                songData.findPPAudio();
+                if (networkWasAvailable) {
+                    songData.setPleercomUrl(null);
+                    findPPAudio();
+                }
+            }
+        }
+        return true;
+    }
+
+    private boolean findVkAudio()
+            throws MalformedURLException, IOException, JSONException, com.perm.kate.api.KException,
+            SongNotFoundException, KException {
+        if (songData.getVkAudioId() == null) {
+            String vkUrl;
+            vkUrl = songData.findVkAudio(vkApi);
+            Log.i(TAG, "vk audio id: " + songData.getVkAudioId());
+            Log.i(TAG, "vk audio url: " + vkUrl);
+            songPlayer.setDataSource(vkUrl);
+        } else {
+            List<com.perm.kate.api.Audio> audioList;
+            audioList = vkApi.getAudioById(songData.getVkAudioId(), null, null);
+            if (audioList.isEmpty()) {
+                songData.setVkAudioId(null);
+                findVkAudio();
+            }
+            String vkUrl = audioList.get(0).url;
+            Log.i(TAG, "vk audio id: " + songData.getVkAudioId());
+            Log.i(TAG, "vk audio url: " + vkUrl);
+            songPlayer.setDataSource(vkUrl);
+        }
+        return true;
+    }
+
+    //есть сомнения по поводу корректности проверки рабочий ли url для песни перед попыткой его обновить: возможно, помимо setDataSource, стоит также вызывать prepare
+    public void prepare(int type)
+            throws IOException, JSONException, SongNotFoundException, KException,
+            com.perm.kate.api.KException, VkAccountNotFoundException {
+        Log.v(TAG, "Player is loading");
         this.type = type;
         songPlayer = MicroScrobblerMediaPlayer.getInstance();
         songPlayer.setLoadingState();
         songPlayer.setOnCompletionListener(onCompletionListener);
         songPlayer.setOnBufferingUpdateListener(onBufferingUpdateListener);
-		Log.v(TAG, "Player is reconstructed");
-		boolean found = false;
+        Log.v(TAG, "Player is reconstructed");
+        boolean found = false;
         if (type == PP_SONG) {
             found = findPPAudio();
         } else if (type == VK_SONG) {
-            if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean("settingsVkConnection", false)) {
+            if (PreferenceManager.getDefaultSharedPreferences(context)
+                    .getBoolean("settingsVkConnection", false)) {
                 found = findVkAudio();
             } else {
                 throw new VkAccountNotFoundException();
             }
         } else {
-            if(!PreferenceManager.getDefaultSharedPreferences(context).getBoolean("settingsVkConnection", false) ||
-               !PreferenceManager.getDefaultSharedPreferences(context).getBoolean("settingsVkUrls", false)) {
+            if (!PreferenceManager.getDefaultSharedPreferences(context)
+                    .getBoolean("settingsVkConnection", false) ||
+                    !PreferenceManager.getDefaultSharedPreferences(context)
+                            .getBoolean("settingsVkUrls", false)) {
                 found = findPPAudio();
                 this.type = PP_SONG;
-                if(!found) {
-                    if(PreferenceManager.getDefaultSharedPreferences(context).getBoolean("settingsVkConnection", false)) {
+                if (!found) {
+                    if (PreferenceManager.getDefaultSharedPreferences(context)
+                            .getBoolean("settingsVkConnection", false)) {
                         found = findVkAudio();
                         this.type = VK_SONG;
                     }
@@ -168,7 +188,7 @@ public class SongManager implements ISongInfoObserverable, ISongProgressObservab
             } else {
                 found = findVkAudio();
                 this.type = VK_SONG;
-                if(!found) {
+                if (!found) {
                     found = findPPAudio();
                     this.type = PP_SONG;
                 }
@@ -182,83 +202,90 @@ public class SongManager implements ISongInfoObserverable, ISongProgressObservab
 
         asyncNotifySongInfoObservers();
 
-		if(!found) {
-			throw new SongNotFoundException();
-		}
-		songPlayer.prepare();
-	}
-    
-    public int getType() {
-    	return type;
+        if (!found) {
+            throw new SongNotFoundException();
+        }
+        songPlayer.prepare();
     }
-	
-	public void play() {
-		Log.v("SongListController", "Song" + songData.getArtist() + "-" + songData.getTitle() + "was started");
-		if(!wasPlayed) {
-			scrobbler.sendLastFMTrackStarted(getArtist(), getTitle(), songData.getAlbum(), songPlayer.getDuration());
-			if(PreferenceManager.getDefaultSharedPreferences(context).getBoolean("settingsVkAudioBroadcast", false)) {
-				new Thread() {
-					@Override
-					public void run() {
-						try {
-							vkApi.setStatus(null, songData.getVkAudioId());
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-					}
-				}.start();
-			}
-			wasPlayed = true;
-		} else {
-			scrobbler.sendLastFMTrackUnpaused(getArtist(), getTitle(), songData.getAlbum(), songPlayer.getDuration() , songPlayer.getCurrentPosition());
-		}
-		songPlayer.start();
-	}
-	
-	public void pause() {
-		scrobbler.sendLastFMTrackPaused(getArtist(), getTitle(), songData.getAlbum(), songPlayer.getDuration());
-		songPlayer.pause();
-	}
-	
-	public void stop() {
-		songPlayer.stop();
-	}
-	
-	public String getArtist() {
-		return songData.getArtist();
-	}
-	
-	public String getTitle() {
-		return songData.getTitle();
-	}
-	
-	public boolean isPlaying() {
-		return songPlayer.isPlaying();
-	}
 
-	public DatabaseSongData getSongData() {
-		return songData;
-	}
+    public int getType() {
+        return type;
+    }
+
+    public void play() {
+        Log.v("SongListController",
+                "Song" + songData.getArtist() + "-" + songData.getTitle() + "was started");
+        if (!wasPlayed) {
+            scrobbler.sendLastFMTrackStarted(getArtist(), getTitle(), songData.getAlbum(),
+                    songPlayer.getDuration());
+            if (PreferenceManager.getDefaultSharedPreferences(context)
+                    .getBoolean("settingsVkAudioBroadcast", false)) {
+                new Thread() {
+                    @Override
+                    public void run() {
+                        try {
+                            vkApi.setStatus(null, songData.getVkAudioId());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }.start();
+            }
+            wasPlayed = true;
+        } else {
+            scrobbler.sendLastFMTrackUnpaused(getArtist(), getTitle(), songData.getAlbum(),
+                    songPlayer.getDuration(), songPlayer.getCurrentPosition());
+        }
+        songPlayer.start();
+    }
+
+    public void pause() {
+        scrobbler.sendLastFMTrackPaused(getArtist(), getTitle(), songData.getAlbum(),
+                songPlayer.getDuration());
+        songPlayer.pause();
+    }
+
+    public void stop() {
+        songPlayer.stop();
+    }
+
+    public String getArtist() {
+        return songData.getArtist();
+    }
+
+    public String getTitle() {
+        return songData.getTitle();
+    }
+
+    public boolean isPlaying() {
+        return songPlayer.isPlaying();
+    }
+
+    public DatabaseSongData getSongData() {
+        return songData;
+    }
 
     public int getPositionInList() {
         return positionInList;
     }
 
-	public void release() {
-		if(songData != null)
-			scrobbler.sendLastFMPlaybackCompleted(getArtist(), getTitle(), songData.getAlbum(), songPlayer.getDuration());
-		this.type = NO_SONG;
-		songPlayer.release();
-		Log.v(TAG, "Player is released");
-	}
+    public void release() {
+        if (songData != null) {
+            scrobbler.sendLastFMPlaybackCompleted(getArtist(), getTitle(), songData.getAlbum(),
+                    songPlayer.getDuration());
+        }
+        this.type = NO_SONG;
+        songPlayer.release();
+        Log.v(TAG, "Player is released");
+    }
 
-	public boolean isLoading() {
-		return songPlayer.isLoading();
-	}
+    public boolean isLoading() {
+        return songPlayer.isLoading();
+    }
 
-	public boolean isPrepared() {
-		return songPlayer.isPrepared();
-	}
+    public boolean isPrepared() {
+        return songPlayer.isPrepared();
+    }
 
     public synchronized void seekTo(int percent) {
         if (songPlayer.isPrepared()) {
@@ -268,14 +295,15 @@ public class SongManager implements ISongInfoObserverable, ISongProgressObservab
         }
     }
 
-    public synchronized void setOnBufferingUpdateListener(MediaPlayer.OnBufferingUpdateListener listener) {
+    public synchronized void setOnBufferingUpdateListener(
+            MediaPlayer.OnBufferingUpdateListener listener) {
         onBufferingUpdateListener = listener;
         if (songPlayer != null) {
             songPlayer.setOnBufferingUpdateListener(listener);
         }
     }
 
-    public synchronized void setOnCompletionListener(MediaPlayer.OnCompletionListener listener){
+    public synchronized void setOnCompletionListener(MediaPlayer.OnCompletionListener listener) {
         onCompletionListener = listener;
         if (songPlayer != null) {
             songPlayer.setOnCompletionListener(listener);

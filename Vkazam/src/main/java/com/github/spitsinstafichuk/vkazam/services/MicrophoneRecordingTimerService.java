@@ -5,7 +5,7 @@ import android.preference.PreferenceManager;
 import android.text.format.DateUtils;
 
 import com.github.spitsinstafichuk.vkazam.model.SongData;
-import com.github.spitsinstafichuk.vkazam.view.activities.SettingsActivity;
+import com.github.spitsinstafichuk.vkazam.activities.SettingsActivity;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
  * @author Spitsin Michael
  * @since 2014-04-13
  */
-public class MicrophoneRecordingTimerService extends MicrophoneRecordingService{
+public class MicrophoneRecordingTimerService extends MicrophoneRecordingService {
 
     /**
      * Value that tells about maximum progress of timer delay
@@ -27,8 +27,11 @@ public class MicrophoneRecordingTimerService extends MicrophoneRecordingService{
      */
     private static final int TIMER_PROGRESS_MAX = 360;
 
-    private final Set<OnTimerUpdateListener> onUpdateListeners = new HashSet<OnTimerUpdateListener>();
+    private final Set<OnTimerUpdateListener> onUpdateListeners
+            = new HashSet<OnTimerUpdateListener>();
+
     private ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);
+
     private int timerProgress;
 
 
@@ -36,8 +39,8 @@ public class MicrophoneRecordingTimerService extends MicrophoneRecordingService{
     public void recordFingerprint() {
         startServiceWorking();
         setTimerProgress(0);
-		defRecordingMethod();
-	}
+        defRecordingMethod();
+    }
 
     @Override
     public void cancelRecording() {
@@ -65,6 +68,7 @@ public class MicrophoneRecordingTimerService extends MicrophoneRecordingService{
 
     /**
      * Calls when progress has updated
+     *
      * @param progress - new progress of delay
      */
     public void onUpdate(int progress) {
@@ -107,7 +111,8 @@ public class MicrophoneRecordingTimerService extends MicrophoneRecordingService{
      */
     public void startTimer() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        long period = prefs.getInt("settingsTimerDelay", SettingsActivity.DEFAULT_TIMER_DELAY) * DateUtils.SECOND_IN_MILLIS / TIMER_PROGRESS_MAX;
+        long period = prefs.getInt("settingsTimerDelay", SettingsActivity.DEFAULT_TIMER_DELAY)
+                * DateUtils.SECOND_IN_MILLIS / TIMER_PROGRESS_MAX;
 
         setTimerProgress(0);
         if (executor.isShutdown()) {
@@ -133,6 +138,7 @@ public class MicrophoneRecordingTimerService extends MicrophoneRecordingService{
 
         /**
          * Calls when progress has updated
+         *
          * @param progress - new progress of delay
          */
         void onUpdate(int progress);

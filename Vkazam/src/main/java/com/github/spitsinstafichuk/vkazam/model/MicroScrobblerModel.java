@@ -21,146 +21,156 @@ import com.perm.kate.api.Api;
 
 @Deprecated
 public class MicroScrobblerModel {
-	public static final String RECOGNIZING_SUCCESS = "Success";
 
-	private static MicroScrobblerModel instance;
-	private static Context context;
-	private final GNConfig config;
+    public static final String RECOGNIZING_SUCCESS = "Success";
 
-	private final FingerprintManager fingerprintManager;
-	private final RecognizeManager mainRecognizeManager;
-	private final RecognizeListManager recognizeListManager;
-	private final SongManager songManager;
-	private final SearchManager searchManager;
-	private final Handler handler;
+    private static MicroScrobblerModel instance;
 
-	private final SongList songList;
-	private final FingerprintList fingerprintList;
+    private static Context context;
 
-	private MicroScrobblerMediaPlayer player;
+    private final GNConfig config;
 
-	private final ImageLoader imageLoader;
+    private final FingerprintManager fingerprintManager;
 
-	private Api vkApi;
-	private final Account vkAccount;
+    private final RecognizeManager mainRecognizeManager;
 
-	private final Scrobbler scrobbler;
+    private final RecognizeListManager recognizeListManager;
 
-	public static void setContext(Context con) {
-		context = con;
-	}
+    private final SongManager songManager;
 
-	public static boolean hasContext() {
-		return context != null;
-	}
+    private final SearchManager searchManager;
 
-	@Deprecated
-	static synchronized MicroScrobblerModel getInstance() {
-		if (instance == null) {
-			instance = new MicroScrobblerModel();
-		}
+    private final Handler handler;
 
-		return instance;
-	}
+    private final SongList songList;
 
-	private MicroScrobblerModel() {
-		handler = new Handler();
-		MicroScrobblerMediaPlayer.setHandler(handler);
-		config = GNConfig.init(API_Constants.GRACENOTE_APPLICATION_ID, context);
-		config.setProperty("content.coverArt", "1");
-		config.setProperty("content.contributor.images", "1");
-		config.setProperty("content.contributor.biography", "1");
-		config.setProperty("content.artistType", "1");
-		config.setProperty("content.artistType.level", "EXTENDED");
-		config.setProperty("content.era", "1");
-		config.setProperty("content.era.level", "EXTENDED");
-		config.setProperty("content.mood", "1");
-		config.setProperty("content.mood.level", "EXTENDED");
-		config.setProperty("content.origin", "1");
-		config.setProperty("content.origin.level", "EXTENDED");
-		config.setProperty("content.tempo", "1");
-		config.setProperty("content.tempo.level", "EXTENDED");
-		config.setProperty("content.genre.level", "EXTENDED");
-		config.setProperty("content.review", "1");
-		imageLoader = ImageLoader.getInstance();
-		imageLoader.init(ImageLoaderConfiguration.createDefault(context));
-		songList = new SongList(context);
-		fingerprintList = new FingerprintList(context);
-		scrobbler = new Scrobbler(context);
-		songManager = new SongManager(handler, context, scrobbler);
-		searchManager = new SearchManager(config);
-		mainRecognizeManager = new RecognizeManager(config);
-		recognizeListManager = new RecognizeListManager(config,
-				fingerprintList, songList);
-		fingerprintManager = new FingerprintManager(config, context, handler);
+    private final FingerprintList fingerprintList;
 
-		vkAccount = new Account();
-		vkAccount.restore(context);
+    private MicroScrobblerMediaPlayer player;
 
-		if (vkAccount.access_token != null) {
-			vkApi = new Api(vkAccount.access_token, API_Constants.VK_API_ID);
-		}
-		Log.v("vkApi", "vkApi = " + vkApi);
-	}
+    private final ImageLoader imageLoader;
 
-	public RecognizeListManager getRecognizeListManager() {
-		return recognizeListManager;
-	}
+    private Api vkApi;
 
-	public Scrobbler getScrobbler() {
-		return scrobbler;
-	}
+    private final Account vkAccount;
 
-	public FingerprintList getFingerprintList() {
-		return fingerprintList;
-	}
+    private final Scrobbler scrobbler;
 
-	public SongList getSongList() {
-		return songList;
-	}
+    public static void setContext(Context con) {
+        context = con;
+    }
 
-	public ImageLoader getImageLoader() {
-		return imageLoader;
-	}
+    public static boolean hasContext() {
+        return context != null;
+    }
 
-	public SearchManager getSearchManager() {
-		return searchManager;
-	}
+    @Deprecated
+    static synchronized MicroScrobblerModel getInstance() {
+        if (instance == null) {
+            instance = new MicroScrobblerModel();
+        }
 
-	public FingerprintManager getFingerprintManager() {
-		return fingerprintManager;
-	}
+        return instance;
+    }
 
-	public RecognizeManager getMainRecognizeManager() {
-		return mainRecognizeManager;
-	}
+    private MicroScrobblerModel() {
+        handler = new Handler();
+        MicroScrobblerMediaPlayer.setHandler(handler);
+        config = GNConfig.init(API_Constants.GRACENOTE_APPLICATION_ID, context);
+        config.setProperty("content.coverArt", "1");
+        config.setProperty("content.contributor.images", "1");
+        config.setProperty("content.contributor.biography", "1");
+        config.setProperty("content.artistType", "1");
+        config.setProperty("content.artistType.level", "EXTENDED");
+        config.setProperty("content.era", "1");
+        config.setProperty("content.era.level", "EXTENDED");
+        config.setProperty("content.mood", "1");
+        config.setProperty("content.mood.level", "EXTENDED");
+        config.setProperty("content.origin", "1");
+        config.setProperty("content.origin.level", "EXTENDED");
+        config.setProperty("content.tempo", "1");
+        config.setProperty("content.tempo.level", "EXTENDED");
+        config.setProperty("content.genre.level", "EXTENDED");
+        config.setProperty("content.review", "1");
+        imageLoader = ImageLoader.getInstance();
+        imageLoader.init(ImageLoaderConfiguration.createDefault(context));
+        songList = new SongList(context);
+        fingerprintList = new FingerprintList(context);
+        scrobbler = new Scrobbler(context);
+        songManager = new SongManager(handler, context, scrobbler);
+        searchManager = new SearchManager(config);
+        mainRecognizeManager = new RecognizeManager(config);
+        recognizeListManager = new RecognizeListManager(config,
+                fingerprintList, songList);
+        fingerprintManager = new FingerprintManager(config, context, handler);
 
-	public Data getHistoryItem(int position) {
-		if ((position > -1) && (position < songList.size())) {
-			return songList.get(position);
-		} else {
-			return null;
-		}
-	}
+        vkAccount = new Account();
+        vkAccount.restore(context);
 
-	public SongManager getSongManager() {
-		return songManager;
-	}
+        if (vkAccount.access_token != null) {
+            vkApi = new Api(vkAccount.access_token, API_Constants.VK_API_ID);
+        }
+        Log.v("vkApi", "vkApi = " + vkApi);
+    }
 
-	public Api getVkApi() {
-		return vkApi;
-	}
+    public RecognizeListManager getRecognizeListManager() {
+        return recognizeListManager;
+    }
 
-	public void setVkApi(String access_token, long user_id, Api vkApi) {
-		vkAccount.access_token = access_token;
-		vkAccount.user_id = user_id;
-		vkAccount.save(context);
-		this.vkApi = vkApi;
-		Log.v("vkApi", "vkApi = " + vkApi);
-	}
+    public Scrobbler getScrobbler() {
+        return scrobbler;
+    }
 
-	public MicroScrobblerMediaPlayer getPlayer() {
-		player = MicroScrobblerMediaPlayer.getInstance();
-		return player;
-	}
+    public FingerprintList getFingerprintList() {
+        return fingerprintList;
+    }
+
+    public SongList getSongList() {
+        return songList;
+    }
+
+    public ImageLoader getImageLoader() {
+        return imageLoader;
+    }
+
+    public SearchManager getSearchManager() {
+        return searchManager;
+    }
+
+    public FingerprintManager getFingerprintManager() {
+        return fingerprintManager;
+    }
+
+    public RecognizeManager getMainRecognizeManager() {
+        return mainRecognizeManager;
+    }
+
+    public Data getHistoryItem(int position) {
+        if ((position > -1) && (position < songList.size())) {
+            return songList.get(position);
+        } else {
+            return null;
+        }
+    }
+
+    public SongManager getSongManager() {
+        return songManager;
+    }
+
+    public Api getVkApi() {
+        return vkApi;
+    }
+
+    public void setVkApi(String access_token, long user_id, Api vkApi) {
+        vkAccount.access_token = access_token;
+        vkAccount.user_id = user_id;
+        vkAccount.save(context);
+        this.vkApi = vkApi;
+        Log.v("vkApi", "vkApi = " + vkApi);
+    }
+
+    public MicroScrobblerMediaPlayer getPlayer() {
+        player = MicroScrobblerMediaPlayer.getInstance();
+        return player;
+    }
 }

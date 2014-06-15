@@ -12,12 +12,18 @@ import java.util.Set;
 
 @Deprecated
 public class MicroScrobblerMediaPlayer extends MediaPlayer implements IPlayerStateObservable {
+
     private static MicroScrobblerMediaPlayer instance;
-    private static Set<IPlayerStateObserver> playerStateObservers = new HashSet<IPlayerStateObserver>();
+
+    private static Set<IPlayerStateObserver> playerStateObservers
+            = new HashSet<IPlayerStateObserver>();
+
     private static Handler handler;
 
     private boolean isLoading;
+
     private boolean isPlaying;
+
     private boolean isPrepared;
 
     public static synchronized MicroScrobblerMediaPlayer getInstance() {
@@ -125,7 +131,8 @@ public class MicroScrobblerMediaPlayer extends MediaPlayer implements IPlayerSta
 
     @Override
     public void notifyPlayerStateObservers() {
-        for (IPlayerStateObserver o : playerStateObservers)
+        for (IPlayerStateObserver o : playerStateObservers) {
             o.updatePlayerState();
+        }
     }
 }

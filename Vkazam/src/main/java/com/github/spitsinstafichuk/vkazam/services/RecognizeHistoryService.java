@@ -17,10 +17,11 @@ import java.util.Set;
  * @author Michael Spitsin
  * @since 2014-04-13
  */
-public class RecognizeHistoryService extends Service implements OnStatusChangedListener{
+public class RecognizeHistoryService extends Service implements OnStatusChangedListener {
 
     // Binder given to clients
     private final IBinder recognizeHistoryBinder = new RecognizeHistoryBinder();
+
     private final Set<OnStatusChangedListener> listeners = new HashSet<OnStatusChangedListener>();
 
     int binderCount;

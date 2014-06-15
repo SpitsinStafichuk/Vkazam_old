@@ -6,10 +6,15 @@ import java.util.Date;
 public class SongInfo {
 
     private final long id;
+
     private GracenoteSongInfo gracenoteSongInfo;
+
     private Date date;
+
     private String songPosition;
+
     private boolean favourite;
+
     private Date deletionDate;
 
     public SongInfo(long id, GracenoteSongInfo gracenoteSongInfo, Date date,

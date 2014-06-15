@@ -13,35 +13,35 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
-            <LinearLayout
-                    android:id="@+id/ppUrlListItemPlayPauseLayout"
+        <LinearLayout
+                android:id="@+id/ppUrlListItemPlayPauseLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:orientation="vertical"
+                android:gravity="center">
+
+            <ImageButton
+                    android:id="@+id/ppUrlListItemPlayPauseButton"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_centerInParent="true"
-                    android:orientation="vertical"
-                    android:gravity="center">
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:scaleType="fitXY"
+                    android:background="@android:color/transparent"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:src="@drawable/ic_media_play"/>
 
-                <ImageButton
-                        android:id="@+id/ppUrlListItemPlayPauseButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:scaleType="fitXY"
-                        android:background="@android:color/transparent"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
-                        android:src="@drawable/ic_media_play"/>
+            <ProgressBar
+                    android:id="@+id/ppUrlListItemLoading"
+                    style="?android:attr/progressBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minHeight="20dp"
+                    android:minWidth="20dp"
+                    android:visibility="gone"/>
 
-                <ProgressBar
-                        android:id="@+id/ppUrlListItemLoading"
-                        style="?android:attr/progressBarStyleSmall"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:minHeight="20dp"
-                        android:minWidth="20dp"
-                        android:visibility="gone" />
-
-            </LinearLayout>
+        </LinearLayout>
 
         <LinearLayout
                 android:id="@+id/ppUrlListItemInfo"
@@ -58,7 +58,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:gravity="top"
-                    android:orientation="vertical" >
+                    android:orientation="vertical">
 
                 <TextView
                         android:id="@+id/ppUrlListItemArtist"
@@ -69,7 +69,7 @@
                         android:singleLine="true"
                         android:text="Artist"
                         android:textColor="#333333"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"/>
 
                 <TextView
                         android:id="@+id/ppUrlListItemTitle"
@@ -80,7 +80,7 @@
                         android:singleLine="true"
                         android:text="Title"
                         android:textColor="#333333"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"/>
 
             </LinearLayout>
 
@@ -101,7 +101,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:gravity="top"
-                    android:orientation="vertical" >
+                    android:orientation="vertical">
 
                 <TextView
                         android:id="@+id/ppUrlListItemDuration"
@@ -112,7 +112,7 @@
                         android:singleLine="true"
                         android:text="00:00"
                         android:textColor="#333333"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"/>
 
                 <TextView
                         android:id="@+id/ppUrlListItemBitRate"
@@ -123,18 +123,19 @@
                         android:singleLine="true"
                         android:text="xxx Kb/s"
                         android:textColor="#333333"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"/>
 
             </LinearLayout>
 
         </LinearLayout>
 
-            <RadioButton
-                    android:id="@+id/ppUrlListItemCheckbutton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    style="@style/RadioButtonAppTheme" android:layout_marginTop="1dp" android:layout_marginLeft="10dp"/>
+        <RadioButton
+                android:id="@+id/ppUrlListItemCheckbutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                style="@style/RadioButtonAppTheme" android:layout_marginTop="1dp"
+                android:layout_marginLeft="10dp"/>
 
     </LinearLayout>
 

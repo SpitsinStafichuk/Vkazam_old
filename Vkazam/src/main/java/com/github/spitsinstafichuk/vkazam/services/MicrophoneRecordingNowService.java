@@ -10,7 +10,7 @@ import com.github.spitsinstafichuk.vkazam.model.SongData;
  * @author Michael Spitsin
  * @since 2014-04-13
  */
-public class MicrophoneRecordingNowService extends MicrophoneRecordingService{
+public class MicrophoneRecordingNowService extends MicrophoneRecordingService {
 
     @Override
     public void recordFingerprint() {

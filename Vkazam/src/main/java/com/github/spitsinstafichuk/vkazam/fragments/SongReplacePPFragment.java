@@ -1,5 +1,5 @@
 
-package com.github.spitsinstafichuk.vkazam.view.fragments;
+package com.github.spitsinstafichuk.vkazam.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,7 +13,9 @@ import com.github.spitsinstafichuk.vkazam.adapters_old.PleerListAdapter;
 public class SongReplacePPFragment extends FragmentWithName {
 
     private ListView ppURLs;
+
     private PleerListAdapter adapter;
+
     private int position;
 
     public static SongReplacePPFragment newInstance(int position) {

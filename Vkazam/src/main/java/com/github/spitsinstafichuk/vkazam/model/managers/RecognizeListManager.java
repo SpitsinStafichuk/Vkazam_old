@@ -16,63 +16,75 @@ import com.gracenote.mmid.MobileSDK.GNConfig;
 
 public class RecognizeListManager implements IRecognizeStatusObservable, IRecognizeResultObservable,
         IRecognizeResultObserver, IRecognizeStatusObserver {
-	public static final String RECOGNIZING_SUCCESS = "Recognizing success";
-	public static final String ALL_RECOGNIZED = "All recognized";
 
-	private Set<IRecognizeStatusObserver> recognizeStatusObservers;
-	private Set<IRecognizeResultObserver> recognizeResultObservers;
+    public static final String RECOGNIZING_SUCCESS = "Recognizing success";
+
+    public static final String ALL_RECOGNIZED = "All recognized";
+
+    private Set<IRecognizeStatusObserver> recognizeStatusObservers;
+
+    private Set<IRecognizeResultObserver> recognizeResultObservers;
+
     private Set<IFingerQueueListener> fingerQueueListeners;
-	
+
     private RecognizeManager recognizeManager;
+
     private boolean isRecognizing = false;
+
     private FingerprintList fingerprints;
+
     private List<FingerprintData> fingerprintsQueue;
+
     private SongList songs;
+
     private FingerprintData currentFingerprint;
+
     private boolean autorecognizing = false;
-	
-	public RecognizeListManager(GNConfig config, FingerprintList fingerprintList, SongList songList) {
-		this.fingerprints = fingerprintList;
-		fingerprintsQueue = new LinkedList<FingerprintData>();
-		this.songs = songList;
-		recognizeManager = new RecognizeManager(config);
-		recognizeManager.addRecognizeResultObserver(this);
-		recognizeManager.addRecognizeStatusObserver(this);
+
+    public RecognizeListManager(GNConfig config, FingerprintList fingerprintList,
+            SongList songList) {
+        this.fingerprints = fingerprintList;
+        fingerprintsQueue = new LinkedList<FingerprintData>();
+        this.songs = songList;
+        recognizeManager = new RecognizeManager(config);
+        recognizeManager.addRecognizeResultObserver(this);
+        recognizeManager.addRecognizeStatusObserver(this);
         recognizeStatusObservers = new HashSet<IRecognizeStatusObserver>();
         recognizeResultObservers = new HashSet<IRecognizeResultObserver>();
         fingerQueueListeners = new HashSet<IFingerQueueListener>();
-	}
+    }
 
-	public void recognizeFingerprints() {
-		isRecognizing = true;
-		autorecognizing = true;
+    public void recognizeFingerprints() {
+        isRecognizing = true;
+        autorecognizing = true;
 
         recognizeNextFinger();
-	}
-	
-	public void addFingerprintToQueue(FingerprintData fingerprint) {
-		if(fingerprints.contains(fingerprint)) {
+    }
+
+    public void addFingerprintToQueue(FingerprintData fingerprint) {
+        if (fingerprints.contains(fingerprint)) {
             addFingerToQueueAndNotifyListeners(fingerprint);
 
-			if(!isRecognizing) {
-				isRecognizing = true;
-				currentFingerprint = fingerprintsQueue.get(0);
-				recognizeManager.recognizeFingerprint(currentFingerprint);
-			}
-		} else {
-			throw new IllegalArgumentException("You can only add elements from fingerprints list, which have been passed to the constructor");
-		}
-	}
-	
-	public void removeFingerprintFromQueue(FingerprintData fingerprint) {
+            if (!isRecognizing) {
+                isRecognizing = true;
+                currentFingerprint = fingerprintsQueue.get(0);
+                recognizeManager.recognizeFingerprint(currentFingerprint);
+            }
+        } else {
+            throw new IllegalArgumentException(
+                    "You can only add elements from fingerprints list, which have been passed to the constructor");
+        }
+    }
+
+    public void removeFingerprintFromQueue(FingerprintData fingerprint) {
         removeFingerFromQueueAndNotifyListeners(fingerprint);
 
-		if(fingerprint == currentFingerprint) {
-			recognizeManager.recognizeFingerprintCancel();
+        if (fingerprint == currentFingerprint) {
+            recognizeManager.recognizeFingerprintCancel();
 
             recognizeNextFinger();
-		}
-	}
+        }
+    }
 
     public void addQueueListener(IFingerQueueListener listener) {
         fingerQueueListeners.add(listener);
@@ -82,71 +94,74 @@ public class RecognizeListManager implements IRecognizeStatusObservable, IRecogn
         fingerQueueListeners.remove(listener);
     }
 
-	@Override
-	public void addRecognizeStatusObserver(IRecognizeStatusObserver o) {
-		recognizeStatusObservers.add(o);
-	}
+    @Override
+    public void addRecognizeStatusObserver(IRecognizeStatusObserver o) {
+        recognizeStatusObservers.add(o);
+    }
 
-	@Override
-	public void removeRecognizeStatusObserver(IRecognizeStatusObserver o) {
-		recognizeStatusObservers.remove(o);
-	}
+    @Override
+    public void removeRecognizeStatusObserver(IRecognizeStatusObserver o) {
+        recognizeStatusObservers.remove(o);
+    }
 
-	@Override
-	public void addRecognizeResultObserver(IRecognizeResultObserver o) {
-		recognizeResultObservers.add(o);
+    @Override
+    public void addRecognizeResultObserver(IRecognizeResultObserver o) {
+        recognizeResultObservers.add(o);
         Log.v("RecognizeManager", "after adding, observers = " + recognizeResultObservers.size());
-	}
+    }
 
-	@Override
-	public void removeRecognizeResultObserver(IRecognizeResultObserver o) {
-		recognizeResultObservers.remove(o);
+    @Override
+    public void removeRecognizeResultObserver(IRecognizeResultObserver o) {
+        recognizeResultObservers.remove(o);
         Log.v("RecognizeManager", "after removing, observers = " + recognizeResultObservers.size());
-	}
+    }
 
-	@Override
-	public void notifyRecognizeResultObservers(int errorCode, SongData songData) {
-		for(IRecognizeResultObserver o : recognizeResultObservers)
-			o.onRecognizeResult(errorCode, songData);
-	}
+    @Override
+    public void notifyRecognizeResultObservers(int errorCode, SongData songData) {
+        for (IRecognizeResultObserver o : recognizeResultObservers) {
+            o.onRecognizeResult(errorCode, songData);
+        }
+    }
 
-	@Override
-	public void notifyRecognizeStatusObservers(String status) {
-		for(IRecognizeStatusObserver o : recognizeStatusObservers)
-			o.onRecognizeStatusChanged(status);
-	}
+    @Override
+    public void notifyRecognizeStatusObservers(String status) {
+        for (IRecognizeStatusObserver o : recognizeStatusObservers) {
+            o.onRecognizeStatusChanged(status);
+        }
+    }
 
-	@Override
-	public void onRecognizeStatusChanged(String status) {
+    @Override
+    public void onRecognizeStatusChanged(String status) {
         currentFingerprint.setRecognizeStatus(status);
 
         for (IFingerQueueListener listener : fingerQueueListeners) {
             listener.changeStatusOfElement(currentFingerprint);
         }
-	}
+    }
 
-	@Override
-	public void onRecognizeResult(int errorCode, SongData songData) {
-		notifyRecognizeResultObservers(errorCode, songData);
+    @Override
+    public void onRecognizeResult(int errorCode, SongData songData) {
+        notifyRecognizeResultObservers(errorCode, songData);
 
         if (songData != null) {
-			currentFingerprint.setRecognizeStatus(songData.getArtist() + " - " + songData.getTitle());
+            currentFingerprint
+                    .setRecognizeStatus(songData.getArtist() + " - " + songData.getTitle());
             songs.add(songData);
-		} else {
-			currentFingerprint.setRecognizeStatus("Music not identified");
-		}
+        } else {
+            currentFingerprint.setRecognizeStatus("Music not identified");
+        }
 
-		if(errorCode != 5001) {
+        if (errorCode != 5001) {
             removeFingerFromQueueAndNotifyListeners(currentFingerprint);
 
-			fingerprints.remove(currentFingerprint);
-		} else {
+            fingerprints.remove(currentFingerprint);
+        } else {
             finishRecognizing();
-			return;
-		}
+            return;
+        }
 
         recognizeNextFinger();
-	}
+    }
 
     public void cancelAutoRecognize() {
         autorecognizing = false;
@@ -177,9 +192,9 @@ public class RecognizeListManager implements IRecognizeStatusObservable, IRecogn
     }
 
     private void recognizeNextFinger() {
-        if(isRecognizing) {
-            if(fingerprintsQueue.isEmpty()) {
-                if(fingerprints.isEmpty() || !autorecognizing) {
+        if (isRecognizing) {
+            if (fingerprintsQueue.isEmpty()) {
+                if (fingerprints.isEmpty() || !autorecognizing) {
                     finishRecognizing();
                     return;
                 } else {

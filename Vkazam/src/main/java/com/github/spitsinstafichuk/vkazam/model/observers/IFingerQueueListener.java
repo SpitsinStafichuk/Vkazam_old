@@ -10,8 +10,12 @@ import com.github.spitsinstafichuk.vkazam.model.FingerprintData;
  * @since 2014-02-13
  */
 public interface IFingerQueueListener {
+
     void addElementToQueue(FingerprintData finger);
+
     void removeElementFromQueue(FingerprintData finger);
+
     void removeRecognizedElement(FingerprintData finger);
+
     void changeStatusOfElement(FingerprintData finger);
 }

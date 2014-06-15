@@ -1,494 +1,494 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/common_background" >
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/common_background">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
-
-        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal" >
+            android:orientation="vertical">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
 
             <com.github.spitsinstafichuk.vkazam.view.DynamicImageView
-                android:id="@+id/songInfoCoverArt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|top"
-                android:background="@drawable/standart_block_background"
-                android:padding="1dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/cover_art_loading" />
+                    android:id="@+id/songInfoCoverArt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|top"
+                    android:background="@drawable/standart_block_background"
+                    android:padding="1dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/cover_art_loading"/>
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/standart_block_background" >
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/standart_block_background">
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:gravity="center"
-                android:text="@string/pp_player_label"
-                android:textSize="17sp"
-                android:textStyle="bold" />
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:gravity="center"
+                    android:text="@string/pp_player_label"
+                    android:textSize="17sp"
+                    android:textStyle="bold"/>
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="5dp"
-            android:orientation="horizontal" >
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@drawable/standart_block_background_selector"
-                android:orientation="horizontal" >
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/standart_block_background_selector"
+                    android:orientation="horizontal">
 
                 <ImageButton
-                    android:id="@+id/songInfoPlayPauseButtonForPP"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_gravity="center"
-                    android:background="@android:color/transparent"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/ic_media_play" />
+                        android:id="@+id/songInfoPlayPauseButtonForPP"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:background="@android:color/transparent"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ic_media_play"/>
 
                 <ProgressBar
-                    android:id="@+id/songInfoLoadingForPP"
-                    style="?android:attr/progressBarStyleSmall"
-                    android:layout_width="40dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center"
-                    android:visibility="gone" />
+                        android:id="@+id/songInfoLoadingForPP"
+                        style="?android:attr/progressBarStyleSmall"
+                        android:layout_width="40dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:visibility="gone"/>
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:orientation="vertical" >
-
-                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal" >
+                    android:layout_marginLeft="5dp"
+                    android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/SongInfoRealArtistTitleForPP"
+                <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="5dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/standart_block_background"
-                        android:ellipsize="marquee"
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"
-                        android:marqueeRepeatLimit="marquee_forever"
-                        android:paddingBottom="5dp"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="5dp"
-                        android:paddingTop="5dp"
-                        android:scrollHorizontally="true"
-                        android:singleLine="true"
-                        android:text="PP Song Artist - Title full with auto scrolling. XDXD"
-                        android:textColor="@color/black"
-                        android:textSize="20sp" />
+                        android:orientation="horizontal">
+
+                    <TextView
+                            android:id="@+id/SongInfoRealArtistTitleForPP"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="5dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/standart_block_background"
+                            android:ellipsize="marquee"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
+                            android:marqueeRepeatLimit="marquee_forever"
+                            android:paddingBottom="5dp"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="5dp"
+                            android:paddingTop="5dp"
+                            android:scrollHorizontally="true"
+                            android:singleLine="true"
+                            android:text="PP Song Artist - Title full with auto scrolling. XDXD"
+                            android:textColor="@color/black"
+                            android:textSize="20sp"/>
 
                     <ImageButton
-                        android:id="@+id/downloadPPButton"
-                        android:layout_width="40dp"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/standart_block_background_selector"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/ic_action_download" />
+                            android:id="@+id/downloadPPButton"
+                            android:layout_width="40dp"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/standart_block_background_selector"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/ic_action_download"/>
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/standart_block_background" >
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/standart_block_background">
 
                     <SeekBar
-                        android:id="@+id/SongProgressForPP"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:progress="0" />
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/vkPlayerLabel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/standart_block_background" >
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:gravity="center"
-                android:text="@string/vk_player_label"
-                android:textSize="17sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/vkPlayer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="5dp"
-            android:orientation="horizontal" >
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@drawable/standart_block_background_selector"
-                android:orientation="horizontal" >
-
-                <ImageButton
-                    android:id="@+id/songInfoPlayPauseButtonForVk"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_gravity="center"
-                    android:background="@android:color/transparent"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/ic_media_play" />
-
-                <ProgressBar
-                    android:id="@+id/songInfoLoadingForVk"
-                    style="?android:attr/progressBarStyleSmall"
-                    android:layout_width="40dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center"
-                    android:visibility="gone" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:orientation="vertical" >
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal" >
-
-                    <TextView
-                        android:id="@+id/SongInfoRealArtistTitleForVk"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="5dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/standart_block_background"
-                        android:ellipsize="marquee"
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"
-                        android:marqueeRepeatLimit="marquee_forever"
-                        android:paddingBottom="5dp"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="5dp"
-                        android:paddingTop="5dp"
-                        android:scrollHorizontally="true"
-                        android:singleLine="true"
-                        android:text="VK Song Artist - Title full with auto scrolling. XDXD"
-                        android:textColor="@color/black"
-                        android:textSize="20sp" />
-
-                    <ImageButton
-                        android:id="@+id/addVkButton"
-                        android:layout_width="40dp"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/standart_block_background_selector"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/ic_action_new" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:orientation="horizontal" >
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="5dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/standart_block_background" >
-
-                        <SeekBar
-                            android:id="@+id/SongProgressForVk"
+                            android:id="@+id/SongProgressForPP"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
-                            android:progress="0" />
-                    </LinearLayout>
-
-                    <ImageButton
-                        android:id="@+id/downloadVKButton"
-                        android:layout_width="40dp"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/standart_block_background_selector"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/ic_action_download" />
+                            android:progress="0"/>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="5dp"
-            android:orientation="horizontal" >
-
-            <ImageButton
-                android:id="@+id/lyricsButton"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_margin="5dp"
-                android:background="@drawable/standart_block_background_selector"
-                android:padding="5dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_action_lyrics" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/standart_block_background"
-                android:gravity="center"
-                android:text="@string/get_lyrics"
-                android:textSize="20sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="10dp"
-            android:orientation="horizontal" >
-
-            <ImageButton
-                android:id="@+id/youtubeButton"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_margin="5dp"
-                android:background="@drawable/standart_block_background_selector"
-                android:padding="5dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_action_youtube" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/standart_block_background"
-                android:gravity="center"
-                android:text="@string/get_youtube_video"
-                android:textSize="20sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="10dp"
-            android:orientation="horizontal"
-            android:visibility="gone" >
-
-            <ImageButton
-                android:id="@+id/lastfmLoveButton"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_margin="5dp"
-                android:background="@drawable/standart_block_background_selector"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_action_favorite" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/standart_block_background"
-                android:gravity="center"
-                android:text="Love on last.fm"
-                android:textSize="20sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/standart_block_background"
-            android:orientation="vertical" >
-
-            <LinearLayout
+                android:id="@+id/vkPlayerLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/standart_block_background">
+
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:gravity="center"
+                    android:text="@string/vk_player_label"
+                    android:textSize="17sp"
+                    android:textStyle="bold"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/vkPlayer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+            <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/standart_block_background_selector"
+                    android:orientation="horizontal">
+
+                <ImageButton
+                        android:id="@+id/songInfoPlayPauseButtonForVk"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:background="@android:color/transparent"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ic_media_play"/>
+
+                <ProgressBar
+                        android:id="@+id/songInfoLoadingForVk"
+                        style="?android:attr/progressBarStyleSmall"
+                        android:layout_width="40dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:visibility="gone"/>
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:orientation="vertical">
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                    <TextView
+                            android:id="@+id/SongInfoRealArtistTitleForVk"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="5dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/standart_block_background"
+                            android:ellipsize="marquee"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
+                            android:marqueeRepeatLimit="marquee_forever"
+                            android:paddingBottom="5dp"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="5dp"
+                            android:paddingTop="5dp"
+                            android:scrollHorizontally="true"
+                            android:singleLine="true"
+                            android:text="VK Song Artist - Title full with auto scrolling. XDXD"
+                            android:textColor="@color/black"
+                            android:textSize="20sp"/>
+
+                    <ImageButton
+                            android:id="@+id/addVkButton"
+                            android:layout_width="40dp"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/standart_block_background_selector"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/ic_action_new"/>
+                </LinearLayout>
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal">
+
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="5dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/standart_block_background">
+
+                        <SeekBar
+                                android:id="@+id/SongProgressForVk"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginRight="5dp"
+                                android:progress="0"/>
+                    </LinearLayout>
+
+                    <ImageButton
+                            android:id="@+id/downloadVKButton"
+                            android:layout_width="40dp"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/standart_block_background_selector"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/ic_action_download"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+            <ImageButton
+                    android:id="@+id/lyricsButton"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/standart_block_background_selector"
+                    android:padding="5dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_action_lyrics"/>
+
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/standart_block_background"
+                    android:gravity="center"
+                    android:text="@string/get_lyrics"
+                    android:textSize="20sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="10dp"
+                android:orientation="horizontal">
+
+            <ImageButton
+                    android:id="@+id/youtubeButton"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/standart_block_background_selector"
+                    android:padding="5dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_action_youtube"/>
+
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/standart_block_background"
+                    android:gravity="center"
+                    android:text="@string/get_youtube_video"
+                    android:textSize="20sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="10dp"
                 android:orientation="horizontal"
-                android:visibility="gone" >
+                android:visibility="gone">
 
-                <TextView
+            <ImageButton
+                    android:id="@+id/lastfmLoveButton"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/standart_block_background_selector"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_action_favorite"/>
+
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/standart_block_background"
+                    android:gravity="center"
+                    android:text="Love on last.fm"
+                    android:textSize="20sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/standart_block_background"
+                android:orientation="vertical">
+
+            <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:layout_weight="1"
-                    android:gravity="right"
-                    android:text="@string/track_id_label"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                 <TextView
-                    android:id="@+id/songInfoTrackId"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:layout_weight="1"
-                    android:text="TrackId"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:text="@string/track_id_label"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"/>
+
+                <TextView
+                        android:id="@+id/songInfoTrackId"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:text="TrackId"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"/>
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" >
-
-                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:layout_weight="1"
-                    android:gravity="right"
-                    android:text="@string/artist_label"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
+                    android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/songInfoArtist"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:layout_weight="1"
-                    android:text="Artist"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:text="@string/artist_label"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"/>
+
+                <TextView
+                        android:id="@+id/songInfoArtist"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:text="Artist"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"/>
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" >
-
-                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:layout_weight="1"
-                    android:gravity="right"
-                    android:text="@string/album_label"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
+                    android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/songInfoAlbum"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:layout_weight="1"
-                    android:text="Album"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:text="@string/album_label"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"/>
+
+                <TextView
+                        android:id="@+id/songInfoAlbum"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:text="Album"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"/>
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" >
-
-                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:layout_weight="1"
-                    android:gravity="right"
-                    android:text="@string/title_label"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
+                    android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/songInfoTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:layout_weight="1"
-                    android:text="Title"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:text="@string/title_label"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"/>
+
+                <TextView
+                        android:id="@+id/songInfoTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:text="Title"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"/>
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" >
-
-                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:layout_weight="1"
-                    android:gravity="right"
-                    android:text="@string/date_label"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
+                    android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/songInfoDate"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:layout_weight="1"
-                    android:text="Date"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:text="@string/date_label"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"/>
+
+                <TextView
+                        android:id="@+id/songInfoDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:text="Date"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

@@ -6,8 +6,11 @@ import java.util.Date;
 public class Fingerprint {
 
     private long id;
+
     private String fingerprint;
+
     private Date date;
+
     private Date deletionDate;
 
     public Fingerprint(long id, String fingerprint, Date date, Date deletionDate) {

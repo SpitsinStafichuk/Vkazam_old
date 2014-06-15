@@ -24,7 +24,7 @@
                 android:background="@android:color/transparent"/>
 
         <TextView
-            	android:id="@+id/title"
+                android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="6dip"
@@ -36,7 +36,7 @@
                 android:gravity="center"/>
 
     </LinearLayout>
-    
+
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="3dp"
@@ -45,36 +45,36 @@
     </LinearLayout>
 
     <LinearLayout
-        	android:layout_width="match_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:orientation="horizontal">
 
         <ProgressBar
-            android:id="@+id/progressBarDefault"
-            style="?android:attr/progressBarStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="6dp"
-            android:layout_marginRight="20dp"
-            android:minHeight="32dp"
-            android:minWidth="32dp" />
+                android:id="@+id/progressBarDefault"
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="20dp"
+                android:minHeight="32dp"
+                android:minWidth="32dp"/>
 
-    	<TextView
-            	android:id="@+id/message"
-            	android:layout_width="match_parent"
-            	android:layout_height="wrap_content"
-            	android:layout_gravity="center_vertical"
-            	android:text="Message"
-            	android:textColor="@color/black"
-            	android:textSize="16sp"/>
+        <TextView
+                android:id="@+id/message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="Message"
+                android:textColor="@color/black"
+                android:textSize="16sp"/>
 
     </LinearLayout>
 
     <LinearLayout
-        	android:id="@+id/horizontalStyle"
-        	android:layout_width="match_parent"
+            android:id="@+id/horizontalStyle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
@@ -82,68 +82,68 @@
             android:orientation="horizontal">
 
         <ProgressBar
-            android:id="@+id/progressBarHorizontal"
-            style="@style/ProgressBarAppTheme"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:layout_marginLeft="6dp"
-            android:minHeight="32dp"
-            android:minWidth="32dp" />
+                android:id="@+id/progressBarHorizontal"
+                style="@style/ProgressBarAppTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:layout_marginLeft="6dp"
+                android:minHeight="32dp"
+                android:minWidth="32dp"/>
 
-    	<TextView
-            	android:id="@+id/progress"
-            	android:layout_width="wrap_content"
-            	android:layout_height="wrap_content"
-            	android:layout_gravity="center_vertical"
-            	android:layout_marginLeft="20dp"
-            	android:text="100%"
-            	android:textColor="@color/black"
-            	android:textSize="16sp"/>
+        <TextView
+                android:id="@+id/progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="20dp"
+                android:text="100%"
+                android:textColor="@color/black"
+                android:textSize="16sp"/>
 
     </LinearLayout>
 
     <LinearLayout
-        	android:id="@+id/buttons"
+            android:id="@+id/buttons"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:orientation="horizontal">
-        
-        <LinearLayout 
+
+        <LinearLayout
                 android:id="@+id/positiveButton"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/dialog_button_left">
-            
-            <TextView 
-                android:id="@+id/positiveButtonTitle"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Yes"
-                android:textColor="@color/black"
-                android:gravity="center"
-                android:background="@android:color/transparent"/>
-            
+
+            <TextView
+                    android:id="@+id/positiveButtonTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Yes"
+                    android:textColor="@color/black"
+                    android:gravity="center"
+                    android:background="@android:color/transparent"/>
+
         </LinearLayout>
-        
-        <LinearLayout 
+
+        <LinearLayout
                 android:id="@+id/negativeButton"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/dialog_button_right">
-            
-            <TextView 
-                android:id="@+id/negativeButtonTitle"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="No"
-                android:textColor="@color/black"
-                android:gravity="center"
-                android:background="@android:color/transparent"/>
-            
+
+            <TextView
+                    android:id="@+id/negativeButtonTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="No"
+                    android:textColor="@color/black"
+                    android:gravity="center"
+                    android:background="@android:color/transparent"/>
+
         </LinearLayout>
 
     </LinearLayout>

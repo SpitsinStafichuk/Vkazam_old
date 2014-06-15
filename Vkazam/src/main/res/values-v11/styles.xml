@@ -2,7 +2,7 @@
 <resources>
 
     <style name="AppBaseTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-	</style>
+    </style>
 
     <style name="MiniPlayerSeekBar" parent="android:Widget.SeekBar">
         <item name="android:progressDrawable">@drawable/miniplayer_progress</item>

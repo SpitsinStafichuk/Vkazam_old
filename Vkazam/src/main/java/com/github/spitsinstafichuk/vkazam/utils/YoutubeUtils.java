@@ -12,71 +12,82 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class YoutubeUtils {
+
     private static final String TAG = "Youtube";
+
     private static final int MAX_TRIES = 3;
+
     private static final String BASE_URL = "http://gdata.youtube.com/feeds/api/videos?q=";
+
     private static final String BASE_URL_END = "&max-results=1&v=2&alt=jsonc";
 
     private static String sendRequestInternal(String url) throws IOException {
-        HttpURLConnection connection=null;
-        try{
-            connection = (HttpURLConnection)new URL(url.replaceAll(" ", "%20")).openConnection();
+        HttpURLConnection connection = null;
+        try {
+            connection = (HttpURLConnection) new URL(url.replaceAll(" ", "%20")).openConnection();
             connection.setConnectTimeout(30000);
             connection.setReadTimeout(30000);
             connection.setUseCaches(false);
             connection.setDoOutput(false);
             connection.setDoInput(true);
             connection.setRequestMethod("GET");
-            int code=connection.getResponseCode();
+            int code = connection.getResponseCode();
             Log.i(TAG, "code=" + code);
             //It may happen due to keep-alive problem http://stackoverflow.com/questions/1440957/httpurlconnection-getresponsecode-returns-1-on-second-invocation
-            if (code==-1)
+            if (code == -1) {
                 throw new WrongResponseCodeException("Network error");
-            if (code==400)
+            }
+            if (code == 400) {
                 return null;
+            }
             //может стоит проверить на код 200
             //on error can also read error stream from connection.
             InputStream is = new BufferedInputStream(connection.getInputStream());
-            String response= Utils.convertStreamToString(is);
+            String response = Utils.convertStreamToString(is);
             return response;
-        }
-        finally{
-            if(connection!=null)
+        } finally {
+            if (connection != null) {
                 connection.disconnect();
+            }
         }
     }
 
     private static void processNetworkException(int i, IOException ex) throws IOException {
         ex.printStackTrace();
-        if(i == MAX_TRIES)
+        if (i == MAX_TRIES) {
             throw ex;
+        }
     }
 
     public static String sendRequest(String request) throws IOException {
         String url = BASE_URL + request + BASE_URL_END;
-        Log.i(TAG, "url="+url);
-        String response="";
-        for(int i = 1;i <= MAX_TRIES; ++i){
-            try{
-                if(i!=1)
-                    Log.i(TAG, "try "+i);
+        Log.i(TAG, "url=" + url);
+        String response = "";
+        for (int i = 1; i <= MAX_TRIES; ++i) {
+            try {
+                if (i != 1) {
+                    Log.i(TAG, "try " + i);
+                }
                 response = sendRequestInternal(url);
                 break;
-            }catch(javax.net.ssl.SSLException ex){
+            } catch (javax.net.ssl.SSLException ex) {
                 processNetworkException(i, ex);
-            }catch(java.net.SocketException ex){
+            } catch (java.net.SocketException ex) {
                 processNetworkException(i, ex);
             }
         }
-        Log.i(TAG, "response = "+response);
+        Log.i(TAG, "response = " + response);
         return getUrlFromResponse(response);
     }
 
-    public static String unescape(String text){
-        if(text==null)
+    public static String unescape(String text) {
+        if (text == null) {
             return null;
-        return text.replace("&amp;", "&").replace("&quot;", "\"").replace("<br>", "\n").replace("&gt;", ">").replace("&lt;", "<")
-                .replace("&#39;", "'").replace("<br/>", "\n").replace("&ndash;","-").replace("&#33;", "!").trim();
+        }
+        return text.replace("&amp;", "&").replace("&quot;", "\"").replace("<br>", "\n")
+                .replace("&gt;", ">").replace("&lt;", "<")
+                .replace("&#39;", "'").replace("<br/>", "\n").replace("&ndash;", "-")
+                .replace("&#33;", "!").trim();
         //возможно тут могут быть любые коды после &#, например были: 092 - backslash \
     }
 

@@ -8,9 +8,13 @@ public class SongUrlTable {
     public static final String SONG_URL = "SongUrl";
 
     public static final String _ID = "_id";
+
     public static final String URL = "Url";
+
     public static final String ARTIST = "Artist";
+
     public static final String TITLE = "Title";
+
     public static final String TYPE = "Type";
 
     public static void create(SQLiteDatabase database) {
