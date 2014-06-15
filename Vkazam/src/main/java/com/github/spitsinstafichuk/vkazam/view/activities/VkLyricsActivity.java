@@ -17,7 +17,7 @@ import com.github.spitsinstafichuk.vkazam.controllers.SongInfoController;
 import com.github.spitsinstafichuk.vkazam.model.MicroScrobblerModel;
 import com.github.spitsinstafichuk.vkazam.model.RecognizeServiceConnection;
 import com.github.spitsinstafichuk.vkazam.model.SongData;
-import com.github.spitsinstafichuk.vkazam.adapters.SongReplacePagerAdapter;
+import com.github.spitsinstafichuk.vkazam.adapters_old.SongReplacePagerAdapter;
 import com.github.spitsinstafichuk.vkazam.view.fragments.MessageDialogFragment;
 import com.github.spitsinstafichuk.vkazam.view.fragments.MessageDialogFragment.onDialogClickListener;
 

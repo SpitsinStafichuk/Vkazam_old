@@ -1,9 +1,11 @@
 package com.github.spitsinstafichuk.vkazam.utils;
 
 /**
+ * Main container for all significant constants
  *
+ * @author Michael Spitsin
+ * @since 2014-06-14
  */
 public interface Constants {
-    String VK_API_ID = "4104000";
-    String GRACENOTE_APPLICATION_ID = "2826240-6B775924534E29CFFB17A317306BD5C6";
+    int NO_ID = -1;
 }

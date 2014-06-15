@@ -1,4 +1,4 @@
-package com.github.spitsinstafichuk.vkazam.adapters;
+package com.github.spitsinstafichuk.vkazam.adapters_old;
 
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.nineoldandroids.view.ViewHelper;
 
+@Deprecated
 public class FingerprintListAdapter extends BaseAdapter implements IFingerQueueListener {
 	private static final String TAG = "FingerprintListAdapter";
 	private int idItem;

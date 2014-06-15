@@ -25,7 +25,7 @@ import com.github.spitsinstafichuk.vkazam.model.database.SongList;
 import com.github.spitsinstafichuk.vkazam.model.observers.ISongDAOObserver;
 import com.github.spitsinstafichuk.vkazam.utils.AndroidUtils;
 import com.github.spitsinstafichuk.vkazam.view.activities.SongInfoActivity;
-import com.github.spitsinstafichuk.vkazam.adapters.SongListAdapter;
+import com.github.spitsinstafichuk.vkazam.adapters_old.SongListAdapter;
 
 public class HistoryPageFragment extends FragmentWithName implements
 		ISongDAOObserver {

@@ -21,7 +21,7 @@ import com.github.spitsinstafichuk.vkazam.model.managers.SongManager;
 import com.github.spitsinstafichuk.vkazam.model.observers.IPlayerStateObserver;
 import com.github.spitsinstafichuk.vkazam.model.observers.ISongInfoObserver;
 import com.github.spitsinstafichuk.vkazam.model.observers.ISongProgressObserver;
-import com.github.spitsinstafichuk.vkazam.adapters.SongListAdapter;
+import com.github.spitsinstafichuk.vkazam.adapters_old.SongListAdapter;
 
 public class MiniPlayerFragment extends Fragment implements
 		IPlayerStateObserver, ISongInfoObserver, ISongProgressObserver {

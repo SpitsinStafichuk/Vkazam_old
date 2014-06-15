@@ -1,4 +1,4 @@
-package com.github.spitsinstafichuk.vkazam.adapters;
+package com.github.spitsinstafichuk.vkazam.adapters_old;
 
 
 import android.content.Context;
@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 
 import com.github.spitsinstafichuk.vkazam.view.fragments.RecognizePageFragment;
 
+@Deprecated
 public class MicrophonePagerAdapter extends MyPagerAdapter {
     public static final int HISTORY_PAGE_NUMBER = 1;
    

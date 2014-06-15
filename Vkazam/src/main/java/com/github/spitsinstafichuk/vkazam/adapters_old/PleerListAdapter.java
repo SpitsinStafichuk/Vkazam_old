@@ -1,4 +1,4 @@
-package com.github.spitsinstafichuk.vkazam.adapters;
+package com.github.spitsinstafichuk.vkazam.adapters_old;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,6 +15,7 @@ import com.github.spitsinstafichuk.vkazam.model.pleer.api.Api;
 import com.github.spitsinstafichuk.vkazam.model.pleer.api.Audio;
 import com.github.spitsinstafichuk.vkazam.model.pleer.api.KException;
 
+@Deprecated
 public class PleerListAdapter extends URLlistAdapter {
 	private final List<Audio> urls;
 

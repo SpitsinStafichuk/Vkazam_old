@@ -268,7 +268,7 @@ public class SettingsActivity extends ActionBarActivity implements
 //            if (resultCode == Activity.RESULT_OK) {
 //                model.setVkApi(data.getStringExtra("token"),
 //                        data.getLongExtra("user_id", 0),
-//                        new Api(data.getStringExtra("token"), Constants.VK_API_ID));
+//                        new Api(data.getStringExtra("token"), API_Constants.VK_API_ID));
 //                changeVkButton();
 //                return;
 //            }

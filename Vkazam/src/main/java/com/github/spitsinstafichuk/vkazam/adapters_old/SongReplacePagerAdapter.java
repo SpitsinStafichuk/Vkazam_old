@@ -1,4 +1,4 @@
-package com.github.spitsinstafichuk.vkazam.adapters;
+package com.github.spitsinstafichuk.vkazam.adapters_old;
 
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
@@ -7,6 +7,7 @@ import com.github.spitsinstafichuk.vkazam.model.RecognizeServiceConnection;
 import com.github.spitsinstafichuk.vkazam.view.fragments.SongReplacePPFragment;
 import com.github.spitsinstafichuk.vkazam.view.fragments.SongReplaceVkFragment;
 
+@Deprecated
 public class SongReplacePagerAdapter extends MyPagerAdapter {
 	public static final int VK_PAGE_NUMBER = 1;
 

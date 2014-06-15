@@ -1,4 +1,4 @@
-package com.github.spitsinstafichuk.vkazam.adapters;
+package com.github.spitsinstafichuk.vkazam.adapters_old;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +30,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+@Deprecated
 public class SongListAdapter extends BaseAdapter implements IPlayerStateObserver {
 	private static final String TAG = "SongListAdapter";
 	

@@ -1,4 +1,4 @@
-package com.github.spitsinstafichuk.vkazam.adapters;
+package com.github.spitsinstafichuk.vkazam.adapters_old;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,6 +15,7 @@ import com.perm.kate.api.Api;
 import com.perm.kate.api.Audio;
 import com.perm.kate.api.KException;
 
+@Deprecated
 public class VkListAdapter extends URLlistAdapter {
 	private final List<Audio> audios;
 	private final Api vkApi;

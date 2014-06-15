@@ -6,8 +6,8 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.github.spitsinstafichuk.vkazam.R;
-import com.github.spitsinstafichuk.vkazam.adapters.MicrophonePagerAdapter;
-import com.github.spitsinstafichuk.vkazam.adapters.MyPagerAdapter;
+import com.github.spitsinstafichuk.vkazam.adapters_old.MicrophonePagerAdapter;
+import com.github.spitsinstafichuk.vkazam.adapters_old.MyPagerAdapter;
 
 public class MicrophonePagerActivity extends PagerActivity {
 	private static final String TAG = "MicrophonePagerActivity";

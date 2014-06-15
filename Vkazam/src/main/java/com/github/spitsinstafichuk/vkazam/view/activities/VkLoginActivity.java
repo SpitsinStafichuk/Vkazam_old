@@ -12,7 +12,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.github.spitsinstafichuk.vkazam.R;
-import com.github.spitsinstafichuk.vkazam.utils.Constants;
+import com.github.spitsinstafichuk.vkazam.utils.API_Constants;
 import com.perm.kate.api.Auth;
 
 public class VkLoginActivity extends ActionBarActivity {
@@ -40,7 +40,7 @@ public class VkLoginActivity extends ActionBarActivity {
 		CookieManager cookieManager = CookieManager.getInstance();
 		cookieManager.removeAllCookie();
 
-		String url = Auth.getUrl(Constants.VK_API_ID, Auth.getSettings());
+		String url = Auth.getUrl(API_Constants.VK_API_ID, Auth.getSettings());
 		webview.loadUrl(url);
 	}
 

@@ -1,4 +1,4 @@
-package com.github.spitsinstafichuk.vkazam.adapters;
+package com.github.spitsinstafichuk.vkazam.adapters_old;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +13,7 @@ import android.text.style.ImageSpan;
 
 import com.github.spitsinstafichuk.vkazam.view.fragments.FragmentWithName;
 
+@Deprecated
 public class MyPagerAdapter extends FragmentPagerAdapter {
 
 	protected int pageCount;

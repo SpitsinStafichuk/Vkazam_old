@@ -13,7 +13,7 @@ import com.github.spitsinstafichuk.vkazam.model.managers.RecognizeManager;
 import com.github.spitsinstafichuk.vkazam.model.managers.Scrobbler;
 import com.github.spitsinstafichuk.vkazam.model.managers.SearchManager;
 import com.github.spitsinstafichuk.vkazam.model.managers.SongManager;
-import com.github.spitsinstafichuk.vkazam.utils.Constants;
+import com.github.spitsinstafichuk.vkazam.utils.API_Constants;
 import com.gracenote.mmid.MobileSDK.GNConfig;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -66,7 +66,7 @@ public class MicroScrobblerModel {
 	private MicroScrobblerModel() {
 		handler = new Handler();
 		MicroScrobblerMediaPlayer.setHandler(handler);
-		config = GNConfig.init(Constants.GRACENOTE_APPLICATION_ID, context);
+		config = GNConfig.init(API_Constants.GRACENOTE_APPLICATION_ID, context);
 		config.setProperty("content.coverArt", "1");
 		config.setProperty("content.contributor.images", "1");
 		config.setProperty("content.contributor.biography", "1");
@@ -98,7 +98,7 @@ public class MicroScrobblerModel {
 		vkAccount.restore(context);
 
 		if (vkAccount.access_token != null) {
-			vkApi = new Api(vkAccount.access_token, Constants.VK_API_ID);
+			vkApi = new Api(vkAccount.access_token, API_Constants.VK_API_ID);
 		}
 		Log.v("vkApi", "vkApi = " + vkApi);
 	}

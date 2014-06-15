@@ -1,4 +1,4 @@
-package com.github.spitsinstafichuk.vkazam.adapters;
+package com.github.spitsinstafichuk.vkazam.adapters_old;
 
 import java.io.IOException;
 
@@ -32,6 +32,7 @@ import com.github.spitsinstafichuk.vkazam.model.pleer.api.KException;
  * @author Michael Spitsin
  * @since 2014-02-07
  */
+@Deprecated
 public abstract class URLlistAdapter extends BaseAdapter {
 
 	protected MicroScrobblerModel model;

@@ -1,4 +1,4 @@
-package com.github.spitsinstafichuk.vkazam.adapters;
+package com.github.spitsinstafichuk.vkazam.adapters_old;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 /**
  * Improved CursorAdapter that let display huge amounts of data. http://habrahabr.ru/post/154931/
  */
+@Deprecated
 public abstract class QuickCursorAdapter extends BaseAdapter {
 
     private final DataSource mDataSource;

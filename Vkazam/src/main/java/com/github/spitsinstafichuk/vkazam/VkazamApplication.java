@@ -2,7 +2,7 @@ package com.github.spitsinstafichuk.vkazam;
 
 import android.app.Application;
 
-import com.github.spitsinstafichuk.vkazam.utils.Constants;
+import com.github.spitsinstafichuk.vkazam.utils.API_Constants;
 import com.gracenote.mmid.MobileSDK.GNConfig;
 
 /**
@@ -18,7 +18,7 @@ public class VkazamApplication extends Application{
     public void onCreate() {
         super.onCreate();
 
-        config = GNConfig.init(Constants.GRACENOTE_APPLICATION_ID, this);
+        config = GNConfig.init(API_Constants.GRACENOTE_APPLICATION_ID, this);
         config.setProperty("content.coverArt", "1");
         config.setProperty("content.contributor.images", "1");
         config.setProperty("content.contributor.biography", "1");
