@@ -191,11 +191,11 @@ public abstract class URLListAdapter extends BindAdapter {
 			numbers.setOnClickListener(listener);
 			radioButton.setOnClickListener(listener);
 
-			if (isGetViewEqualsCurrentSong(position, currentSongData)) {
-				radioButton.setChecked(true);
-			} else {
-				radioButton.setChecked(false);
-			}
+//			if (isGetViewEqualsCurrentSong(position, currentSongData)) {
+//				radioButton.setChecked(true);
+//			} else {
+//				radioButton.setChecked(false);
+//			}
 		} else {
 			view = inflater.inflate(endOfListResLayout, parent, false);
 
@@ -233,21 +233,21 @@ public abstract class URLListAdapter extends BindAdapter {
 				}
 			});
 
-			if (model.getSongManager().getSongData() != null) {
-				SongData data = model.getSongManager().getSongData();
-				if (data.getTrackId() == null) {
-					if (isGetViewEqualsCurrentSong(position, data)
-							&& (model.getSongManager().isPlaying())) {
-						playPause.setImageResource(R.drawable.ic_media_pause);
-					} else {
-						playPause.setImageResource(R.drawable.ic_media_play);
-					}
-				} else {
-					playPause.setImageResource(R.drawable.ic_media_play);
-				}
-			} else {
-				playPause.setImageResource(R.drawable.ic_media_play);
-			}
+//			if (model.getSongManager().getSongData() != null) {
+//				SongData data = model.getSongManager().getSongData();
+//				if (data.getTrackId() == null) {
+//					if (isGetViewEqualsCurrentSong(position, data)
+//							&& (model.getSongManager().isPlaying())) {
+//						playPause.setImageResource(R.drawable.ic_media_pause);
+//					} else {
+//						playPause.setImageResource(R.drawable.ic_media_play);
+//					}
+//				} else {
+//					playPause.setImageResource(R.drawable.ic_media_play);
+//				}
+//			} else {
+//				playPause.setImageResource(R.drawable.ic_media_play);
+//			}
 		}
 
 		return view;
