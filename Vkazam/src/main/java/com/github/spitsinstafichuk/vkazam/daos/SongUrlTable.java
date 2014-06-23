@@ -4,6 +4,10 @@ package com.github.spitsinstafichuk.vkazam.daos;
 import android.database.sqlite.SQLiteDatabase;
 
 public class SongUrlTable {
+    public static enum URL_TYPE {
+        VK,
+        PLEER
+    }
 
     public static final String SONG_URL = "SongUrl";
 

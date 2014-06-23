@@ -1,16 +1,15 @@
-package com.github.spitsinstafichuk.vkazam.adapters_old;
+package com.github.spitsinstafichuk.vkazam.adapters;
 
 import java.io.IOException;
 
 import org.json.JSONException;
 
 import android.content.Context;
-import android.support.v4.app.FragmentActivity;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -20,11 +19,12 @@ import android.widget.Toast;
 
 import com.github.spitsinstafichuk.vkazam.R;
 import com.github.spitsinstafichuk.vkazam.controllers.UrlController;
-import com.github.spitsinstafichuk.vkazam.model.MicroScrobblerModel;
 import com.github.spitsinstafichuk.vkazam.model.RecognizeServiceConnection;
 import com.github.spitsinstafichuk.vkazam.model.SongData;
 import com.github.spitsinstafichuk.vkazam.model.database.DatabaseSongData;
 import com.github.spitsinstafichuk.vkazam.model.pleer.api.KException;
+import com.github.spitsinstafichuk.vkazam.vos.SongInfo;
+import com.github.spitsinstafichuk.vkazam.vos.SongUrl;
 
 /**
  * Common pattern adapter for every url-page
@@ -32,14 +32,13 @@ import com.github.spitsinstafichuk.vkazam.model.pleer.api.KException;
  * @author Michael Spitsin
  * @since 2014-02-07
  */
-@Deprecated
-public abstract class URLlistAdapter extends BaseAdapter {
+public abstract class URLListAdapter extends BindAdapter {
 
-	protected MicroScrobblerModel model;
-	protected DatabaseSongData currentSongData;
+    protected SongUrl mSongUrl;
+    protected SongInfo mSongInfo;
 
 	protected LayoutInflater inflater;
-	protected FragmentActivity activity;
+	protected Context context;
 
 	protected int resLayout;
 	protected int endOfListResLayout;
@@ -52,18 +51,18 @@ public abstract class URLlistAdapter extends BaseAdapter {
 	protected boolean isFirstClick = true;
 
 	protected UrlController controller;
+    protected Handler uiHandler;
 
-	public URLlistAdapter(final FragmentActivity activity, int position,
-			int resLayout, int endOfListResLayout) {
-		this.activity = activity;
+	public URLListAdapter(final Context context, SongInfo songInfo, SongUrl songUrl, int resLayout, int endOfListResLayout) {
+		this.context = context;
 		this.resLayout = resLayout;
 		this.endOfListResLayout = endOfListResLayout;
-		controller = new UrlController(activity);
-		model = RecognizeServiceConnection.getModel();
-		currentSongData = (DatabaseSongData) model.getSongList().get(position);
+		controller = new UrlController(context);
+        mSongInfo = songInfo;
+        mSongUrl = songUrl;
 		updateSongsList();
-		inflater = (LayoutInflater) this.activity
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        uiHandler = new Handler();
 	}
 
 	/**
@@ -223,7 +222,7 @@ public abstract class URLlistAdapter extends BaseAdapter {
 				@Override
 				public void onClick(View v) {
 					if (isFirstClick) {
-						model.getSongManager().release();
+                        //TODO Release Player Service
 						isFirstClick = false;
 					}
 
@@ -254,12 +253,22 @@ public abstract class URLlistAdapter extends BaseAdapter {
 		return view;
 	}
 
-	protected synchronized void updateSongsList() {
+    @Override
+    protected View newView(int position, ViewGroup parent) {
+        return null;
+    }
+
+    @Override
+    protected void bindView(int position, View view, ViewGroup parent) {
+
+    }
+
+    protected synchronized void updateSongsList() {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
 
-				activity.runOnUiThread(new Runnable() {
+                uiHandler.post(new Runnable() {
 					@Override
 					public void run() {
 						newSongLoadingBar.setVisibility(View.VISIBLE);
@@ -270,15 +279,15 @@ public abstract class URLlistAdapter extends BaseAdapter {
 					if (!isAllSongWithOriginArtistShown) {
 						addMoreUrls();
 					} else {
-						if ((!currentSongData.getArtist().equals(
-								currentSongData.getAlbumArtist()))
-								&& (currentSongData.getAlbumArtist() != null)) {
+						if ((!mSongInfo.getGracenoteSongInfo().getArtist().equals(
+                                mSongInfo.getGracenoteSongInfo().getAlbumArtist()))
+								&& (mSongInfo.getGracenoteSongInfo().getAlbumArtist() != null)) {
 							addMoreUrls();
 						}
 					}
 					Log.v("PleerListAdapter", "ANSWER FROM INTERNET");
 					final int listUpdateFinal = getCount() - 1 - listUpdate;
-					activity.runOnUiThread(new Runnable() {
+                    uiHandler.post(new Runnable() {
 						@Override
 						public void run() {
 							Log.v("PleerListAdapter", "" + listUpdateFinal);
@@ -288,8 +297,8 @@ public abstract class URLlistAdapter extends BaseAdapter {
 								} else {
 									isFullList = true;
 									Toast.makeText(
-											activity,
-											activity.getString(R.string.no_more_songs),
+											context,
+											context.getString(R.string.no_more_songs),
 											Toast.LENGTH_SHORT).show();
 									Log.v("PleerListAdapter", "No more songs");
 								}
@@ -314,7 +323,7 @@ public abstract class URLlistAdapter extends BaseAdapter {
 											// use File | Settings | File
 											// Templates.
 				} finally {
-					activity.runOnUiThread(new Runnable() {
+					uiHandler.post(new Runnable() {
 						@Override
 						public void run() {
 							newSongLoadingBar.setVisibility(View.GONE);
@@ -336,8 +345,7 @@ public abstract class URLlistAdapter extends BaseAdapter {
 
 	public void finish() {
 		if (!isFirstClick) {
-			model.getSongManager().release();
-			model.getSongManager().set(null, -1, model.getVkApi());
+            //TODO Release PlayerService
 		}
 	}
 }

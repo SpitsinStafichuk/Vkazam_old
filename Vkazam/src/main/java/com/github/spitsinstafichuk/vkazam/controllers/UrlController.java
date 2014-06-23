@@ -29,8 +29,8 @@ public class UrlController extends SongController implements IPlayerStateObserve
 
     private SongManager songManager;
 
-    public UrlController(FragmentActivity view) {
-        super(view);
+    public UrlController(Context context) {
+        super(context);
         model = RecognizeServiceConnection.getModel();
         songManager = model.getSongManager();
         model.getPlayer().addPlayerStateObserver(this);

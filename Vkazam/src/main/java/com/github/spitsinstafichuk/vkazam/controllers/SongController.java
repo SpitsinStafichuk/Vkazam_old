@@ -7,7 +7,8 @@ import com.github.spitsinstafichuk.vkazam.R;
 
 import org.json.JSONException;
 
-import android.support.v4.app.FragmentActivity;
+import android.content.Context;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -24,13 +25,15 @@ public class SongController {
 
     protected MicroScrobblerModel model;
 
-    protected FragmentActivity view;
+    protected Context context;
 
     private Thread preparingThread;
+    private Handler uiHandler;
 
-    public SongController(FragmentActivity view) {
-        this.view = view;
+    public SongController(Context context) {
+        this.context = context;
         this.model = RecognizeServiceConnection.getModel();
+        this.uiHandler = new Handler();
     }
 
     public synchronized void playPauseSong(final DatabaseSongData songData,
@@ -99,21 +102,21 @@ public class SongController {
                 Log.v("SongListController", "song was prepared ");
                 songManager.play();
             } catch (SongNotFoundException e) {
-                showToast(view.getString(R.string.song_not_found));
+                showToast(context.getString(R.string.song_not_found));
                 //songManager.release();
                 //songManager.set(null, positionInList, model.getVkApi());
-                if (!(view instanceof SongInfoActivity)) {
+                if (!(context instanceof SongInfoActivity)) {
                     playPauseSong(positionInList + 1);
                 } else {
                     songManager.release();
                     songManager.set(null, positionInList, model.getVkApi());
                 }
             } catch (MalformedURLException e) {
-                showToast(view.getString(R.string.internet_connection_not_available));
+                showToast(context.getString(R.string.internet_connection_not_available));
                 songManager.release();
                 songManager.set(null, -1, model.getVkApi());
             } catch (IOException e) {
-                showToast(view.getString(R.string.internet_connection_not_available));
+                showToast(context.getString(R.string.internet_connection_not_available));
                 songManager.release();
                 songManager.set(null, -1, model.getVkApi());
             } catch (JSONException e) {
@@ -129,7 +132,7 @@ public class SongController {
                 songManager.release();
                 songManager.set(null, -1, model.getVkApi());
             } catch (VkAccountNotFoundException e) {
-                showToast(view.getString(R.string.vk_not_available));
+                showToast(context.getString(R.string.vk_not_available));
                 songManager.release();
                 songManager.set(null, -1, model.getVkApi());
             }
@@ -137,12 +140,11 @@ public class SongController {
     }
 
     protected void showToast(final String message) {
-        view.runOnUiThread(new Runnable() {
+        uiHandler.post(new Runnable() {
 
             @Override
             public void run() {
-                Toast toast = Toast
-                        .makeText(view.getApplicationContext(), message, Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
                 toast.show();
             }
         });

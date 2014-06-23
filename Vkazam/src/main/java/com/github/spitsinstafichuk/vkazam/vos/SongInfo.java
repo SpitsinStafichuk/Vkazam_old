@@ -17,8 +17,7 @@ public class SongInfo {
 
     private Date deletionDate;
 
-    public SongInfo(long id, GracenoteSongInfo gracenoteSongInfo, Date date,
-            String songPosition, boolean favourite, Date deletionDate) {
+    public SongInfo(long id, GracenoteSongInfo gracenoteSongInfo, Date date, String songPosition, boolean favourite, Date deletionDate) {
         super();
         this.id = id;
         this.gracenoteSongInfo = gracenoteSongInfo;

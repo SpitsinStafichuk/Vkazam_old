@@ -9,6 +9,7 @@ import org.json.JSONException;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
+import com.github.spitsinstafichuk.vkazam.adapters.URLListAdapter;
 import com.github.spitsinstafichuk.vkazam.model.SongData;
 import com.github.spitsinstafichuk.vkazam.model.managers.SongManager;
 import com.perm.kate.api.Api;
@@ -16,7 +17,7 @@ import com.perm.kate.api.Audio;
 import com.perm.kate.api.KException;
 
 @Deprecated
-public class VkListAdapter extends URLlistAdapter {
+public class VkListAdapter extends URLListAdapter {
 	private final List<Audio> audios;
 	private final Api vkApi;
 
