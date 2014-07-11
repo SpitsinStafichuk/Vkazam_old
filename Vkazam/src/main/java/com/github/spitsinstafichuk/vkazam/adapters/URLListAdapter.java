@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -19,12 +18,10 @@ import android.widget.Toast;
 
 import com.github.spitsinstafichuk.vkazam.R;
 import com.github.spitsinstafichuk.vkazam.controllers.UrlController;
-import com.github.spitsinstafichuk.vkazam.model.RecognizeServiceConnection;
 import com.github.spitsinstafichuk.vkazam.model.SongData;
 import com.github.spitsinstafichuk.vkazam.model.database.DatabaseSongData;
 import com.github.spitsinstafichuk.vkazam.model.pleer.api.KException;
 import com.github.spitsinstafichuk.vkazam.vos.SongInfo;
-import com.github.spitsinstafichuk.vkazam.vos.SongUrl;
 
 /**
  * Common pattern adapter for every url-page
@@ -34,14 +31,13 @@ import com.github.spitsinstafichuk.vkazam.vos.SongUrl;
  */
 public abstract class URLListAdapter extends BindAdapter {
 
-    protected SongUrl mSongUrl;
     protected SongInfo mSongInfo;
 
 	protected LayoutInflater inflater;
 	protected Context context;
 
-	protected int resLayout;
-	protected int endOfListResLayout;
+	protected int itemLayout = R.layout.song_url_list_item;
+	protected int moreItemsLayout = R.layout.more_url_list_item;
 	protected int page = 1;
 
 	protected ProgressBar newSongLoadingBar;
@@ -52,14 +48,12 @@ public abstract class URLListAdapter extends BindAdapter {
 
 	protected UrlController controller;
     protected Handler uiHandler;
+    private OnPlayPauseButtonClickListener mListener;
 
-	public URLListAdapter(final Context context, SongInfo songInfo, SongUrl songUrl, int resLayout, int endOfListResLayout) {
+	public URLListAdapter(final Context context, SongInfo songInfo) {
 		this.context = context;
-		this.resLayout = resLayout;
-		this.endOfListResLayout = endOfListResLayout;
 		controller = new UrlController(context);
         mSongInfo = songInfo;
-        mSongUrl = songUrl;
 		updateSongsList();
 		inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         uiHandler = new Handler();
@@ -150,6 +144,10 @@ public abstract class URLListAdapter extends BindAdapter {
 	 */
 	protected abstract int getSongType();
 
+    public void setOnPlayPauseButtonClickListener(OnPlayPauseButtonClickListener listener) {
+        mListener = listener;
+    }
+
 	@Override
 	public long getItemId(int i) {
 		return 0;
@@ -158,61 +156,6 @@ public abstract class URLListAdapter extends BindAdapter {
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		View view = convertView;
-
-		if (position < (getCount() - 1)) {
-			view = inflater.inflate(resLayout, parent, false);
-
-			TextView textView;
-
-			textView = (TextView) view.findViewById(R.id.ppUrlListItemArtist);
-			textView.setText(getArtist(position));
-
-			textView = (TextView) view.findViewById(R.id.ppUrlListItemTitle);
-			textView.setText(getTitle(position));
-
-			textView = (TextView) view.findViewById(R.id.ppUrlListItemDuration);
-			textView.setText(getStringTime(getDuration(position)));
-
-			if (getBitrate(position) != null) {
-				textView = (TextView) view
-						.findViewById(R.id.ppUrlListItemBitRate);
-				textView.setText(getBitrate(position));
-			}
-
-			LinearLayout info = (LinearLayout) view
-					.findViewById(R.id.ppUrlListItemInfo);
-			LinearLayout numbers = (LinearLayout) view
-					.findViewById(R.id.ppUrlListItemNumbers);
-			RadioButton radioButton = (RadioButton) view
-					.findViewById(R.id.ppUrlListItemCheckbutton);
-
-			View.OnClickListener listener = getOnViewClickListener(position);
-			info.setOnClickListener(listener);
-			numbers.setOnClickListener(listener);
-			radioButton.setOnClickListener(listener);
-
-//			if (isGetViewEqualsCurrentSong(position, currentSongData)) {
-//				radioButton.setChecked(true);
-//			} else {
-//				radioButton.setChecked(false);
-//			}
-		} else {
-			view = inflater.inflate(endOfListResLayout, parent, false);
-
-			newSongLoadingBar = (ProgressBar) view
-					.findViewById(R.id.moreListItemLoading);
-			if (isFullList) {
-				view.setVisibility(View.GONE);
-			}
-
-			view.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View view) {
-					page++;
-					updateSongsList();
-				}
-			});
-		}
 
 		if (position < (getCount() - 1)) {
 			ImageButton playPause = (ImageButton) view
@@ -255,12 +198,123 @@ public abstract class URLListAdapter extends BindAdapter {
 
     @Override
     protected View newView(int position, ViewGroup parent) {
-        return null;
+        View resultView;
+
+        if (position < (getCount() - 1)) {
+            resultView = inflater.inflate(itemLayout, parent, false);
+
+            if (resultView != null) {
+                TextView artistView = (TextView) resultView.findViewById(R.id.urlArtist);
+                TextView titleView = (TextView) resultView.findViewById(R.id.urlTitle);
+                TextView durationView = (TextView) resultView.findViewById(R.id.urlDuration);
+                TextView bitRateView = (TextView) resultView.findViewById(R.id.urlBitRate);
+                RadioButton checkerView = (RadioButton) resultView.findViewById(R.id.urlChecker);
+                ImageButton playPauseButton = (ImageButton) resultView.findViewById(R.id.urlPlayPauseButton);
+
+                resultView.setTag(R.id.urlArtist, artistView);
+                resultView.setTag(R.id.urlTitle, titleView);
+                resultView.setTag(R.id.urlDuration, durationView);
+                resultView.setTag(R.id.urlBitRate, bitRateView);
+                resultView.setTag(R.id.urlChecker, checkerView);
+                resultView.setTag(R.id.urlPlayPauseButton, playPauseButton);
+            }
+        } else {
+            resultView = inflater.inflate(moreItemsLayout, parent, false);
+
+            newSongLoadingBar = (ProgressBar) resultView
+                    .findViewById(R.id.moreListItemLoading);
+            if (isFullList) {
+                resultView.setVisibility(View.GONE);
+            }
+
+            resultView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    page++;
+                    updateSongsList();
+                }
+            });
+        }
+
+        return resultView;
     }
 
     @Override
-    protected void bindView(int position, View view, ViewGroup parent) {
+    protected void bindView(final int position, View view, ViewGroup parent) {
+        if (position < (getCount() - 1)) {
+            TextView artistView = (TextView) view.getTag(R.id.urlArtist);
+            if ((getArtist(position) != null) && (artistView != null)) {
+                artistView.setText(getArtist(position));
+            }
 
+            TextView titleView = (TextView) view.getTag(R.id.urlTitle);
+            if ((getTitle(position) != null) && (titleView != null)) {
+                titleView.setText(getTitle(position));
+            }
+
+            TextView durationView = (TextView) view.getTag(R.id.urlDuration);
+            if ((durationView != null)) {
+                durationView.setText(getDuration(position) + "");
+            }
+
+            TextView bitRateView = (TextView) view.getTag(R.id.urlBitRate);
+            if ((getBitrate(position) != null) && (bitRateView != null)) {
+                bitRateView.setText(getArtist(position));
+            }
+
+            RadioButton checkerView = (RadioButton) view.getTag(R.id.urlChecker);
+            if (checkerView != null) {
+                checkerView.setOnClickListener(getOnViewClickListener(position));
+            }
+
+//			if (isGetViewEqualsCurrentSong(position, currentSongData)) {
+//				radioButton.setChecked(true);
+//			} else {
+//				radioButton.setChecked(false);
+//			}
+            final ImageButton playPauseButton = (ImageButton) view.getTag(R.id.urlPlayPauseButton);
+            if ((playPauseButton != null)) {
+                playPauseButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (mListener != null) {
+                            mListener.onPlayPauseButtonClick(playPauseButton, position);
+                        }
+                    }
+                });
+            }
+//            final View viewFinal = view;
+//            playPause.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    if (isFirstClick) {
+//                        //TODO Release Player Service
+//                        isFirstClick = false;
+//                    }
+//
+//                    controller.setCurrentElement(viewFinal);
+//                    controller.playPauseSong(new DatabaseSongData(position,
+//                                    null, generateSongDataByViewInfo(position)), -1,
+//                            getSongType());
+//                }
+//            });
+        } else {
+//            resultView = inflater.inflate(moreItemsLayout, parent, false);
+//
+//            newSongLoadingBar = (ProgressBar) resultView
+//                    .findViewById(R.id.moreListItemLoading);
+//            if (isFullList) {
+//                resultView.setVisibility(View.GONE);
+//            }
+//
+//            resultView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    page++;
+//                    updateSongsList();
+//                }
+//            });
+        }
     }
 
     protected synchronized void updateSongsList() {
@@ -348,4 +402,18 @@ public abstract class URLListAdapter extends BindAdapter {
             //TODO Release PlayerService
 		}
 	}
+
+    /**
+     * Listener on clicking on playPause button on each item.
+     */
+    public static interface OnPlayPauseButtonClickListener {
+
+        /**
+         * Calls when play/pause button on any item is clicked.
+         *
+         * @param button - view of clicked button
+         * @param position - position of list item, the button of which is clicked
+         */
+        void onPlayPauseButtonClick(ImageButton button, int position);
+    }
 }

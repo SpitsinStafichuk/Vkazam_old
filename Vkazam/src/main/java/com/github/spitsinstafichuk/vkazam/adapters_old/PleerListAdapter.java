@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.json.JSONException;
 
+import android.content.Context;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
@@ -15,14 +16,14 @@ import com.github.spitsinstafichuk.vkazam.model.managers.SongManager;
 import com.github.spitsinstafichuk.vkazam.model.pleer.api.Api;
 import com.github.spitsinstafichuk.vkazam.model.pleer.api.Audio;
 import com.github.spitsinstafichuk.vkazam.model.pleer.api.KException;
+import com.github.spitsinstafichuk.vkazam.vos.SongInfo;
 
 @Deprecated
 public class PleerListAdapter extends URLListAdapter {
 	private final List<Audio> urls;
 
-	public PleerListAdapter(final FragmentActivity activity, int position,
-			int resLayout, int endOfListResLayout) {
-		super(activity, position, resLayout, endOfListResLayout);
+	public PleerListAdapter(final Context context, SongInfo songInfo) {
+		super(context, songInfo);
 		urls = new ArrayList<Audio>();
 	}
 

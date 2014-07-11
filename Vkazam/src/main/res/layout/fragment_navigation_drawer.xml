@@ -6,4 +6,4 @@
           android:divider="@android:color/transparent"
           android:dividerHeight="0dp"
           android:background="#cccc"
-          tools:context="com.github.spitsinstafichuk.vkazam.fragments.NavigationDrawerFragment"/>
+          tools:context="com.github.spitsinstafichuk.vkazam.fragments_old.NavigationDrawerFragment"/>

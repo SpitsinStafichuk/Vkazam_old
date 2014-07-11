@@ -11,7 +11,7 @@ import android.util.Log;
 
 import com.github.spitsinstafichuk.vkazam.R;
 import com.github.spitsinstafichuk.vkazam.model.RecognizeServiceConnection;
-import com.github.spitsinstafichuk.vkazam.fragments.SongInfoFragment;
+import com.github.spitsinstafichuk.vkazam.fragments_old.SongInfoFragment;
 
 public class SongInfoActivity extends ActionBarActivity {
 

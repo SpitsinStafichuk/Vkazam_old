@@ -1,5 +1,5 @@
 
-package com.github.spitsinstafichuk.vkazam.fragments;
+package com.github.spitsinstafichuk.vkazam.fragments_old;
 
 import android.content.Context;
 import android.content.SharedPreferences;

@@ -8,13 +8,12 @@
         android:orientation="vertical">
 
     <LinearLayout
-            android:id="@+id/ppUrlListItem"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
         <LinearLayout
-                android:id="@+id/ppUrlListItemPlayPauseLayout"
+                android:id="@+id/urlPlayPauseLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true"
@@ -22,7 +21,7 @@
                 android:gravity="center">
 
             <ImageButton
-                    android:id="@+id/ppUrlListItemPlayPauseButton"
+                    android:id="@+id/urlPlayPauseButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -33,7 +32,7 @@
                     android:src="@drawable/ic_media_play"/>
 
             <ProgressBar
-                    android:id="@+id/ppUrlListItemLoading"
+                    android:id="@+id/urlLoadingBar"
                     style="?android:attr/progressBarStyleSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -44,7 +43,7 @@
         </LinearLayout>
 
         <LinearLayout
-                android:id="@+id/ppUrlListItemInfo"
+                android:id="@+id/urlGeneralInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -61,7 +60,7 @@
                     android:orientation="vertical">
 
                 <TextView
-                        android:id="@+id/ppUrlListItemArtist"
+                        android:id="@+id/urlArtist"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
@@ -72,7 +71,7 @@
                         android:textSize="14sp"/>
 
                 <TextView
-                        android:id="@+id/ppUrlListItemTitle"
+                        android:id="@+id/urlTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
@@ -87,7 +86,7 @@
         </LinearLayout>
 
         <LinearLayout
-                android:id="@+id/ppUrlListItemNumbers"
+                android:id="@+id/urlAdditionalInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -104,7 +103,7 @@
                     android:orientation="vertical">
 
                 <TextView
-                        android:id="@+id/ppUrlListItemDuration"
+                        android:id="@+id/urlDuration"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
@@ -115,7 +114,7 @@
                         android:textSize="14sp"/>
 
                 <TextView
-                        android:id="@+id/ppUrlListItemBitRate"
+                        android:id="@+id/urlBitRate"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
@@ -130,12 +129,13 @@
         </LinearLayout>
 
         <RadioButton
-                android:id="@+id/ppUrlListItemCheckbutton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                style="@style/RadioButtonAppTheme" android:layout_marginTop="1dp"
-                android:layout_marginLeft="10dp"/>
+            android:id="@+id/urlChecker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="1dp"
+            android:layout_marginLeft="10dp"
+            style="@style/RadioButtonAppTheme" />
 
     </LinearLayout>
 

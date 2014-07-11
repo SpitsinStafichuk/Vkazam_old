@@ -114,7 +114,7 @@ public class Api {
     }
 
     public static ArrayList<Audio> searchAudio(String q, int limit, int page)
-            throws MalformedURLException, IOException, JSONException, KException {
+            throws IOException, JSONException, KException {
         Params params = new Params("search");
         params.put("q", q);
         params.put("limit", limit);

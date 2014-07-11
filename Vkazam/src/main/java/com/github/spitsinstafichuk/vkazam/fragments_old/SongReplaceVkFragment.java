@@ -1,5 +1,4 @@
-
-package com.github.spitsinstafichuk.vkazam.fragments;
+package com.github.spitsinstafichuk.vkazam.fragments_old;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,23 +7,23 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.github.spitsinstafichuk.vkazam.R;
-import com.github.spitsinstafichuk.vkazam.adapters_old.PleerListAdapter;
+import com.github.spitsinstafichuk.vkazam.adapters.VkListAdapter;
 
-public class SongReplacePPFragment extends FragmentWithName {
+public class SongReplaceVkFragment extends FragmentWithName {
 
-    private ListView ppURLs;
+    private ListView vkURLs;
 
-    private PleerListAdapter adapter;
+    private VkListAdapter adapter;
 
     private int position;
 
-    public static SongReplacePPFragment newInstance(int position) {
-        SongReplacePPFragment pageFragment = new SongReplacePPFragment();
+    public static SongReplaceVkFragment newInstance(int position) {
+        SongReplaceVkFragment pageFragment = new SongReplaceVkFragment();
         Bundle arguments = new Bundle();
         arguments.putInt("position", position);
         pageFragment.setArguments(arguments);
-        pageFragment.setFragmentName("pleer");
-        pageFragment.setFragmentIcon(R.drawable.ic_action_prostopleer);
+        pageFragment.setFragmentName("vk");
+        pageFragment.setFragmentIcon(R.drawable.ic_action_vk);
         return pageFragment;
     }
 
@@ -33,8 +32,8 @@ public class SongReplacePPFragment extends FragmentWithName {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         position = getArguments().getInt("position");
-        adapter = new PleerListAdapter(getActivity(), position,
-                R.layout.list_item_pp_url, R.layout.list_item_more_url);
+        adapter = new VkListAdapter(this.getActivity(), position,
+                R.layout.song_url_list_item, R.layout.more_url_list_item);
     }
 
     @Override
@@ -42,8 +41,8 @@ public class SongReplacePPFragment extends FragmentWithName {
             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_history, null);
 
-        ppURLs = (ListView) view.findViewById(R.id.listView);
-        ppURLs.setAdapter(adapter);
+        vkURLs = (ListView) view.findViewById(R.id.listView);
+        vkURLs.setAdapter(adapter);
 
         return view;
     }

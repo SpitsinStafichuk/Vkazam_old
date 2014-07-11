@@ -23,14 +23,22 @@ public class Audio implements Serializable {
 
     public String bitrate;
 
-    public static Audio parse(JSONObject o) throws NumberFormatException, JSONException {
+    public static Audio parse(JSONObject o) throws JSONException {
         Audio audio = new Audio();
         audio.id = Api.unescape(o.getString("id"));
         audio.artist = Api.unescape(o.optString("artist"));
         audio.title = Api.unescape(o.optString("track"));
-        audio.duration = Long.parseLong(o.getString("length"));
+        try {
+            audio.duration = Long.parseLong(o.getString("length"));
+        } catch (NumberFormatException e) {
+            audio.duration = 0l;
+        }
         audio.url = o.optString("file", null);
-        audio.size = Long.parseLong(o.getString("size"));
+        try {
+            audio.size = Long.parseLong(o.getString("size"));
+        } catch (NumberFormatException e) {
+            audio.size = 0l;
+        }
         audio.bitrate = o.optString("bitrate", null);
         return audio;
     }

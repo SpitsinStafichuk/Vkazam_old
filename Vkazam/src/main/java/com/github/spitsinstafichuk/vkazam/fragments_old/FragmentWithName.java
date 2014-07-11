@@ -1,5 +1,5 @@
 
-package com.github.spitsinstafichuk.vkazam.fragments;
+package com.github.spitsinstafichuk.vkazam.fragments_old;
 
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;

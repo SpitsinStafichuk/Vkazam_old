@@ -31,7 +31,7 @@ public class SongReplaceVkFragment extends FragmentWithName {
 		setRetainInstance(true);
 		position = getArguments().getInt("position");
 		adapter = new VkListAdapter(this.getActivity(), position,
-				R.layout.list_item_pp_url, R.layout.list_item_more_url);
+				R.layout.song_url_list_item, R.layout.more_url_list_item);
 	}
 
 	@Override

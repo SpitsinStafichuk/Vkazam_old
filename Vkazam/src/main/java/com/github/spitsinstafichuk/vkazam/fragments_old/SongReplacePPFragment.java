@@ -1,4 +1,5 @@
-package com.github.spitsinstafichuk.vkazam.fragments;
+
+package com.github.spitsinstafichuk.vkazam.fragments_old;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,23 +8,23 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.github.spitsinstafichuk.vkazam.R;
-import com.github.spitsinstafichuk.vkazam.adapters.VkListAdapter;
+import com.github.spitsinstafichuk.vkazam.adapters_old.PleerListAdapter;
 
-public class SongReplaceVkFragment extends FragmentWithName {
+public class SongReplacePPFragment extends FragmentWithName {
 
-    private ListView vkURLs;
+    private ListView ppURLs;
 
-    private VkListAdapter adapter;
+    private PleerListAdapter adapter;
 
     private int position;
 
-    public static SongReplaceVkFragment newInstance(int position) {
-        SongReplaceVkFragment pageFragment = new SongReplaceVkFragment();
+    public static SongReplacePPFragment newInstance(int position) {
+        SongReplacePPFragment pageFragment = new SongReplacePPFragment();
         Bundle arguments = new Bundle();
         arguments.putInt("position", position);
         pageFragment.setArguments(arguments);
-        pageFragment.setFragmentName("vk");
-        pageFragment.setFragmentIcon(R.drawable.ic_action_vk);
+        pageFragment.setFragmentName("pleer");
+        pageFragment.setFragmentIcon(R.drawable.ic_action_prostopleer);
         return pageFragment;
     }
 
@@ -32,8 +33,7 @@ public class SongReplaceVkFragment extends FragmentWithName {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         position = getArguments().getInt("position");
-        adapter = new VkListAdapter(this.getActivity(), position,
-                R.layout.list_item_pp_url, R.layout.list_item_more_url);
+        adapter = new PleerListAdapter(getActivity(), song);
     }
 
     @Override
@@ -41,8 +41,8 @@ public class SongReplaceVkFragment extends FragmentWithName {
             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_history, null);
 
-        vkURLs = (ListView) view.findViewById(R.id.listView);
-        vkURLs.setAdapter(adapter);
+        ppURLs = (ListView) view.findViewById(R.id.listView);
+        ppURLs.setAdapter(adapter);
 
         return view;
     }

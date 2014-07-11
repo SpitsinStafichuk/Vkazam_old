@@ -21,7 +21,7 @@ import com.github.spitsinstafichuk.vkazam.model.RecognizeServiceConnection;
 import com.github.spitsinstafichuk.vkazam.utils.AndroidUtils;
 import com.github.spitsinstafichuk.vkazam.utils.NetworkUtils;
 import com.github.spitsinstafichuk.vkazam.activities.interfaces.IConnectedDialogFragmentDissmised;
-import com.github.spitsinstafichuk.vkazam.fragments.TimerDelayDialogFragment;
+import com.github.spitsinstafichuk.vkazam.fragments_old.TimerDelayDialogFragment;
 
 public class SettingsActivity extends ActionBarActivity implements
         CompoundButton.OnCheckedChangeListener,

@@ -16,7 +16,7 @@ import com.github.spitsinstafichuk.vkazam.R;
 import com.github.spitsinstafichuk.vkazam.view.DepthPageTransformer;
 import com.github.spitsinstafichuk.vkazam.view.SmoothPageScroller;
 import com.github.spitsinstafichuk.vkazam.adapters.MyPagerAdapter;
-import com.github.spitsinstafichuk.vkazam.fragments.FragmentWithName;
+import com.github.spitsinstafichuk.vkazam.fragments_old.FragmentWithName;
 
 public abstract class PagerActivity extends ActionBarActivity {
 

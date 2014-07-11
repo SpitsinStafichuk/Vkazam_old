@@ -1,26 +1,20 @@
 package com.github.spitsinstafichuk.vkazam.activities;
 
 import com.github.spitsinstafichuk.vkazam.R;
-import com.github.spitsinstafichuk.vkazam.fragments.FingerprintPageFragment;
-import com.github.spitsinstafichuk.vkazam.fragments.HistoryPageFragment;
-import com.github.spitsinstafichuk.vkazam.fragments.NavigationDrawerFragment;
-import com.github.spitsinstafichuk.vkazam.fragments.RecognizePageFragment;
-import com.github.spitsinstafichuk.vkazam.fragments.TestPageFragment;
-import com.github.spitsinstafichuk.vkazam.vos.Fingerprint;
+import com.github.spitsinstafichuk.vkazam.fragments_old.FingerprintPageFragment;
+import com.github.spitsinstafichuk.vkazam.fragments_old.HistoryPageFragment;
+import com.github.spitsinstafichuk.vkazam.fragments_old.NavigationDrawerFragment;
+import com.github.spitsinstafichuk.vkazam.fragments_old.RecognizePageFragment;
+import com.github.spitsinstafichuk.vkazam.fragments_old.TestPageFragment;
 
-import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
-import android.widget.TextView;
 
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {

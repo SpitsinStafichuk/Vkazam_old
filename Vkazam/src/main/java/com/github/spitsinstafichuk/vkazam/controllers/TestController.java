@@ -9,7 +9,7 @@ import com.github.spitsinstafichuk.vkazam.model.database.DatabaseSongData;
 import com.github.spitsinstafichuk.vkazam.model.database.SongList;
 import com.github.spitsinstafichuk.vkazam.model.managers.SearchManager;
 import com.github.spitsinstafichuk.vkazam.model.managers.SearchManager.SearchListener;
-import com.github.spitsinstafichuk.vkazam.fragments.TestPageFragment;
+import com.github.spitsinstafichuk.vkazam.fragments_old.TestPageFragment;
 
 public class TestController {
 

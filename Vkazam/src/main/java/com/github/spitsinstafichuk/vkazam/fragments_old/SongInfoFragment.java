@@ -1,4 +1,4 @@
-package com.github.spitsinstafichuk.vkazam.fragments;
+package com.github.spitsinstafichuk.vkazam.fragments_old;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -56,7 +56,7 @@ import com.github.spitsinstafichuk.vkazam.activities.PagerActivity;
 import com.github.spitsinstafichuk.vkazam.activities.RefreshPagerActivity;
 import com.github.spitsinstafichuk.vkazam.activities.SettingsActivity;
 import com.github.spitsinstafichuk.vkazam.adapters.MicrophonePagerAdapter;
-import com.github.spitsinstafichuk.vkazam.fragments.ProgressDialogFragment.OnCancelListener;
+import com.github.spitsinstafichuk.vkazam.fragments_old.ProgressDialogFragment.OnCancelListener;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.perm.kate.api.Api;
 import com.perm.kate.api.Audio;

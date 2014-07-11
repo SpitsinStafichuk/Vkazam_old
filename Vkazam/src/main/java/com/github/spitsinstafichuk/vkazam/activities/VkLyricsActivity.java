@@ -18,8 +18,8 @@ import com.github.spitsinstafichuk.vkazam.model.MicroScrobblerModel;
 import com.github.spitsinstafichuk.vkazam.model.RecognizeServiceConnection;
 import com.github.spitsinstafichuk.vkazam.model.SongData;
 import com.github.spitsinstafichuk.vkazam.adapters.SongReplacePagerAdapter;
-import com.github.spitsinstafichuk.vkazam.fragments.MessageDialogFragment;
-import com.github.spitsinstafichuk.vkazam.fragments.MessageDialogFragment.onDialogClickListener;
+import com.github.spitsinstafichuk.vkazam.fragments_old.MessageDialogFragment;
+import com.github.spitsinstafichuk.vkazam.fragments_old.MessageDialogFragment.onDialogClickListener;
 
 public class VkLyricsActivity extends ActionBarActivity {
 

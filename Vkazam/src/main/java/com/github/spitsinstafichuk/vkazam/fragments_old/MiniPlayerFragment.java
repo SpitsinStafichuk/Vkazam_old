@@ -1,4 +1,4 @@
-package com.github.spitsinstafichuk.vkazam.fragments;
+package com.github.spitsinstafichuk.vkazam.fragments_old;
 
 import android.media.MediaPlayer;
 import android.os.Bundle;
